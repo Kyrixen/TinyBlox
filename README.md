@@ -102,7 +102,7 @@ cd TinyEngine
 
 * Zoomable camera
 * Tile-based collision for entities
-* Enemy AI improvementss
+* Enemy AI improvements
 * Animated textures
 * Configurable key bindings
 
