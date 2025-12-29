@@ -1,4 +1,4 @@
-name: Java CI with Gradle (Kotlin DSL)
+name: Java CI with Gradle (Kotlin DSL, LWJGL)
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      # Upload test results (JUnit XML)
+      # Upload test results if they exist
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
@@ -41,7 +41,7 @@ jobs:
           name: test-results
           path: build/test-results/test
 
-      # Upload code coverage (optional if using Jacoco)
+      # Upload code coverage if you generate it (optional)
       - name: Upload code coverage
         if: always()
         uses: actions/upload-artifact@v3
