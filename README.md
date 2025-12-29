@@ -59,7 +59,7 @@ org.kyrixen
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/TinyEngine.git
+git clone https://github.com/Kyrixen/TinyEngineJava.git
 cd TinyEngine
 ````
 
