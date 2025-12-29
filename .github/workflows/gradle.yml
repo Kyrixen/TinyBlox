@@ -28,6 +28,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache: true
+      
+      # Make Gradle Wrapper executable
+      - name: Make Gradle Wrapper executable
+        run: chmod +x gradlew
 
       # Build project and run tests
       - name: Build with Gradle Wrapper
