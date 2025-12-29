@@ -110,4 +110,4 @@ cd TinyEngine
 
 ## License
 
-This project is MIT licensed.
+This project is under Apache-2.0 license.
