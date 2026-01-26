@@ -1,3 +1,5 @@
 .gradle/
+.vscode/
 build/
 out/
+bin/

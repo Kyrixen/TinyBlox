@@ -25,12 +25,12 @@ A lightweight 2D game engine in Java using LWJGL for rendering, input handling, 
 
 ## Game Mechanics
 
-- [ ] Player movement
-- [ ] Entities
-- [ ] Enemy AI
+- [x] Player movement
+- [x] Entities
+- [x] Enemy AI
 - [ ] Helper NPC
 - [ ] Menu
-- [ ] Terrain
+- [x] Terrain
 - [ ] RNG
 - [ ] Combat mechanics
 - [ ] Stats
