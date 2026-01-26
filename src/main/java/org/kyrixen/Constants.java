@@ -1,0 +1,25 @@
+package org.kyrixen;
+
+
+// Global vars
+public class Constants {
+    
+    // Window size
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 600;
+
+    // World size
+    public static int MAP_WIDTH = 1600;
+    public static int MAP_HEIGHT = 1200;
+
+    // Tile size
+    public static final int GRID_SIZE = 50;
+
+    // Rendering stuff
+    public static final byte RENDER_DISTANCE = 3;
+    public static final byte BUFFER = 2;
+
+    // Version
+    public static final String VERSION = "dev_pre-2";
+
+}
