@@ -51,9 +51,9 @@ A lightweight 2D game engine in Java using LWJGL for rendering, input handling, 
 
 ## Requirements
 
-- Java 17+ (Java 8 compatibility soon)
-- LWJGL 3.3.6
-- OpenGL compatible system
+- Java 8
+- Gradle 4.10.3
+- Desktop for now (mobile maybe later)
 
 ---
 

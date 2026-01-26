@@ -10,13 +10,16 @@ import java.awt.image.BufferStrategy;
 
 public class Engine {
 
-
+    // Player
     private Player player;
 
+    // Flag for exiting
     public boolean exit = false;
 
+    // List of entities
     private static ArrayList<Entity> entities = new ArrayList<>();
 
+    // Module components
     private Renderer renderer;
     private Controller controller;
     private Textures textures;
@@ -24,13 +27,14 @@ public class Engine {
     private Terrain terrain;
     private FPSCounter fpsCounter;
 
+    // Window components
     private Canvas canvas;
     private BufferStrategy bs;
     private Graphics2D g;
     
-
     public Engine() {
     
+        // Module components init
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE);
         renderer = new Renderer(camera);
         controller = new Controller();
@@ -40,7 +44,7 @@ public class Engine {
 
     }
 
-
+    // Synchronous runner
     public void run() {
     
         init();
@@ -52,6 +56,7 @@ public class Engine {
 
     private void init() {
 
+        // Init window
         this.canvas = Main.canvas;
 
         // Ensure Canvas is realized
@@ -63,26 +68,33 @@ public class Engine {
         renderer.init();
         controller.init();
         textures.initTextures();
-        // Sound disabled on this system - PulseAudio doesn't support WAV format
-        // Sound.initSounds();
 
+        // Spawn cords
         int spawnX = Constants.MAP_WIDTH / 2;
         int spawnY = Constants.MAP_HEIGHT / 2;
 
-        player = new Player(0, Utils.spawnX(), Utils.spawnY(), Constants.GRID_SIZE, Constants.GRID_SIZE, entities);
+        // Create player
+        player = new Player(0, Utils.spawnX(), Utils.spawnY(), Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain);
 
+        // Add to list
         entities.add(player);
 
+        // Create enemy
         Enemy enemy1 = new Enemy(0, spawnX + Constants.GRID_SIZE * 2, spawnY + Constants.GRID_SIZE * 2, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain);
+        
+        // Add to list
         entities.add(enemy1);
 
+        // Configure enemy
         enemy1.setTarget(player);
         enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
+        
+        // Terrain init
         terrain.init();
-        //player.initTexture(textures);
 
+        // Window closing
         Main.frame.addWindowListener(new WindowAdapter() {
         
             @Override
@@ -93,16 +105,9 @@ public class Engine {
         
         });
 
-        // Sound disabled
-        // if (Sound.explosion != null) {
-        //     Sound.explosion.play();
-        //     Sound.explosion.loop();
-        // }
-        System.out.println("was here");
-
     }
 
-
+    // Game loop
     private void game() {
     
         float lastTime = (float) System.currentTimeMillis() / 1000;
@@ -124,7 +129,8 @@ public class Engine {
 
             Entity.updateAll(deltaTime, entities);
             terrain.update();
-            //player.update(deltaTime);
+
+            // Update camera
             camera.follow(player);
 
             for (Entity e : entities) {
@@ -170,11 +176,7 @@ public class Engine {
                 e.printStackTrace();
             }
             renderer.drawGrid(g);
-            Entity.renderAll(textures, renderer, entities, g);
-            //player.render(textures, renderer, g);
-            //textures.draw(textures.playerTexture, 800, 600, 50, 50, g);
-
-
+            Entity.renderAll(textures, renderer, entities, g, camera);
 
             fpsCounter.update();
 

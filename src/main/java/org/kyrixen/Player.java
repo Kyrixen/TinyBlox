@@ -14,7 +14,7 @@ public class Player extends Entity {
     Selector selector;
 
 
-    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities) {
+    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain) {
     
         super(id, x, y, width, height, null);
         this.type = "player";
@@ -31,6 +31,8 @@ public class Player extends Entity {
         
         this.invincible = false;
         this.tireless = false;
+
+        this.terrain = terrain;
 
         selector = new Selector(this, entities);
 
@@ -49,58 +51,26 @@ public class Player extends Entity {
     @Override
     public void update(float deltaTime) {
         
-        // Use System.currentTimeMillis() for proper timing (not divided by 1000)
         long currentTime = System.currentTimeMillis();
         if(currentTime - lastDelay >= moveDelay * 1000) {
 
             // Move if there's input
             if(dirX != 0 || dirY != 0) {
                 moving = true;
-                
-                // Direct movement without tryMove
-                int tileSize = Constants.GRID_SIZE;
-                int nextX = x + dirX * tileSize;
-                int nextY = y + dirY * tileSize;
-                
-                // World bounds check
-                if (nextX >= 0 && nextY >= 0 &&
-                    nextX + width <= Constants.MAP_WIDTH &&
-                    nextY + height <= Constants.MAP_HEIGHT) {
-                    
-                    // Collision check
-                    boolean canMove = true;
-                    for (Chunk.Tile tile : Terrain.tiles) {
-                        if (!tile.solid()) continue;
-                        
-                        int tx = tile.getX();
-                        int ty = tile.getY();
-                        
-                        if (nextX < tx + tileSize &&
-                            nextX + width > tx &&
-                            nextY < ty + tileSize &&
-                            nextY + height > ty) {
-                            canMove = false;
-                            break;
-                        }
-                    }
-                    
-                    if (canMove) {
-                        x = nextX;
-                        y = nextY;
-                    }
-                }
-            } else { 
+            
+                tryMove(terrain);
+
+                } else { 
                 moving = false;
             }
             
+            selector.update(30);
             lastDelay = currentTime;
 
         }
 
         autoRecover(false);
         autoRegenerate(false);
-
-        selector.update(30);
 
         if(stamina <= 0 && !tireless){ this.exhausted = true; }
         else { this.exhausted = false; }
@@ -109,10 +79,10 @@ public class Player extends Entity {
 
 
     @Override
-    public void render(Textures textures, Renderer renderer, Graphics2D g){
+    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g){
 
         textures.draw(this.texture, x, y, width, height, g);
-        selector.render(g);
+        selector.render(g, camera);
 
     }
 

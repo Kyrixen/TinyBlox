@@ -136,7 +136,7 @@ public class Enemy extends Entity {
     }
 
     @Override
-    public void render(Textures textures, Renderer renderer, Graphics2D g) {
+    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g) {
         textures.draw(texture, x, y, width, height, g);
     }
 

@@ -9,12 +9,17 @@ import java.util.ArrayList;
 
 public class Selector {
 
+    // Entity using the selector
     private Entity entity;
+
+    // Helper Array
     private ArrayList<Entity> entities;
 
+    // Cords
     private int x;
     private int y;
 
+    // Dimensions
     private int width;
     private int height;
 
@@ -29,56 +34,39 @@ public class Selector {
 
 
     public void update(int damage) {
+        
+        // Set selector size 
+        this.width = this.entity.width; // same width
+        this.height = this.entity.height; // same height
 
-        // Update logic for the selector can be added here if needed
-        if (this.entity.dirX == 1) {
-
-            this.x = this.entity.x + this.entity.width;
+        // Determine position based on last direction
+        if (this.entity.lastDirX == 1) {         // right
+        
+            this.x = this.entity.x + this.entity.width; 
             this.y = this.entity.y;
-
-        } else if (this.entity.dirX == -1) {
-
-            this.x = this.entity.x - this.entity.width;
+        
+        } else if (this.entity.lastDirX == -1) { // left
+        
+            this.x = this.entity.x - this.width; 
             this.y = this.entity.y;
-
-        } else if (this.entity.dirY == 1) {
-
+        
+        } else if (this.entity.lastDirY == 1) {  // down
+        
             this.x = this.entity.x;
             this.y = this.entity.y + this.entity.height;
-
-        } else if (this.entity.dirY == -1) {
-
+        
+        } else if (this.entity.lastDirY == -1) { // up
+        
             this.x = this.entity.x;
-            this.y = this.entity.y - this.entity.height;
-
-        } else {
-            // Use last direction if no current input
-            if (this.entity.lastDirX == 1) {
-
-                this.x = this.entity.x + this.entity.width;
-                this.y = this.entity.y;
-
-            } else if (this.entity.lastDirX == -1) {
-
-                this.x = this.entity.x - this.entity.width;
-                this.y = this.entity.y;
-
-            } else if (this.entity.lastDirY == 1) {
-
-                this.x = this.entity.x;
-                this.y = this.entity.y + this.entity.height;
-
-            } else if (this.entity.lastDirY == -1) {
-
-                this.x = this.entity.x;
-                this.y = this.entity.y - this.entity.height;
-
-            } else return;
+            this.y = this.entity.y - this.height;
+        
         }
 
+        // Keep selector same size as player
         this.width = this.entity.width;
         this.height = this.entity.height;
 
+        // Check for mouse interaction
         if(checkEntityCollision(entities) != null && Input.mousePressed(MouseEvent.BUTTON1)){
 
         Entity e = checkEntityCollision(entities);
@@ -90,9 +78,9 @@ public class Selector {
     }
 
 
-    public void render(Graphics2D g) {
+    public void render(Graphics2D g, Camera camera) {
         g.setColor(new Color(255, 255, 255));
-        g.drawRect(this.x, this.y, this.width, this.height);
+        g.drawRect(this.x - camera.x, this.y - camera.y, this.width, this.height);
     }
 
 

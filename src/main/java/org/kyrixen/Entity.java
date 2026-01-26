@@ -123,7 +123,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Render entity
-    public void render(Textures textures, Renderer renderer, Graphics2D g){
+    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g){
         textures.draw(this.texture, x, y, width, height, g);
     }
 
@@ -299,9 +299,9 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Helper func
-    public static void renderAll(Textures textures, Renderer renderer, ArrayList<Entity> entities, Graphics2D g) {
+    public static void renderAll(Textures textures, Renderer renderer, ArrayList<Entity> entities, Graphics2D g, Camera camera) {
         for (Entity e : entities) {
-            e.render(textures, renderer, g);
+            e.render(textures, renderer, camera, g);
         }
     }
 
