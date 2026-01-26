@@ -1,0 +1,71 @@
+name: Java CI with Gradle (Kotlin DSL, LWJGL)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Set up JDK 17
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      # Setup Gradle with caching
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache: true
+      
+      # Make Gradle Wrapper executable
+      - name: Make Gradle Wrapper executable
+        run: chmod +x gradlew
+
+      # Build project and run tests
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build
+
+      # Upload test results if they exist
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: build/test-results/test
+
+      # Upload code coverage if you generate it (optional)
+      - name: Upload code coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: build/reports/jacoco
+
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      # Generate and submit dependency graph
+      - name: Generate and submit dependency graph
+        uses: gradle/actions/dependency-submission@v4
