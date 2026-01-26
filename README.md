@@ -13,44 +13,47 @@ A lightweight 2D game engine in Java using LWJGL for rendering, input handling, 
 - Audio playback (walking, hit, power-up sounds)
 - Grid-based rendering
 - Selector system for directional interaction
-- Modular architecture: `Engine`, `Renderer`, `Textures`, `Camera`, `Terrain`, `Controller`, `Entity`, `Player`, `Enemy`, `Sound`
+- Modular architecture: `Engine`, `Renderer`, `Textures`, `Camera`, `Terrain`, `Controller`, `Entity`, `Player`, `Enemy`, `Sound`, `Utils`
 
 ---
 
-## Project Structure
+>[IMPORTANT]
+>
+>This is just test of game mechanics not a full game!
 
-```
+---
 
-org.kyrixen
-│
-├─ Engine.java      # Main engine loop and initialization
-├─ Renderer.java    # Handles OpenGL drawing
-├─ Textures.java    # Texture loading and rendering
-├─ Camera.java      # Camera logic
-├─ Terrain.java     # Tile-based terrain system
-├─ Controller.java  # Keyboard input handling
-├─ Entity.java      # Base entity class
-├─ Player.java      # Player entity
-├─ Enemy.java       # Enemy entity
-├─ Sound.java       # Audio system
-├─ Stats.java       # Health and Stamina interfaces
-├─ Chunk.java       # Chunk managment
-├─ Terrain.java     # Terrain generation
-├─ FPSCounter.java  # FPS 
-├─ Main.java        # Main loop
-├─ Constants.java   # Constants for game
-└─ Selector.java    # Inactive for now
+## Game Mechanics
 
-````
+- [ ] Player movement
+- [ ] Entities
+- [ ] Enemy AI
+- [ ] Helper NPC
+- [ ] Menu
+- [ ] Terrain
+- [ ] RNG
+- [ ] Combat mechanics
+- [ ] Stats
+- [ ] Dialogues
+- [ ] Teleportation
+- [ ] Placing
+- [ ] Destroying
+- [ ] Sound
+- [ ] Boss fight
+- [ ] Multiplayer?
+- [ ] 32-bit support?
+- [ ] Web?
+
+
+
 
 ---
 
 ## Requirements
 
-- Java 17+
+- Java 17+ (Java 8 compatibility soon)
 - LWJGL 3.3.6
 - OpenGL compatible system
-- Optional: IDE like IntelliJ or VSCode
 
 ---
 
@@ -90,9 +93,9 @@ cd TinyEngine
 
 ## Notes
 
-* Player is spawned in the middle of the map using pixel-based coordinates.
+* Player is spawned in the middle of the map.
 * All entities and terrain tiles are drawn via `Textures`, so offsets from the camera are handled there.
-* Tile map size is defined in pixels (`Constants.MAP_WIDTH` and `Constants.MAP_HEIGHT`).
+* Textures are 50x50 (16x16 soon)
 * Sounds are handled via `javax.sound.sampled.Clip`.
 * Health and stamina systems include cooldowns and limits.
 
