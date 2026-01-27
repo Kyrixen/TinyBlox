@@ -1,4 +1,4 @@
-# TinyEngine
+# TinyBlox
 
 A lightweight 2D game engine in Java using LWJGL for rendering, input handling, and audio playback. This engine supports entities, terrain, player movement, camera follow, and basic sounds.
 
