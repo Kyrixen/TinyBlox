@@ -21,7 +21,7 @@ A lightweight 2D game engine in Java using java native libraries for rendering, 
 - Audio playback (walking, hit, power-up sounds)
 - Grid-based rendering
 - Selector system for directional interaction
-- Modular architecture: `Engine`, `Renderer`, `Textures`, `Camera`, `Terrain`, `Controller`, `Entity`, `Player`, `Enemy`, `Sound`, `Utils`
+- Modular architecture: `Engine`, `Renderer`, `Textures`, `Camera`, `Terrain`, `Controller`, `Entity`, `Player`, `Enemy`, `SoundManager`, `Utils`
 
 ---
 
@@ -46,7 +46,7 @@ A lightweight 2D game engine in Java using java native libraries for rendering, 
 - [ ] Teleportation
 - [ ] Placing
 - [ ] Destroying
-- [ ] Sound
+- [x] Sound(Partial)
 - [ ] Boss fight
 - [ ] Multiplayer?
 - [ ] 32-bit support?

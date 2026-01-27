@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    // None for now
+    implementation(fileTree("libs") { include("*.jar") }) // For all mine custom libs
 }
 
 // For better Garbage Collector (GC)

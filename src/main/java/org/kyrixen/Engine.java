@@ -26,6 +26,7 @@ public class Engine {
     private Camera camera;
     private Terrain terrain;
     private FPSCounter fpsCounter;
+    public SoundManager soundManager;
 
     // Window components
     private Canvas canvas;
@@ -41,6 +42,7 @@ public class Engine {
         textures = new Textures(camera);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 8, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
         fpsCounter = new FPSCounter();
+        soundManager = new SoundManager();
 
     }
 
@@ -74,7 +76,7 @@ public class Engine {
         int spawnY = Constants.MAP_HEIGHT / 2;
 
         // Create player
-        player = new Player(0, Utils.spawnX(), Utils.spawnY(), Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain);
+        player = new Player(0, Utils.spawnX(), Utils.spawnY(), Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, soundManager);
 
         // Add to list
         entities.add(player);
@@ -111,7 +113,6 @@ public class Engine {
     private void game() {
     
         float lastTime = (float) System.currentTimeMillis() / 1000;
-
 
         while (!exit) {
 
