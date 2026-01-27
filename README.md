@@ -6,7 +6,7 @@ A lightweight 2D game engine in Java using LWJGL for rendering, input handling, 
 
 <div align="center">
 
-![theme](/assets/background/background.png)
+![theme](/assets/textures/background/background.png)
 
 </div>
 
