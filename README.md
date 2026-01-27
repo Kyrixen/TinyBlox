@@ -4,6 +4,14 @@ A lightweight 2D game engine in Java using LWJGL for rendering, input handling, 
 
 ---
 
+<div align="center">
+
+![theme](/assets/background/background.png)
+
+</div>
+
+---
+
 ## Features
 
 - 2D tile-based terrain
