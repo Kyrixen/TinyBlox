@@ -140,6 +140,19 @@ public class Enemy extends Entity {
         textures.draw(texture, x, y, width, height, g);
     }
 
+    // Checks collision
+    public void check(Entity player){
+
+        if (Utils.checkCollision(player, this)) {
+                        
+            System.out.println("Collision detected between player and enemy!");
+
+            if(!soundManager.hitplayer.isRunning() && player.damage(25)) soundManager.hitplayer.play();
+                        
+        }
+
+    }
+
 
     @Override
     public void cleanup(){

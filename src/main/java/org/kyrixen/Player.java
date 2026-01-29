@@ -140,7 +140,7 @@ public class Player extends Entity {
 
 
     @Override
-    public void damage(int damage) {
+    public boolean damage(int damage) {
     
         if(!invincible) {
             
@@ -151,10 +151,14 @@ public class Player extends Entity {
                 if(this.health < 0) this.health = 0;
             
                 lastDamage = System.currentTimeMillis();
-            
+                
+                return true;
+
             } else {} 
         
         }
+
+        return false;
     
     }
 

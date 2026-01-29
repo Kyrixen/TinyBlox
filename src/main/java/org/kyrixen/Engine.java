@@ -136,10 +136,8 @@ public class Engine {
 
             for (Entity e : entities) {
 
-                if(e.type == "player") continue;
+                if(e.type == "enemy"){ Enemy en = (Enemy) e; en.check(player); }
 
-                e.check(player);
-            
             }
 
             player.stats(camera);

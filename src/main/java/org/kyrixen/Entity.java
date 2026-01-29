@@ -153,7 +153,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
 
     @Override
-    public void damage(int damage) {
+    public boolean damage(int damage) {
     
         if(!invincible) {
             
@@ -165,10 +165,14 @@ public class Entity implements Stats.Health, Stats.Stamina {
                 if(this.health < 0) this.health = 0;
             
                 lastDamage = System.currentTimeMillis();
+
+                return true;
             
             } else {} 
         
         }
+
+        return false;
     
     }
 
@@ -314,25 +318,6 @@ public class Entity implements Stats.Health, Stats.Stamina {
         for (Entity e : entities) {
             e.initTexture(textures);
         }
-    }
-
-    // Checks collision
-    public void check(Entity player){
-
-            if (this.type.equals("enemy") && !this.type.equals("player")) {
-
-                if (Utils.checkCollision(player, this)) {
-                        
-                    System.out.println("Collision detected between player and enemy!");
-                        
-                    player.damage(25);
-
-                    if(!soundManager.hitplayer.isRunning()) soundManager.hitplayer.play();
-                        
-                }
-                
-            }
-
     }
 
     // Return func

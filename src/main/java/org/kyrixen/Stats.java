@@ -15,7 +15,7 @@ public class Stats {
         void autoRegenerate(boolean state);
         void invincible(boolean invincible);
 
-        void damage(int damage);
+        boolean damage(int damage);
         void heal(int amount);        
         void kill();
 
