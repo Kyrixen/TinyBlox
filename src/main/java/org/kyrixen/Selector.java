@@ -12,6 +12,9 @@ public class Selector {
     // Entity using the selector
     private Entity entity;
 
+    // For sound
+    private SoundManager soundManager;
+
     // Helper Array
     private ArrayList<Entity> entities;
 
@@ -24,11 +27,12 @@ public class Selector {
     private int height;
 
 
-    public Selector(Entity entity, ArrayList<Entity> entities) {
+    public Selector(Entity entity, ArrayList<Entity> entities, SoundManager soundManager) {
 
         // Initialize the selector with the given entity
         this.entity = entity;
         this.entities = entities;
+        this.soundManager = soundManager;
     
     }
 
@@ -69,9 +73,11 @@ public class Selector {
         // Check for mouse interaction
         if(checkEntityCollision(entities) != null && Input.mousePressed(MouseEvent.BUTTON1)){
 
-        Entity e = checkEntityCollision(entities);
+            Entity e = checkEntityCollision(entities);
 
-        e.damage(damage);
+            e.damage(damage);
+
+            if(!soundManager.hitentity.isRunning()) soundManager.hitentity.play();
             
         }
 

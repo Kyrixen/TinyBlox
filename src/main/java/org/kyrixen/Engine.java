@@ -82,7 +82,7 @@ public class Engine {
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(0, spawnX + Constants.GRID_SIZE * 2, spawnY + Constants.GRID_SIZE * 2, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain);
+        Enemy enemy1 = new Enemy(0, spawnX + Constants.GRID_SIZE * 2, spawnY + Constants.GRID_SIZE * 2, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
         
         // Add to list
         entities.add(enemy1);

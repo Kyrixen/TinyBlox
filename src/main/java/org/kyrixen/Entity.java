@@ -66,8 +66,10 @@ public class Entity implements Stats.Health, Stats.Stamina {
     protected boolean autoRegenerate = true;
     protected boolean autoRecover = true;
 
+    SoundManager soundManager;
+
     // Constructs entity
-    public Entity(int id, int x, int y, int width, int height, Terrain terrain) {
+    public Entity(int id, int x, int y, int width, int height, Terrain terrain, SoundManager soundManager) {
 
         this.id = id;
         this.x = x;
@@ -78,6 +80,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
         this.rng = (long) Math.floor(Math.random() * Integer.MAX_VALUE);
 
         this.texture = null;
+        this.soundManager = soundManager;
 
         // Defaults
         this.type = "default";
@@ -240,6 +243,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
         type = null;
         terrain = null;
         texture = null;
+        soundManager = null;
 
         x = 0;
         y = 0;
@@ -322,6 +326,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
                     System.out.println("Collision detected between player and enemy!");
                         
                     player.damage(25);
+
+                    if(!soundManager.hitplayer.isRunning()) soundManager.hitplayer.play();
                         
                 }
                 

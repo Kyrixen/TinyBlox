@@ -12,12 +12,10 @@ import java.util.ArrayList;
 public class Player extends Entity {
 
     Selector selector;
-    SoundManager soundManager;
-
 
     public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, SoundManager soundManager) {
     
-        super(id, x, y, width, height, null);
+        super(id, x, y, width, height, null, soundManager);
         this.type = "player";
 
         this.moveDelay = 0.30f;
@@ -34,9 +32,8 @@ public class Player extends Entity {
         this.tireless = false;
 
         this.terrain = terrain;
-        this.soundManager = soundManager;
 
-        selector = new Selector(this, entities);
+        selector = new Selector(this, entities, soundManager);
 
         lastDelay = System.currentTimeMillis();
     
@@ -106,6 +103,7 @@ public class Player extends Entity {
         type = null;
         terrain = null;
         texture = null;
+        soundManager = null;
 
         x = 0;
         y = 0;

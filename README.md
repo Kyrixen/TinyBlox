@@ -46,7 +46,7 @@ A lightweight 2D game engine in Java using java native libraries for rendering, 
 - [ ] Teleportation
 - [ ] Placing
 - [ ] Destroying
-- [x] Sound(Partial)
+- [x] Sound (Partial)
 - [ ] Boss fight
 - [ ] Multiplayer?
 - [ ] 32-bit support?

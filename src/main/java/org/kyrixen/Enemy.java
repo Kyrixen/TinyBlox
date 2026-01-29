@@ -15,9 +15,9 @@ public class Enemy extends Entity {
     boolean chasing;
 
 
-    public Enemy(int id, int x, int y, int width, int height, Terrain terrain) {
+    public Enemy(int id, int x, int y, int width, int height, Terrain terrain, SoundManager soundManager) {
         
-        super(id, x, y, width, height, terrain);
+        super(id, x, y, width, height, terrain, soundManager);
         this.type = "enemy";
         this.chasing = false;
         this.terrain = terrain;
@@ -145,6 +145,7 @@ public class Enemy extends Entity {
     public void cleanup(){
 
         random = null;
+        soundManager = null;
 
         lastDelay = 0L;
         moveDelay = 0.0f;
