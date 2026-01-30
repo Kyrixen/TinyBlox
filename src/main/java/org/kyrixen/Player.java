@@ -16,6 +16,7 @@ public class Player extends Entity {
     public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, SoundManager soundManager) {
     
         super(id, x, y, width, height, null, soundManager);
+        
         this.type = "player";
 
         this.moveDelay = 0.30f;

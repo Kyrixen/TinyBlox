@@ -3,8 +3,6 @@ package org.kyrixen;
 
 import java.awt.Graphics2D;
 
-import org.kyrixen.Chunk.Tile;
-
 
 public class Utils {
     
@@ -41,77 +39,45 @@ public class Utils {
         texture.drawTileset(texture.terrainTileset, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE, tix, tiy, Constants.GRID_SIZE, g);
     }
 
-    // Spawns at safe location
-    public static int spawnY() {
+    // Finds a safe spawn near the center using only chunks
+    public static int[] spawnNearCenter() {
 
-        // Initial spawn
-        int spawnY = Constants.MAP_HEIGHT / 2;
+        int centerX = Constants.MAP_WIDTH / 2;
+        int centerY = Constants.MAP_HEIGHT / 2;
 
-        while (true) {
+        Chunk.Tile bestTile = null;
+        double bestDist = Double.MAX_VALUE;
+                
+        // Iterate over all chunks
+        for (Chunk c : Terrain.chunks.values()) {
+            for (Chunk.Tile t : c.chunk.values()) {
 
-            boolean solidFound = false;
+                if (t.solid()) continue; // Skip solid tiles
 
-            // Loop through tiles
-            for (Tile tile : Terrain.tiles) {
+                // Distance to center
+                double dx = t.getX() - centerX;
+                double dy = t.getY() - centerY;
+                double dist = Math.sqrt(dx * dx + dy * dy);
 
-                // Check if safe
-                if (tile.getY() == spawnY && !tile.solid()) {
-
-                    solidFound = true;
-
-                    int dir = (int) (Math.random() * 2); // 0 or 1
-
-                    if (dir == 0) spawnY -= Constants.GRID_SIZE;
-                    else spawnY += Constants.GRID_SIZE;
-
-                    break; // stop checking tiles for this spawnY
-
+                // Keep closest
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestTile = t;
                 }
 
             }
 
-            if (!solidFound) break; // Safe spot found
-
         }
 
-        return spawnY;
-
-    }
-
-    // Spawns at safe location
-    public static int spawnX() {
-
-        // Initial spawn
-        int spawnX = Constants.MAP_WIDTH / 2;
-
-        while (true) {
-
-            boolean solidFound = false;
-
-            //Loop through tiles
-            for (Tile tile : Terrain.tiles) {
-
-                //Check if solid
-                if (tile.getX() == spawnX && !tile.solid()) {
-
-                    solidFound = true;
-
-                    int dir = (int) (Math.random() * 2); // 0 or 1
-
-                    if (dir == 0) spawnX -= Constants.GRID_SIZE;
-                    else spawnX += Constants.GRID_SIZE;
-
-                    break; // Stop checking tiles for this spawnY
-
-                }
-
-            }
-
-            if (!solidFound) break; // Safe spot found
-
+        if (bestTile != null) {
+            System.out.println("Safe spawn found at: " + bestTile.getX() + ", " + bestTile.getY());
+            return new int[]{bestTile.getX(), bestTile.getY()};
         }
 
-        return spawnX;
+        // Fallback to exact center
+        System.out.println("No safe spawn found, using map center");
+
+        return new int[]{centerX, centerY};
 
     }
 

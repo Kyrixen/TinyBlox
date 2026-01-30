@@ -101,7 +101,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Tries to move
     public void tryMove(Terrain terrain){
         if(dirX != 0 || dirY != 0){ moving = true; } else { moving = false; }
-        terrain.tryMove(this);
+        terrain.tryMove(this, terrain);
     }
 
     // Update entity

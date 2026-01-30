@@ -18,6 +18,7 @@ public class Enemy extends Entity {
     public Enemy(int id, int x, int y, int width, int height, Terrain terrain, SoundManager soundManager) {
         
         super(id, x, y, width, height, terrain, soundManager);
+        
         this.type = "enemy";
         this.chasing = false;
         this.terrain = terrain;
@@ -117,11 +118,9 @@ public class Enemy extends Entity {
                 }
             
             }
-
-            
+           
             tryMove(terrain);
  
-            
             if(stamina <= 0 && !tireless){ this.exhausted = true; }
             else { this.exhausted = false; }
 

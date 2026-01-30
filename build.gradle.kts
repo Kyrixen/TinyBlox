@@ -29,8 +29,8 @@ tasks.named<JavaExec>("run") {
     jvmArgs(
         "-XX:+UseG1GC",
         "-XX:MaxGCPauseMillis=20",
-        "-XX:InitiatingHeapOccupancyPercent=35",
-        "-verbose:gc"
+        "-XX:InitiatingHeapOccupancyPercent=35"
+        //"-verbose:gc"
         //"-XX:+PrintGCDetails",
         //"-XX:+PrintGCTimeStamps"
     )

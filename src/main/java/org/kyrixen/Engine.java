@@ -70,13 +70,18 @@ public class Engine {
         renderer.init();
         controller.init();
         textures.initTextures();
+                
+        // Terrain init
+        terrain.init();
 
         // Spawn cords
         int spawnX = Constants.MAP_WIDTH / 2;
         int spawnY = Constants.MAP_HEIGHT / 2;
 
+        int[] spawn = Utils.spawnNearCenter();
+
         // Create player
-        player = new Player(0, Utils.spawnX(), Utils.spawnY(), Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, soundManager);
+        player = new Player(0, spawn[0], spawn[1], Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, soundManager);
 
         // Add to list
         entities.add(player);
@@ -92,9 +97,6 @@ public class Engine {
         enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
-        
-        // Terrain init
-        terrain.init();
 
         // Window closing
         Main.frame.addWindowListener(new WindowAdapter() {
@@ -131,6 +133,8 @@ public class Engine {
             Entity.updateAll(deltaTime, entities);
             terrain.update();
 
+            fpsCounter.update();
+
             // Update camera
             camera.follow(player);
 
@@ -140,7 +144,7 @@ public class Engine {
 
             }
 
-            player.stats(camera);
+            //player.stats(camera);
 
             if(player.isDead()) {
                 System.out.println("Player is dead! Health: " + player.health + " | Game Over.");
@@ -177,9 +181,7 @@ public class Engine {
             renderer.drawGrid(g);
             Entity.renderAll(textures, renderer, entities, g, camera);
 
-            fpsCounter.update();
-
-            fpsCounter.printFPS();
+            //fpsCounter.printFPS();
 
             g.dispose();
             bs.show();

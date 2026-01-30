@@ -140,40 +140,68 @@ public class Chunk {
     // Generate the chunk
     public void generate(FastNoiseLite noise) {
 
-        for (int x = 0; x < CHUNK_SIZE; x++) {
-            for (int y = 0; y < CHUNK_SIZE; y++) {
+        chunk.clear();
 
-                // World cords
-                int worldX = (cX * CHUNK_SIZE + x) * Constants.GRID_SIZE;
-                int worldY = (cY * CHUNK_SIZE + y) * Constants.GRID_SIZE;
+        // World size in tiles
+        int worldTilesX = Constants.MAP_WIDTH;
+        int worldTilesY = Constants.MAP_HEIGHT;
 
-                // Skip tiles outside world bounds
-                if (worldX >= MAX_X || worldY >= MAX_Y || worldX < MIN_X || worldY < MIN_Y) continue;
+        // World size in chunks
+        int worldChunksX = worldTilesX / CHUNK_SIZE;
+        int worldChunksY = worldTilesY / CHUNK_SIZE;
 
-                String type;
-                float t = noise.GetNoise(cX * CHUNK_SIZE + x, cY * CHUNK_SIZE + y);
+        //System.out.println("Here");
 
-                // Generate via noise
-                if (t < -0.3f) type = "water";
-                else if (t < 0.0f) type = "stone";
-                else if (t < 0.5f) type = "dirt";
-                else type = "grass";
-
-                // Create tile
-                Tile tile = new Tile(worldX, worldY, type);
-                
-                // Put tile to chunk
-                chunk.put(x + "," + y, tile);
-                
-                // Do the same but for global tiles
-                Terrain.tiles.add(tile);
-
-            }
-        
+        // Safety: do not generate invalid chunks
+        if (cX < 0 || cY < 0 || cX >= worldChunksX || cY >= worldChunksY) {
+            loaded = false;
+            return;
         }
 
-        loaded = !chunk.isEmpty(); // Only mark as loaded if there are tiles
-    
+        //System.out.println("Here too");
+
+        for (int tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (int ty = 0; ty < CHUNK_SIZE; ty++) {
+
+                // Tile position in WORLD TILE coordinates
+                int tileX = cX * CHUNK_SIZE + tx;
+                int tileY = cY * CHUNK_SIZE + ty;
+
+                // Skip tiles outside world tile bounds
+                if (tileX < 0 || tileY < 0 ||
+                    tileX >= worldTilesX || tileY >= worldTilesY) {
+                    continue;
+                }
+
+                // Convert tile coords → world PIXELS
+                int worldX = tileX * Constants.GRID_SIZE;
+                int worldY = tileY * Constants.GRID_SIZE;
+
+                float t = noise.GetNoise(tileX, tileY);
+
+                String type;
+
+                if (t < -0.3f)      type = "water";
+                else if (t < 0.0f)  type = "stone";
+                else if (t < 0.5f)  type = "dirt";
+                else                type = "grass";
+
+                Tile tile = new Tile(worldX, worldY, type);
+
+                chunk.put(tx + "," + ty, tile);
+
+                //System.out.println(tile);
+
+                //Terrain.tiles.add(tile);
+
+            }
+
+        }
+
+        //System.out.println("Chunk size: " + this.chunk.size());
+
+        loaded = !chunk.isEmpty();
+
     }
 
     // Render chunk
@@ -212,6 +240,10 @@ public class Chunk {
 
     }
 
+    public int getX(){ return this.cX; }
+
+    public int getY(){ return this.cY; }
+
     // Check loading
     public void checkIfOnScreen() {
 
@@ -234,7 +266,7 @@ public class Chunk {
         loaded = (cX >= left && cX <= right && cY >= top && cY <= bottom);
 
     }
-
+/* 
     // Tile collision
     public static Tile blockCollision(Entity e){
 
@@ -245,12 +277,9 @@ public class Chunk {
         return null;
 
     }
-
+*/
     // Unload resources
     public void cleanup() {
-    
-        // Remove tiles from global list
-        Terrain.tiles.removeAll(chunk.values());
 
         // Clear local tile map
         if (chunk != null) chunk.clear();

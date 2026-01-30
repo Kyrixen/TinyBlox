@@ -2,11 +2,9 @@ package org.kyrixen;
 
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import fastnoiselite.FastNoiseLite;
-import org.kyrixen.Chunk.Tile;
 
 
 public class Terrain {
@@ -28,10 +26,7 @@ public class Terrain {
     private FastNoiseLite noise;
 
     // For storing chunks
-    HashMap<String, Chunk> chunks = new HashMap<>();
-
-    // For storing all tiles
-    public static ArrayList<Tile> tiles = new ArrayList<>();
+    public static HashMap<String, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
     public Terrain(int w, int h, int size, Textures texture, Camera camera, int seed, float frequency, boolean multiplayer) {
@@ -71,6 +66,8 @@ public class Terrain {
 
         }
 
+        System.out.println("Chunks size: " + chunks.size());
+
     }
 
     // Render visible chunks
@@ -92,7 +89,6 @@ public class Terrain {
         }
 
     }
-
 
     public int getChunkSize() {
         return size;
@@ -136,54 +132,60 @@ public class Terrain {
     }
 
     // Helper for Entity.java
-    public void tryMove(Entity e) {
+    public void tryMove(Entity e, Terrain terrain) {
 
-        // If isnt moving
         if (e.dirX == 0 && e.dirY == 0) return;
 
-        //Tile size
         int tileSize = Constants.GRID_SIZE;
-
-        // Where wants the entity move
         int nextX = e.x + e.dirX * tileSize;
         int nextY = e.y + e.dirY * tileSize;
 
-        // World bounds
+        // World bounds check
         if (nextX < 0 || nextY < 0 ||
-            nextX + e.width  > Constants.MAP_WIDTH ||
-            nextY + e.height > Constants.MAP_HEIGHT) {
-            return;
-        }
+            nextX + e.width > Constants.MAP_WIDTH ||
+            nextY + e.height > Constants.MAP_HEIGHT) return;
 
-        // Check collision solid tiles
-        for (Chunk.Tile tile : Terrain.tiles) {
+        // Determine chunk range the entity could touch
+        int chunkSize = terrain.getChunkSize();
+        int startChunkX = nextX / (chunkSize * tileSize);
+        int startChunkY = nextY / (chunkSize * tileSize);
+        int endChunkX   = (nextX + e.width)  / (chunkSize * tileSize);
+        int endChunkY   = (nextY + e.height) / (chunkSize * tileSize);
 
-            if (!tile.solid()) continue;
+        // Iterate over relevant chunks
+        for (int cx = startChunkX; cx <= endChunkX; cx++) {
+            for (int cy = startChunkY; cy <= endChunkY; cy++) {
 
-            int tx = tile.getX();
-            int ty = tile.getY();
+                Chunk c = terrain.getChunk(cx, cy);
+                if (!c.loaded) continue;
 
-            if (
-                nextX < tx + tileSize &&
-                nextX + e.width > tx &&
-                nextY < ty + tileSize &&
-                nextY + e.height > ty
-            ) {
-                return; // Blocked
+                // Check each tile in the chunk
+                for (Chunk.Tile tile : c.chunk.values()) {
+
+                    if (!tile.solid()) continue;
+
+                    int tx = tile.getX();
+                    int ty = tile.getY();
+
+                    // AABB collision
+                    if (nextX < tx + tileSize &&
+                        nextX + e.width > tx &&
+                        nextY < ty + tileSize &&
+                        nextY + e.height > ty) {
+                        return; // Blocked
+                    }
+                }
             }
         }
 
-        // Movement allowed
+        // No collision, move allowed
         e.x = nextX;
         e.y = nextY;
-    
     }
+
 
     // Unload resources
     public void cleanup() {
-
-        // Remove all tiles from global list
-        tiles.clear();
 
         // Cleanup all chunks
         if (chunks != null) {
