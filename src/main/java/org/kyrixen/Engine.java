@@ -40,7 +40,7 @@ public class Engine {
         renderer = new Renderer(camera);
         controller = new Controller();
         textures = new Textures(camera);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 8, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();
 
