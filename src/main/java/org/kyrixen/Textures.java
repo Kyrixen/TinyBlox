@@ -2,11 +2,13 @@ package org.kyrixen;
 
 
 import java.util.ArrayList;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 
 public class Textures {
@@ -19,6 +21,7 @@ public class Textures {
 
 
     // Create texture vars
+    public BufferedImage backgroundImage;
     public BufferedImage playerTexture;
     public BufferedImage enemyTexture;
     public BufferedImage entityTexture;
@@ -86,6 +89,19 @@ public class Textures {
         
     }
 
+    // Show background
+    public void showBackground(BufferStrategy bs){
+
+        backgroundImage = load("assets/textures/background/background.png");
+
+        Graphics g = bs.getDrawGraphics();
+        
+        g.drawImage(this.backgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, null);
+        g.dispose();
+        
+        bs.show(); // Immediately show it
+
+    }
 
     // Load textures
     public void initTextures() {

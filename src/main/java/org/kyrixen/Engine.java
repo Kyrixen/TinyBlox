@@ -66,6 +66,8 @@ public class Engine {
         canvas.createBufferStrategy(2);
         bs = canvas.getBufferStrategy();
     
+        textures.showBackground(bs);
+
         // Initialize renderer and controller
         renderer.init();
         controller.init();
