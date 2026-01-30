@@ -1,55 +1,60 @@
 package org.kyrixen;
 
 
+import java.awt.Font;
+import java.awt.Graphics2D;
+
+
 public class FPSCounter {
 
-    // Init helper vars
     private int frames = 0;
     private int fps = 0;
-    private double lastFpsFrame;
 
+    private long lastTime;
 
-    // Build object
+    private Font fpsFont;
+
+    // Construct the counter
     public FPSCounter() {
-        lastFpsFrame = System.currentTimeMillis();
+        lastTime = System.currentTimeMillis();
+        fpsFont = new Font("Arial", Font.BOLD, 30); // Set font
     }
 
-    
-    // Should call once per screen update
+    // Call once per frame
     public void update() {
-    
-        frames++;
-        double currentTime = System.currentTimeMillis();
-    
-        if (currentTime / 1000 - lastFpsFrame >= 1.0) {
 
+        frames++;
+
+        long now = System.currentTimeMillis();
+
+        if (now - lastTime >= 1000) { // 1 second
             fps = frames;
             frames = 0;
-            lastFpsFrame += 1.0;
-        
+            lastTime = now;
         }
     
     }
 
-
-    // Current FPS
+    // Get FPS as var
     public int getFPS() {
         return fps;
     }
 
-    // Print FPS to console
-    public void printFPS() {
-        System.out.println("FPS: " + fps);
+    // Print FPS on screen
+    public void printFPS(Graphics2D g) {
+        g.setFont(fpsFont);
+        g.drawString("FPS: " + fps, 25, 50);
     }
 
-
-    // Unload resources
-    public void cleanup(){
+    // Free resources
+    public void cleanup() {
 
         frames = 0;
         fps = 0;
-        lastFpsFrame = 0;
-
+        lastTime = 0;
+        fpsFont = null;
+    
     }
 
 }
+

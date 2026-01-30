@@ -77,9 +77,6 @@ public class Engine {
         terrain.init();
 
         // Spawn cords
-        int spawnX = Constants.MAP_WIDTH / 2;
-        int spawnY = Constants.MAP_HEIGHT / 2;
-
         int[] spawn = Utils.spawnNearCenter();
 
         // Create player
@@ -89,7 +86,7 @@ public class Engine {
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(0, spawnX + Constants.GRID_SIZE * 2, spawnY + Constants.GRID_SIZE * 2, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
+        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
         
         // Add to list
         entities.add(enemy1);
@@ -174,16 +171,18 @@ public class Engine {
             }
 
             renderer.clear(g);
+            
             try {
                 terrain.render(g);
             } catch (Exception e) {
                 System.out.println("Error rendering terrain: " + e.getMessage());
                 e.printStackTrace();
             }
+            
             renderer.drawGrid(g);
             Entity.renderAll(textures, renderer, entities, g, camera);
 
-            //fpsCounter.printFPS();
+            fpsCounter.printFPS(g);
 
             g.dispose();
             bs.show();
