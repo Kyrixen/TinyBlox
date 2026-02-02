@@ -160,7 +160,7 @@ public class Engine {
                 return false;
             });
 
-            //if(Chunk.blockCollision(player).type() == "dirt") System.out.println("Standing on dirt!");
+            //if(Chunk.blockCollision(player).type == "dirt") System.out.println("Standing on dirt!");
 
             if (bs == null) break;
 

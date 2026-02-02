@@ -137,16 +137,16 @@ public class Terrain {
         if (e.dirX == 0 && e.dirY == 0) return;
 
         int tileSize = Constants.GRID_SIZE;
+
         int nextX = e.x + e.dirX * tileSize;
         int nextY = e.y + e.dirY * tileSize;
 
         // World bounds check
-        if (nextX < 0 || nextY < 0 ||
-            nextX + e.width > Constants.MAP_WIDTH ||
-            nextY + e.height > Constants.MAP_HEIGHT) return;
+        if (nextX < 0 || nextY < 0 || nextX + e.width > Constants.MAP_WIDTH || nextY + e.height > Constants.MAP_HEIGHT) return;
 
         // Determine chunk range the entity could touch
         int chunkSize = terrain.getChunkSize();
+
         int startChunkX = nextX / (chunkSize * tileSize);
         int startChunkY = nextY / (chunkSize * tileSize);
         int endChunkX   = (nextX + e.width)  / (chunkSize * tileSize);
@@ -157,6 +157,7 @@ public class Terrain {
             for (int cy = startChunkY; cy <= endChunkY; cy++) {
 
                 Chunk c = terrain.getChunk(cx, cy);
+
                 if (!c.loaded) continue;
 
                 // Check each tile in the chunk
@@ -174,15 +175,18 @@ public class Terrain {
                         nextY + e.height > ty) {
                         return; // Blocked
                     }
+                
                 }
+            
             }
+        
         }
 
         // No collision, move allowed
         e.x = nextX;
         e.y = nextY;
+    
     }
-
 
     // Unload resources
     public void cleanup() {

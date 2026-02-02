@@ -266,18 +266,23 @@ public class Chunk {
         loaded = (cX >= left && cX <= right && cY >= top && cY <= bottom);
 
     }
-/* 
+ 
     // Tile collision
     public static Tile blockCollision(Entity e){
 
-        for(int i = 0; i < Terrain.tiles.size(); i++){
-            if(e.x < Terrain.tiles.get(i).x + Constants.GRID_SIZE && e.x + e.width > Terrain.tiles.get(i).x && e.y < Terrain.tiles.get(i).y + Constants.GRID_SIZE && e.y + e.height >   Terrain.tiles.get(i).y) return Terrain.tiles.get(i);
+        for(Chunk c : Terrain.chunks.values()){
+            for(Chunk.Tile t : c.chunk.values()){
+
+                if(e.x < t.x + Constants.GRID_SIZE && e.x + e.width > t.x && e.y < t.y + Constants.GRID_SIZE && e.y + e.height > t.y) return t;
+
+            }
+
         }
 
         return null;
 
     }
-*/
+
     // Unload resources
     public void cleanup() {
 
