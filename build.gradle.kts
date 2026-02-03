@@ -3,7 +3,10 @@
 plugins {
     java
     application
+    id("com.github.johnrengelman.shadow") version "4.0.4" // For jar
 }
+
+
 
 // Java 8 compatibility
 java {
