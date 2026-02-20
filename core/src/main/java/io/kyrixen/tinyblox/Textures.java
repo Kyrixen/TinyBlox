@@ -22,14 +22,20 @@ public class Textures {
 
     // Create texture vars
     public BufferedImage backgroundImage;
+
     public BufferedImage playerTexture;
     public BufferedImage enemyTexture;
     public BufferedImage entityTexture;
+    
     public BufferedImage grassTexture;
     public BufferedImage stoneTexture;
     public BufferedImage dirtTexture;
     public BufferedImage waterTexture;
     public BufferedImage terrainTileset;
+    
+    public BufferedImage dialogCorner;
+    public BufferedImage dialogSide;
+    public BufferedImage dialogCenter;
 
 
     // Constructor (Init camera var)
@@ -109,11 +115,16 @@ public class Textures {
         playerTexture = load("assets/textures/entities/player.png");
         enemyTexture = load("assets/textures/entities/enemy.png");
         entityTexture = load("assets/textures/entities/entity.png");
+
         grassTexture = load("assets/textures/terrain/grass.png");
         stoneTexture = load("assets/textures/terrain/stone.png");
         dirtTexture = load("assets/textures/terrain/dirt.png");
         waterTexture = load("assets/textures/terrain/water.png");
         terrainTileset = load("assets/textures/terrain/terrain.png");
+    
+        dialogCorner = load("assets/textures/ui/dialog/dialog_corner.png");
+        dialogSide = load("assets/textures/ui/dialog/dialog_side.png");
+        dialogCenter = load("assets/textures/ui/dialog/dialog_center.png");
     
     }
 

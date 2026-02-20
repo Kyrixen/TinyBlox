@@ -68,7 +68,7 @@ public class Engine extends Screen {
         renderer.init();
         controller.init();
         textures.initTextures();
-                
+
         // Terrain init
         terrain.init();
 
