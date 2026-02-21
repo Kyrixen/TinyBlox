@@ -29,7 +29,7 @@ public class Lwjgl3Launcher {
         configuration.useVsync(Constants.VSYNC);
         configuration.setForegroundFPS(Constants.FPS);
         configuration.setWindowedMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        configuration.setWindowIcon("tinyblox128.png", "tinyblox64.png", "tinyblox32.png", "tinyblox16.png");
 
         return configuration;
     
