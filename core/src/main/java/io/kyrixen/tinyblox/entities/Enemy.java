@@ -152,7 +152,7 @@ public class Enemy extends Entity {
                         
             System.out.println("Collision detected between player and enemy!");
 
-            if(player.damage(25)) soundManager.hitplayer.play();
+            if(player.damage(25)) { long soundId = soundManager.hitplayer.play(); soundManager.hitplayer.setVolume(soundId, Utils.getFloatVolume(20)); }
                         
         }
 
