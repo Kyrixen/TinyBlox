@@ -1,5 +1,6 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.world;
 
+import io.kyrixen.tinyblox.entities.Entity;
 
 public class Camera {
 
@@ -31,8 +32,8 @@ public class Camera {
         if (target == null) return;
 
         // Center camera on entity
-        x += (target.x - x - viewWidth / 2);
-        y += (target.y - y - viewHeight / 2);
+        x += (target.x() - x - viewWidth / 2);
+        y += (target.y() - y - viewHeight / 2);
 
     }
 

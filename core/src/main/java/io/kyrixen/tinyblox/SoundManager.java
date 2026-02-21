@@ -1,30 +1,29 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox;
 
-
-import io.kyrixen.audio.Sound;
-import java.io.File;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 
 public class SoundManager {
     
-    Sound walk;
-    Sound explosion;
-    Sound hitentity;
-    Sound hitplayer;
-    Sound pickupcoin;
-    Sound powerup;
+    public Sound walk;
+    public Sound explosion;
+    public Sound hitentity;
+    public Sound hitplayer;
+    public Sound pickupcoin;
+    public Sound powerup;
 
     ArrayList<Sound> sounds = new ArrayList<>();
 
     public SoundManager(){
 
-        walk = new Sound(new File("assets/sounds/walk.wav"));
-        explosion = new Sound(new File("assets/sounds/explosion.wav"));
-        hitentity = new Sound(new File("assets/sounds/hitEntity.wav"));
-        hitplayer = new Sound(new File("assets/sounds/hitPlayer.wav"));
-        pickupcoin = new Sound(new File("assets/sounds/pickupCoin.wav"));
-        powerup = new Sound(new File("assets/sounds/powerUp.wav"));
+        walk = Gdx.audio.newSound(Gdx.files.internal("sounds/walk.wav"));
+        explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.wav"));
+        hitentity = Gdx.audio.newSound(Gdx.files.internal("sounds/hitEntity.wav"));
+        hitplayer = Gdx.audio.newSound(Gdx.files.internal("sounds/hitPlayer.wav"));
+        pickupcoin = Gdx.audio.newSound(Gdx.files.internal("sounds/pickupCoin.wav"));
+        powerup = Gdx.audio.newSound(Gdx.files.internal("sounds/powerUp.wav"));
 
         sounds.add(walk);
         sounds.add(explosion);
@@ -33,17 +32,13 @@ public class SoundManager {
         sounds.add(pickupcoin);
         sounds.add(powerup);
 
-        walk.setVolume(Utils.getFloatVolume(20));
-
     }
 
     public void cleanup(){
 
-        for(Sound sound : sounds){
-            sound.close();
-        }
+        for(Sound sound : sounds){ sound.dispose(); }
 
-        Sound.cleanup();
+        sounds.clear();
 
     }
 

@@ -1,19 +1,22 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.world;
 
-
-import java.awt.Graphics2D;
 import java.util.HashMap;
-import fastnoiselite.FastNoiseLite;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Chunk {
 
     // Count of tiles in chunk
-    private int CHUNK_SIZE;
+    private final int CHUNK_SIZE;
 
     // Chunk cords
-    private int cX;
-    private int cY;
+    private final int cX;
+    private final int cY;
 
     // Define max and min values
     public static final int MAX_X = Constants.MAP_WIDTH;
@@ -32,7 +35,7 @@ public class Chunk {
     private Textures tex;
 
     // Stores chunk tiles
-    HashMap<String, Tile> chunk = new HashMap<>();
+    public HashMap<String, Tile> chunk = new HashMap<>();
 
     // Tile class
     public static class Tile {
@@ -205,7 +208,7 @@ public class Chunk {
     }
 
     // Render chunk
-    public void render(Graphics2D g) {
+    public void render(SpriteBatch batch) {
 
         // Check if can render chunk
         if (!loaded) return;
@@ -219,7 +222,7 @@ public class Chunk {
 
         // Render each tile
         for (Tile tile : chunk.values()) {
-            tex.drawTileset(tex.terrainTileset, tile.getX(), tile.getY(), Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, g);
+            tex.drawTileset(tex.terrainTileset, tile.getX(), tile.getY(), Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
         }
         
     }
@@ -273,7 +276,7 @@ public class Chunk {
         for(Chunk c : Terrain.chunks.values()){
             for(Chunk.Tile t : c.chunk.values()){
 
-                if(e.x < t.x + Constants.GRID_SIZE && e.x + e.width > t.x && e.y < t.y + Constants.GRID_SIZE && e.y + e.height > t.y) return t;
+                if(e.x() < t.x + Constants.GRID_SIZE && e.x() + e.width() > t.x && e.y() < t.y + Constants.GRID_SIZE && e.y() + e.height() > t.y) return t;
 
             }
 
@@ -293,7 +296,8 @@ public class Chunk {
         loaded = false;
         cam = null;
         tex = null;
-    
+        
+
     }
 
 }

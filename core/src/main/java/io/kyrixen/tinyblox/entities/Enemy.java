@@ -1,10 +1,16 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.entities;
 
-
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.kyrixen.tinyblox.SoundManager;
+import io.kyrixen.tinyblox.graphics.Renderer;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.utils.Utils;
 
 public class Enemy extends Entity {
 
@@ -40,7 +46,7 @@ public class Enemy extends Entity {
 
 
     @Override
-    public BufferedImage initTexture(Textures textures) {
+    public Texture initTexture(Textures textures) {
        this.texture = textures.enemyTexture;
        return this.texture;
     }
@@ -135,8 +141,8 @@ public class Enemy extends Entity {
     }
 
     @Override
-    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g) {
-        textures.draw(texture, x, y, width, height, g);
+    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch) {
+        textures.draw(texture, x, y, width, height, batch);
     }
 
     // Checks collision
@@ -146,7 +152,7 @@ public class Enemy extends Entity {
                         
             System.out.println("Collision detected between player and enemy!");
 
-            if(!soundManager.hitplayer.isRunning() && player.damage(25)) soundManager.hitplayer.play();
+            if(player.damage(25)) soundManager.hitplayer.play();
                         
         }
 

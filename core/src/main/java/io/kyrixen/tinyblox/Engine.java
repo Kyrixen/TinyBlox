@@ -1,10 +1,24 @@
-package org.kyrixen;
-
+package io.kyrixen.tinyblox;
 
 import java.util.ArrayList;
-import com.badlogic.gdx.Screen;
 
-public class Engine extends Screen {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import io.kyrixen.tinyblox.entities.Enemy;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.Player;
+import io.kyrixen.tinyblox.graphics.FPSCounter;
+import io.kyrixen.tinyblox.graphics.Renderer;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Terrain;
+
+public class Engine implements Screen {
 
     // Player
     private Player player;
@@ -13,7 +27,7 @@ public class Engine extends Screen {
     public boolean exit = false;
 
     // List of entities
-    private static ArrayList<Entity> entities = new ArrayList<>();
+    private final static ArrayList<Entity> entities = new ArrayList<>();
 
     // Module components
     private Renderer renderer;
@@ -24,12 +38,12 @@ public class Engine extends Screen {
     private FPSCounter fpsCounter;
     public SoundManager soundManager;
 
-    // Window components
-    private Canvas canvas;
-    private BufferStrategy bs;
-    private Graphics2D g;
-    
-    public Engine() {
+    SpriteBatch batch;
+    ShapeRenderer shape;
+
+
+    @Override
+    public void show() {
     
         // Module components init
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE);
@@ -39,30 +53,15 @@ public class Engine extends Screen {
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();
+        batch = new SpriteBatch();
+        shape = new ShapeRenderer();
 
-    }
-
-    // Synchronous runner
-    public void run() {
-    
         init();
-        game();
-        cleanup();
-    
+
     }
 
 
     private void init() {
-
-        // Init window
-        this.canvas = Main.canvas;
-
-        // Ensure Canvas is realized
-        canvas.requestFocus();
-        canvas.createBufferStrategy(2);
-        bs = canvas.getBufferStrategy();
-    
-        textures.showBackground(bs);
 
         // Initialize renderer and controller
         renderer.init();
@@ -93,102 +92,115 @@ public class Engine extends Screen {
 
         Entity.initTextureAll(textures, entities);
 
-        // Window closing
-        Main.frame.addWindowListener(new WindowAdapter() {
-        
-            @Override
-            public void windowClosing(WindowEvent e) {
-                exit = true; // Stop engine loop
-                System.out.println("Stopping");
-            }
-        
-        });
-
     }
 
     // Game loop
-    private void game() {
-    
-        float lastTime = (float) System.currentTimeMillis() / 1000;
+    @Override
+    public void render(float delta) {
 
-        while (!exit) {
-
-            // STOP if window / canvas is gone
-            if (!canvas.isDisplayable()) {
-                exit = true;
-                break;
-            }
-
-            float currentTime = (float) System.currentTimeMillis() / 1000;
-            float deltaTime = currentTime - lastTime;
-            lastTime = currentTime;
-
-            controller.update(player);
-
-            Entity.updateAll(deltaTime, entities);
-            terrain.update();
-
-            fpsCounter.update();
-
-            // Update camera
-            camera.follow(player);
-
-            for (Entity e : entities) {
-
-                if(e.type == "enemy"){ Enemy en = (Enemy) e; en.check(player); }
-
-            }
-
-            //player.stats(camera);
-
-            if(player.isDead()) {
-                System.out.println("Player is dead! Health: " + player.health + " | Game Over.");
-                exit = true;
-                
-            }
-
-            entities.removeIf(e -> {
-                if(!e.type.equals("player") && e.isDead()){
-                    e.cleanup();
-
-                    return true;
-                }
-                return false;
-            });
-
-            //if(Chunk.blockCollision(player).type == "dirt") System.out.println("Standing on dirt!");
-
-            if (bs == null) break;
-
-            try {
-                g = (Graphics2D) bs.getDrawGraphics();
-            } catch (IllegalStateException e) {
-                break; // window is already destroyed
-            }
-
-            renderer.clear(g);
-            
-            try {
-                terrain.render(g);
-            } catch (Exception e) {
-                System.out.println("Error rendering terrain: " + e.getMessage());
-                e.printStackTrace();
-            }
-            
-            renderer.drawGrid(g);
-            Entity.renderAll(textures, renderer, entities, g, camera);
-
-            fpsCounter.printFPS(g);
-
-            g.dispose();
-            bs.show();
-            
+        if (exit || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
         }
+    
+        update(delta);
+        render();
 
     }
 
+    private void update(float delta) {
 
-    private void cleanup() {
+        controller.update(player);
+
+        Entity.updateAll(delta, entities);
+        terrain.update();
+
+        // Update camera
+        camera.follow(player);
+
+        for (Entity e : entities) {
+
+            if(e.type().equals("enemy")){ Enemy en = (Enemy) e; en.check(player); }
+
+        }
+
+        //player.stats(camera);
+
+        if(player.isDead()) {
+            System.out.println("Player is dead! Health: " + player.health() + " | Game Over.");
+            exit = true;
+                
+        }
+
+        entities.removeIf(e -> {
+
+            if(!e.type().equals("player") && e.isDead()){
+                
+                e.cleanup();
+
+                return true;
+            }
+
+            return false;
+        
+        });
+
+        //if(Chunk.blockCollision(player).type == "dirt") System.out.println("Standing on dirt!");
+
+    }
+
+    private void render() {
+
+        renderer.clear();
+           
+        batch.begin();
+
+        try {
+            terrain.render(batch);
+        } catch (Exception e) {
+            System.out.println("Error rendering terrain: " + e.getMessage());
+        }
+            
+
+        Entity.renderAll(textures, renderer, entities, batch, camera);
+
+        batch.end();
+
+        player.renderSelector(camera);
+        renderer.drawGrid(shape);
+
+        batch.begin();
+        fpsCounter.printFPS(batch);
+        batch.end();
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // If the window is minimized on a desktop (LWJGL3) platform, width and height are 0, which causes problems.
+        // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
+        if(width <= 0 || height <= 0) return;
+
+        System.out.println("Resizing window!");
+
+    }
+
+    @Override
+    public void pause() {
+        // Invoked when your application is paused.
+    }
+
+    @Override
+    public void resume() {
+        // Invoked when your application is resumed after pause.
+    }
+
+    @Override
+    public void hide() {
+        // This method is called when another screen replaces this one.
+    }
+
+    @Override
+    public void dispose() {
 
         System.out.println("On cleanup");
   
@@ -210,14 +222,14 @@ public class Engine extends Screen {
         camera.cleanup();
         fpsCounter.cleanup();
         renderer.cleanup();
-        
-        bs = null;
-        canvas = null;
-        g = null;
+        if (soundManager != null) soundManager.cleanup();
+        if (batch != null) batch.dispose();
+        if (shape != null) shape.dispose();
 
-        System.gc(); // Help GC
-
+        System.gc(); // Help GC    
+    
     }
+
 
 
 }

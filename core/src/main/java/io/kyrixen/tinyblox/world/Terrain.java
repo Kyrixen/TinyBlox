@@ -1,11 +1,13 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.world;
 
-
-import java.awt.Graphics2D;
 import java.util.HashMap;
 
-import fastnoiselite.FastNoiseLite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Terrain {
 
@@ -71,7 +73,7 @@ public class Terrain {
     }
 
     // Render visible chunks
-    public void render(Graphics2D g) {
+    public void render(SpriteBatch batch) {
         
         for(int cx = 0; cx < w / size; cx++){
 
@@ -82,7 +84,7 @@ public class Terrain {
                 // If isnt loaded dont render
                 if(!c.loaded) continue;
 
-                c.render(g);
+                c.render(batch);
 
             }
 
@@ -134,23 +136,23 @@ public class Terrain {
     // Helper for Entity.java
     public void tryMove(Entity e, Terrain terrain) {
 
-        if (e.dirX == 0 && e.dirY == 0) return;
+        if (e.dirX() == 0 && e.dirY() == 0) return;
 
         int tileSize = Constants.GRID_SIZE;
 
-        int nextX = e.x + e.dirX * tileSize;
-        int nextY = e.y + e.dirY * tileSize;
+        int nextX = e.x() + e.dirX() * tileSize;
+        int nextY = e.y() + e.dirY() * tileSize;
 
         // World bounds check
-        if (nextX < 0 || nextY < 0 || nextX + e.width > Constants.MAP_WIDTH || nextY + e.height > Constants.MAP_HEIGHT) return;
+        if (nextX < 0 || nextY < 0 || nextX + e.width() > Constants.MAP_WIDTH || nextY + e.height() > Constants.MAP_HEIGHT) return;
 
         // Determine chunk range the entity could touch
         int chunkSize = terrain.getChunkSize();
 
         int startChunkX = nextX / (chunkSize * tileSize);
         int startChunkY = nextY / (chunkSize * tileSize);
-        int endChunkX   = (nextX + e.width)  / (chunkSize * tileSize);
-        int endChunkY   = (nextY + e.height) / (chunkSize * tileSize);
+        int endChunkX   = (nextX + e.width())  / (chunkSize * tileSize);
+        int endChunkY   = (nextY + e.height()) / (chunkSize * tileSize);
 
         // Iterate over relevant chunks
         for (int cx = startChunkX; cx <= endChunkX; cx++) {
@@ -170,9 +172,9 @@ public class Terrain {
 
                     // AABB collision
                     if (nextX < tx + tileSize &&
-                        nextX + e.width > tx &&
+                        nextX + e.width() > tx &&
                         nextY < ty + tileSize &&
-                        nextY + e.height > ty) {
+                        nextY + e.height() > ty) {
                         return; // Blocked
                     }
                 
@@ -183,8 +185,8 @@ public class Terrain {
         }
 
         // No collision, move allowed
-        e.x = nextX;
-        e.y = nextY;
+        e.setX(nextX);
+        e.setY(nextY);
     
     }
 

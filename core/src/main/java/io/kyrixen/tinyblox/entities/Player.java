@@ -1,13 +1,20 @@
 // Kyrixen: Sorry i have no energy for explaining.
 
-package org.kyrixen;
+package io.kyrixen.tinyblox.entities;
 
-
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.kyrixen.tinyblox.SoundManager;
+import io.kyrixen.tinyblox.graphics.Renderer;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Terrain;
 
 public class Player extends Entity {
 
@@ -42,7 +49,7 @@ public class Player extends Entity {
     
 
     @Override
-    public BufferedImage initTexture(Textures textures) {
+    public Texture initTexture(Textures textures) {
        this.texture = textures.playerTexture;
        return this.texture;
     }
@@ -58,7 +65,7 @@ public class Player extends Entity {
             if(dirX != 0 || dirY != 0) {
                 moving = true;
             
-                if(!soundManager.walk.isRunning()) soundManager.walk.play();
+                soundManager.walk.play();
 
                 tryMove(terrain);
 
@@ -83,11 +90,14 @@ public class Player extends Entity {
 
 
     @Override
-    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g){
+    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch){
 
-        textures.draw(this.texture, x, y, width, height, g);
-        selector.render(g, camera);
+        textures.draw(this.texture, x, y, width, height, batch);
 
+    }
+
+    public void renderSelector(Camera camera) {
+        selector.render(camera);
     }
 
 
@@ -167,7 +177,7 @@ public class Player extends Entity {
     @Override
     public void sprint(){
 
-        if(!isExhausted() && Input.anyWASDPressed() && Input.keyPressed(KeyEvent.VK_SHIFT)){ 
+        if(!isExhausted() && Peripheal.anyWASDPressed() && Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)){ 
             moveDelay = 0.15f; // Faster movement when sprinting
                         
             if(System.currentTimeMillis() - lastSprint >= sprintDelay * 1000) {

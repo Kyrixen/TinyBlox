@@ -1,11 +1,12 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.entities;
 
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import io.kyrixen.tinyblox.SoundManager;
+import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.world.Camera;
 
 public class Selector {
 
@@ -26,6 +27,9 @@ public class Selector {
     private int width;
     private int height;
 
+    // Renderer
+    ShapeRenderer sr;
+
 
     public Selector(Entity entity, ArrayList<Entity> entities, SoundManager soundManager) {
 
@@ -33,6 +37,7 @@ public class Selector {
         this.entity = entity;
         this.entities = entities;
         this.soundManager = soundManager;
+        this.sr = new ShapeRenderer();
     
     }
 
@@ -71,22 +76,24 @@ public class Selector {
         this.height = this.entity.height;
 
         // Check for mouse interaction
-        if(checkEntityCollision(entities) != null && Input.mousePressed(MouseEvent.BUTTON1)){
+        if(checkEntityCollision(entities) != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
 
             Entity e = checkEntityCollision(entities);
 
             e.damage(damage);
 
-            if(!soundManager.hitentity.isRunning()) soundManager.hitentity.play();
+            soundManager.hitentity.play();
             
         }
 
     }
 
 
-    public void render(Graphics2D g, Camera camera) {
-        g.setColor(new Color(255, 255, 255));
-        g.drawRect(this.x - camera.x, this.y - camera.y, this.width, this.height);
+    public void render(Camera camera) { 
+        sr.setColor(Color.WHITE);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.rect(this.x - camera.x, this.y - camera.y, this.width, this.height);
+        sr.end();
     }
 
 

@@ -1,4 +1,4 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox;
 
 
 // Global vars

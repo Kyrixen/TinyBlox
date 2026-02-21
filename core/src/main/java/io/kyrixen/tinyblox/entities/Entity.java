@@ -1,9 +1,15 @@
-package org.kyrixen;
-
+package io.kyrixen.tinyblox.entities;
 
 import java.util.ArrayList;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.kyrixen.tinyblox.SoundManager;
+import io.kyrixen.tinyblox.graphics.Renderer;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Terrain;
 
 
 // Implement stats
@@ -44,8 +50,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
     protected float damageDelay = 0.50f;
     protected long lastDamage = 0L;
 
-    //Texture and type of entity
-    BufferedImage texture;
+    // Texture and type of entity
+    Texture texture;
     String type;
 
     // Terrain helper
@@ -88,7 +94,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Get texture
-    public BufferedImage initTexture(Textures textures) {
+    public Texture initTexture(Textures textures) {
 
         if(this.type.equals("enemy")) this.texture = textures.enemyTexture;
         if(this.type.equals("player")) this.texture = textures.playerTexture;
@@ -126,8 +132,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Render entity
-    public void render(Textures textures, Renderer renderer, Camera camera, Graphics2D g){
-        textures.draw(this.texture, x, y, width, height, g);
+    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch){
+        textures.draw(this.texture, x, y, width, height, batch);
     }
 
 
@@ -307,9 +313,9 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Helper func
-    public static void renderAll(Textures textures, Renderer renderer, ArrayList<Entity> entities, Graphics2D g, Camera camera) {
+    public static void renderAll(Textures textures, Renderer renderer, ArrayList<Entity> entities, SpriteBatch batch, Camera camera) {
         for (Entity e : entities) {
-            e.render(textures, renderer, camera, g);
+            e.render(textures, renderer, camera, batch);
         }
     }
 
@@ -323,6 +329,25 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Return func
     public boolean isMoving(){ return moving; }
 
+    public int x() { return x; }
+    public int y() { return y; }
+
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+
+    public int dirX() { return dirX; }
+    public int dirY() { return dirY; }
+
+    public void setDirX(int dirX) { this.dirX = dirX; }
+    public void setDirY(int dirY) { this.dirY = dirY; }
+
+    public int width() { return width; }
+    public int height() { return height; }
+
+    public int health() { return health; }
+    public int stamina() { return stamina; }
+
+    public String type() { return type; }
 
 }
 

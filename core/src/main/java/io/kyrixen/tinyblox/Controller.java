@@ -1,6 +1,9 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox;
 
-import java.awt.event.KeyEvent;
+import com.badlogic.gdx.Input;
+
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.utils.Peripheal;
 
 public class Controller {
 
@@ -11,14 +14,14 @@ public class Controller {
     // Update controller for entity
     public void update(Entity entity) {
     
-            entity.dirX = 0;
-            entity.dirY = 0;
+            entity.setDirX(0);
+            entity.setDirY(0);
 
             // Checks for input
-            if (Input.keyPressed(KeyEvent.VK_W)) entity.dirY = -1;
-            if (Input.keyPressed(KeyEvent.VK_S)) entity.dirY = 1;
-            if (Input.keyPressed(KeyEvent.VK_A)) entity.dirX = -1;
-            if (Input.keyPressed(KeyEvent.VK_D)) entity.dirX = 1;
+            if (Peripheal.keyPressed(Input.Keys.W)) entity.setDirY(1);
+            if (Peripheal.keyPressed(Input.Keys.S)) entity.setDirY(-1);
+            if (Peripheal.keyPressed(Input.Keys.A)) entity.setDirX(-1);
+            if (Peripheal.keyPressed(Input.Keys.D)) entity.setDirX(1);
             
             // Checks for sprinting
             entity.sprint();

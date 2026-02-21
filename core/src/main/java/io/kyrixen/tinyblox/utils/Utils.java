@@ -1,8 +1,12 @@
-package org.kyrixen;
+package io.kyrixen.tinyblox.utils;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.awt.Graphics2D;
-
+import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.Chunk;
+import io.kyrixen.tinyblox.world.Terrain;
 
 public class Utils {
     
@@ -27,16 +31,16 @@ public class Utils {
     // Check collision between entities
     public static boolean checkCollision(Entity e1, Entity e2) {
         
-        return (e1.x < e2.x + e2.width &&
-                e1.x + e1.width > e2.x &&
-                e1.y < e2.y + e2.height &&
-                e1.y + e1.height > e2.y);
+        return (e1.x() < e2.x() + e2.width() &&
+                e1.x() + e1.width() > e2.x() &&
+                e1.y() < e2.y() + e2.height() &&
+                e1.y() + e1.height() > e2.y());
     
     }
 
     // For better func
-    public static void betterTilesetDraw(int x, int y, int tix, int tiy, Textures texture, Graphics2D g){
-        texture.drawTileset(texture.terrainTileset, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE, tix, tiy, Constants.GRID_SIZE, g);
+    public static void betterTilesetDraw(int x, int y, int tix, int tiy, Textures texture, SpriteBatch batch){
+        texture.drawTileset(texture.terrainTileset, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE, tix, tiy, Constants.GRID_SIZE, batch);
     }
 
     // Finds a safe spawn near the center using only chunks
