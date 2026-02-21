@@ -2,8 +2,9 @@ package io.kyrixen.tinyblox.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import io.kyrixen.tinyblox.Main;
+
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.Main;
 
 
 /** Launches the desktop (LWJGL3) application. */
@@ -25,8 +26,8 @@ public class Lwjgl3Launcher {
 
         configuration.setTitle("TinyBlox " + Constants.VERSION);
         
-        configuration.useVsync(false);
-        configuration.setForegroundFPS(240);
+        configuration.useVsync(Constants.VSYNC);
+        configuration.setForegroundFPS(Constants.FPS);
         configuration.setWindowedMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
 

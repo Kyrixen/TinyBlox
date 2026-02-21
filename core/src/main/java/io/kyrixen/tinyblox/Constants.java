@@ -8,6 +8,10 @@ public class Constants {
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
 
+    // FPS settings
+    public static final int FPS = 240;
+    public static boolean VSYNC = true;
+
     // World size
     public static int MAP_WIDTH = 1600;
     public static int MAP_HEIGHT = 1200;
