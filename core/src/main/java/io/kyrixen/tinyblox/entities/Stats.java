@@ -7,12 +7,12 @@ public class Stats {
     // Health
     public interface Health {
 
-        int getHealth();
+        float getHealth();
         void setHealth(int health);
         void setMaxHealth(int maxHealth);
         boolean isDead();
 
-        void autoRegenerate(boolean state);
+        void autoRegenerate(boolean state, float delta);
         void invincible(boolean invincible);
 
         boolean damage(int damage);
@@ -24,12 +24,12 @@ public class Stats {
     // Sprinting
     public interface Stamina {
 
-        int getStamina();
+        float getStamina();
         void setStamina(int stamina);
         void setMaxStamina(int maxStamina);
         boolean isExhausted();
 
-        void autoRecover(boolean state);
+        void autoRecover(boolean state, float delta);
         void tireless(boolean tireless);    
 
         void consume(int amount);

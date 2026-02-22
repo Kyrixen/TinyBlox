@@ -123,7 +123,7 @@ public class Engine implements Screen {
 
         }
 
-        //player.stats(camera);
+        player.stats(camera);
 
         if(player.isDead()) {
             System.out.println("Player is dead! Health: " + player.health() + " | Game Over.");

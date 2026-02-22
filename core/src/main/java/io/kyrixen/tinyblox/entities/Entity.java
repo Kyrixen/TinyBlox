@@ -59,11 +59,11 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     // Stats //
 
-    protected int health;
+    protected float health;
     protected int maxHealth;
     protected boolean invincible = true;
         
-    protected int stamina = 100;
+    protected float stamina = 100;
     protected int maxStamina = 100;
 
     protected boolean exhausted = false;
@@ -139,7 +139,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Health interface methods //
 
     @Override
-    public int getHealth() { return health; }
+    public float getHealth() { return health; }
 
     @Override
     public void setHealth(int health) { this.health = health; }
@@ -194,7 +194,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Stamina interface methods //
 
     @Override
-    public int getStamina() { return stamina; }
+    public float getStamina() { return stamina; }
 
     @Override
     public void setStamina(int stamina) { this.stamina = stamina; }
@@ -236,14 +236,18 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
 
     @Override
-    public void autoRegenerate(boolean state) {
-        if(state && System.currentTimeMillis() - lastDamage >= (damageDelay + 1.5f) * 1000) health += 5;  
+    public void autoRegenerate(boolean state, float delta) {
+        if(state && System.currentTimeMillis() - lastDamage >= (damageDelay + 1.5f) * 1000) health += 5 * delta;
+        if(health > maxHealth) health = maxHealth;  
+        if(health < 0) health = 0;
     }
 
 
     @Override
-    public void autoRecover(boolean state) {
-        if(state && System.currentTimeMillis() - lastSprint >= (sprintDelay + 1.5f) * 1000) stamina += 5;  
+    public void autoRecover(boolean state, float delta) {
+        if(state && System.currentTimeMillis() - lastSprint >= (sprintDelay + 1.5f) * 1000) stamina += 5 * delta;
+        if(stamina > maxStamina) stamina = maxStamina;
+        if(stamina < 0) stamina = 0;  
     }
 
     // Unload resources
@@ -356,8 +360,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
     public int width() { return width; }
     public int height() { return height; }
 
-    public int health() { return health; }
-    public int stamina() { return stamina; }
+    public float health() { return health; }
+    public float stamina() { return stamina; }
 
     public String type() { return type; }
 

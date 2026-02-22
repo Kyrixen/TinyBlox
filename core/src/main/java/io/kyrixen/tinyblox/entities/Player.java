@@ -65,7 +65,7 @@ public class Player extends Entity {
             if(dirX != 0 || dirY != 0) {
                 moving = true;
             
-                soundManager.walk.play(Utils.getFloatVolume(10));
+                soundManager.walk.play(Utils.getFloatVolume(5));
 
                 tryMove(terrain);
 
@@ -80,8 +80,8 @@ public class Player extends Entity {
 
         }
 
-        autoRecover(false);
-        autoRegenerate(false);
+        autoRecover(true, deltaTime);
+        autoRegenerate(true, deltaTime);
         
         this.exhausted = stamina <= 0 && !tireless;
 
