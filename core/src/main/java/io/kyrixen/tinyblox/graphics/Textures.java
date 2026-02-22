@@ -109,15 +109,15 @@ public class Textures {
     // Load textures
     public void initTextures() {
     
-        playerTexture = load("textures/entities/player16.png");
-        enemyTexture = load("textures/entities/enemy16.png");
-        entityTexture = load("textures/entities/entity16.png");
+        playerTexture = load("textures/entities/player.png");
+        enemyTexture = load("textures/entities/enemy.png");
+        entityTexture = load("textures/entities/entity.png");
 
         grassTexture = load("textures/terrain/grass.png");
         stoneTexture = load("textures/terrain/stone.png");
         dirtTexture = load("textures/terrain/dirt.png");
         waterTexture = load("textures/terrain/water.png");
-        terrainTileset = load("textures/terrain/terrain16.png");
+        terrainTileset = load("textures/terrain/terrain.png");
     
         dialogCorner = load("textures/ui/dialog/dialog_corner.png");
         dialogSide = load("textures/ui/dialog/dialog_side.png");
