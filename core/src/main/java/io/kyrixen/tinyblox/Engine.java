@@ -46,7 +46,7 @@ public class Engine implements Screen {
     public void show() {
     
         // Module components init
-        camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE);
+        camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
         renderer = new Renderer(camera);
         controller = new Controller();
         textures = new Textures(camera);
@@ -134,6 +134,8 @@ public class Engine implements Screen {
         entities.removeIf(e -> {
 
             if(!e.type().equals("player") && e.isDead()){
+
+                soundManager.explosion.play(Utils.getFloatVolume(35));
                 
                 e.cleanup();
 
@@ -165,8 +167,8 @@ public class Engine implements Screen {
 
         batch.end();
 
-        player.renderSelector(camera);
         renderer.drawGrid(shape);
+        player.renderSelector(camera);
 
         batch.begin();
         fpsCounter.printFPS(batch);
@@ -218,7 +220,7 @@ public class Engine implements Screen {
             textures.cleanup();
         }
 
-        //terrain.cleanup();
+        terrain.cleanup();
         camera.cleanup();
         fpsCounter.cleanup();
         renderer.cleanup();

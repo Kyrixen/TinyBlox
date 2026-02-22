@@ -69,10 +69,12 @@ public class Textures {
         if (tex == null) return;
 
         // Apply camera offset
-        int screenX = x - camera.x;
-        int screenY = y - camera.y;
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
 
-        batch.draw(tex, screenX, screenY, w, h, 0, 0, w, h, false, false);
+        batch.draw(tex, screenX, screenY, renderW, renderH, 0, 0, tex.getWidth(), tex.getHeight(), false, false);
 
     }
 
@@ -84,10 +86,12 @@ public class Textures {
         int srcX = tileX * tileSize;
         int srcY = tileY * tileSize;
 
-        float screenX = x - camera.x;
-        float screenY = y - camera.y;
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
 
-        batch.draw(tileset, screenX, screenY, w, h, srcX, srcY, tileSize, tileSize, false, false);
+        batch.draw(tileset, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }
 
@@ -105,15 +109,15 @@ public class Textures {
     // Load textures
     public void initTextures() {
     
-        playerTexture = load("textures/entities/player.png");
-        enemyTexture = load("textures/entities/enemy.png");
-        entityTexture = load("textures/entities/entity.png");
+        playerTexture = load("textures/entities/player16.png");
+        enemyTexture = load("textures/entities/enemy16.png");
+        entityTexture = load("textures/entities/entity16.png");
 
         grassTexture = load("textures/terrain/grass.png");
         stoneTexture = load("textures/terrain/stone.png");
         dirtTexture = load("textures/terrain/dirt.png");
         waterTexture = load("textures/terrain/water.png");
-        terrainTileset = load("textures/terrain/terrain.png");
+        terrainTileset = load("textures/terrain/terrain16.png");
     
         dialogCorner = load("textures/ui/dialog/dialog_corner.png");
         dialogSide = load("textures/ui/dialog/dialog_side.png");

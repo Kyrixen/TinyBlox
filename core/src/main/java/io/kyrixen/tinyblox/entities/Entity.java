@@ -337,8 +337,21 @@ public class Entity implements Stats.Health, Stats.Stamina {
     public int dirX() { return dirX; }
     public int dirY() { return dirY; }
 
-    public void setDirX(int dirX) { this.dirX = dirX; }
-    public void setDirY(int dirY) { this.dirY = dirY; }
+    public void setDirX(int dirX) {
+        this.dirX = dirX;
+        if (dirX != 0) {
+            this.lastDirX = dirX;
+            this.lastDirY = 0;
+        }
+    }
+
+    public void setDirY(int dirY) {
+        this.dirY = dirY;
+        if (dirY != 0) {
+            this.lastDirY = dirY;
+            this.lastDirX = 0;
+        }
+    }
 
     public int width() { return width; }
     public int height() { return height; }

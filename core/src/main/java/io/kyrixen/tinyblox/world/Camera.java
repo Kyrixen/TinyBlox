@@ -11,16 +11,18 @@ public class Camera {
     // Window size
     public int viewWidth;
     public int viewHeight;
+    public float zoom;
 
     // Like Minecraft
     public int RENDER_DISTANCE;
 
 
     // Setup camera
-    public Camera(int viewWidth, int viewHeight, int  RENDER_DISTANCE) {
+    public Camera(int viewWidth, int viewHeight, int RENDER_DISTANCE, float zoom) {
         
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
+        this.zoom = zoom;
 
         this.RENDER_DISTANCE = RENDER_DISTANCE;
     
@@ -31,9 +33,12 @@ public class Camera {
 
         if (target == null) return;
 
-        // Center camera on entity
-        x += (target.x() - x - viewWidth / 2);
-        y += (target.y() - y - viewHeight / 2);
+        int worldViewWidth = (int) (viewWidth / zoom);
+        int worldViewHeight = (int) (viewHeight / zoom);
+
+        // Center camera on entity using world-space view size.
+        x += (target.x() - x - worldViewWidth / 2);
+        y += (target.y() - y - worldViewHeight / 2);
 
     }
 
@@ -45,6 +50,7 @@ public class Camera {
 
         viewWidth = 0;
         viewHeight = 0;
+        zoom = 0f;
 
         RENDER_DISTANCE = 0;
 

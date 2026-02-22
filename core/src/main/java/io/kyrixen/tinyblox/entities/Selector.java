@@ -79,13 +79,13 @@ public class Selector {
         this.height = this.entity.height;
 
         // Check for mouse interaction
-        if(checkEntityCollision(entities) != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
-
-            Entity e = checkEntityCollision(entities);
+        Entity e = checkEntityCollision(entities);
+        
+        if(e != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
 
             e.damage(damage);
 
-            soundManager.hitentity.play(Utils.getFloatVolume(20));
+            soundManager.hitentity.play(Utils.getFloatVolume(40));
             
         }
 
@@ -95,7 +95,7 @@ public class Selector {
     public void render(Camera camera) { 
         sr.setColor(Color.WHITE);
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.rect(this.x - camera.x, this.y - camera.y, this.width, this.height);
+        sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
         sr.end();
     }
 

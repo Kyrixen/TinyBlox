@@ -27,10 +27,12 @@ public class Renderer {
 
     // Draw grid
     public void drawGrid(ShapeRenderer shapeRenderer) {
+
         int worldLeft = camera.x;
-        int worldRight = camera.x + camera.viewWidth;
+        int worldRight = camera.x + (int) (camera.viewWidth / camera.zoom);
         int worldTop = camera.y;
-        int worldBottom = camera.y + camera.viewHeight;
+        int worldBottom = camera.y + (int) (camera.viewHeight / camera.zoom);
+        
         int grid = Constants.GRID_SIZE;
 
         int startX = Math.floorDiv(worldLeft, grid) * grid;
@@ -43,12 +45,12 @@ public class Renderer {
         shapeRenderer.setColor(Color.BLACK);
 
         for (int x = startX; x <= endX; x += grid) {
-            int screenX = x - camera.x;
+            float screenX = (x - camera.x) * camera.zoom;
             shapeRenderer.line(screenX, 0, screenX, camera.viewHeight);
         }
     
         for (int y = startY; y <= endY; y += grid) {
-            int screenY = y - camera.y;
+            float screenY = (y - camera.y) * camera.zoom;
             shapeRenderer.line(0, screenY, camera.viewWidth, screenY);
         }
 
