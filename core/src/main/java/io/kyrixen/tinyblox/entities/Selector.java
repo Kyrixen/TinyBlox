@@ -80,7 +80,7 @@ public class Selector {
 
         // Check for mouse interaction
         Entity e = checkEntityCollision(entities);
-        
+
         if(e != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
 
             e.damage(damage);
@@ -92,11 +92,14 @@ public class Selector {
     }
 
 
-    public void render(Camera camera) { 
+    public void render(Camera camera) {
+
         sr.setColor(Color.WHITE);
+        
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
         sr.end();
+    
     }
 
 

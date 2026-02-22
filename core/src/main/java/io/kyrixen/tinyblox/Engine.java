@@ -135,7 +135,7 @@ public class Engine implements Screen {
 
             if(!e.type().equals("player") && e.isDead()){
 
-                soundManager.explosion.play(Utils.getFloatVolume(35));
+                if(e.type().equals("enemy")) soundManager.explosion.play(Utils.getFloatVolume(35));
                 
                 e.cleanup();
 
@@ -146,7 +146,7 @@ public class Engine implements Screen {
         
         });
 
-        //if(Chunk.blockCollision(player).type == "dirt") System.out.println("Standing on dirt!");
+        //if(Chunk.blockCollision(player).type().equals("dirt")) System.out.println("Standing on dirt!");
 
     }
 

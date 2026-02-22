@@ -49,11 +49,16 @@ public class Chunk {
         // Tile properties
         boolean solid;
 
+        // Tile type
+        String type;
+
         // Constructs tile
         public Tile(int x, int y, String type) {
 
             this.x = x;
             this.y = y;
+
+            this.type = type;
 
             this.tileX = getTileX(type);
             this.tileY = getTileY(type);
@@ -110,6 +115,8 @@ public class Chunk {
         public int getX(){ return x; }
 
         public boolean solid(){ return solid; }
+
+        public String type() { return type; }
 
     }
 
