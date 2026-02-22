@@ -43,14 +43,11 @@ public class Chunk {
         // Cords
         int x, y;
         
-        // Type
-        String type;
-        
         // Helper for tileset loading
         int tileX, tileY;
 
         // Tile properties
-        boolean solid, loaded;
+        boolean solid;
 
         // Constructs tile
         public Tile(int x, int y, String type) {
@@ -58,13 +55,10 @@ public class Chunk {
             this.x = x;
             this.y = y;
 
-            this.type = type;
-            
             this.tileX = getTileX(type);
             this.tileY = getTileY(type);
             
             this.solid = getSolid(type);
-            this.loaded = true; // Loaded by default
 
         }
 

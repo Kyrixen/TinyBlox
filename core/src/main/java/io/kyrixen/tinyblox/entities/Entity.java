@@ -106,7 +106,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     // Tries to move
     public void tryMove(Terrain terrain){
-        if(dirX != 0 || dirY != 0){ moving = true; } else { moving = false; }
+        moving = dirX != 0 || dirY != 0;
         terrain.tryMove(this, terrain);
     }
 
@@ -126,8 +126,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
         }
 
         // Updates vars
-        if(stamina <= 0 && !tireless){ this.exhausted = true; }
-        else { this.exhausted = false; }
+        this.exhausted = stamina <= 0 && !tireless;
 
     }
 

@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.utils.Utils;
 
 public class Enemy extends Entity {
 
@@ -127,8 +127,7 @@ public class Enemy extends Entity {
            
             tryMove(terrain);
  
-            if(stamina <= 0 && !tireless){ this.exhausted = true; }
-            else { this.exhausted = false; }
+            this.exhausted = stamina <= 0 && !tireless;
 
             lastDelay = System.currentTimeMillis();
 
@@ -152,7 +151,7 @@ public class Enemy extends Entity {
                         
             System.out.println("Collision detected between player and enemy!");
 
-            if(player.damage(25)) { long soundId = soundManager.hitplayer.play(); soundManager.hitplayer.setVolume(soundId, Utils.getFloatVolume(20)); }
+            if(player.damage(25)) soundManager.hitplayer.play(Utils.getFloatVolume(40)); 
                         
         }
 

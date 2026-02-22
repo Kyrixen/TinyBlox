@@ -222,7 +222,9 @@ public class Engine implements Screen {
         camera.cleanup();
         fpsCounter.cleanup();
         renderer.cleanup();
+
         if (soundManager != null) soundManager.cleanup();
+        
         if (batch != null) batch.dispose();
         if (shape != null) shape.dispose();
 

@@ -1,11 +1,14 @@
 package io.kyrixen.tinyblox.entities;
 
 import java.util.ArrayList;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 
 public class Selector {
@@ -14,7 +17,7 @@ public class Selector {
     private Entity entity;
 
     // For sound
-    private SoundManager soundManager;
+    private final SoundManager soundManager;
 
     // Helper Array
     private ArrayList<Entity> entities;
@@ -82,7 +85,7 @@ public class Selector {
 
             e.damage(damage);
 
-            soundManager.hitentity.play();
+            soundManager.hitentity.play(Utils.getFloatVolume(20));
             
         }
 

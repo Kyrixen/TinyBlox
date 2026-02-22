@@ -12,9 +12,9 @@ import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.utils.Utils;
 
 public class Player extends Entity {
 
@@ -65,8 +65,8 @@ public class Player extends Entity {
             if(dirX != 0 || dirY != 0) {
                 moving = true;
             
-                long soundId = soundManager.walk.play();
-                soundManager.walk.setVolume(soundId, Utils.getFloatVolume(10));
+                soundManager.walk.play(Utils.getFloatVolume(10));
+
                 tryMove(terrain);
 
                 } else { 
@@ -82,9 +82,8 @@ public class Player extends Entity {
 
         autoRecover(false);
         autoRegenerate(false);
-
-        if(stamina <= 0 && !tireless){ this.exhausted = true; }
-        else { this.exhausted = false; }
+        
+        this.exhausted = stamina <= 0 && !tireless;
 
     }
 

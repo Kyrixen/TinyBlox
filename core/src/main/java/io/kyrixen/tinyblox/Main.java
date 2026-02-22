@@ -9,4 +9,10 @@ public class Main extends Game {
         setScreen(new Engine());
     }
 
+    @Override
+    public void dispose() {
+        if (getScreen() != null) getScreen().dispose();
+        super.dispose();
+    }
+
 }

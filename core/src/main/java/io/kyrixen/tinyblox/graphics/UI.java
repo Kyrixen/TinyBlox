@@ -104,10 +104,10 @@ public class UI {
         // Rotate around top-left
         private void drawRotated(SpriteBatch batch, Texture tex, float x, float y, float angleDeg) {
             
-            float w = tile;
-            float h = tile;
+            float tileW = tile;
+            float tileH = tile;
 
-            batch.draw(tex, x, y, w / 2f, h / 2f, w, h, 1f, 1f, angleDeg, 0, 0, tex.getWidth(), tex.getHeight(), false, false);
+            batch.draw(tex, x, y, tileW / 2f, tileH / 2f, tileW, tileH, 1f, 1f, angleDeg, 0, 0, tex.getWidth(), tex.getHeight(), false, false);
         
         }
    
