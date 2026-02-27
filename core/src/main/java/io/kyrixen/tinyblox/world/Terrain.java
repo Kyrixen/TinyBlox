@@ -21,6 +21,9 @@ public class Terrain {
     private int w;
     private int h;
 
+    // Seed
+    public static int seed;
+
     // Camera helper
     private Camera cam;
 
@@ -34,6 +37,8 @@ public class Terrain {
     public Terrain(int w, int h, int size, Textures texture, Camera camera, int seed, float frequency, boolean multiplayer) {
         
         this.size = size;
+
+        Terrain.seed = seed;
 
         this.tex = texture;
         this.cam = camera;
@@ -52,10 +57,12 @@ public class Terrain {
 
     // Pre-generate chunks
     public void init() {
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
         
-        for(int x = 0; x < w / size; x++){
+        for(int x = 0; x < chunkCountX; x++){
 
-            for(int y = 0; y < h / size; y++){
+            for(int y = 0; y < chunkCountY; y++){
 
                 Chunk c = new Chunk(x, y, size, true, tex, cam);
                 
@@ -74,12 +81,16 @@ public class Terrain {
 
     // Render visible chunks
     public void render(SpriteBatch batch) {
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
         
-        for(int cx = 0; cx < w / size; cx++){
+        for(int cx = 0; cx < chunkCountX; cx++){
 
-            for(int cy = 0; cy < h / size; cy++){
+            for(int cy = 0; cy < chunkCountY; cy++){
 
                 Chunk c = chunks.get(generateKey(cx, cy));
+
+                if (c == null) continue;
 
                 // If isnt loaded dont render
                 if(!c.loaded) continue;
@@ -119,12 +130,15 @@ public class Terrain {
 
     // Update terrain
     public void update(){
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
 
-        for(int cx = 0; cx < w / size; cx++){
+        for(int cx = 0; cx < chunkCountX; cx++){
 
-            for(int cy = 0; cy < h / size; cy++){
+            for(int cy = 0; cy < chunkCountY; cy++){
 
                 Chunk c = chunks.get(generateKey(cx, cy));
+                if (c == null) continue;
                 c.checkIfOnScreen();
 
             }
@@ -143,16 +157,18 @@ public class Terrain {
         int nextX = e.x() + e.dirX() * tileSize;
         int nextY = e.y() + e.dirY() * tileSize;
 
-        // World bounds check
-        if (nextX < 0 || nextY < 0 || nextX + e.width() > Constants.MAP_WIDTH || nextY + e.height() > Constants.MAP_HEIGHT) return;
+        // World bounds check in pixels (map size is stored in tiles)
+        int worldPixelWidth = Constants.MAP_WIDTH * tileSize;
+        int worldPixelHeight = Constants.MAP_HEIGHT * tileSize;
+        if (nextX < 0 || nextY < 0 || nextX + e.width() > worldPixelWidth || nextY + e.height() > worldPixelHeight) return;
 
         // Determine chunk range the entity could touch
         int chunkSize = terrain.getChunkSize();
 
         int startChunkX = nextX / (chunkSize * tileSize);
         int startChunkY = nextY / (chunkSize * tileSize);
-        int endChunkX   = (nextX + e.width())  / (chunkSize * tileSize);
-        int endChunkY   = (nextY + e.height()) / (chunkSize * tileSize);
+        int endChunkX   = (nextX + e.width() - 1)  / (chunkSize * tileSize);
+        int endChunkY   = (nextY + e.height() - 1) / (chunkSize * tileSize);
 
         // Iterate over relevant chunks
         for (int cx = startChunkX; cx <= endChunkX; cx++) {

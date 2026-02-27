@@ -13,8 +13,8 @@ public class Constants {
     public static boolean VSYNC = true;
 
     // World size
-    public static int MAP_WIDTH = 1600;
-    public static int MAP_HEIGHT = 1200;
+    public static int MAP_WIDTH = 24;
+    public static int MAP_HEIGHT = 24;
 
     // Tile size
     public static final int GRID_SIZE = 16;
@@ -24,6 +24,6 @@ public class Constants {
     public static final byte BUFFER = 2;
 
     // Version
-    public static final String VERSION = "dev_pre-2";
+    public static final String VERSION = "dev_pre-3";
 
 }

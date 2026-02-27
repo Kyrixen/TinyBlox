@@ -46,8 +46,8 @@ public class Utils {
     // Finds a safe spawn near the center using only chunks
     public static int[] spawnNearCenter() {
 
-        int centerX = Constants.MAP_WIDTH / 2;
-        int centerY = Constants.MAP_HEIGHT / 2;
+        int centerX = (Constants.MAP_WIDTH * Constants.GRID_SIZE) / 2;
+        int centerY = (Constants.MAP_HEIGHT * Constants.GRID_SIZE) / 2;
 
         Chunk.Tile bestTile = null;
         double bestDist = Double.MAX_VALUE;

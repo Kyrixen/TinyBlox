@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.world;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 
 public class Camera {
@@ -36,9 +37,20 @@ public class Camera {
         int worldViewWidth = (int) (viewWidth / zoom);
         int worldViewHeight = (int) (viewHeight / zoom);
 
-        // Center camera on entity using world-space view size.
-        x += (target.x() - x - worldViewWidth / 2);
-        y += (target.y() - y - worldViewHeight / 2);
+        // Center camera on entity center using world-space view size.
+        int targetCenterX = target.x() + target.width() / 2;
+        int targetCenterY = target.y() + target.height() / 2;
+        x += (targetCenterX - x - worldViewWidth / 2);
+        y += (targetCenterY - y - worldViewHeight / 2);
+
+        int worldPixelWidth = Constants.MAP_WIDTH * Constants.GRID_SIZE;
+        int worldPixelHeight = Constants.MAP_HEIGHT * Constants.GRID_SIZE;
+
+        int maxX = Math.max(0, worldPixelWidth - worldViewWidth);
+        int maxY = Math.max(0, worldPixelHeight - worldViewHeight);
+
+        x = Math.max(0, Math.min(x, maxX));
+        y = Math.max(0, Math.min(y, maxY));
 
     }
 

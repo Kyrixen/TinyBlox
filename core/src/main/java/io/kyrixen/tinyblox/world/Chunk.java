@@ -151,8 +151,8 @@ public class Chunk {
         int worldTilesY = Constants.MAP_HEIGHT;
 
         // World size in chunks
-        int worldChunksX = worldTilesX / CHUNK_SIZE;
-        int worldChunksY = worldTilesY / CHUNK_SIZE;
+        int worldChunksX = (worldTilesX + CHUNK_SIZE - 1) / CHUNK_SIZE;
+        int worldChunksY = (worldTilesY + CHUNK_SIZE - 1) / CHUNK_SIZE;
 
         //System.out.println("Here");
 
@@ -213,7 +213,9 @@ public class Chunk {
 
         // Check if can render chunk
         if (!loaded) return;
-        if (cX < 0 || cX >= MAX_X / Constants.GRID_SIZE || cY < 0 || cY >= MAX_Y / Constants.GRID_SIZE) return;
+        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
         // Check if textures are loaded
         if (tex == null || tex.terrainTileset == null) {
@@ -252,6 +254,8 @@ public class Chunk {
     public void checkIfOnScreen() {
 
         int chunkWorldSize = CHUNK_SIZE * Constants.GRID_SIZE;
+        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
 
         // Camera chunk coordinates (top-left of screen)
         int camChunkX = cam.x / chunkWorldSize;
@@ -262,9 +266,9 @@ public class Chunk {
         // Determine visible chunk range
         // Determine visible chunk range
         int left   = Math.max(0, camChunkX - buffer);
-        int right  = Math.min((Constants.MAP_WIDTH / chunkWorldSize) - 1, camChunkX + cam.RENDER_DISTANCE + buffer);
+        int right  = Math.min(worldChunksX - 1, camChunkX + cam.RENDER_DISTANCE + buffer);
         int top    = Math.max(0, camChunkY - buffer);
-        int bottom = Math.min((Constants.MAP_HEIGHT / chunkWorldSize) - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
+        int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
 
         // Load chunk if inside visible area
         loaded = (cX >= left && cX <= right && cY >= top && cY <= bottom);
