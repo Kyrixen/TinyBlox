@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -289,6 +290,41 @@ public class Chunk {
 
         return null;
 
+    }
+
+    public ArrayList<Tile> get() {
+        
+        ArrayList<Tile> chunkTiles = new ArrayList<>();
+
+        for(Tile t : this.chunk.values()) { chunkTiles.add(t); }
+        
+        return chunkTiles;
+    
+    }
+
+    public void set(ArrayList<Tile> tiles) {
+    
+        if (tiles == null) return;
+
+        chunk.clear();
+    
+        for (Tile tile : tiles) {
+            
+            if (tile == null) continue;
+
+            int tileX = tile.getX() / Constants.GRID_SIZE;
+            int tileY = tile.getY() / Constants.GRID_SIZE;
+
+            int localX = tileX - cX * CHUNK_SIZE;
+            int localY = tileY - cY * CHUNK_SIZE;
+
+            if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) chunk.put(generateKey(localX, localY), tile);
+
+        }
+    
+        modified = true;
+        loaded = !chunk.isEmpty();
+    
     }
 
     // Unload resources

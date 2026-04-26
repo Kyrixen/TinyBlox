@@ -57,6 +57,7 @@ public class Terrain {
 
     // Pre-generate chunks
     public void init() {
+        
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
         
@@ -65,11 +66,22 @@ public class Terrain {
             for(int y = 0; y < chunkCountY; y++){
 
                 Chunk c = new Chunk(x, y, size, true, tex, cam);
+        
+                //ChunkBuilder cb = new ChunkBuilder(x, y, size);
+                
+                //cb.fill("grass");
+                //cb.setTile(5, 9, "dirt");
+                //cb.setTile(10, 0, "water");
+                //cb.setTile(7, 10, "dirt");
+                //cb.setTile(5, 9, "stone");
                 
                 c.generate(noise);
-
+                //c.set(cb.build());
+                
                 // Store chunk
                 chunks.put(generateKey(x, y), c);
+
+                //cb.cleanup();
 
             }
 
