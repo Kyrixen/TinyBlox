@@ -16,6 +16,7 @@ import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Chunk;
 import io.kyrixen.tinyblox.world.Terrain;
 
 public class Engine implements Screen {
@@ -95,8 +96,11 @@ public class Engine implements Screen {
         int spawnChunkX = (spawn[0] / Constants.GRID_SIZE) / terrain.getChunkSize();
         int spawnChunkY = (spawn[1] / Constants.GRID_SIZE) / terrain.getChunkSize();
 
-        System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.toString());
-        System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.size());
+        //System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.toString());
+        //System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.size());
+
+        Chunk c  = terrain.getChunk(spawnChunkX, spawnChunkY);
+        c.setTile(6, 6, "stone", false);
 
     }
 

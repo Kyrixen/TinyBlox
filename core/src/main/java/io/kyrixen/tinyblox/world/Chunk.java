@@ -69,6 +69,15 @@ public class Chunk {
 
         }
 
+        // Set type (only in chunk / tile class can be accesed)
+        private void setType(String type) {
+
+            this.type = type;
+
+            this.tileX = getTileX(type);
+            this.tileY = getTileY(type);
+
+        }
 
         // Map tileX to tileset via type
         private static int getTileX(String type) {
@@ -334,16 +343,19 @@ public class Chunk {
 
     public void setTile(int x, int y, String type, boolean solid) {
 
-        if(type == null) return;
+        if (type == null) return;
 
         Tile t = this.chunk.get(generateKey(x, y));
 
-        //if(t == null) return;
+        if (t == null) return;
 
-        t.type = type;
+        t.setType(type);
         t.solid = solid;
 
+        modified = true;
+
     }
+
 
     // Unload resources
     public void cleanup() {
