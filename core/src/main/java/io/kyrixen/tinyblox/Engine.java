@@ -37,7 +37,6 @@ public class Engine implements Screen {
     private Terrain terrain;
     private FPSCounter fpsCounter;
     public SoundManager soundManager;
-    //private MapLoader loader;
 
     SpriteBatch batch;
     ShapeRenderer shape;
@@ -54,7 +53,6 @@ public class Engine implements Screen {
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();
-        //loader = new MapLoader("worlds", Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12);
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
@@ -72,7 +70,6 @@ public class Engine implements Screen {
 
         // Terrain init
         terrain.init();
-        //loader.load("world.json", 12, textures, camera);
 
         // Spawn cords
         int[] spawn = Utils.spawnNearCenter();
@@ -94,6 +91,12 @@ public class Engine implements Screen {
         enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
+
+        int spawnChunkX = (spawn[0] / Constants.GRID_SIZE) / terrain.getChunkSize();
+        int spawnChunkY = (spawn[1] / Constants.GRID_SIZE) / terrain.getChunkSize();
+
+        System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.toString());
+        System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.size());
 
     }
 
@@ -126,7 +129,7 @@ public class Engine implements Screen {
 
         }
 
-        player.stats(camera);
+        //player.stats(camera);
 
         if(player.isDead()) {
             System.out.println("Player is dead! Health: " + player.health() + " | Game Over.");
@@ -207,8 +210,6 @@ public class Engine implements Screen {
     @Override
     public void dispose() {
 
-        //loader.save("world.json");
-
         System.out.println("On cleanup");
   
         // Call cleanup on all entities, without removing them from the list
@@ -229,7 +230,6 @@ public class Engine implements Screen {
         camera.cleanup();
         fpsCounter.cleanup();
         renderer.cleanup();
-        //loader.destroy();
 
         if (soundManager != null) soundManager.cleanup();
         

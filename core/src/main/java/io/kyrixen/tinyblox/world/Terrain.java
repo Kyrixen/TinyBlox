@@ -57,6 +57,7 @@ public class Terrain {
 
     // Pre-generate chunks
     public void init() {
+        chunks.clear();
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -104,8 +105,8 @@ public class Terrain {
 
                 if (c == null) continue;
 
-                // If isnt loaded dont render
-                if(!c.loaded) continue;
+                // If not visible dont render
+                if(!c.visible) continue;
 
                 c.render(batch);
 
@@ -133,6 +134,8 @@ public class Terrain {
             Chunk c = new Chunk(cX, cY, size, true, tex, cam);
             c.generate(noise);
             chunks.put(key, c);
+
+            System.out.println("Generated new chunk!");
 
         }
 

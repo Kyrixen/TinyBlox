@@ -30,6 +30,7 @@ public class Chunk {
 
     // Chunk properties
     public boolean loaded;
+    public boolean visible;
     public boolean modified;
 
     // Textures helper
@@ -134,6 +135,7 @@ public class Chunk {
         
         this.modified = false;
         this.loaded = loaded;
+        this.visible = loaded;
         
     }
 
@@ -160,6 +162,7 @@ public class Chunk {
         // Safety: do not generate invalid chunks
         if (cX < 0 || cY < 0 || cX >= worldChunksX || cY >= worldChunksY) {
             loaded = false;
+            visible = false;
             return;
         }
 
@@ -206,6 +209,7 @@ public class Chunk {
         //System.out.println("Chunk size: " + this.chunk.size());
 
         loaded = !chunk.isEmpty();
+        visible = loaded;
 
     }
 
@@ -213,7 +217,7 @@ public class Chunk {
     public void render(SpriteBatch batch) {
 
         // Check if can render chunk
-        if (!loaded) return;
+        if (!loaded || !visible) return;
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
@@ -233,17 +237,17 @@ public class Chunk {
 
     public void load(){
 
-        if(loaded) return;
+        if(!loaded) return;
 
-        loaded = true;
+        visible = true;
 
     }
 
     public void unload(){
 
-        if(!loaded) return;
+        if(!visible) return;
 
-        loaded = false;
+        visible = false;
 
     }
 
@@ -271,8 +275,8 @@ public class Chunk {
         int top    = Math.max(0, camChunkY - buffer);
         int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
 
-        // Load chunk if inside visible area
-        loaded = (cX >= left && cX <= right && cY >= top && cY <= bottom);
+        // Keep generated chunk data in RAM; only toggle rendering.
+        visible = loaded && cX >= left && cX <= right && cY >= top && cY <= bottom;
 
     }
  
@@ -324,7 +328,21 @@ public class Chunk {
     
         modified = true;
         loaded = !chunk.isEmpty();
+        visible = loaded;
     
+    }
+
+    public void setTile(int x, int y, String type, boolean solid) {
+
+        if(type == null) return;
+
+        Tile t = this.chunk.get(generateKey(x, y));
+
+        //if(t == null) return;
+
+        t.type = type;
+        t.solid = solid;
+
     }
 
     // Unload resources
@@ -335,6 +353,7 @@ public class Chunk {
 
         // Mark unloaded and remove references
         loaded = false;
+        visible = false;
         cam = null;
         tex = null;
         
