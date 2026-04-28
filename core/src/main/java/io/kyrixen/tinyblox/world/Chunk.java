@@ -209,8 +209,6 @@ public class Chunk {
 
                 //System.out.println(tile);
 
-                //Terrain.tiles.add(tile);
-
             }
 
         }
