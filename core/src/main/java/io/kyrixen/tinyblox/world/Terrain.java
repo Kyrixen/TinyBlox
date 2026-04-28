@@ -57,6 +57,9 @@ public class Terrain {
 
     // Pre-generate chunks
     public void init() {
+
+        System.out.println("Seed: " + seed);
+
         chunks.clear();
         
         int chunkCountX = (w + size - 1) / size;

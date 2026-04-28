@@ -16,7 +16,6 @@ import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
-import io.kyrixen.tinyblox.world.Chunk;
 import io.kyrixen.tinyblox.world.Terrain;
 
 public class Engine implements Screen {
@@ -51,7 +50,7 @@ public class Engine implements Screen {
         renderer = new Renderer(camera);
         controller = new Controller();
         textures = new Textures(camera);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.05f, false);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.02f, false);
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();
         batch = new SpriteBatch();
@@ -92,15 +91,6 @@ public class Engine implements Screen {
         enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
-
-        int spawnChunkX = (spawn[0] / Constants.GRID_SIZE) / terrain.getChunkSize();
-        int spawnChunkY = (spawn[1] / Constants.GRID_SIZE) / terrain.getChunkSize();
-
-        //System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.toString());
-        //System.out.println(terrain.getChunk(spawnChunkX, spawnChunkY).chunk.size());
-
-        Chunk c  = terrain.getChunk(spawnChunkX, spawnChunkY);
-        c.setTile(6, 6, "stone", false);
 
     }
 

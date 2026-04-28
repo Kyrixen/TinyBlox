@@ -198,9 +198,9 @@ public class Chunk {
 
                 String type;
 
-                if (t < -0.3f)      type = "water";
-                else if (t < 0.0f)  type = "stone";
-                else if (t < 0.5f)  type = "dirt";
+                if (t < -0.35f)      type = "water";
+                else if (t < -0.10f)  type = "stone";
+                else if (t < 0.45f)  type = "dirt";
                 else                type = "grass";
 
                 Tile tile = new Tile(worldX, worldY, type);
@@ -227,8 +227,10 @@ public class Chunk {
 
         // Check if can render chunk
         if (!loaded || !visible) return;
+
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
         // Check if textures are loaded
