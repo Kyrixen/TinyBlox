@@ -1,6 +1,6 @@
 # TinyBlox
 
-A lightweight 2D game engine in Java using java native libraries for rendering, input handling, and audio playback. This engine supports entities, terrain, player movement, camera follow, and basic sounds.
+A lightweight 2D game engine in Java using LibGdx library for rendering, input handling, and audio playback. This engine supports entities, terrain, player movement, camera follow, and basic sounds.
 
 ---
 
@@ -46,7 +46,7 @@ A lightweight 2D game engine in Java using java native libraries for rendering, 
 - [ ] Teleportation
 - [ ] Placing
 - [ ] Destroying
-- [x] Sound (Partial)
+- [x] Sound
 - [ ] Boss fight
 - [ ] Multiplayer?
 - [ ] 32-bit support?
@@ -59,7 +59,7 @@ A lightweight 2D game engine in Java using java native libraries for rendering, 
 
 ## Requirements
 
-- Java 8 (Dont use OpenJDK)
+- Java 8
 - Gradle 4.10.3
 - Desktop for now (mobile maybe later)
 
@@ -103,8 +103,8 @@ cd TinyEngine
 
 * Player is spawned in the middle of the map.
 * All entities and terrain tiles are drawn via `Textures`, so offsets from the camera are handled there.
-* Textures are 50x50 (16x16 soon)
-* Sounds are handled via `javax.sound.sampled.Clip`.
+* Textures are 16x16
+* Sounds are handled via LibGdx.
 * Health and stamina systems include cooldowns and limits.
 
 ---
