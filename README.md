@@ -60,7 +60,7 @@ A lightweight 2D game engine in Java using LibGdx library for rendering, input h
 ## Requirements
 
 - Java 8
-- Gradle 4.10.3
+- Gradle 9.3.1
 - Desktop for now (mobile maybe later)
 
 ---
