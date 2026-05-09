@@ -274,8 +274,8 @@ public class UI {
         protected int w, h;
 
         // Value
-        protected float minValue = 0;
-        protected float maxValue = 100;
+        protected float minValue = 0f;
+        protected float maxValue = 100f;
 
         // Slider specific
         protected float percent = 0;
@@ -290,11 +290,14 @@ public class UI {
 
         protected boolean dragging = false;
         protected boolean hover = false;
+        protected boolean pressed = false;
 
         protected boolean wasDragged = false;
         protected boolean wasHovered = false;
 
         private ShapeRenderer shapeRenderer;
+
+        protected String name;
 
         protected BitmapFont font;
         protected GlyphLayout layout = new GlyphLayout();
@@ -303,7 +306,7 @@ public class UI {
             this.uiSoundManager = uiSoundManager;
         }
 
-        public void init(int x, int y, int w, int h, float percent) {
+        public void init(int x, int y, int w, int h, float percent, float maxValue, String name) {
 
             this.x = x;
             this.y = y;
@@ -312,6 +315,9 @@ public class UI {
             this.h = h;
 
             this.percent = percent;
+            this.maxValue = maxValue;
+
+            this.name = name;
 
             this.shapeRenderer = new ShapeRenderer();
 
@@ -349,11 +355,11 @@ public class UI {
 
             hover = mX >= x && mX <= x + w && mY >= y && mY <= y + h;
 
-            if(hover && Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = true; if(!wasDragged) { uiSoundManager.slider.play(0.5f); wasDragged = true; } }
+            if(hover && Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(0.5f); wasDragged = true; } }
             if(hover) { if(!wasHovered) { uiSoundManager.options.play(0.7f); wasHovered = true; } }
             if(!hover) wasHovered = false;
 
-            if(!Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; }
+            if(!Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }
 
             if(dragging) {
                 percent = (float)(mX - x) / w;
@@ -386,13 +392,13 @@ public class UI {
 
             batch.begin();
         
-            layout.setText(font, Integer.toString(this.getValue()));
+            layout.setText(font, name + " " + Integer.toString(this.getValue()));
             font.setColor(percentageColor);
 
             float textX = x + (w - layout.width) / 2f;
             float textY = y + (h + layout.height) / 2f;
 
-            font.draw(batch, Integer.toString(this.getValue()), textX, textY);
+            font.draw(batch, name + " " + Integer.toString(this.getValue()), textX, textY);
         
             batch.end();
         
@@ -400,6 +406,8 @@ public class UI {
 
         // Getters
         public int getValue() { return (int)(minValue + percent * (maxValue - minValue)); }
+        
+        public boolean pressed() { return this.pressed; }
 
     }
 

@@ -71,7 +71,7 @@ public class Settings implements Screen {
         vsyncButton.initTexture(Textures.grayButton);
         vsyncButton.setToggleState(ToggleButtonState.ON);
 
-        fpsSlider.init(Constants.GRID_SIZE * 10, 128, 128 * 4, 16 * 4, 0.24f);
+        fpsSlider.init(Constants.GRID_SIZE * 10, 128, 128 * 4, 16 * 4, 0.24f, 1000f, "FPS");
         fpsSlider.initTexture(Textures.whiteSlider, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
 
     }
@@ -98,6 +98,8 @@ public class Settings implements Screen {
         if(exitButton.pressed()) main.setScreen(new Menu(main));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
         if(vsyncButton.pressed()) { Constants.VSYNC = !Constants.VSYNC; Utils.updateVsync(); }
+
+        if(fpsSlider.pressed()) { Constants.FPS = fpsSlider.getValue(); Utils.updateFPS(); }
 
     }
 
