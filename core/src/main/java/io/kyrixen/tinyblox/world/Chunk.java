@@ -35,8 +35,7 @@ public class Chunk {
     private Textures tex;
 
     // Stores chunk tiles
-    //public HashMap<TilePos, Tile> chunk = new HashMap<>();
-    public Tile[][] chunk;
+    private Tile[][] chunk;
 
     // Tile class
     public static class Tile {
@@ -52,9 +51,6 @@ public class Chunk {
         
         }
 
-        // World position
-        int x, y;
-
         // Texture atlas coords
         int tileX, tileY;
 
@@ -68,10 +64,7 @@ public class Chunk {
         boolean solid;
 
         // Constructs tile
-        public Tile(int x, int y, TileType type, byte height) {
-
-            this.x = x;
-            this.y = y;
+        public Tile(TileType type, byte height) {
 
             this.type = type;
 
@@ -81,16 +74,6 @@ public class Chunk {
             this.height = height;
 
             this.solid = this.height >= 1;
-
-        }
-
-        // Set type (only in chunk / tile class can be accesed)
-        private void setType(TileType type) {
-
-            this.type = type;
-
-            this.tileX = getTileX(type);
-            this.tileY = getTileY(type);
 
         }
 
@@ -125,9 +108,6 @@ public class Chunk {
         
         // Helper functions //
 
-        public int getY(){ return y; }
-        public int getX(){ return x; }
-
         public boolean solid(){ return solid; }
 
         public TileType type() { return type; }
@@ -141,7 +121,7 @@ public class Chunk {
 
         @Override
         public String toString() {
-            return "Tile{ x=" + x + ", y=" + y + ", type=" + type + ", height=" + height + " }";
+            return "Tile{ solid=" + solid + ", type=" + type + ", height=" + height + " }";
         }
 
     }
@@ -197,10 +177,6 @@ public class Chunk {
                     continue;
                 }
 
-                // Convert tile coords → world PIXELS
-                int worldX = tileX * Constants.GRID_SIZE;
-                int worldY = tileY * Constants.GRID_SIZE;
-
                 float t = noise.GetNoise(tileX, tileY);
 
                 float height = (t + 1f) / 2f;
@@ -228,9 +204,8 @@ public class Chunk {
 
                 }                
                 
-                Tile tile = new Tile(worldX, worldY, type, (byte) layer);
-
-                chunk[tx][ty] = tile;
+                Tile tile = new Tile(type, (byte) layer);
+                this.setTile(tx, ty, tile);
 
             }
 
@@ -261,8 +236,13 @@ public class Chunk {
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
             for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
-                if(chunk[tx][ty] == null) continue;
-                tex.drawTileset(tex.terrainTileset, chunk[tx][ty].getX(), chunk[tx][ty].getY(), Constants.GRID_SIZE, Constants.GRID_SIZE, chunk[tx][ty].tileX, chunk[tx][ty].tileY, Constants.GRID_SIZE, batch);
+                
+                if(this.getTile(tx, ty) == null) continue;
+                
+                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
+                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
+
+                tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, this.getTile(tx, ty).tileX, this.getTile(tx, ty).tileY, Constants.GRID_SIZE, batch);
             }
         }
         
@@ -320,10 +300,13 @@ public class Chunk {
             for (byte tx = 0; tx < c.CHUNK_SIZE; tx++) {
                 for (byte ty = 0; ty < c.CHUNK_SIZE; ty++) {
 
-                    Chunk.Tile t = c.chunk[tx][ty];
+                    Chunk.Tile t = c.getTile(tx, ty);
                     if(t == null) continue;
 
-                    if(e.x() < t.x + Constants.GRID_SIZE && e.x() + e.width() > t.x && e.y() < t.y + Constants.GRID_SIZE && e.y() + e.height() > t.y) return t;
+                    int globalX = (c.getX() * c.CHUNK_SIZE + tx) * Constants.GRID_SIZE;
+                    int globalY = (c.getY() * c.CHUNK_SIZE + ty) * Constants.GRID_SIZE;
+                    
+                    if(e.x() < globalX + Constants.GRID_SIZE && e.x() + e.width() > globalX && e.y() < globalY + Constants.GRID_SIZE && e.y() + e.height() > globalY) return t;
                 
                 }
             }
@@ -350,7 +333,7 @@ public class Chunk {
                 Tile tile = tiles[localX][localY];
                 if (tile == null) continue;
 
-                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) chunk[localX][localY] = tile;
+                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) this.setTile(localX, localY, tile);
         
             }
         }
@@ -361,17 +344,11 @@ public class Chunk {
     
     }
 
-    public void setTile(byte x, byte y, TileType type, byte height) {
+    public void setTile(byte tx, byte ty, Tile tile) {
 
-        if (type == null) return;
+        if (tile == null) return;
 
-        Tile t = this.chunk[x][y];
-
-        if (t == null) return;
-
-        t.setType(type);
-        t.height = height;
-        t.updateSolid();
+        this.chunk[tx][ty] = tile;
 
         modified = true;
 

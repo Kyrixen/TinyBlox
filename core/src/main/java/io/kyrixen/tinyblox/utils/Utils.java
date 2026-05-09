@@ -50,7 +50,8 @@ public class Utils {
         int centerX = (Constants.MAP_WIDTH * Constants.GRID_SIZE) / 2;
         int centerY = (Constants.MAP_HEIGHT * Constants.GRID_SIZE) / 2;
 
-        Chunk.Tile bestTile = null;
+        int bestTileX = centerX;
+        int bestTileY = centerY;
         double bestDist = Double.MAX_VALUE;
                 
         // Iterate over all chunks
@@ -58,20 +59,24 @@ public class Utils {
             for (byte localX = 0; localX < Terrain.getChunkSize(); localX++) {
                 for (byte localY = 0; localY < Terrain.getChunkSize(); localY++) {
 
-                    Tile t = c.chunk[localX][localY]; 
+                    Tile t = c.getTile(localX, localY); 
 
                     if (t == null) continue;
                     if (t.solid()) continue; // Skip solid tiles
 
+                    int globalX = (c.getX() * Terrain.getChunkSize() + localX) * Constants.GRID_SIZE;
+                    int globalY = (c.getY() * Terrain.getChunkSize() + localY) * Constants.GRID_SIZE;
+
                     // Distance to center
-                    double dx = t.getX() - centerX;
-                    double dy = t.getY() - centerY;
+                    double dx = globalX - centerX;
+                    double dy = globalY - centerY;
                     double dist = Math.sqrt(dx * dx + dy * dy);
 
                     // Keep closest
                     if (dist < bestDist) {
                         bestDist = dist;
-                        bestTile = t;
+                        bestTileX = globalX;
+                        bestTileY = globalY;
                     }
             
                 }
@@ -80,15 +85,8 @@ public class Utils {
 
         }
 
-        if (bestTile != null) {
-            System.out.println("Safe spawn found at: " + bestTile.getX() + ", " + bestTile.getY());
-            return new int[]{bestTile.getX(), bestTile.getY()};
-        }
-
-        // Fallback to exact center
-        System.out.println("No safe spawn found, using map center");
-
-        return new int[]{centerX, centerY};
+        System.out.println("Safe spawn found at: " + bestTileX + ", " + bestTileY);
+        return new int[]{bestTileX, bestTileY};
 
     }
 

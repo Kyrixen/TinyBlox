@@ -14,7 +14,7 @@ public class Terrain {
 
     // For passing the chunk size
     public final byte size;
-    public static byte publicSize;
+    private static byte publicSize;
     
 
     // Helper texture
@@ -206,19 +206,19 @@ public class Terrain {
                 for (byte localX = 0; localX < Terrain.getChunkSize(); localX++) {
                     for (byte localY = 0; localY < Terrain.getChunkSize(); localY++) {
                         
-                        Tile tile = c.chunk[localX][localY];
+                        Tile tile = c.getTile(localX, localY);
 
                         if (tile == null) continue;
                         if (!tile.solid()) continue;
 
-                        int tx = tile.getX();
-                        int ty = tile.getY();
-
+                        int globalX = (c.getX() * Terrain.getChunkSize() + localX) * Constants.GRID_SIZE;
+                        int globalY = (c.getY() * Terrain.getChunkSize() + localY) * Constants.GRID_SIZE;
+                        
                         // AABB collision
-                        if (nextX < tx + tileSize &&
-                            nextX + e.width() > tx &&
-                            nextY < ty + tileSize &&
-                            nextY + e.height() > ty) {
+                        if (nextX < globalX + tileSize &&
+                            nextX + e.width() > globalX &&
+                            nextY < globalY + tileSize &&
+                            nextY + e.height() > globalY) {
                             return; // Blocked
                         }
                 

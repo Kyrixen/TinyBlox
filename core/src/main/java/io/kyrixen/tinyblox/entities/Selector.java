@@ -135,7 +135,7 @@ public class Selector {
 
         if(current == null) return;
 
-        chunk.setTile(localTileX, localTileY, TileType.DIRT, (byte) (current.height() + 1));
+        chunk.setTile(localTileX, localTileY, new Tile(TileType.DIRT, (byte) (current.height() + 1)));
 
     }
 
@@ -156,7 +156,7 @@ public class Selector {
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
 
-        chunk.setTile(localTileX, localTileY, TileType.AIR, (byte) -1);
+        chunk.setTile(localTileX, localTileY, new Tile(TileType.AIR, (byte) -1));
 
     }
 
