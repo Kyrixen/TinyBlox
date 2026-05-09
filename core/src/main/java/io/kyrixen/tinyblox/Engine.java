@@ -83,14 +83,14 @@ public class Engine implements Screen {
         entities.add(player);
 
         // Create enemy
-        //Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
+        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
         
         // Add to list
-        //entities.add(enemy1);
+        entities.add(enemy1);
 
         // Configure enemy
-        //enemy1.setTarget(player);
-        //enemy1.setChasing(true);
+        enemy1.setTarget(player);
+        enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
 
@@ -125,7 +125,7 @@ public class Engine implements Screen {
 
         }
 
-        //player.stats(camera);
+        player.stats(camera);
 
         if(player.isDead()) {
             System.out.println("Player is dead! Health: " + player.health() + " | Game Over.");
