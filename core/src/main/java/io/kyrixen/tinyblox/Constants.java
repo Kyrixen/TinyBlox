@@ -9,8 +9,9 @@ public class Constants {
     public static final int WINDOW_HEIGHT = 600;
 
     // FPS settings
-    public static final int FPS = 240;
-    public static final boolean VSYNC = true;
+    public static int FPS = 240;
+    public static boolean SHOW_FPS = false;
+    public static boolean VSYNC = true;
 
     // World size
     public static int MAP_WIDTH = 1024;

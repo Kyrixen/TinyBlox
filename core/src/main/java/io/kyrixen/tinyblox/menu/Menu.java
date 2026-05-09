@@ -12,6 +12,7 @@ import io.kyrixen.tinyblox.Engine;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.graphics.UI.Button;
+import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.sound.UISounds;
 
 public class Menu implements Screen {
@@ -23,6 +24,7 @@ public class Menu implements Screen {
     private UISounds uiSoundManager;
 
     private Button playButton;
+    private Button settingsButton;
 
     private SpriteBatch batch;
 
@@ -34,21 +36,28 @@ public class Menu implements Screen {
     public void show() {
 
         this.batch = new SpriteBatch();
+        
         this.uiSoundManager = new UISounds();
+
         this.playButton = new Button(uiSoundManager);
+        this.settingsButton = new Button(uiSoundManager);
 
         init();
+    
     }
 
 
     private void init() {
         
-        Textures.initBackground();
+        Textures.initMenuBackground();
         Textures.initUITextures();
 
         playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 48);
-        playButton.initTexture(Textures.button);
-
+        playButton.initTexture(Textures.brownButton);
+    
+        settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 48);
+        settingsButton.initTexture(Textures.brownButton);
+    
     }
 
     // Game loop
@@ -65,19 +74,22 @@ public class Menu implements Screen {
     private void update(float delta) {
 
         playButton.updateState();
-        
+        settingsButton.updateState();
+
         if(playButton.pressed()) main.setScreen(new Engine());
-    
+        if(settingsButton.pressed()) main.setScreen(new Settings(this.main));
+
     }
 
     private void draw() {
 
         ScreenUtils.clear(Color.CYAN);
         
-        Textures.showBackground(batch);
+        Textures.showMenuBackground(batch);
 
         batch.begin();
         playButton.render(batch);
+        settingsButton.render(batch);
         batch.end();
 
     }
@@ -113,7 +125,9 @@ public class Menu implements Screen {
         System.out.println("On menu cleanup");
 
         if(batch != null) batch.dispose();
+        
         playButton.dispose();
+        settingsButton.dispose();
 
         uiSoundManager.cleanup();
     

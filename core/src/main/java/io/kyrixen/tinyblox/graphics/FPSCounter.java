@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.kyrixen.tinyblox.Constants;
+
 public class FPSCounter {
 
     private final BitmapFont fpsFont;
@@ -16,6 +18,9 @@ public class FPSCounter {
     public int getFPS() { return Gdx.graphics.getFramesPerSecond(); }
 
     public void printFPS(SpriteBatch batch) {
+
+        if(!Constants.SHOW_FPS) return;
+
         fpsFont.draw(batch, "FPS: " + getFPS(), 25, Gdx.graphics.getHeight() - 25);
     }
 

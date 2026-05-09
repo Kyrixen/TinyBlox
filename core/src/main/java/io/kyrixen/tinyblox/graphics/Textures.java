@@ -18,7 +18,8 @@ public class Textures {
 
 
     // Create texture vars
-    public static Texture backgroundImage;
+    public static Texture menuBackgroundImage;
+    public static Texture settingsBackgroundImage;
 
     public Texture playerTexture;
     public Texture enemyTexture;
@@ -35,8 +36,10 @@ public class Textures {
     public static Texture dialogCorner;
     public static Texture dialogSide;
     public static Texture dialogCenter;
-    public static Texture button;
-
+    public static Texture brownButton;
+    public static Texture grayButton;
+    public static Texture whiteToggleButton;
+    public static Texture whiteSlider;
 
     // Constructor (Init camera var)
     public Textures(Camera camera) {
@@ -97,16 +100,31 @@ public class Textures {
         batch.draw(tileset, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }
-    // Show background
-    public static void initBackground(){
-        backgroundImage = load("textures/background/background.png");
+
+    // Show Menu background
+    public static void initMenuBackground(){
+        menuBackgroundImage = load("textures/background/menu_background.png");
     }
 
-    // Show background
-    public static void showBackground(SpriteBatch batch){
+    // Show Menu background
+    public static void showMenuBackground(SpriteBatch batch){
 
         batch.begin();
-        batch.draw(backgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        batch.draw(menuBackgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        batch.end();
+
+    }
+    
+    // Show Settings background
+    public static void initSettingsBackground(){
+        settingsBackgroundImage = load("textures/background/settings_background.png");
+    }
+
+    // Show Settings background
+    public static void showSettingsBackground(SpriteBatch batch){
+
+        batch.begin();
+        batch.draw(settingsBackgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         batch.end();
 
     }
@@ -132,7 +150,10 @@ public class Textures {
         dialogCorner = load("textures/ui/dialog/dialog_corner.png");
         dialogSide = load("textures/ui/dialog/dialog_side.png");
         dialogCenter = load("textures/ui/dialog/dialog_center.png");
-        button = load("textures/ui/button/default_button.png");
+        brownButton = load("textures/ui/button/brown_button.png");
+        grayButton = load("textures/ui/button/gray_button.png");
+        whiteToggleButton = load("textures/ui/button/white_toggle_button.png");
+        whiteSlider = load("textures/ui/slider/white_slider.png");
     
     }
 
