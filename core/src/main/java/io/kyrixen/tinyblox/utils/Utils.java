@@ -55,8 +55,8 @@ public class Utils {
                 
         // Iterate over all chunks
         for (Chunk c : Terrain.chunks.values()) {
-            for (byte localX = 0; localX < c.CHUNK_SIZE; localX++) {
-                for (byte localY = 0; localY < c.CHUNK_SIZE; localY++) {
+            for (byte localX = 0; localX < Terrain.getChunkSize(); localX++) {
+                for (byte localY = 0; localY < Terrain.getChunkSize(); localY++) {
 
                     Tile t = c.chunk[localX][localY]; 
 

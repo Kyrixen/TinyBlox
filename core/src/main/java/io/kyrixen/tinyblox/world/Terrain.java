@@ -14,7 +14,9 @@ public class Terrain {
 
     // For passing the chunk size
     public final byte size;
+    public static byte publicSize;
     
+
     // Helper texture
     private Textures tex;
     
@@ -38,6 +40,7 @@ public class Terrain {
     public Terrain(int w, int h, byte size, Textures texture, Camera camera, int seed, float frequency, boolean multiplayer) {
         
         this.size = size;
+        Terrain.publicSize = size;
 
         Terrain.seed = seed;
 
@@ -121,8 +124,8 @@ public class Terrain {
 
     }
 
-    public int getChunkSize() {
-        return size;
+    public static int getChunkSize() {
+        return publicSize;
     }
 
     public String generateKey(int cX, int cY){
@@ -167,6 +170,7 @@ public class Terrain {
 
     }
 
+    @Deprecated
     // Helper for Entity.java
     public void tryMove(Entity e, Terrain terrain) {
 
@@ -183,7 +187,7 @@ public class Terrain {
         if (nextX < 0 || nextY < 0 || nextX + e.width() > worldPixelWidth || nextY + e.height() > worldPixelHeight) return;
 
         // Determine chunk range the entity could touch
-        int chunkSize = terrain.getChunkSize();
+        int chunkSize = Terrain.getChunkSize();
 
         short startChunkX = (short) (nextX / (chunkSize * tileSize));
         short startChunkY = (short) (nextY / (chunkSize * tileSize));
@@ -199,8 +203,8 @@ public class Terrain {
                 if (!c.loaded) continue;
 
                 // Check each tile in the chunk
-                for (byte localX = 0; localX < c.CHUNK_SIZE; localX++) {
-                    for (byte localY = 0; localY < c.CHUNK_SIZE; localY++) {
+                for (byte localX = 0; localX < Terrain.getChunkSize(); localX++) {
+                    for (byte localY = 0; localY < Terrain.getChunkSize(); localY++) {
                         
                         Tile tile = c.chunk[localX][localY];
 
@@ -222,6 +226,67 @@ public class Terrain {
                 
                 }
             
+            }
+        
+        }
+
+        // No collision, move allowed
+        e.setX(nextX);
+        e.setY(nextY);
+    
+    }
+
+    // Try to move entity
+    public void queryMove(Entity e, Terrain terrain) {
+
+        if (e.dirX() == 0 && e.dirY() == 0) return;
+
+        int tileSize = Constants.GRID_SIZE;
+
+        int nextX = e.x() + e.dirX() * tileSize;
+        int nextY = e.y() + e.dirY() * tileSize;
+
+        // World bounds check in pixels (map size is stored in tiles)
+        int worldPixelWidth = Constants.MAP_WIDTH * tileSize;
+        int worldPixelHeight = Constants.MAP_HEIGHT * tileSize;
+
+        if (nextX < 0 || nextY < 0 || nextX + e.width() > worldPixelWidth || nextY + e.height() > worldPixelHeight) return;
+
+        // Entity bounds in Tile coordinates
+        int leftTile   = nextX / tileSize;
+        int rightTile  = (nextX + e.width() - 1) / tileSize;
+        int topTile    = nextY / tileSize;
+        int bottomTile = (nextY + e.height() - 1) / tileSize;
+
+
+        // Only check touched tiles
+        for (int tileX = leftTile; tileX <= rightTile; tileX++) {
+            for (int tileY = topTile; tileY <= bottomTile; tileY++) {
+
+                // Find chunk
+                short chunkX = (short) (tileX / Terrain.getChunkSize());
+                short chunkY = (short) (tileY / Terrain.getChunkSize());
+
+                Chunk c = terrain.getChunk(chunkX, chunkY);
+
+                if (c == null || !c.loaded) continue;
+
+                // Local tile position INSIDE chunk
+                byte localX = (byte) (tileX % Terrain.getChunkSize());
+                byte localY = (byte) (tileY % Terrain.getChunkSize());
+
+                Tile tile = c.getTile(localX, localY);
+
+                if (tile == null) continue;
+                if (!tile.solid()) continue;
+
+                // Convert tile coords -> WORLD PIXELS
+                int tx = tileX * tileSize;
+                int ty = tileY * tileSize;
+
+                // Collision
+                if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) return;
+
             }
         
         }

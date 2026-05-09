@@ -11,7 +11,7 @@ import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 public class Chunk {
 
     // Count of tiles in chunk
-    public final int CHUNK_SIZE;
+    private final int CHUNK_SIZE;
 
     // Chunk cords
     private final int cX;
