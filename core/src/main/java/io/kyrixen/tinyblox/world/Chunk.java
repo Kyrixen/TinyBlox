@@ -348,6 +348,8 @@ public class Chunk {
 
         if (tile == null) return;
 
+        tile.updateSolid();
+
         this.chunk[tx][ty] = tile;
 
         modified = true;
