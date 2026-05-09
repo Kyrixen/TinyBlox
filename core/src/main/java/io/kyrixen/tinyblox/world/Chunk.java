@@ -1,19 +1,17 @@
 package io.kyrixen.tinyblox.world;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.world.Chunk.Tile.TileType;
 import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Chunk {
 
     // Count of tiles in chunk
-    private final int CHUNK_SIZE;
+    public final int CHUNK_SIZE;
 
     // Chunk cords
     private final int cX;
@@ -30,32 +28,47 @@ public class Chunk {
 
     // Chunk properties
     public boolean loaded;
-    public boolean visible;
+    public boolean rendered;
     public boolean modified;
 
     // Textures helper
     private Textures tex;
 
     // Stores chunk tiles
-    public HashMap<String, Tile> chunk = new HashMap<>();
+    //public HashMap<TilePos, Tile> chunk = new HashMap<>();
+    public Tile[][] chunk;
 
     // Tile class
     public static class Tile {
 
-        // Cords
-        int x, y;
+        // Tile type enum
+        public static enum TileType {
         
-        // Helper for tileset loading
+            AIR,
+            GRASS,
+            DIRT,
+            WATER,
+            STONE
+        
+        }
+
+        // World position
+        int x, y;
+
+        // Texture atlas coords
         int tileX, tileY;
 
-        // Tile properties
+        // Tile data
+        TileType type;
+
+        // Terrain height
+        byte height;
+
+        // Collision
         boolean solid;
 
-        // Tile type
-        String type;
-
         // Constructs tile
-        public Tile(int x, int y, String type) {
+        public Tile(int x, int y, TileType type, byte height) {
 
             this.x = x;
             this.y = y;
@@ -65,12 +78,14 @@ public class Chunk {
             this.tileX = getTileX(type);
             this.tileY = getTileY(type);
             
-            this.solid = getSolid(type);
+            this.height = height;
+
+            this.solid = this.height >= 1;
 
         }
 
         // Set type (only in chunk / tile class can be accesed)
-        private void setType(String type) {
+        private void setType(TileType type) {
 
             this.type = type;
 
@@ -80,54 +95,54 @@ public class Chunk {
         }
 
         // Map tileX to tileset via type
-        private static int getTileX(String type) {
+        private static int getTileX(TileType type) {
 
-            switch (type.toLowerCase()) {
-                case "grass": return 1;
-                case "stone": return 0;
-                case "dirt" : return 0;
-                case "water": return 1;
-                default     : return 0;
+            switch (type) {
+                case GRASS: return 1;
+                case STONE: return 0;
+                case DIRT : return 0;
+                case WATER: return 1;
+                case AIR  : return 0;
+                default   : return 0;
             }
 
         }
 
 
         // Map tileY to tileset via type
-        private static int getTileY(String type) {
+        private static int getTileY(TileType type) {
         
-            switch (type.toLowerCase()) {
-                case "grass": return 0;
-                case "stone": return 1;
-                case "dirt" : return 0;
-                case "water": return 1; 
-                default     : return 0;
+            switch (type) {
+                case GRASS: return 0;
+                case STONE: return 1;
+                case DIRT : return 0;
+                case WATER: return 1;
+                case AIR  : return 2;
+                default   : return 0;
             }
         
         }
-
-        // Get solid via type
-        private static boolean getSolid(String type){
-
-            switch(type.toLowerCase()){
-                case "grass": return false;
-                case "dirt" : return false;
-                case "stone": return true;
-                case "water": return true;
-                default     : return false;
-            }
-
-        }
-
+        
         // Helper functions //
 
         public int getY(){ return y; }
-
         public int getX(){ return x; }
 
         public boolean solid(){ return solid; }
 
-        public String type() { return type; }
+        public TileType type() { return type; }
+
+        public byte height() { return height; }
+
+        public void updateSolid() {
+            this.solid = this.height >= 1;
+            if(this.type == TileType.AIR) solid = true;
+        }
+
+        @Override
+        public String toString() {
+            return "Tile{ x=" + x + ", y=" + y + ", type=" + type + ", height=" + height + " }";
+        }
 
     }
 
@@ -138,25 +153,21 @@ public class Chunk {
         this.cY = y;
 
         this.CHUNK_SIZE = size;
+        this.chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
         
         this.tex = tex;
         this.cam = cam;
         
         this.modified = false;
         this.loaded = loaded;
-        this.visible = loaded;
+        this.rendered = loaded;
         
-    }
-
-    // Helper func
-    public String generateKey(int tx, int ty){
-        return Integer.toString(tx) + "," + Integer.toString(ty);
     }
 
     // Generate the chunk
     public void generate(FastNoiseLite noise) {
 
-        chunk.clear();
+        chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
 
         // World size in tiles
         int worldTilesX = Constants.MAP_WIDTH;
@@ -166,19 +177,15 @@ public class Chunk {
         int worldChunksX = (worldTilesX + CHUNK_SIZE - 1) / CHUNK_SIZE;
         int worldChunksY = (worldTilesY + CHUNK_SIZE - 1) / CHUNK_SIZE;
 
-        //System.out.println("Here");
-
         // Safety: do not generate invalid chunks
         if (cX < 0 || cY < 0 || cX >= worldChunksX || cY >= worldChunksY) {
             loaded = false;
-            visible = false;
+            rendered = false;
             return;
         }
 
-        //System.out.println("Here too");
-
-        for (int tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (int ty = 0; ty < CHUNK_SIZE; ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
 
                 // Tile position in WORLD TILE coordinates
                 int tileX = cX * CHUNK_SIZE + tx;
@@ -196,27 +203,41 @@ public class Chunk {
 
                 float t = noise.GetNoise(tileX, tileY);
 
-                String type;
+                float height = (t + 1f) / 2f;
+                TileType type;
 
-                if (t < -0.35f)      type = "water";
-                else if (t < -0.10f)  type = "stone";
-                else if (t < 0.45f)  type = "dirt";
-                else                type = "grass";
+                if (height < 0.30f)      type = TileType.WATER;
+                else if (height < 0.55f) type = TileType.DIRT;
+                else if (height < 0.80f) type = TileType.GRASS;
+                else                     type = TileType.STONE;
 
-                Tile tile = new Tile(worldX, worldY, type);
+                byte layer;
+                switch(type) {
 
-                chunk.put(tx + "," + ty, tile);
+                    case AIR:
+                        layer = -1;
+                        break;
 
-                //System.out.println(tile);
+                    case STONE:
+                        layer = 1;
+                        break;
+
+                    default:
+                        layer = 0;
+                        break;
+
+                }                
+                
+                Tile tile = new Tile(worldX, worldY, type, (byte) layer);
+
+                chunk[tx][ty] = tile;
 
             }
 
         }
 
-        //System.out.println("Chunk size: " + this.chunk.size());
-
-        loaded = !chunk.isEmpty();
-        visible = loaded;
+        loaded = true;
+        rendered = loaded;
 
     }
 
@@ -224,7 +245,7 @@ public class Chunk {
     public void render(SpriteBatch batch) {
 
         // Check if can render chunk
-        if (!loaded || !visible) return;
+        if (!loaded || !rendered) return;
 
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
@@ -238,8 +259,11 @@ public class Chunk {
         }
 
         // Render each tile
-        for (Tile tile : chunk.values()) {
-            tex.drawTileset(tex.terrainTileset, tile.getX(), tile.getY(), Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
+                if(chunk[tx][ty] == null) continue;
+                tex.drawTileset(tex.terrainTileset, chunk[tx][ty].getX(), chunk[tx][ty].getY(), Constants.GRID_SIZE, Constants.GRID_SIZE, chunk[tx][ty].tileX, chunk[tx][ty].tileY, Constants.GRID_SIZE, batch);
+            }
         }
         
     }
@@ -248,15 +272,15 @@ public class Chunk {
 
         if(!loaded) return;
 
-        visible = true;
+        rendered = true;
 
     }
 
     public void unload(){
 
-        if(!visible) return;
+        if(!rendered) return;
 
-        visible = false;
+        rendered = false;
 
     }
 
@@ -277,15 +301,15 @@ public class Chunk {
 
         int buffer = Constants.BUFFER; // Number of chunks beyond camera view
 
-        // Determine visible chunk range
-        // Determine visible chunk range
+        // Determine rendered chunk range
+        // Determine rendered chunk range
         int left   = Math.max(0, camChunkX - buffer);
         int right  = Math.min(worldChunksX - 1, camChunkX + cam.RENDER_DISTANCE + buffer);
         int top    = Math.max(0, camChunkY - buffer);
         int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
 
         // Keep generated chunk data in RAM; only toggle rendering.
-        visible = loaded && cX >= left && cX <= right && cY >= top && cY <= bottom;
+        rendered = loaded && cX >= left && cX <= right && cY >= top && cY <= bottom;
 
     }
  
@@ -293,10 +317,15 @@ public class Chunk {
     public static Tile blockCollision(Entity e){
 
         for(Chunk c : Terrain.chunks.values()){
-            for(Chunk.Tile t : c.chunk.values()){
+            for (byte tx = 0; tx < c.CHUNK_SIZE; tx++) {
+                for (byte ty = 0; ty < c.CHUNK_SIZE; ty++) {
 
-                if(e.x() < t.x + Constants.GRID_SIZE && e.x() + e.width() > t.x && e.y() < t.y + Constants.GRID_SIZE && e.y() + e.height() > t.y) return t;
+                    Chunk.Tile t = c.chunk[tx][ty];
+                    if(t == null) continue;
 
+                    if(e.x() < t.x + Constants.GRID_SIZE && e.x() + e.width() > t.x && e.y() < t.y + Constants.GRID_SIZE && e.y() + e.height() > t.y) return t;
+                
+                }
             }
 
         }
@@ -305,67 +334,62 @@ public class Chunk {
 
     }
 
-    public ArrayList<Tile> get() {
-        
-        ArrayList<Tile> chunkTiles = new ArrayList<>();
-
-        for(Tile t : this.chunk.values()) { chunkTiles.add(t); }
-        
-        return chunkTiles;
-    
+    public Tile[][] get() {
+        return this.chunk;
     }
 
-    public void set(ArrayList<Tile> tiles) {
+    public void set(Tile[][] tiles) {
     
         if (tiles == null) return;
 
-        chunk.clear();
+        chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
     
-        for (Tile tile : tiles) {
+        for (byte localX = 0; localX < this.CHUNK_SIZE; localX++) {
+            for (byte localY = 0; localY < this.CHUNK_SIZE; localY++) {
             
-            if (tile == null) continue;
+                Tile tile = tiles[localX][localY];
+                if (tile == null) continue;
 
-            int tileX = tile.getX() / Constants.GRID_SIZE;
-            int tileY = tile.getY() / Constants.GRID_SIZE;
-
-            int localX = tileX - cX * CHUNK_SIZE;
-            int localY = tileY - cY * CHUNK_SIZE;
-
-            if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) chunk.put(generateKey(localX, localY), tile);
-
+                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) chunk[localX][localY] = tile;
+        
+            }
         }
     
         modified = true;
-        loaded = !chunk.isEmpty();
-        visible = loaded;
+        loaded = true;
+        rendered = loaded;
     
     }
 
-    public void setTile(int x, int y, String type, boolean solid) {
+    public void setTile(byte x, byte y, TileType type, byte height) {
 
         if (type == null) return;
 
-        Tile t = this.chunk.get(generateKey(x, y));
+        Tile t = this.chunk[x][y];
 
         if (t == null) return;
 
         t.setType(type);
-        t.solid = solid;
+        t.height = height;
+        t.updateSolid();
 
         modified = true;
 
     }
 
+    public Tile getTile(byte localX, byte localY) {
+        return this.chunk[localX][localY];
+    }
 
     // Unload resources
     public void cleanup() {
 
         // Clear local tile map
-        if (chunk != null) chunk.clear();
+        if (chunk != null) chunk = null;
 
         // Mark unloaded and remove references
         loaded = false;
-        visible = false;
+        rendered = false;
         cam = null;
         tex = null;
         

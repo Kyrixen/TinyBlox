@@ -8,9 +8,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
@@ -18,13 +18,13 @@ import io.kyrixen.tinyblox.world.Terrain;
 
 public class Player extends Entity {
 
-    Selector selector;
+    private Selector selector;
 
-    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, SoundManager soundManager) {
+    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, Sfx soundManager) {
     
         super(id, x, y, width, height, null, soundManager);
         
-        this.type = "player";
+        this.type = EntityType.PLAYER;
 
         this.moveDelay = 0.30f;
         this.sprintDelay = 0.15f;
@@ -41,7 +41,7 @@ public class Player extends Entity {
 
         this.terrain = terrain;
 
-        selector = new Selector(this, entities, soundManager);
+        this.selector = new Selector(this, entities, soundManager);
 
         lastDelay = System.currentTimeMillis();
     
@@ -75,15 +75,16 @@ public class Player extends Entity {
 
             }
             
-            selector.update(30);
             lastDelay = currentTime;
 
         }
 
         autoRecover(true, deltaTime);
         autoRegenerate(true, deltaTime);
-        
         this.exhausted = stamina <= 0 && !tireless;
+
+        selector.update(terrain, 30);
+        
 
     }
 
@@ -197,7 +198,8 @@ public class Player extends Entity {
 
     }
 
-
-
+    public Selector getSelector() {
+        return this.selector;
+    }
 
 }

@@ -5,9 +5,9 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -21,11 +21,11 @@ public class Enemy extends Entity {
     boolean chasing;
 
 
-    public Enemy(int id, int x, int y, int width, int height, Terrain terrain, SoundManager soundManager) {
+    public Enemy(int id, int x, int y, int width, int height, Terrain terrain, Sfx soundManager) {
         
         super(id, x, y, width, height, terrain, soundManager);
         
-        this.type = "enemy";
+        this.type = EntityType.ENEMY;
         this.chasing = false;
         this.terrain = terrain;
 

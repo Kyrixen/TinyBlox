@@ -11,9 +11,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.kyrixen.tinyblox.entities.Enemy;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.Player;
+import io.kyrixen.tinyblox.entities.Entity.EntityType;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -36,7 +38,7 @@ public class Engine implements Screen {
     private Camera camera;
     private Terrain terrain;
     private FPSCounter fpsCounter;
-    public SoundManager soundManager;
+    public Sfx soundManager;
 
     SpriteBatch batch;
     ShapeRenderer shape;
@@ -50,9 +52,9 @@ public class Engine implements Screen {
         renderer = new Renderer(camera);
         controller = new Controller();
         textures = new Textures(camera);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.02f, false);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, (byte) 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f, false);
         fpsCounter = new FPSCounter();
-        soundManager = new SoundManager();
+        soundManager = new Sfx();
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
@@ -81,14 +83,14 @@ public class Engine implements Screen {
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
+        //Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
         
         // Add to list
-        entities.add(enemy1);
+        //entities.add(enemy1);
 
         // Configure enemy
-        enemy1.setTarget(player);
-        enemy1.setChasing(true);
+        //enemy1.setTarget(player);
+        //enemy1.setChasing(true);
 
         Entity.initTextureAll(textures, entities);
 
@@ -119,7 +121,7 @@ public class Engine implements Screen {
 
         for (Entity e : entities) {
 
-            if(e.type().equals("enemy")){ Enemy en = (Enemy) e; en.check(player); }
+            if(e.type() == EntityType.ENEMY){ Enemy en = (Enemy) e; en.check(player); }
 
         }
 
@@ -133,9 +135,9 @@ public class Engine implements Screen {
 
         entities.removeIf(e -> {
 
-            if(!e.type().equals("player") && e.isDead()){
+            if(e.type() != EntityType.PLAYER && e.isDead()){
 
-                if(e.type().equals("enemy")) soundManager.explosion.play(Utils.getFloatVolume(35));
+                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatVolume(35));
                 
                 e.cleanup();
 
@@ -145,8 +147,6 @@ public class Engine implements Screen {
             return false;
         
         });
-
-        //if(Chunk.blockCollision(player).type().equals("dirt")) System.out.println("Standing on dirt!");
 
     }
 

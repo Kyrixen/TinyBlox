@@ -9,12 +9,12 @@ public class Constants {
     public static final int WINDOW_HEIGHT = 600;
 
     // FPS settings
-    public static final int FPS = 240;
-    public static boolean VSYNC = true;
+    public static final int FPS = 1000;
+    public static final boolean VSYNC = false;
 
     // World size
-    public static int MAP_WIDTH = 24;
-    public static int MAP_HEIGHT = 24;
+    public static int MAP_WIDTH = 1024;
+    public static int MAP_HEIGHT = 1024;
 
     // Tile size
     public static final int GRID_SIZE = 16;

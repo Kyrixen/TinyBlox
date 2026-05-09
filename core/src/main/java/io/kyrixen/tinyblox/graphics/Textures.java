@@ -28,6 +28,7 @@ public class Textures {
     public Texture stoneTexture;
     public Texture dirtTexture;
     public Texture waterTexture;
+    public Texture airTexture;
     public Texture terrainTileset;
     
     public Texture dialogCorner;
@@ -117,6 +118,7 @@ public class Textures {
         stoneTexture = load("textures/terrain/stone.png");
         dirtTexture = load("textures/terrain/dirt.png");
         waterTexture = load("textures/terrain/water.png");
+        airTexture = load("textures/terrain/air.png");
         terrainTileset = load("textures/terrain/terrain.png");
     
         dialogCorner = load("textures/ui/dialog/dialog_corner.png");

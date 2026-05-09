@@ -5,15 +5,24 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.SoundManager;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 
 
 // Implement stats
 public class Entity implements Stats.Health, Stats.Stamina {
+
+    public static enum EntityType {
+        
+        DEFAULT,
+        PLAYER,
+        ENEMY
+
+    }
+
 
     // Cords
     int x;
@@ -52,7 +61,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     // Texture and type of entity
     Texture texture;
-    String type;
+    EntityType type;
 
     // Terrain helper
     protected Terrain terrain;
@@ -72,10 +81,10 @@ public class Entity implements Stats.Health, Stats.Stamina {
     protected boolean autoRegenerate = true;
     protected boolean autoRecover = true;
 
-    SoundManager soundManager;
+    Sfx soundManager;
 
     // Constructs entity
-    public Entity(int id, int x, int y, int width, int height, Terrain terrain, SoundManager soundManager) {
+    public Entity(int id, int x, int y, int width, int height, Terrain terrain, Sfx soundManager) {
 
         this.id = id;
         this.x = x;
@@ -89,15 +98,15 @@ public class Entity implements Stats.Health, Stats.Stamina {
         this.soundManager = soundManager;
 
         // Defaults
-        this.type = "default";
+        this.type = EntityType.DEFAULT;
 
     }
 
     // Get texture
     public Texture initTexture(Textures textures) {
 
-        if(this.type.equals("enemy")) this.texture = textures.enemyTexture;
-        if(this.type.equals("player")) this.texture = textures.playerTexture;
+        if(this.type == EntityType.ENEMY) this.texture = textures.enemyTexture;
+        if(this.type == EntityType.PLAYER) this.texture = textures.playerTexture;
         else this.texture = textures.entityTexture;
         
         return this.texture;
@@ -363,7 +372,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     public float health() { return health; }
     public float stamina() { return stamina; }
 
-    public String type() { return type; }
+    public EntityType type() { return type; }
 
 }
 

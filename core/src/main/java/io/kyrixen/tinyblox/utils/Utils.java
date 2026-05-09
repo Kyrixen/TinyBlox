@@ -7,6 +7,7 @@ import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.Chunk;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.Chunk.Tile;
 
 public class Utils {
     
@@ -54,21 +55,27 @@ public class Utils {
                 
         // Iterate over all chunks
         for (Chunk c : Terrain.chunks.values()) {
-            for (Chunk.Tile t : c.chunk.values()) {
+            for (byte localX = 0; localX < c.CHUNK_SIZE; localX++) {
+                for (byte localY = 0; localY < c.CHUNK_SIZE; localY++) {
 
-                if (t.solid()) continue; // Skip solid tiles
+                    Tile t = c.chunk[localX][localY]; 
 
-                // Distance to center
-                double dx = t.getX() - centerX;
-                double dy = t.getY() - centerY;
-                double dist = Math.sqrt(dx * dx + dy * dy);
+                    if (t == null) continue;
+                    if (t.solid()) continue; // Skip solid tiles
 
-                // Keep closest
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    bestTile = t;
+                    // Distance to center
+                    double dx = t.getX() - centerX;
+                    double dy = t.getY() - centerY;
+                    double dist = Math.sqrt(dx * dx + dy * dy);
+
+                    // Keep closest
+                    if (dist < bestDist) {
+                        bestDist = dist;
+                        bestTile = t;
+                    }
+            
                 }
-
+            
             }
 
         }
