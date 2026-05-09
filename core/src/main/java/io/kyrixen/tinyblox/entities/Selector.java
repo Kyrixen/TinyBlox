@@ -38,8 +38,12 @@ public class Selector {
 
     // Place delay
     private long lastPlace = 0L;
-    private float placeDelay = 0.15f;
+    private float placeDelay = 0.30f;
 
+    // Break delay
+    private long lastBreak = 0L;
+    private float breakDelay = 0.55f;
+    
     // Renderer
     ShapeRenderer sr;
 
@@ -53,6 +57,7 @@ public class Selector {
         this.sr = new ShapeRenderer();
 
         this.lastPlace = System.currentTimeMillis();
+        this.lastBreak = System.currentTimeMillis();
     
     }
 
@@ -90,15 +95,8 @@ public class Selector {
         this.width = this.entity.width;
         this.height = this.entity.height;
 
-        if(System.currentTimeMillis() - lastPlace >= placeDelay * 1000) {
-        
-            checkPlace(terrain);
-            this.lastPlace = System.currentTimeMillis();
-        
-        }
-
+        checkPlace(terrain);
         checkDestroy(terrain);
-
         checkHit(damage);
 
     }
@@ -117,6 +115,7 @@ public class Selector {
     private void checkPlace(Terrain terrain) {
 
         if(!Peripheal.mousePressed(Input.Buttons.RIGHT)) return;
+        if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
         
         Entity e = checkEntityCollision(entities);
         if(e != null) return;
@@ -136,11 +135,14 @@ public class Selector {
 
         chunk.setTile(localTileX, localTileY, new Tile(TileType.DIRT, (byte) (current.height() + 1)));
 
+        this.lastPlace = System.currentTimeMillis();
+
     }
 
     private void checkDestroy(Terrain terrain) {
 
         if(!Peripheal.mousePressed(Input.Buttons.LEFT)) return;
+        if(System.currentTimeMillis() - lastBreak < breakDelay * 1000) return;
         
         Entity e = checkEntityCollision(entities);
         if(e != null) return;
@@ -155,7 +157,14 @@ public class Selector {
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
 
+        Tile current = chunk.getTile(localTileX, localTileY);
+
+        if(current == null) return;
+        if(current.type() == TileType.AIR) return;
+        
         chunk.setTile(localTileX, localTileY, new Tile(TileType.AIR, (byte) -1));
+
+        this.lastBreak = System.currentTimeMillis();
 
     }
 

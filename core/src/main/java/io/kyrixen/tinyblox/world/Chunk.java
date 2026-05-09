@@ -350,6 +350,8 @@ public class Chunk {
 
         tile.updateSolid();
 
+        tile.height = (byte) Math.max(-1, Math.min(tile.height, 3));
+
         this.chunk[tx][ty] = tile;
 
         modified = true;
