@@ -11,14 +11,14 @@ import io.kyrixen.tinyblox.world.Camera;
 public class Textures {
 
     // List of loaded textures
-    private final ArrayList<Texture> loadedTextures = new ArrayList<>();
+    private static final ArrayList<Texture> loadedTextures = new ArrayList<>();
 
     // Camera Object
     private Camera camera;
 
 
     // Create texture vars
-    public Texture backgroundImage;
+    public static Texture backgroundImage;
 
     public Texture playerTexture;
     public Texture enemyTexture;
@@ -31,9 +31,11 @@ public class Textures {
     public Texture airTexture;
     public Texture terrainTileset;
     
-    public Texture dialogCorner;
-    public Texture dialogSide;
-    public Texture dialogCenter;
+    // UI Textures
+    public static Texture dialogCorner;
+    public static Texture dialogSide;
+    public static Texture dialogCenter;
+    public static Texture button;
 
 
     // Constructor (Init camera var)
@@ -43,7 +45,7 @@ public class Textures {
 
 
     // Load texture
-    public Texture load(String path) {
+    public static Texture load(String path) {
     
         System.out.println("[Textures] Loading: " + path);
     
@@ -95,11 +97,13 @@ public class Textures {
         batch.draw(tileset, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }
+    // Show background
+    public static void initBackground(){
+        backgroundImage = load("textures/background/background.png");
+    }
 
     // Show background
-    public void showBackground(SpriteBatch batch){
-
-        backgroundImage = load("textures/background/background.png");
+    public static void showBackground(SpriteBatch batch){
 
         batch.begin();
         batch.draw(backgroundImage, 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
@@ -121,9 +125,14 @@ public class Textures {
         airTexture = load("textures/terrain/air.png");
         terrainTileset = load("textures/terrain/terrain.png");
     
+    }
+
+    public static void initUITextures() {
+
         dialogCorner = load("textures/ui/dialog/dialog_corner.png");
         dialogSide = load("textures/ui/dialog/dialog_side.png");
         dialogCenter = load("textures/ui/dialog/dialog_center.png");
+        button = load("textures/ui/button/default_button.png");
     
     }
 
