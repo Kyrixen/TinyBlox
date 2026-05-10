@@ -80,6 +80,7 @@ public class Player extends Entity {
 
         autoRecover(true, deltaTime);
         autoRegenerate(true, deltaTime);
+        
         this.exhausted = stamina <= 0 && !tireless;
 
         selector.update(terrain, 30);
