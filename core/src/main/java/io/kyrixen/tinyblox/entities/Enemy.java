@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
@@ -147,7 +148,7 @@ public class Enemy extends Entity {
     // Checks collision
     public void check(Entity player){
 
-        if (Utils.checkCollision(player, this)) {
+        if (EntityCollision.checkCollision(player, this)) {
                         
             System.out.println("Collision detected between player and enemy!");
 

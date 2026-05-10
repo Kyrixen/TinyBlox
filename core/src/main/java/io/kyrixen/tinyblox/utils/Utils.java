@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
@@ -29,16 +28,6 @@ public class Utils {
         return floatVolume;
     }
 
-    // Check collision between entities
-    public static boolean checkCollision(Entity e1, Entity e2) {
-        
-        return (e1.x() < e2.x() + e2.width() &&
-                e1.x() + e1.width() > e2.x() &&
-                e1.y() < e2.y() + e2.height() &&
-                e1.y() + e1.height() > e2.y());
-    
-    }
-
     // For better func
     public static void betterTilesetDraw(int x, int y, int tix, int tiy, Textures texture, SpriteBatch batch){
         texture.drawTileset(texture.terrainTileset, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE, tix, tiy, Constants.GRID_SIZE, batch);
@@ -56,16 +45,16 @@ public class Utils {
                 
         // Iterate over all chunks
         for (Chunk c : Terrain.chunks.values()) {
-            for (byte localX = 0; localX < Terrain.getChunkSize(); localX++) {
-                for (byte localY = 0; localY < Terrain.getChunkSize(); localY++) {
+            for (byte localX = 0; localX < c.getChunkSize(); localX++) {
+                for (byte localY = 0; localY < c.getChunkSize(); localY++) {
 
                     Tile t = c.getTile(localX, localY); 
 
                     if (t == null) continue;
                     if (t.solid()) continue; // Skip solid tiles
 
-                    int globalX = (c.getX() * Terrain.getChunkSize() + localX) * Constants.GRID_SIZE;
-                    int globalY = (c.getY() * Terrain.getChunkSize() + localY) * Constants.GRID_SIZE;
+                    int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
+                    int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;
 
                     // Distance to center
                     double dx = globalX - centerX;

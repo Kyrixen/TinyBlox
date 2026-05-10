@@ -3,10 +3,8 @@ package io.kyrixen.tinyblox.world.chunk;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.Camera;
-import io.kyrixen.tinyblox.world.Terrain;
 
 public class Chunk {
 
@@ -132,30 +130,6 @@ public class Chunk {
 
         // Keep generated chunk data in RAM; only toggle rendering.
         rendered = loaded && cX >= left && cX <= right && cY >= top && cY <= bottom;
-
-    }
- 
-    // Tile collision
-    public static Tile blockCollision(Entity e){
-
-        for(Chunk c : Terrain.chunks.values()){
-            for (byte tx = 0; tx < c.CHUNK_SIZE; tx++) {
-                for (byte ty = 0; ty < c.CHUNK_SIZE; ty++) {
-
-                    Tile t = c.getTile(tx, ty);
-                    if(t == null) continue;
-
-                    int globalX = (c.getX() * c.CHUNK_SIZE + tx) * Constants.GRID_SIZE;
-                    int globalY = (c.getY() * c.CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-                    
-                    if(e.x() < globalX + Constants.GRID_SIZE && e.x() + e.width() > globalX && e.y() < globalY + Constants.GRID_SIZE && e.y() + e.height() > globalY) return t;
-                
-                }
-            }
-
-        }
-
-        return null;
 
     }
 

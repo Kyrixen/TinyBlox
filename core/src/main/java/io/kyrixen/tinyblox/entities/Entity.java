@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.kyrixen.tinyblox.collision.TerrainCollision;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
@@ -129,7 +130,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Tries to move
     public boolean tryMove(Terrain terrain){
         moving = dirX != 0 || dirY != 0;
-        return terrain.queryMove(this, terrain);
+        return TerrainCollision.queryMove(this, terrain);
     }
 
     // Update entity
