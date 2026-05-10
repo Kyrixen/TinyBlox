@@ -11,10 +11,10 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.menu.Menu;
-import io.kyrixen.tinyblox.menu.UI.Button;
-import io.kyrixen.tinyblox.menu.UI.Slider;
-import io.kyrixen.tinyblox.menu.settings.UISettingsAddon.ToggleButton;
-import io.kyrixen.tinyblox.menu.settings.UISettingsAddon.ToggleButton.ToggleButtonState;
+import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton;
+import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton.ToggleButtonState;
+import io.kyrixen.tinyblox.menu.ui.Button;
+import io.kyrixen.tinyblox.menu.ui.Slider;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Utils;
 
