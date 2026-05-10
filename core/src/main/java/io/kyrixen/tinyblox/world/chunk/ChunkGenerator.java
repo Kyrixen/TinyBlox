@@ -9,8 +9,6 @@ public class ChunkGenerator {
     // Generate the chunk
     public static void generate(Chunk chunk, FastNoiseLite noise) {
 
-        chunk.set(new Tile[chunk.getChunkSize()][chunk.getChunkSize()]);
-
         // World size in tiles
         int worldTilesX = Constants.MAP_WIDTH;
         int worldTilesY = Constants.MAP_HEIGHT;
@@ -67,7 +65,7 @@ public class ChunkGenerator {
                 }                
                 
                 Tile tile = new Tile(type, (byte) layer);
-                chunk.setTile(tx, ty, tile);
+                chunk.getTileStack(tx, ty).push(tile);
 
             }
 

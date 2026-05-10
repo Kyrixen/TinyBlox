@@ -33,7 +33,7 @@ public class Chunk {
     private Textures tex;
 
     // Stores chunk tiles
-    private Tile[][] chunk;
+    private TileStack[][] chunk;
 
 
     // Construct chunk
@@ -43,7 +43,13 @@ public class Chunk {
         this.cY = y;
 
         this.CHUNK_SIZE = size;
-        this.chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
+        this.chunk = new TileStack[CHUNK_SIZE][CHUNK_SIZE];
+
+        for(byte xPos = 0; xPos < CHUNK_SIZE; xPos++) {
+            for(byte yPos = 0; yPos < CHUNK_SIZE; yPos++) {
+                this.chunk[xPos][yPos] = new TileStack();
+            }
+        }
         
         this.tex = tex;
         this.cam = cam;
@@ -75,12 +81,14 @@ public class Chunk {
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
             for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
                 
-                if(this.getTile(tx, ty) == null) continue;
+                Tile tile = this.getTileStack(tx, ty).top();
+
+                if(tile == null) continue;
                 
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
 
-                tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, this.getTile(tx, ty).tileX, this.getTile(tx, ty).tileY, Constants.GRID_SIZE, batch);
+                tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
             }
         }
         
@@ -133,23 +141,29 @@ public class Chunk {
 
     }
 
-    public Tile[][] get() {
+    public TileStack[][] get() {
         return this.chunk;
     }
 
-    public void set(Tile[][] tiles) {
+    public void set(TileStack[][] tiles) {
     
         if (tiles == null) return;
 
-        chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
+        chunk = new TileStack[CHUNK_SIZE][CHUNK_SIZE];
     
+        for(byte xPos = 0; xPos < CHUNK_SIZE; xPos++) {
+            for(byte yPos = 0; yPos < CHUNK_SIZE; yPos++) {
+                chunk[xPos][yPos] = new TileStack();
+            }
+        }
+
         for (byte localX = 0; localX < this.CHUNK_SIZE; localX++) {
             for (byte localY = 0; localY < this.CHUNK_SIZE; localY++) {
             
-                Tile tile = tiles[localX][localY];
+                Tile tile = tiles[localX][localY].top();
                 if (tile == null) continue;
 
-                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) this.setTile(localX, localY, tile);
+                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) this.getTileStack(localX, localY).push(tile);
         
             }
         }
@@ -160,21 +174,7 @@ public class Chunk {
     
     }
 
-    public void setTile(byte tx, byte ty, Tile tile) {
-
-        if (tile == null) return;
-
-        tile.updateSolid();
-
-        tile.height = (byte) Math.max(-1, Math.min(tile.height, 3));
-
-        this.chunk[tx][ty] = tile;
-
-        modified = true;
-
-    }
-
-    public Tile getTile(byte localX, byte localY) {
+    public TileStack getTileStack(byte localX, byte localY) {
         return this.chunk[localX][localY];
     }
 

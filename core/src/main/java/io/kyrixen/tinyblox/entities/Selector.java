@@ -129,11 +129,11 @@ public class Selector {
         short chunkPosY = (short) (tileY / terrain.size);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
-        Tile current = chunk.getTile(localTileX, localTileY);
+        Tile current = chunk.getTileStack(localTileX, localTileY).top();
 
         if(current == null) return;
 
-        chunk.setTile(localTileX, localTileY, new Tile(TileType.DIRT, (byte) (current.height() + 1)));
+        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.height() + 1)));
 
         this.lastPlace = System.currentTimeMillis();
 
@@ -157,12 +157,12 @@ public class Selector {
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
 
-        Tile current = chunk.getTile(localTileX, localTileY);
+        Tile current = chunk.getTileStack(localTileX, localTileY).top();
 
         if(current == null) return;
         if(current.type() == TileType.AIR) return;
         
-        chunk.setTile(localTileX, localTileY, new Tile(TileType.AIR, (byte) -1));
+        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1));
 
         this.lastBreak = System.currentTimeMillis();
 
@@ -205,7 +205,7 @@ public class Selector {
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
 
-        return chunk.getTile(localTileX, localTileY);
+        return chunk.getTileStack(localTileX, localTileY).top();
 
     }
 

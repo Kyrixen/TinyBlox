@@ -48,7 +48,7 @@ public class Utils {
             for (byte localX = 0; localX < c.getChunkSize(); localX++) {
                 for (byte localY = 0; localY < c.getChunkSize(); localY++) {
 
-                    Tile t = c.getTile(localX, localY); 
+                    Tile t = c.getTileStack(localX, localY).top(); 
 
                     if (t == null) continue;
                     if (t.solid()) continue; // Skip solid tiles

@@ -44,7 +44,7 @@ public class TerrainCollision {
                 for (byte localX = 0; localX < c.getChunkSize(); localX++) {
                     for (byte localY = 0; localY < c.getChunkSize(); localY++) {
                         
-                        Tile tile = c.getTile(localX, localY);
+                        Tile tile = c.getTileStack(localX, localY).top();
 
                         if (tile == null) continue;
                         if (!tile.solid()) continue;
@@ -114,7 +114,7 @@ public class TerrainCollision {
                 byte localX = (byte) (tileX % c.getChunkSize());
                 byte localY = (byte) (tileY % c.getChunkSize());
 
-                Tile tile = c.getTile(localX, localY);
+                Tile tile = c.getTileStack(localX, localY).top();
 
                 if (tile == null) continue;
                 if (!tile.solid()) continue;

@@ -15,7 +15,7 @@ public class TileCollision {
             for (byte tx = 0; tx < c.getChunkSize(); tx++) {
                 for (byte ty = 0; ty < c.getChunkSize(); ty++) {
 
-                    Tile t = c.getTile(tx, ty);
+                    Tile t = c.getTileStack(tx, ty).top();
                     if(t == null) continue;
 
                     int globalX = (c.getX() * c.getChunkSize() + tx) * Constants.GRID_SIZE;
