@@ -107,7 +107,7 @@ public class Selector {
         Entity e = checkEntityCollision(entities);
 
         if(e != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
-            if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatVolume(40));
+            if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40));
         }
 
     }

@@ -21,6 +21,7 @@ public class Utils {
     
     }
 
+    @Deprecated
     // For sounds
     public static float getFloatVolume(int volume) {
 
@@ -97,6 +98,11 @@ public class Utils {
     
     public static void updateFPS() {
         Gdx.graphics.setForegroundFPS(Constants.FPS);
+    }
+
+    public static float getFloatSound(int volume) {
+        float baseSound = volume / 100.0f;
+        return baseSound / (100f / Constants.VOLUME);
     }
 
 }

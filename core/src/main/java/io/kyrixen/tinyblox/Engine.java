@@ -137,7 +137,7 @@ public class Engine implements Screen {
 
             if(e.type() != EntityType.PLAYER && e.isDead()){
 
-                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatVolume(35));
+                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatSound(35));
                 
                 e.cleanup();
 

@@ -65,7 +65,7 @@ public class Player extends Entity {
             if(dirX != 0 || dirY != 0) {
                 moving = true;
             
-                soundManager.walk.play(Utils.getFloatVolume(5));
+                soundManager.walk.play(Utils.getFloatSound(15));
 
                 tryMove(terrain);
 

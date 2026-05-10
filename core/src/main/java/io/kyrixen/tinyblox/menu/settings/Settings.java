@@ -30,6 +30,7 @@ public class Settings implements Screen {
     private ToggleButton vsyncButton;
 
     private Slider fpsSlider;
+    private Slider musicSlider;
 
     private UISounds uiSoundManager;
 
@@ -51,6 +52,7 @@ public class Settings implements Screen {
         this.vsyncButton = new ToggleButton(uiSoundManager);
 
         this.fpsSlider = new Slider(uiSoundManager);
+        this.musicSlider = new Slider(uiSoundManager);
 
         init();
     
@@ -64,15 +66,18 @@ public class Settings implements Screen {
         exitButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "EXIT", 48);
         exitButton.initTexture(Textures.grayButton);
 
-        fpsButton.init(Constants.GRID_SIZE * 17, 256, 48 * 5, 16 * 5, "SHOW FPS", 48);
+        fpsButton.init(Constants.GRID_SIZE * 17, 288, 48 * 5, 16 * 5, "SHOW FPS", 48);
         fpsButton.initTexture(Textures.grayButton);
 
-        vsyncButton.init(Constants.GRID_SIZE * 17, 342, 48 * 5, 16 * 5, "VSYNC", 48);
+        vsyncButton.init(Constants.GRID_SIZE * 17, 374, 48 * 5, 16 * 5, "VSYNC", 48);
         vsyncButton.initTexture(Textures.grayButton);
         vsyncButton.setToggleState(ToggleButtonState.ON);
 
         fpsSlider.init(Constants.GRID_SIZE * 10, 128, 128 * 4, 16 * 4, 0.24f, 1000f, "FPS");
         fpsSlider.initTexture(Textures.whiteSlider, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
+
+        musicSlider.init(Constants.GRID_SIZE * 10, 208, 128 * 4, 16 * 4, 0.70f, 100f, "VOLUME");
+        musicSlider.initTexture(Textures.whiteSlider, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
 
     }
 
@@ -94,12 +99,14 @@ public class Settings implements Screen {
         vsyncButton.updateState();
 
         fpsSlider.updateState();
+        musicSlider.updateState();
 
         if(exitButton.pressed()) main.setScreen(new Menu(main));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
         if(vsyncButton.pressed()) { Constants.VSYNC = !Constants.VSYNC; Utils.updateVsync(); }
 
         if(fpsSlider.pressed()) { Constants.FPS = fpsSlider.getValue(); Utils.updateFPS(); }
+        if(musicSlider.pressed()) { Constants.VOLUME = musicSlider.getValue(); }
 
     }
 
@@ -116,6 +123,7 @@ public class Settings implements Screen {
         batch.end();
 
         fpsSlider.render(batch);
+        musicSlider.render(batch);
 
     }
 

@@ -8,6 +8,9 @@ public class Constants {
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
 
+    // Sound settings
+    public static int VOLUME = 70;
+
     // FPS settings
     public static int FPS = 240;
     public static boolean SHOW_FPS = false;

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Utils;
 
 
 public class UI {
@@ -130,8 +131,8 @@ public class UI {
 
             if(hover) {
 
-                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { state = ButtonState.PRESS; if(!wasPressed) { uiSoundManager.click.play(1.0f); wasPressed = true; } }
-                else { state = ButtonState.HOVER; if(!wasHovering) { uiSoundManager.hollow.play(0.8f); wasHovering = true; } wasPressed = false; }
+                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { state = ButtonState.PRESS; if(!wasPressed) { uiSoundManager.click.play(Utils.getFloatSound(100)); wasPressed = true; } }
+                else { state = ButtonState.HOVER; if(!wasHovering) { uiSoundManager.hollow.play(Utils.getFloatSound(80)); wasHovering = true; } wasPressed = false; }
 
             } else { state = ButtonState.NOACTION; wasHovering = false; wasPressed = false; }
         
@@ -355,8 +356,8 @@ public class UI {
 
             hover = mX >= x && mX <= x + w && mY >= y && mY <= y + h;
 
-            if(hover && Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(0.5f); wasDragged = true; } }
-            if(hover) { if(!wasHovered) { uiSoundManager.options.play(0.7f); wasHovered = true; } }
+            if(hover && Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(Utils.getFloatSound(50)); wasDragged = true; } }
+            if(hover) { if(!wasHovered) { uiSoundManager.options.play(Utils.getFloatSound(70)); wasHovered = true; } }
             if(!hover) wasHovered = false;
 
             if(!Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }

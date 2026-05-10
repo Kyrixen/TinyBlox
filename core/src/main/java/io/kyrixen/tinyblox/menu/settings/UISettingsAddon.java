@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.graphics.UI.Button;
 import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.utils.Utils;
 
 public class UISettingsAddon {
     
@@ -103,7 +104,7 @@ public class UISettingsAddon {
                 
                     if(!wasPressed) {
                 
-                        uiSoundManager.click.play(1.0f);
+                        uiSoundManager.click.play(Utils.getFloatSound(100));
                         wasPressed = true;
                 
                         if(toggleState == ToggleButtonState.DISABLED) return;
@@ -118,7 +119,7 @@ public class UISettingsAddon {
                     state = ButtonState.HOVER; 
                 
                     if(!wasHovering) {
-                        uiSoundManager.hollow.play(0.8f);
+                        uiSoundManager.hollow.play(Utils.getFloatSound(80));
                         wasHovering = true;
                     }
                 
