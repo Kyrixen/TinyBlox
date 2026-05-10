@@ -65,6 +65,8 @@ public class Enemy extends Entity {
     @Override
     public void update(float deltaTime) {
       
+        this.updateSpeed();
+
         if(System.currentTimeMillis() - lastDelay >= moveDelay * 1000) {   
         
             if(chasing){

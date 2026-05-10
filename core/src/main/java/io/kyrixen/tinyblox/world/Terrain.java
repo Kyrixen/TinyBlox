@@ -237,9 +237,9 @@ public class Terrain {
     }
 
     // Try to move entity
-    public void queryMove(Entity e, Terrain terrain) {
+    public boolean queryMove(Entity e, Terrain terrain) {
 
-        if (e.dirX() == 0 && e.dirY() == 0) return;
+        if (e.dirX() == 0 && e.dirY() == 0) return false;
 
         int tileSize = Constants.GRID_SIZE;
 
@@ -250,7 +250,7 @@ public class Terrain {
         int worldPixelWidth = Constants.MAP_WIDTH * tileSize;
         int worldPixelHeight = Constants.MAP_HEIGHT * tileSize;
 
-        if (nextX < 0 || nextY < 0 || nextX + e.width() > worldPixelWidth || nextY + e.height() > worldPixelHeight) return;
+        if (nextX < 0 || nextY < 0 || nextX + e.width() > worldPixelWidth || nextY + e.height() > worldPixelHeight) return false;
 
         // Entity bounds in Tile coordinates
         int leftTile   = nextX / tileSize;
@@ -285,7 +285,7 @@ public class Terrain {
                 int ty = tileY * tileSize;
 
                 // Collision
-                if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) return;
+                if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) return false;
 
             }
         
@@ -294,6 +294,8 @@ public class Terrain {
         // No collision, move allowed
         e.setX(nextX);
         e.setY(nextY);
+
+        return true;
     
     }
 

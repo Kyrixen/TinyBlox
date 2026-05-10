@@ -22,13 +22,15 @@ public class Player extends Entity {
 
     public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, Sfx soundManager) {
     
-        super(id, x, y, width, height, null, soundManager);
+        super(id, x, y, width, height, terrain, soundManager);
         
         this.type = EntityType.PLAYER;
 
         this.moveDelay = 0.30f;
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
+
+        this.speed = Speed.NORMAL;
 
         this.health = 100;
         this.maxHealth = 100;
@@ -38,8 +40,6 @@ public class Player extends Entity {
         
         this.invincible = false;
         this.tireless = false;
-
-        this.terrain = terrain;
 
         this.selector = new Selector(this, entities, soundManager);
 
@@ -58,16 +58,17 @@ public class Player extends Entity {
     @Override
     public void update(float deltaTime) {
         
+        this.updateSpeed();
+
         long currentTime = System.currentTimeMillis();
         if(currentTime - lastDelay >= moveDelay * 1000) {
 
             // Move if there's input
             if(dirX != 0 || dirY != 0) {
+                
                 moving = true;
             
-                soundManager.walk.play(Utils.getFloatSound(15));
-
-                tryMove(terrain);
+                if(tryMove(this.terrain)) soundManager.walk.play(Utils.getFloatSound(15));
 
                 } else { 
 
@@ -178,7 +179,7 @@ public class Player extends Entity {
     public void sprint(){
 
         if(!isExhausted() && Peripheal.anyWASDPressed() && Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)){ 
-            moveDelay = 0.15f; // Faster movement when sprinting
+            this.setSpeed(Speed.SPEEDY);
                         
             if(System.currentTimeMillis() - lastSprint >= sprintDelay * 1000) {
                 stamina -= 5; 
@@ -187,7 +188,7 @@ public class Player extends Entity {
         
         }
         
-        else moveDelay = 0.30f;
+        else this.setSpeed(Speed.NORMAL);
     
     }
 

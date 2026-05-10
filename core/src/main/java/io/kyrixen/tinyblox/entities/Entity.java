@@ -23,6 +23,16 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     }
 
+    public static enum Speed {
+
+        NONE,
+        SLOW,
+        NORMAL,
+        SPEEDY,
+        SONIC
+
+    }
+
 
     // Cords
     int x;
@@ -48,6 +58,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     
     // Movement
     protected boolean moving = false;
+    protected Speed speed = Speed.SLOW;
 
     //Timings
     protected long lastDelay = 0L;
@@ -114,13 +125,15 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Tries to move
-    public void tryMove(Terrain terrain){
+    public boolean tryMove(Terrain terrain){
         moving = dirX != 0 || dirY != 0;
-        terrain.queryMove(this, terrain);
+        return terrain.queryMove(this, terrain);
     }
 
     // Update entity
     public void update(float deltaTime) {
+
+        this.updateSpeed();
 
         if(System.currentTimeMillis() - lastDelay >= moveDelay * 1000) {
         
@@ -259,6 +272,38 @@ public class Entity implements Stats.Health, Stats.Stamina {
         if(stamina < 0) stamina = 0;  
     }
 
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
+    }
+
+    public void updateSpeed() {
+
+        switch (speed) {
+
+            case NONE:                
+                this.moveDelay = Float.MAX_VALUE;
+                break;
+            
+            case SLOW:
+                this.moveDelay = 0.55f;
+                break;
+                            
+            case NORMAL:
+                this.moveDelay = 0.30f;                
+                break;
+                            
+            case SPEEDY:
+                this.moveDelay = 0.15f;
+                break;
+                            
+            case SONIC:
+                this.moveDelay = 0.05f;
+                break;
+
+        }
+
+    }
+
     // Unload resources
     public void cleanup() {
 
@@ -304,7 +349,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
     public void sprint(){
 
         if(!isExhausted()){ 
-            moveDelay = 0.20f; // Faster movement when sprinting
+
+            this.setSpeed(Speed.NORMAL); // Faster movement when sprinting
             
             if(System.currentTimeMillis() - lastSprint >= sprintDelay * 1000) {
                 stamina -= 5; 
@@ -313,7 +359,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
         
         }
         
-        else moveDelay = 0.50f;
+        else this.setSpeed(Speed.SLOW);
     
     }
 
