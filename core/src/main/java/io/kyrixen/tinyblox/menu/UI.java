@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.graphics;
+package io.kyrixen.tinyblox.menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

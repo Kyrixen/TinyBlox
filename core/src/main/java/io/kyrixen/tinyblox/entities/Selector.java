@@ -12,10 +12,10 @@ import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
-import io.kyrixen.tinyblox.world.Chunk;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.Chunk.Tile;
-import io.kyrixen.tinyblox.world.Chunk.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
+import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 
 public class Selector {
 

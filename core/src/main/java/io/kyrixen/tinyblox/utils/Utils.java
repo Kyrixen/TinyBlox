@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
-import io.kyrixen.tinyblox.world.Chunk;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.Chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
+import io.kyrixen.tinyblox.world.chunk.Tile;
 
 public class Utils {
     
+    @Deprecated
     // Not used (used in LWJGL version)
     public static float getFloatColor(int color) {
 
@@ -24,11 +25,8 @@ public class Utils {
     @Deprecated
     // For sounds
     public static float getFloatVolume(int volume) {
-
         float floatVolume = volume / 100.0f;
-        
         return floatVolume;
-    
     }
 
     // Check collision between entities

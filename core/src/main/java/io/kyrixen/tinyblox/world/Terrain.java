@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
-import io.kyrixen.tinyblox.world.Chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
+import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
+import io.kyrixen.tinyblox.world.chunk.ChunkPos;
+import io.kyrixen.tinyblox.world.chunk.Tile;
 import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Terrain {
@@ -83,7 +86,7 @@ public class Terrain {
                 //cb.setTile((byte) 7, (byte) 10, TileType.DIRT, false, (byte) 0);
                 //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
                 
-                c.generate(noise);
+                ChunkGenerator.generate(c, noise);
                 //c.set(cb.build());
                 
                 // Store chunk
@@ -140,7 +143,7 @@ public class Terrain {
         if(!chunks.containsKey(cPos)){
 
             Chunk c = new Chunk(cX, cY, size, true, tex, cam);
-            c.generate(noise);
+            ChunkGenerator.generate(c, noise);
             chunks.put(cPos, c);
 
             System.out.println("Generated new chunk!");
@@ -321,44 +324,6 @@ public class Terrain {
         h = 0;
 
         System.gc(); // Help GC
-
-    }
-
-    // Chunk position helper
-    public static class ChunkPos {
-    
-        private final short chunkX;
-        private final short chunkY;
-        
-        public ChunkPos(short cx, short cy) {
-            this.chunkX = cx;
-            this.chunkY = cy;
-        }
-
-        public short getChunkX() {
-            return this.chunkX;
-        }
-
-        public short getChunkY() {
-            return this.chunkY;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-        
-            if(this == o) return true;
-            if(!(o instanceof ChunkPos)) return false;
-
-            ChunkPos cP = (ChunkPos) o;
-
-            return this.chunkX == cP.chunkX && this.chunkY == cP.chunkY;
-
-        }
-
-        @Override
-        public int hashCode() {
-            return 31 * chunkX + chunkY;
-        }
 
     }
 

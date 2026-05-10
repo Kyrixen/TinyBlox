@@ -11,7 +11,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Engine;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.Textures;
-import io.kyrixen.tinyblox.graphics.UI.Button;
+import io.kyrixen.tinyblox.menu.UI.Button;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.sound.UISounds;
 

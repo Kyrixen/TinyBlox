@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.graphics.UI.Button;
+import io.kyrixen.tinyblox.menu.UI.Button;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Utils;
 

@@ -1,12 +1,12 @@
-package io.kyrixen.tinyblox.world;
+package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.graphics.Textures;
-import io.kyrixen.tinyblox.world.Chunk.Tile.TileType;
-import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
+import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.Terrain;
 
 public class Chunk {
 
@@ -37,94 +37,6 @@ public class Chunk {
     // Stores chunk tiles
     private Tile[][] chunk;
 
-    // Tile class
-    public static class Tile {
-
-        // Tile type enum
-        public static enum TileType {
-        
-            AIR,
-            GRASS,
-            DIRT,
-            WATER,
-            STONE
-        
-        }
-
-        // Texture atlas coords
-        int tileX, tileY;
-
-        // Tile data
-        TileType type;
-
-        // Terrain height
-        byte height;
-
-        // Collision
-        boolean solid;
-
-        // Constructs tile
-        public Tile(TileType type, byte height) {
-
-            this.type = type;
-
-            this.tileX = getTileX(type);
-            this.tileY = getTileY(type);
-            
-            this.height = height;
-
-            this.solid = this.height >= 1;
-
-        }
-
-        // Map tileX to tileset via type
-        private static int getTileX(TileType type) {
-
-            switch (type) {
-                case GRASS: return 1;
-                case STONE: return 0;
-                case DIRT : return 0;
-                case WATER: return 1;
-                case AIR  : return 0;
-                default   : return 0;
-            }
-
-        }
-
-
-        // Map tileY to tileset via type
-        private static int getTileY(TileType type) {
-        
-            switch (type) {
-                case GRASS: return 0;
-                case STONE: return 1;
-                case DIRT : return 0;
-                case WATER: return 1;
-                case AIR  : return 2;
-                default   : return 0;
-            }
-        
-        }
-        
-        // Helper functions //
-
-        public boolean solid(){ return solid; }
-
-        public TileType type() { return type; }
-
-        public byte height() { return height; }
-
-        public void updateSolid() {
-            this.solid = this.height >= 1;
-            if(this.type == TileType.AIR) solid = true;
-        }
-
-        @Override
-        public String toString() {
-            return "Tile{ solid=" + solid + ", type=" + type + ", height=" + height + " }";
-        }
-
-    }
 
     // Construct chunk
     public Chunk(int x, int y, int size, boolean loaded, Textures tex, Camera cam){
@@ -142,78 +54,6 @@ public class Chunk {
         this.loaded = loaded;
         this.rendered = loaded;
         
-    }
-
-    // Generate the chunk
-    public void generate(FastNoiseLite noise) {
-
-        chunk = new Tile[CHUNK_SIZE][CHUNK_SIZE];
-
-        // World size in tiles
-        int worldTilesX = Constants.MAP_WIDTH;
-        int worldTilesY = Constants.MAP_HEIGHT;
-
-        // World size in chunks
-        int worldChunksX = (worldTilesX + CHUNK_SIZE - 1) / CHUNK_SIZE;
-        int worldChunksY = (worldTilesY + CHUNK_SIZE - 1) / CHUNK_SIZE;
-
-        // Safety: do not generate invalid chunks
-        if (cX < 0 || cY < 0 || cX >= worldChunksX || cY >= worldChunksY) {
-            loaded = false;
-            rendered = false;
-            return;
-        }
-
-        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
-
-                // Tile position in WORLD TILE coordinates
-                int tileX = cX * CHUNK_SIZE + tx;
-                int tileY = cY * CHUNK_SIZE + ty;
-
-                // Skip tiles outside world tile bounds
-                if (tileX < 0 || tileY < 0 ||
-                    tileX >= worldTilesX || tileY >= worldTilesY) {
-                    continue;
-                }
-
-                float t = noise.GetNoise(tileX, tileY);
-
-                float height = (t + 1f) / 2f;
-                TileType type;
-
-                if (height < 0.30f)      type = TileType.WATER;
-                else if (height < 0.55f) type = TileType.DIRT;
-                else if (height < 0.80f) type = TileType.GRASS;
-                else                     type = TileType.STONE;
-
-                byte layer;
-                switch(type) {
-
-                    case AIR:
-                        layer = -1;
-                        break;
-
-                    case STONE:
-                        layer = 1;
-                        break;
-
-                    default:
-                        layer = 0;
-                        break;
-
-                }                
-                
-                Tile tile = new Tile(type, (byte) layer);
-                this.setTile(tx, ty, tile);
-
-            }
-
-        }
-
-        loaded = true;
-        rendered = loaded;
-
     }
 
     // Render chunk
@@ -268,6 +108,8 @@ public class Chunk {
 
     public int getY(){ return this.cY; }
 
+    public int getChunkSize() { return this.CHUNK_SIZE; }
+
     // Check loading
     public void checkIfOnScreen() {
 
@@ -300,7 +142,7 @@ public class Chunk {
             for (byte tx = 0; tx < c.CHUNK_SIZE; tx++) {
                 for (byte ty = 0; ty < c.CHUNK_SIZE; ty++) {
 
-                    Chunk.Tile t = c.getTile(tx, ty);
+                    Tile t = c.getTile(tx, ty);
                     if(t == null) continue;
 
                     int globalX = (c.getX() * c.CHUNK_SIZE + tx) * Constants.GRID_SIZE;
