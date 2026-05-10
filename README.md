@@ -6,7 +6,7 @@ A lightweight 2D game engine in Java using LibGdx library for rendering, input h
 
 <div align="center">
 
-![theme](/assets/textures/background/background.png)
+![theme](/assets/textures/background/menu_background.png)
 
 </div>
 
@@ -37,15 +37,15 @@ A lightweight 2D game engine in Java using LibGdx library for rendering, input h
 - [x] Entities
 - [x] Enemy AI
 - [ ] Helper NPC
-- [ ] Menu
+- [x] Menu
 - [x] Terrain
 - [ ] RNG
 - [ ] Combat mechanics
 - [ ] Stats
 - [ ] Dialogues
 - [ ] Teleportation
-- [ ] Placing
-- [ ] Destroying
+- [x] Placing
+- [x] Destroying
 - [x] Sound
 - [ ] Boss fight
 - [ ] Multiplayer?
@@ -90,18 +90,20 @@ cd TinyEngine
 
 ## Controls
 
-| Key          | Action              |
-| ------------ | ------------------- |
-| `W`          | Move Up             |
-| `A`          | Move Left           |
-| `S`          | Move Down           |
-| `D`          | Move Right          |
-| `Left Shift` | Sprint              |
+| Key            | Action                     |
+| -------------- | -------------------------- |
+| `W`            | Move Up                    |
+| `A`            | Move Left                  |
+| `S`            | Move Down                  |
+| `D`            | Move Right                 |
+| `Left Shift`   | Sprint                     |
+| `Right Button` | Place Block                |
+| `Left Button`  | Destroy Block / Hit Entity |
 ---
 
 ## Notes
 
-* Player is spawned in the middle of the map.
+* Player is (not) spawned in the middle of the map.
 * All entities and terrain tiles are drawn via `Textures`, so offsets from the camera are handled there.
 * Textures are 16x16
 * Sounds are handled via LibGdx.
@@ -112,7 +114,8 @@ cd TinyEngine
 ## Future Improvements
 
 * Zoomable camera
-* Tile-based collision for entities
+* World Generating Optimization
+* Biomes
 * Enemy AI improvements
 * Animated textures
 * Configurable key bindings
