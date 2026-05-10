@@ -133,7 +133,7 @@ public class Selector {
 
         if(current == null) return;
 
-        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.height() + 1)));
+        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1)));
 
         this.lastPlace = System.currentTimeMillis();
 
@@ -191,22 +191,6 @@ public class Selector {
 
         return null;
     
-    }
-
-    public Tile checkTile(Terrain terrain) {
-
-        int tileX = this.x / Constants.GRID_SIZE;
-        int tileY = this.y / Constants.GRID_SIZE;
-        byte localTileX = (byte) (tileX % terrain.size);
-        byte localTileY = (byte) (tileY % terrain.size);
-
-        short chunkPosX = (short) (tileX / terrain.size);
-        short chunkPosY = (short) (tileY / terrain.size);
-
-        Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
-
-        return chunk.getTileStack(localTileX, localTileY).top();
-
     }
 
     public void cleanup(){

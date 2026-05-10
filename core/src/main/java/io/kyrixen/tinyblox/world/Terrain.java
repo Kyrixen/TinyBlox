@@ -3,7 +3,9 @@ package io.kyrixen.tinyblox.world;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -119,6 +121,31 @@ public class Terrain {
 
         }
 
+    }
+
+    // Render overlay for visible chunks
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer, Player player) {
+        
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
+        
+        for(short cx = 0; cx < chunkCountX; cx++){
+
+            for(short cy = 0; cy < chunkCountY; cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+
+                if (c == null) continue;
+
+                // If not visible dont render
+                if(!c.rendered) continue;
+    
+                c.renderDepthOverlay(shapeRenderer, player);
+    
+            }
+    
+        }
+    
     }
 
     // Find chunk

@@ -42,6 +42,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     // Dimensions
     int width;
     int height;
+    protected byte level = 1;
 
     // Identifier
     protected int id;
@@ -391,9 +392,11 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     public int x() { return x; }
     public int y() { return y; }
+    public byte level() { return level; }
 
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
+    public void setLevel(byte level) { this.level = level; }
 
     public int dirX() { return dirX; }
     public int dirY() { return dirY; }

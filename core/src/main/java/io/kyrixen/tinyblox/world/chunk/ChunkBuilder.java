@@ -19,7 +19,6 @@ public class ChunkBuilder {
     public void setTile(byte tX, byte tY, TileType type, boolean solid, byte height) {
 
         Tile t = new Tile(type, height);
-        t.solid = solid;
 
         buildedChunk[tX][tY] = t;
 

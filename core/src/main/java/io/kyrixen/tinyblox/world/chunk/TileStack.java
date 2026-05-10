@@ -51,9 +51,4 @@ public class TileStack  {
         return this.tiles.isEmpty();
     }
 
-    public boolean solid() {
-        Tile top = top();
-        return top != null && top.solid();
-    }
-
 }

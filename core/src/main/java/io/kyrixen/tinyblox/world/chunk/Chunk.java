@@ -1,8 +1,10 @@
 package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.Camera;
 
@@ -87,11 +89,65 @@ public class Chunk {
                 
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-
+                
                 tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
+                
             }
         }
         
+    }
+
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer, Player player) {
+
+        // Check if can render overlay for chunk
+        if (!loaded || !rendered) return;
+
+        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        
+        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
+
+        // Check if textures are loaded
+        if (tex == null || tex.terrainTileset == null) {
+            System.out.println("Warning: Textures not loaded for chunk " + cX + "," + cY);
+            return;
+        }
+
+        // Render each tile
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
+                
+                Tile tile = this.getTileStack(tx, ty).top();
+
+                if(tile == null) continue;
+                
+                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
+                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
+
+                switch(tile.level()) {
+
+                    case -1:
+                        shapeRenderer.setColor(0f, 0f, 0f, 0.20f);
+                        break;
+
+                    case 0:
+                        continue;
+
+                    case 1:
+                        shapeRenderer.setColor(1f, 1f, 1f, 0.20f);
+                        break;
+
+                    case 2:
+                        shapeRenderer.setColor(1f, 1f, 1f, 0.40f);
+                        break;
+                }
+
+                shapeRenderer.rect((globalX - cam.x) * cam.zoom, (globalY - cam.y) * cam.zoom, Constants.GRID_SIZE * cam.zoom, Constants.GRID_SIZE * cam.zoom);
+            
+            }
+        
+        }
+
     }
 
     public void load(){

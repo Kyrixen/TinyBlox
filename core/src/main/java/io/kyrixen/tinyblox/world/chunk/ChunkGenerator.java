@@ -37,34 +37,30 @@ public class ChunkGenerator {
                     continue;
                 }
 
-                float t = noise.GetNoise(tileX, tileY);
+                float terrainNoise = (noise.GetNoise(tileX, tileY) + 1f) / 2f;
+                float materialNoise = (noise.GetNoise(tileX + 9999, tileY + 9999) + 1f) / 2f;
 
-                float height = (t + 1f) / 2f;
+                byte level;
+                if(terrainNoise < 0.55f)      level = 0;
+                else if(terrainNoise < 0.80f) level = 1;
+                else                          level = 2;
+
                 TileType type;
+                if(level == 0) {
 
-                if (height < 0.30f)      type = TileType.WATER;
-                else if (height < 0.55f) type = TileType.DIRT;
-                else if (height < 0.80f) type = TileType.GRASS;
-                else                     type = TileType.STONE;
-
-                byte layer;
-                switch(type) {
-
-                    case AIR:
-                        layer = -1;
-                        break;
-
-                    case STONE:
-                        layer = 1;
-                        break;
-
-                    default:
-                        layer = 0;
-                        break;
-
-                }                
+                    if(materialNoise < 0.20f) type = TileType.WATER;
+                    else if(materialNoise < 0.50f) type = TileType.DIRT;
+                    else type = TileType.GRASS;
                 
-                Tile tile = new Tile(type, (byte) layer);
+                } else if(level == 1) {
+                
+                    if(materialNoise < 0.60f)type = TileType.DIRT;
+                    else type = TileType.STONE;
+                
+                } else type = TileType.STONE;
+                
+
+                Tile tile = new Tile(type, level);
                 chunk.getTileStack(tx, ty).push(tile);
 
             }

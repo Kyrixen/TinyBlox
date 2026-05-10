@@ -51,11 +51,12 @@ public class Utils {
                     Tile t = c.getTileStack(localX, localY).top(); 
 
                     if (t == null) continue;
-                    if (t.solid()) continue; // Skip solid tiles
-
+                    if(t.type() == Tile.TileType.AIR) continue;
+                    if(t.level() != 0) continue;
+                   
                     int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
                     int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;
-
+                   
                     // Distance to center
                     double dx = globalX - centerX;
                     double dy = globalY - centerY;

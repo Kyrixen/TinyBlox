@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.entities.Enemy;
 import io.kyrixen.tinyblox.entities.Entity;
@@ -166,6 +168,14 @@ public class Engine implements Screen {
         Entity.renderAll(textures, renderer, entities, batch, camera);
 
         batch.end();
+
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shape.begin(ShapeType.Filled);
+        terrain.renderDepthOverlay(shape, player);
+        shape.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         renderer.drawGrid(shape);
         player.renderSelector(camera);

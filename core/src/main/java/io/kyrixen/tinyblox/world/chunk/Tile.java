@@ -21,10 +21,7 @@ public class Tile {
     TileType type;
 
     // Terrain height
-    byte height;
-
-    // Collision
-    boolean solid;
+    byte level;
 
     // Constructs tile
     public Tile(TileType type, byte height) {
@@ -34,9 +31,7 @@ public class Tile {
         this.tileX = getTileX(type);
         this.tileY = getTileY(type);
         
-        this.height = height;
-
-        this.solid = this.height >= 1;
+        this.level = height;
 
     }
 
@@ -71,20 +66,13 @@ public class Tile {
     
     // Helper functions //
 
-    public boolean solid(){ return solid; }
-
     public TileType type() { return type; }
 
-    public byte height() { return height; }
-
-    public void updateSolid() {
-        this.solid = this.height >= 1;
-        if(this.type == TileType.AIR) solid = true;
-    }
+    public byte level() { return level; }
 
     @Override
     public String toString() {
-        return "Tile{ solid=" + solid + ", type=" + type + ", height=" + height + " }";
+        return "Tile{ type=" + type + ", level=" + level + " }";
     }
 
 }
