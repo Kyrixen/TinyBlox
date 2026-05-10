@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.Camera;
 
@@ -97,7 +96,7 @@ public class Chunk {
         
     }
 
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer, Player player) {
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;

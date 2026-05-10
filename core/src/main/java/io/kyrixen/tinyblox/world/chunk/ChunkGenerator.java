@@ -45,24 +45,18 @@ public class ChunkGenerator {
                 else if(terrainNoise < 0.80f) level = 1;
                 else                          level = 2;
 
-                TileType type;
-                if(level == 0) {
 
-                    if(materialNoise < 0.20f) type = TileType.WATER;
-                    else if(materialNoise < 0.50f) type = TileType.DIRT;
-                    else type = TileType.GRASS;
+                if(materialNoise < 0.20f) chunk.getTileStack(tx, ty).push(new Tile(TileType.WATER, (byte) 0));
+                else if(materialNoise < 0.50f) chunk.getTileStack(tx, ty).push(new Tile(TileType.DIRT, (byte) 0));
+                else chunk.getTileStack(tx, ty).push(new Tile(TileType.GRASS, (byte) 0));
+            
+                if(level >= 1) {
                 
-                } else if(level == 1) {
+                    if(materialNoise < 0.60f) chunk.getTileStack(tx, ty).push(new Tile(TileType.DIRT, (byte) 1));
+                    else chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 1));
                 
-                    if(materialNoise < 0.60f)type = TileType.DIRT;
-                    else type = TileType.STONE;
+                }  if(level >= 2) chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 2));
                 
-                } else type = TileType.STONE;
-                
-
-                Tile tile = new Tile(type, level);
-                chunk.getTileStack(tx, ty).push(tile);
-
             }
 
         }

@@ -133,7 +133,8 @@ public class Selector {
 
         if(current == null) return;
 
-        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1)));
+        if(current.level() >= 2);
+        else chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1)));
 
         this.lastPlace = System.currentTimeMillis();
 
@@ -162,7 +163,8 @@ public class Selector {
         if(current == null) return;
         if(current.type() == TileType.AIR) return;
         
-        chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1));
+        if(current.level() <= 0) chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1));
+        else chunk.getTileStack(localTileX, localTileY).pop();
 
         this.lastBreak = System.currentTimeMillis();
 

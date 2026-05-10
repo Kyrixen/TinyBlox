@@ -5,7 +5,6 @@ import java.util.HashMap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -124,7 +123,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer, Player player) {
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -140,7 +139,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(shapeRenderer, player);
+                c.renderDepthOverlay(shapeRenderer);
     
             }
     
