@@ -111,6 +111,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
         // Defaults
         this.type = EntityType.DEFAULT;
 
+        this.setSpeed(Speed.SLOW);
+
     }
 
     // Get texture
@@ -132,8 +134,6 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     // Update entity
     public void update(float deltaTime) {
-
-        this.updateSpeed();
 
         if(System.currentTimeMillis() - lastDelay >= moveDelay * 1000) {
         
@@ -274,6 +274,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     public void setSpeed(Speed speed) {
         this.speed = speed;
+        this.updateSpeed();
     }
 
     public void updateSpeed() {

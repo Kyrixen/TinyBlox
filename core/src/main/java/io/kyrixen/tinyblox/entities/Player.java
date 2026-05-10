@@ -30,7 +30,7 @@ public class Player extends Entity {
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
 
-        this.speed = Speed.NORMAL;
+        this.setSpeed(Speed.NORMAL);
 
         this.health = 100;
         this.maxHealth = 100;
@@ -57,8 +57,6 @@ public class Player extends Entity {
 
     @Override
     public void update(float deltaTime) {
-        
-        this.updateSpeed();
 
         long currentTime = System.currentTimeMillis();
         if(currentTime - lastDelay >= moveDelay * 1000) {
