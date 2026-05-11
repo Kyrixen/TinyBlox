@@ -33,6 +33,6 @@ public class Constants {
     public static final boolean DEBUG = true;
 
     // Day and Night Cycle
-    public static final float FULL_TIME_CYCLE = 10f;
+    public static final float FULL_TIME_CYCLE = 300f;
 
 }
