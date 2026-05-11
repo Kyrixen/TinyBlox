@@ -1,0 +1,159 @@
+TinyBlox Source License
+Version 1.0, May 2026
+
+Copyright (c) 2026 Kyrixen Tirev
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+   "License" shall mean the terms and conditions for use,
+   reproduction, modification, and distribution as defined
+   by this document.
+
+   "Licensor" shall mean the copyright owner or entity
+   authorized by the copyright owner that is granting
+   this License.
+
+   "You" (or "Your") shall mean an individual or legal
+   entity exercising permissions granted by this License.
+
+   "Source" form shall mean the preferred form for making
+   modifications, including but not limited to source code,
+   configuration files, and documentation.
+
+   "Object" form shall mean any form resulting from
+   mechanical transformation or translation of a Source form,
+   including compiled binaries and generated files.
+
+   "Work" shall mean the TinyBlox project, including source
+   code, configuration, documentation, and related files
+   distributed under this License.
+
+   "Derivative Works" shall mean any work based on or
+   derived from the Work, including modifications,
+   extensions, forks, or adaptations.
+
+   "Contribution" shall mean any modification, addition,
+   patch, pull request, or other work intentionally
+   submitted to the Licensor for inclusion in the Work.
+
+2. Grant of License.
+
+   Subject to the terms and conditions of this License,
+   You are granted a worldwide, non-exclusive,
+   non-transferable, revocable license to:
+
+   (a) Use the Work for personal, educational,
+       and non-commercial purposes.
+
+   (b) Modify the Work and create Derivative Works.
+
+   (c) Distribute copies of the original Work or
+       Derivative Works in Source or Object form,
+       provided all conditions of this License are met.
+
+3. Non-Commercial Restriction.
+
+   You may NOT:
+
+   (a) Sell the Work or any Derivative Works.
+
+   (b) Use the Work or any Derivative Works
+       for commercial purposes.
+
+   (c) Charge money for copies, hosting,
+       access, services, or distributions
+       related to the Work.
+
+   (d) Include the Work or Derivative Works
+       in commercial software, products,
+       or services.
+
+   (e) Monetize the Work through paywalls,
+       subscriptions, marketplaces,
+       advertisements, or commercial licensing.
+
+4. Redistribution.
+
+   You may reproduce and distribute copies
+   of the Work or Derivative Works thereof
+   in any medium, with or without modifications,
+   provided that You meet the following conditions:
+
+   (a) You must include a copy of this License.
+
+   (b) You must retain all copyright notices,
+       attribution notices, and disclaimers.
+
+   (c) Modified files must carry prominent notices
+       stating that You changed the files.
+
+   (d) You may not misrepresent the original
+       authorship of the Work.
+
+   (e) Any redistributed Derivative Works
+       must also remain non-commercial.
+
+5. Contributions.
+
+   Unless explicitly stated otherwise,
+   any Contribution intentionally submitted
+   for inclusion in the Work shall grant
+   the Licensor a perpetual, worldwide,
+   non-exclusive, royalty-free right
+   to use, modify, distribute, and include
+   the Contribution within the Work.
+
+   Contributors retain ownership of their
+   own original contributions.
+
+6. Trademarks.
+
+   This License does not grant permission
+   to use the trade names, trademarks,
+   service marks, logos, or branding
+   of the Licensor, except for reasonable
+   attribution purposes.
+
+7. Assets.
+
+   This License does NOT apply to files
+   located within the `assets/` directory
+   unless explicitly stated otherwise.
+
+   Assets may be licensed separately
+   under additional terms.
+
+8. Disclaimer of Warranty.
+
+   The Work is provided "AS IS",
+   without warranty of any kind,
+   express or implied, including but not
+   limited to warranties of merchantability,
+   fitness for a particular purpose,
+   and non-infringement.
+
+9. Limitation of Liability.
+
+   In no event shall the Licensor or Contributors
+   be liable for any claim, damages,
+   or other liability, whether in contract,
+   tort, or otherwise, arising from,
+   out of, or in connection with the Work
+   or the use or other dealings in the Work.
+
+10. Termination.
+
+   Any violation of this License
+   automatically terminates Your rights
+   under this License.
+
+11. Acceptance.
+
+   By using, modifying, or distributing
+   the Work, You agree to be bound
+   by the terms and conditions
+   of this License.
+
+END OF TERMS AND CONDITIONS
