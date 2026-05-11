@@ -6,9 +6,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -86,14 +84,6 @@ public class Player extends Entity {
 
         selector.update(terrain, 30);
         
-
-    }
-
-
-    @Override
-    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch){
-
-        textures.draw(this.texture, x, y, width, height, batch);
 
     }
 

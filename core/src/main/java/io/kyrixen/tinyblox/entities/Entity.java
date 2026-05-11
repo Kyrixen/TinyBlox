@@ -11,6 +11,7 @@ import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.TimeCycle;
 
 
 // Implement stats
@@ -155,8 +156,14 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Render entity
-    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch){
+    public void render(Textures textures, Renderer renderer, Camera camera, TimeCycle timeCycle, SpriteBatch batch){
+
+        float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
+
+        batch.setColor(brightness, brightness, brightness, 1.0f);
         textures.draw(this.texture, x, y, width, height, batch);
+        batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
     }
 
 
@@ -374,9 +381,9 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Helper func
-    public static void renderAll(Textures textures, Renderer renderer, ArrayList<Entity> entities, SpriteBatch batch, Camera camera) {
+    public static void renderAll(Textures textures, Renderer renderer, TimeCycle timeCycle, ArrayList<Entity> entities, SpriteBatch batch, Camera camera) {
         for (Entity e : entities) {
-            e.render(textures, renderer, camera, batch);
+            e.render(textures, renderer, camera, timeCycle, batch);
         }
     }
 

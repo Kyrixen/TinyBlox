@@ -102,7 +102,7 @@ public class Terrain {
     }
 
     // Render visible chunks
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, TimeCycle timeCycle) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -118,7 +118,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.render(batch);
+                c.render(batch, timeCycle);
 
             }
 
@@ -127,7 +127,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer) {
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -143,7 +143,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(shapeRenderer);
+                c.renderDepthOverlay(shapeRenderer, timeCycle);
     
             }
     

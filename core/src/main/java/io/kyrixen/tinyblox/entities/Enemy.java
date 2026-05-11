@@ -3,15 +3,12 @@ package io.kyrixen.tinyblox.entities;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
-import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 
 public class Enemy extends Entity {
@@ -139,11 +136,6 @@ public class Enemy extends Entity {
 
         }
 
-    }
-
-    @Override
-    public void render(Textures textures, Renderer renderer, Camera camera, SpriteBatch batch) {
-        textures.draw(texture, x, y, width, height, batch);
     }
 
     // Checks collision

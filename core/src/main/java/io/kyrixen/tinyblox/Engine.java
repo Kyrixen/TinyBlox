@@ -22,6 +22,7 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.TimeCycle;
 
 public class Engine implements Screen {
 
@@ -40,6 +41,7 @@ public class Engine implements Screen {
     private Textures textures;
     private Camera camera;
     private Terrain terrain;
+    private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
     public Sfx soundManager;
 
@@ -56,6 +58,7 @@ public class Engine implements Screen {
         controller = new Controller();
         textures = new Textures(camera);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, (byte) 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f, false);
+        timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
         
@@ -115,6 +118,8 @@ public class Engine implements Screen {
 
     private void update(float delta) {
 
+        timeCycle.updateDayTime(delta);
+
         controller.update(player);
 
         Entity.updateAll(delta, entities);
@@ -161,13 +166,13 @@ public class Engine implements Screen {
         batch.begin();
 
         try {
-            terrain.render(batch);
+            terrain.render(batch, timeCycle);
         } catch (Exception e) {
             Logger.LOGGER.error("ENGINE", "Error rendering terrain: " + e.getMessage());
         }
             
 
-        Entity.renderAll(textures, renderer, entities, batch, camera);
+        Entity.renderAll(textures, renderer, timeCycle, entities, batch, camera);
 
         batch.end();
 
@@ -175,7 +180,7 @@ public class Engine implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shape.begin(ShapeType.Filled);
-        terrain.renderDepthOverlay(shape);
+        terrain.renderDepthOverlay(shape, timeCycle);
         shape.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 

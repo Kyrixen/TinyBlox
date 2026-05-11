@@ -7,6 +7,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.TimeCycle;
 
 public class Chunk {
 
@@ -63,7 +64,7 @@ public class Chunk {
     }
 
     // Render chunk
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, TimeCycle timeCycle) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
@@ -90,14 +91,18 @@ public class Chunk {
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
                 
+                batch.setColor(timeCycle.getBrightness(), timeCycle.getBrightness(), timeCycle.getBrightness(), 1.0f);
+
                 tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
                 
+                batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
             }
         }
         
     }
 
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer) {
+    public void renderDepthOverlay(ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;
@@ -113,6 +118,8 @@ public class Chunk {
             return;
         }
 
+        float light = timeCycle.getBrightness();
+
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
             for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
@@ -127,18 +134,18 @@ public class Chunk {
                 switch(tile.level()) {
 
                     case -1:
-                        shapeRenderer.setColor(0f, 0f, 0f, 0.20f);
+                        shapeRenderer.setColor(0f, 0f, 0f, 0.20f * light);
                         break;
 
                     case 0:
                         continue;
 
                     case 1:
-                        shapeRenderer.setColor(1f, 1f, 1f, 0.20f);
+                        shapeRenderer.setColor(1f, 1f, 1f, 0.20f * light);
                         break;
 
                     case 2:
-                        shapeRenderer.setColor(1f, 1f, 1f, 0.40f);
+                        shapeRenderer.setColor(1f, 1f, 1f, 0.40f * light);
                         break;
                 }
 

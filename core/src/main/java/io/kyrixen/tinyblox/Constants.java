@@ -1,6 +1,5 @@
 package io.kyrixen.tinyblox;
 
-
 // Global vars
 public class Constants {
 
@@ -32,5 +31,8 @@ public class Constants {
 
     // Dev settings
     public static final boolean DEBUG = true;
+
+    // Day and Night Cycle
+    public static final float FULL_TIME_CYCLE = 10f;
 
 }
