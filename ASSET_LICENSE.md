@@ -12,7 +12,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
    logos, icons, world data, or other non-source-code content
    distributed within the `assets/` directory of this project.
 
-   "Licensor" shall mean the copyright owner, Kyrixen Tirev.
+   "Licensor" shall mean the copyright owner, Kyrixen.
 
    "You" (or "Your") shall mean any individual or legal entity
    exercising permissions granted by this License.
