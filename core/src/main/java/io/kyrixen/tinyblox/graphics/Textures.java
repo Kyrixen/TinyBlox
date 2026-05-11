@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 
 public class Textures {
@@ -50,7 +52,7 @@ public class Textures {
     // Load texture
     public static Texture load(String path) {
     
-        System.out.println("[Textures] Loading: " + path);
+        Logger.LOGGER.debug("TEXTURES", "Loading: " + path);
     
         try {
 
@@ -59,9 +61,9 @@ public class Textures {
 
             return image;
 
-        } catch(NullPointerException e) {
+        } catch(GdxRuntimeException e) {
             
-            System.err.println("[Textures][ERROR] File not found: " + path);
+            Logger.LOGGER.error("TEXTURES", "File not found: " + path);
 
         }
 

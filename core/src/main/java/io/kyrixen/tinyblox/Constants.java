@@ -3,7 +3,7 @@ package io.kyrixen.tinyblox;
 
 // Global vars
 public class Constants {
-    
+
     // Window size
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
@@ -29,5 +29,8 @@ public class Constants {
 
     // Version
     public static final String VERSION = "dev_pre-4";
+
+    // Dev settings
+    public static final boolean DEBUG = true;
 
 }

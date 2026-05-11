@@ -75,7 +75,7 @@ public class Utils {
 
         }
 
-        System.out.println("Safe spawn found at: " + bestTileX + ", " + bestTileY);
+        Logger.LOGGER.debug("WORLD", "Safe spawn found at: " + bestTileX + ", " + bestTileY);
         return new int[]{bestTileX, bestTileY};
 
     }

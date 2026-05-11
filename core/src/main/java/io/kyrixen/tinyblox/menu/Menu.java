@@ -14,6 +14,7 @@ import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.utils.Logger;
 
 public class Menu implements Screen {
 
@@ -100,7 +101,7 @@ public class Menu implements Screen {
         // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
 
-        System.out.println("Resizing window!");
+        Logger.LOGGER.info("MENU", "Resizing window!");
 
     }
 
@@ -122,7 +123,7 @@ public class Menu implements Screen {
     @Override
     public void dispose() {
 
-        System.out.println("On menu cleanup");
+        Logger.LOGGER.info("MENU", "On menu cleanup");
 
         if(batch != null) batch.dispose();
         

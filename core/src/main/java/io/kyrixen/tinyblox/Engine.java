@@ -18,6 +18,7 @@ import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -57,6 +58,7 @@ public class Engine implements Screen {
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, (byte) 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f, false);
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
+        
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
@@ -130,7 +132,7 @@ public class Engine implements Screen {
         player.stats(camera);
 
         if(player.isDead()) {
-            System.out.println("Player is dead! Health: " + player.health() + " | Game Over.");
+            Logger.LOGGER.debug("ENGINE", "Player is dead! Health: " + player.health() + " | Game Over.");
             exit = true;
                 
         }
@@ -161,7 +163,7 @@ public class Engine implements Screen {
         try {
             terrain.render(batch);
         } catch (Exception e) {
-            System.out.println("Error rendering terrain: " + e.getMessage());
+            Logger.LOGGER.error("ENGINE", "Error rendering terrain: " + e.getMessage());
         }
             
 
@@ -195,7 +197,7 @@ public class Engine implements Screen {
         // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
 
-        System.out.println("Resizing window!");
+        Logger.LOGGER.info("ENGINE", "Resizing window!");
 
     }
 
@@ -217,7 +219,7 @@ public class Engine implements Screen {
     @Override
     public void dispose() {
 
-        System.out.println("On cleanup");
+        Logger.LOGGER.info("ENGINE", "On cleanup");
   
         // Call cleanup on all entities, without removing them from the list
         for (Entity e : entities) {

@@ -9,6 +9,7 @@ import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -150,7 +151,7 @@ public class Enemy extends Entity {
 
         if (EntityCollision.checkCollision(player, this)) {
                         
-            System.out.println("Collision detected between player and enemy!");
+            Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 
             if(player.damage(25)) soundManager.hitplayer.play(Utils.getFloatSound(40)); 
                         

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
@@ -63,7 +64,7 @@ public class Terrain {
     // Pre-generate chunks
     public void init() {
 
-        System.out.println("Seed: " + seed);
+        Logger.LOGGER.debug("WORLD", "Seed: " + seed);
 
         chunks.clear();
         
@@ -96,7 +97,7 @@ public class Terrain {
 
         }
 
-        System.out.println("Chunks size: " + chunks.size());
+        Logger.LOGGER.debug("WORLD", "Chunks size: " + chunks.size());
 
     }
 
@@ -161,7 +162,7 @@ public class Terrain {
             ChunkGenerator.generate(c, noise);
             chunks.put(cPos, c);
 
-            System.out.println("Generated new chunk!");
+            Logger.LOGGER.debug("WORLD", "Generated new chunk!");
 
         }
 
@@ -231,15 +232,12 @@ public class Terrain {
 
                 if(current <= 0) continue;
 
-                
                 byte left = this.getWorldLevel(worldX - 1, worldY);
                 byte right = this.getWorldLevel(worldX + 1, worldY);
                 byte top = this.getWorldLevel(worldX, worldY + 1);
                 byte bottom = this.getWorldLevel(worldX, worldY - 1);
         
-
                 if(current == left && current == right && current == top && current == bottom) continue;
-
 
                 int tileX = worldX * Constants.GRID_SIZE;
                 int tileY = worldY * Constants.GRID_SIZE;
@@ -247,7 +245,6 @@ public class Terrain {
                 float screenX = (tileX - cam.x) * cam.zoom;
                 float screenY = (tileY - cam.y) * cam.zoom;
  
-
                 if(left < current) shapeRenderer.line(screenX, screenY, screenX, screenY + tileSize);
                 if(right < current) shapeRenderer.line(screenX + tileSize, screenY, screenX + tileSize, screenY + tileSize);
                 if(top < current) shapeRenderer.line(screenX, screenY + tileSize, screenX + tileSize, screenY + tileSize);

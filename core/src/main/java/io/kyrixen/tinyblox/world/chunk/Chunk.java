@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 
 public class Chunk {
@@ -74,7 +75,7 @@ public class Chunk {
 
         // Check if textures are loaded
         if (tex == null || tex.terrainTileset == null) {
-            System.out.println("Warning: Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
+            Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
             return;
         }
 
@@ -108,7 +109,7 @@ public class Chunk {
 
         // Check if textures are loaded
         if (tex == null || tex.terrainTileset == null) {
-            System.out.println("Warning: Textures not loaded for chunk " + cX + "," + cY);
+            Logger.LOGGER.warn("WORLD", "Textures not loaded for chunk " + cX + "," + cY);
             return;
         }
 

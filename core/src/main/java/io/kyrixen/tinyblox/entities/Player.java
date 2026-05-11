@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
@@ -107,7 +108,7 @@ public class Player extends Entity {
     try {
         if (selector != null) selector.cleanup();
     } catch (Exception e) {
-        System.out.println("Failed to cleanup selector: " + e.getMessage());
+        Logger.LOGGER.error("PLAYER", "Failed to cleanup selector: " + e.getMessage());
     }
 
         // Nullify references to help GC
@@ -194,7 +195,7 @@ public class Player extends Entity {
 
     public void stats(Camera camera){
 
-        System.out.println("Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
+        Logger.LOGGER.debug("PLAYER", "Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
 
     }
 
