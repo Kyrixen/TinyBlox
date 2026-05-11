@@ -18,8 +18,9 @@ import io.kyrixen.tinyblox.world.Terrain;
 public class Player extends Entity {
 
     private Selector selector;
+    private Camera camera;
 
-    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, Sfx soundManager) {
+    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, Camera camera, Sfx soundManager) {
     
         super(id, x, y, width, height, terrain, soundManager);
         
@@ -41,6 +42,7 @@ public class Player extends Entity {
         this.tireless = false;
 
         this.selector = new Selector(this, entities, soundManager);
+        this.camera = camera;
 
         lastDelay = System.currentTimeMillis();
     
@@ -82,7 +84,7 @@ public class Player extends Entity {
         
         this.exhausted = stamina <= 0 && !tireless;
 
-        selector.update(terrain, 30);
+        selector.update(terrain, camera, 30);
         
 
     }

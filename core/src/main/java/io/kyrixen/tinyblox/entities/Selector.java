@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity.EntityType;
@@ -47,6 +48,9 @@ public class Selector {
     // Renderer
     ShapeRenderer sr;
 
+    // Max distance that cursor can be from entity
+    private final byte REACH = 2;
+
 
     public Selector(Entity entity, ArrayList<Entity> entities, Sfx sfxManager) {
 
@@ -62,38 +66,32 @@ public class Selector {
     }
 
 
-    public void update(Terrain terrain, int damage) {
+    public void update(Terrain terrain, Camera camera, int damage) {
         
-        // Set selector size 
-        this.width = this.entity.width; // same width
-        this.height = this.entity.height; // same height
+        float mouseWorldX = Peripheal.getMouseX() / camera.zoom + camera.x;
+        float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheal.getMouseY()) / camera.zoom + camera.y;
 
-        // Determine position based on last direction
-        if (this.entity.lastDirX == 1) {         // right
-        
-            this.x = this.entity.x + this.entity.width; 
-            this.y = this.entity.y;
-        
-        } else if (this.entity.lastDirX == -1) { // left
-        
-            this.x = this.entity.x - this.width; 
-            this.y = this.entity.y;
-        
-        } else if (this.entity.lastDirY == 1) {  // down
-        
-            this.x = this.entity.x;
-            this.y = this.entity.y + this.entity.height;
-        
-        } else if (this.entity.lastDirY == -1) { // up
-        
-            this.x = this.entity.x;
-            this.y = this.entity.y - this.height;
-        
-        }
+        int tileX = (int)(mouseWorldX / Constants.GRID_SIZE);
+        int tileY = (int)(mouseWorldY / Constants.GRID_SIZE);
 
         // Keep selector same size as player
         this.width = this.entity.width;
         this.height = this.entity.height;
+
+        Vector2 distance = new Vector2(tileX - entity.x / Constants.GRID_SIZE, tileY - entity.y / Constants.GRID_SIZE);
+
+        if(distance.len() > REACH) {
+            distance.nor();
+            distance.scl(REACH);
+        }
+
+        tileX = entity.x / Constants.GRID_SIZE + Math.round(distance.x);
+        tileY = entity.y / Constants.GRID_SIZE + Math.round(distance.y);
+
+        this.x = tileX * Constants.GRID_SIZE;
+        this.y = tileY * Constants.GRID_SIZE;
+        
+        if(this.x == entity.x && this.y == entity.y) return;
 
         checkPlace(terrain);
         checkDestroy(terrain);

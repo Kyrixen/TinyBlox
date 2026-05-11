@@ -84,7 +84,7 @@ public class Engine implements Screen {
         int[] spawn = Utils.spawnNearCenter();
 
         // Create player
-        player = new Player(0, spawn[0], spawn[1], Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, soundManager);
+        player = new Player(0, spawn[0], spawn[1], Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, camera, soundManager);
 
         // Add to list
         entities.add(player);

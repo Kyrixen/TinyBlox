@@ -45,4 +45,12 @@ public class Peripheal {
             || Gdx.input.isButtonPressed(Input.Buttons.MIDDLE);
     }
 
+    public static int getMouseX() {
+        return Gdx.input.getX();
+    }
+
+    public static int getMouseY() {
+        return Gdx.input.getY();
+    }
+
 }
