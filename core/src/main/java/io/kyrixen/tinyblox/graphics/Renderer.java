@@ -25,6 +25,7 @@ public class Renderer {
         ScreenUtils.clear(Color.DARK_GRAY);
     }
 
+    @Deprecated
     // Draw grid
     public void drawGrid(ShapeRenderer shapeRenderer) {
 

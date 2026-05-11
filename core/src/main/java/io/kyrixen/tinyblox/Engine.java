@@ -177,7 +177,10 @@ public class Engine implements Screen {
         shape.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        renderer.drawGrid(shape);
+        shape.begin(ShapeType.Line);
+        terrain.drawHeightEdges(shape);
+        shape.end();
+
         player.renderSelector(camera);
 
         batch.begin();

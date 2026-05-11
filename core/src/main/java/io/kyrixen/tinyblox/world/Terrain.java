@@ -5,10 +5,13 @@ import java.util.HashMap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
+import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.TileStack;
 import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Terrain {
@@ -147,8 +150,8 @@ public class Terrain {
     
     }
 
-    // Find chunk
-    public Chunk getChunk(short cX, short cY){
+    // Find chunk if doesnt exist create chunk
+    public Chunk getOrCreateChunk(short cX, short cY) {
 
         ChunkPos cPos = new ChunkPos(cX, cY);
 
@@ -163,6 +166,96 @@ public class Terrain {
         }
 
         return chunks.get(cPos);
+
+    }
+
+    // Find chunk
+    public Chunk getChunk(short cX, short cY) {
+        return chunks.get(new ChunkPos(cX, cY));
+    }
+
+    // Global TileStack accessor
+    public TileStack getWorldTileStack(int worldX, int worldY) {
+
+        short chunkX = (short) Math.floorDiv(worldX, this.size);
+        short chunkY = (short) Math.floorDiv(worldY, this.size);
+
+        Chunk chunk = this.getChunk(chunkX, chunkY);
+
+        if(chunk == null) return null;
+
+        byte localX = (byte) Math.floorMod(worldX, chunk.getChunkSize());
+        byte localY = (byte) Math.floorMod(worldY, chunk.getChunkSize());
+
+        return chunk.getTileStack(localX, localY);
+
+    }
+
+    // Get world height at cordinates
+    public byte getWorldLevel(int worldX, int worldY) {
+
+        TileStack stack = getWorldTileStack(worldX, worldY);
+
+        if(stack == null) return 0;
+
+        Tile top = stack.top();
+
+        if(top == null) return 0;
+
+        return top.level();
+    
+    }
+
+    // Draw edges on different heights
+    public void drawHeightEdges(ShapeRenderer  shapeRenderer) {
+
+        shapeRenderer.setColor(0f, 0f, 0f, 1f);
+
+        int startX = (int) (cam.x / Constants.GRID_SIZE);
+        int startY = (int) (cam.y / Constants.GRID_SIZE);
+        startX = Math.max(0, startX);
+        startY = Math.max(0, startY);
+
+        int endX = (int) (startX + Constants.WINDOW_WIDTH / (Constants.GRID_SIZE * cam.zoom)) + 2;
+        int endY = (int) (startY + Constants.WINDOW_HEIGHT / (Constants.GRID_SIZE * cam.zoom)) + 2;
+        endX = Math.min(this.w, endX);
+        endY = Math.min(this.h, endY);
+
+        float tileSize = Constants.GRID_SIZE * cam.zoom;
+
+        for(int worldX = startX; worldX < endX; worldX++){
+
+            for(int worldY = startY; worldY < endY; worldY++){
+
+                byte current = this.getWorldLevel(worldX, worldY);
+
+                if(current <= 0) continue;
+
+                
+                byte left = this.getWorldLevel(worldX - 1, worldY);
+                byte right = this.getWorldLevel(worldX + 1, worldY);
+                byte top = this.getWorldLevel(worldX, worldY + 1);
+                byte bottom = this.getWorldLevel(worldX, worldY - 1);
+        
+
+                if(current == left && current == right && current == top && current == bottom) continue;
+
+
+                int tileX = worldX * Constants.GRID_SIZE;
+                int tileY = worldY * Constants.GRID_SIZE;
+
+                float screenX = (tileX - cam.x) * cam.zoom;
+                float screenY = (tileY - cam.y) * cam.zoom;
+ 
+
+                if(left < current) shapeRenderer.line(screenX, screenY, screenX, screenY + tileSize);
+                if(right < current) shapeRenderer.line(screenX + tileSize, screenY, screenX + tileSize, screenY + tileSize);
+                if(top < current) shapeRenderer.line(screenX, screenY + tileSize, screenX + tileSize, screenY + tileSize);
+                if(bottom < current) shapeRenderer.line(screenX, screenY, screenX + tileSize, screenY);
+            
+            }
+
+        }   
 
     }
 
