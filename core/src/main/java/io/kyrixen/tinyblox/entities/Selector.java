@@ -132,7 +132,7 @@ public class Selector {
         if(current == null) return;
 
         if(current.level() >= 2);
-        else chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1)));
+        else { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(20)); }
 
         this.lastPlace = System.currentTimeMillis();
 
@@ -161,8 +161,8 @@ public class Selector {
         if(current == null) return;
         if(current.type() == TileType.AIR) return;
         
-        if(current.level() <= 0) chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1));
-        else chunk.getTileStack(localTileX, localTileY).pop();
+        if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(30)); }
+        else { chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(35)); }
 
         this.lastBreak = System.currentTimeMillis();
 
