@@ -2,8 +2,6 @@ package io.kyrixen.tinyblox.entities;
 
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.Texture;
-
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
@@ -13,20 +11,21 @@ import io.kyrixen.tinyblox.world.Terrain;
 
 public class Enemy extends Entity {
 
-    private Random random = new Random();
+    final Random random = new Random();
 
-
+    // What entity it targets (99% it is player but why not :D)
     Entity target;
+
+    // If its chasing entity
     boolean chasing;
 
 
-    public Enemy(int id, int x, int y, int width, int height, Terrain terrain, Sfx soundManager) {
+    public Enemy(int id, int x, int y, Sfx soundManager) {
         
-        super(id, x, y, width, height, terrain, soundManager);
+        super(id, x, y, soundManager);
         
         this.type = EntityType.ENEMY;
         this.chasing = false;
-        this.terrain = terrain;
 
         this.damageDelay = 0.50f;
 
@@ -39,17 +38,44 @@ public class Enemy extends Entity {
         this.invincible = false;
         this.tireless = true;
 
-        lastDelay = System.currentTimeMillis();
+        this.lastMove = System.currentTimeMillis();
     
     }
 
 
     @Override
-    public Texture initTexture(Textures textures) {
+    public void initTexture(Textures textures) {
        this.texture = textures.enemyTexture;
-       return this.texture;
     }
 
+
+    @Override
+    public void update(float deltaTime, Terrain terrain) {
+
+        if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;  
+    
+        if(chasing){
+            chaseTarget();
+        } else{
+            wanderAround();
+        }
+        
+        tryMove(terrain);
+
+        exhausted = stamina <= 0 && !tireless;
+
+        lastMove = System.currentTimeMillis();
+
+        // Reset movement
+        dirX = 0;
+        dirY = 0;
+
+    }
+
+
+    // Enemy specific code //
+
+    // Setters
 
     public void setTarget(Entity target) {
         this.target = target;
@@ -60,83 +86,6 @@ public class Enemy extends Entity {
         this.chasing = chasing;
     }
 
-
-    @Override
-    public void update(float deltaTime) {
-
-        if(System.currentTimeMillis() - lastDelay >= moveDelay * 1000) {   
-        
-            if(chasing){
-
-                // If there is no target, do nothing
-                if (target == null) return;
-
-                // Calculate distance to target
-                int dx = target.x - this.x;
-                int dy = target.y - this.y;
-
-                // Decide which direction to move
-                if (Math.abs(dx) > Math.abs(dy)) {
-
-                    // Move LEFT or RIGHT
-                    if (dx > 0) {
-                        dirX = 1;   // move right
-                    } else {
-                        dirX = -1;  // move left
-                    }
-
-                } else if (dy != 0) {
-
-                    // Move UP or DOWN
-                    if (dy > 0) {
-                        dirY = 1;   // move down
-                    } else {
-                        dirY = -1;  // move up
-                    }
-
-                }
-                // If dx == 0 and dy == 0 → already at target → no movement
-
-
-
-        
-            } else{
-
-                 
-            
-                int direction = random.nextInt(4) + 1;
-        
-
-                switch (direction) {
-                    case 1:
-                        dirY = -1; // Up
-                        break;
-                    case 2:
-                        dirY = 1; // Down
-                        break;
-                    case 3:
-                        dirX = -1; // Left
-                        break;
-                    case 4:
-                        dirX = 1; // Right
-                        break;
-                }
-            
-            }
-           
-            tryMove(terrain);
- 
-            this.exhausted = stamina <= 0 && !tireless;
-
-            lastDelay = System.currentTimeMillis();
-
-            // Reset movement
-            dirX = 0;
-            dirY = 0;
-
-        }
-
-    }
 
     // Checks collision
     public void check(Entity player){
@@ -151,54 +100,61 @@ public class Enemy extends Entity {
 
     }
 
+    // Wander logic
+    private void wanderAround() {
 
-    @Override
-    public void cleanup(){
+        int direction = random.nextInt(4) + 1;
 
-        random = null;
-        soundManager = null;
-
-        lastDelay = 0L;
-        moveDelay = 0.0f;
-
-        target = null;
-        chasing = false;
-
-
-        texture = null;
-
-        x = 0;
-        y = 0;
-        width = 0;
-        height = 0;
-
-        dirX = 0;
-        dirY = 0;
-        lastDirX = 0;
-        lastDirY = 0;
-
-        damageDelay = 0.0f;
-        lastDamage = 0L;
-
-        sprintDelay = 0.0f;
-        lastSprint = 0L;
-
-        moveDelay = 0.0f;
-        lastDelay = 0L;
-
-
-        health = 0;
-        maxHealth = 0;
-        invincible = false;
-
-        stamina = 0;
-        maxStamina = 0;
-
-        exhausted = false;
-        tireless = false;
-
+        switch (direction) {
+            case 1:
+                dirY = -1; // Up
+                break;
+            case 2:
+                dirY = 1; // Down
+                break;
+            case 3:
+                dirX = -1; // Left
+                break;
+            case 4:
+                dirX = 1; // Right
+                break;
+        }
 
     }
 
+    // Chase the target (Yeah this is the one of three or two parts which is ai generated (will be reworked better by human))
+    private void chaseTarget() {
+
+        // If there is no target, do nothing
+        if (target == null) return;
+
+        // Calculate distance to target
+        int dx = target.x - this.x;
+        int dy = target.y - this.y;
+
+        // Decide which direction to move
+        if (Math.abs(dx) > Math.abs(dy)) {
+
+            // Move LEFT or RIGHT
+            if (dx > 0) {
+                dirX = 1;   // move right
+            } else {
+                dirX = -1;  // move left
+            }
+
+        } else if (dy != 0) {
+
+            // Move UP or DOWN
+            if (dy > 0) {
+                dirY = 1;   // move down
+            } else {
+                dirY = -1;  // move up
+            }
+
+        }
+
+        // If dx == 0 and dy == 0 -> already at target -> no movement
+
+    }
 
 }

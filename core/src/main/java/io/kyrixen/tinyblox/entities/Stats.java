@@ -13,7 +13,7 @@ public class Stats {
         boolean isDead();
 
         void autoRegenerate(boolean state, float delta);
-        void invincible(boolean invincible);
+        void setInvincible(boolean invincible);
 
         boolean damage(int damage);
         void heal(int amount);        
@@ -30,7 +30,7 @@ public class Stats {
         boolean isExhausted();
 
         void autoRecover(boolean state, float delta);
-        void tireless(boolean tireless);    
+        void setTireless(boolean tireless);    
 
         void consume(int amount);
         void recover(int amount);

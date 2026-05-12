@@ -2,10 +2,10 @@
 
 package io.kyrixen.tinyblox.entities;
 
+
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
@@ -20,13 +20,12 @@ public class Player extends Entity {
     private Selector selector;
     private Camera camera;
 
-    public Player(int id, int x, int y, int width, int height, ArrayList<Entity> entities, Terrain terrain, Camera camera, Sfx soundManager) {
+    public Player(int id, int x, int y, Camera camera, Sfx soundManager) {
     
-        super(id, x, y, width, height, terrain, soundManager);
+        super(id, x, y, soundManager);
         
         this.type = EntityType.PLAYER;
 
-        this.moveDelay = 0.30f;
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
 
@@ -41,52 +40,41 @@ public class Player extends Entity {
         this.invincible = false;
         this.tireless = false;
 
-        this.selector = new Selector(this, entities, soundManager);
+        this.selector = new Selector(this, soundManager);
         this.camera = camera;
 
-        lastDelay = System.currentTimeMillis();
+        this.lastMove = System.currentTimeMillis();
     
     }
     
 
     @Override
-    public Texture initTexture(Textures textures) {
+    public void initTexture(Textures textures) {
        this.texture = textures.playerTexture;
-       return this.texture;
     }
 
 
     @Override
-    public void update(float deltaTime) {
-
-        long currentTime = System.currentTimeMillis();
-        if(currentTime - lastDelay >= moveDelay * 1000) {
-
-            // Move if there's input
-            if(dirX != 0 || dirY != 0) {
-                
-                moving = true;
-            
-                if(tryMove(this.terrain)) soundManager.walk.play(Utils.getFloatSound(15));
-
-                } else { 
-
-                moving = false;
-
-            }
-            
-            lastDelay = currentTime;
-
-        }
+    public void update(float deltaTime, Terrain terrain) {
 
         autoRecover(true, deltaTime);
         autoRegenerate(true, deltaTime);
-        
-        this.exhausted = stamina <= 0 && !tireless;
 
-        selector.update(terrain, camera, 30);
-        
+        exhausted = stamina <= 0 && !tireless;
 
+        if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;
+        if(dirX == 0 && dirY == 0) { moving = false; return; }
+
+        moving = tryMove(terrain);
+
+        if(moving) soundManager.walk.play(Utils.getFloatSound(15));
+
+        lastMove = System.currentTimeMillis();
+
+    }
+
+    public void updateSelector(Terrain terrain, ArrayList<Entity> entites) {
+        selector.update(terrain, camera, entites, 30);
     }
 
     public void renderSelector(Camera camera) {
@@ -94,75 +82,22 @@ public class Player extends Entity {
     }
 
 
-    @Override
-    public void cleanup(){
-
-    try {
-        if (selector != null) selector.cleanup();
-    } catch (Exception e) {
-        Logger.LOGGER.error("PLAYER", "Failed to cleanup selector: " + e.getMessage());
-    }
-
-        // Nullify references to help GC
-        type = null;
-        terrain = null;
-        texture = null;
-        soundManager = null;
-
-        x = 0;
-        y = 0;
-        width = 0;
-        height = 0;
-
-        dirX = 0;
-        dirY = 0;
-        lastDirX = 0;
-        lastDirY = 0;
-
-        damageDelay = 0.0f;
-        lastDamage = 0L;
-
-        sprintDelay = 0.0f;
-        lastSprint = 0L;
-
-        moveDelay = 0.0f;
-        lastDelay = 0L;
-
-
-        health = 0;
-        maxHealth = 0;
-        invincible = false;
-
-        stamina = 0;
-        maxStamina = 0;
-
-        exhausted = false;
-        tireless = false;
-
-
-    }
-
+    // Overrides //
 
     @Override
     public boolean damage(int damage) {
     
-        if(!invincible) {
-            
-            if(System.currentTimeMillis() - lastDamage >= damageDelay * 1000) {
+        if(invincible) return false;        
+        if(System.currentTimeMillis() - lastDamage < damageDelay * 1000) return false;
 
-                this.health -= damage;
-                
-                if(this.health < 0) this.health = 0;
-            
-                lastDamage = System.currentTimeMillis();
-                
-                return true;
+        this.health -= damage;
 
-            } else {} 
+        // Cap min health
+        if(this.health < 0) this.health = 0;
+    
+        lastDamage = System.currentTimeMillis();
         
-        }
-
-        return false;
+        return true;
     
     }
 
@@ -170,25 +105,21 @@ public class Player extends Entity {
     @Override
     public void sprint(){
 
-        if(!isExhausted() && Peripheal.anyWASDPressed() && Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)){ 
-            this.setSpeed(Speed.SPEEDY);
-                        
-            if(System.currentTimeMillis() - lastSprint >= sprintDelay * 1000) {
-                stamina -= 5; 
-                lastSprint = System.currentTimeMillis();
-            }
-        
-        }
-        
-        else this.setSpeed(Speed.NORMAL);
+        if(isExhausted() || !Peripheal.anyWASDPressed() || !Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)) { setSpeed(Speed.NORMAL); return; }
+            
+        this.setSpeed(Speed.SPEEDY);
+                    
+        if(System.currentTimeMillis() - lastSprint < sprintDelay * 1000) return;
+
+        stamina -= 5; 
+        lastSprint = System.currentTimeMillis();
     
     }
 
+    // Getters
 
     public void stats(Camera camera){
-
         Logger.LOGGER.debug("PLAYER", "Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
-
     }
 
     public Selector getSelector() {

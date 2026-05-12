@@ -33,7 +33,7 @@ public class Engine implements Screen {
     public boolean exit = false;
 
     // List of entities
-    private final static ArrayList<Entity> entities = new ArrayList<>();
+    private ArrayList<Entity> entities = new ArrayList<>();
 
     // Module components
     private Renderer renderer;
@@ -84,13 +84,13 @@ public class Engine implements Screen {
         int[] spawn = Utils.spawnNearCenter();
 
         // Create player
-        player = new Player(0, spawn[0], spawn[1], Constants.GRID_SIZE, Constants.GRID_SIZE, entities, terrain, camera, soundManager);
+        player = new Player(0, spawn[0], spawn[1], camera, soundManager);
 
         // Add to list
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, Constants.GRID_SIZE, Constants.GRID_SIZE, terrain, soundManager);
+        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, soundManager);
         
         // Add to list
         entities.add(enemy1);
@@ -107,9 +107,7 @@ public class Engine implements Screen {
     @Override
     public void render(float delta) {
 
-        if (exit || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-        }
+        if (exit || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     
         update(delta);
         render();
@@ -122,11 +120,12 @@ public class Engine implements Screen {
 
         controller.update(player);
 
-        Entity.updateAll(delta, entities);
+        Entity.updateAll(delta, terrain, entities);
         terrain.update();
 
         // Update camera
         camera.follow(player);
+        player.updateSelector(terrain, entities);
 
         for (Entity e : entities) {
 
@@ -145,11 +144,7 @@ public class Engine implements Screen {
         entities.removeIf(e -> {
 
             if(e.type() != EntityType.PLAYER && e.isDead()){
-
                 if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatSound(35));
-                
-                e.cleanup();
-
                 return true;
             }
 
@@ -165,14 +160,9 @@ public class Engine implements Screen {
            
         batch.begin();
 
-        try {
-            terrain.render(batch, timeCycle);
-        } catch (Exception e) {
-            Logger.LOGGER.error("ENGINE", "Error rendering terrain: " + e.getMessage());
-        }
-            
+        terrain.render(batch, timeCycle);    
 
-        Entity.renderAll(textures, renderer, timeCycle, entities, batch, camera);
+        Entity.renderAll(timeCycle, textures, entities, batch);
 
         batch.end();
 
@@ -202,6 +192,9 @@ public class Engine implements Screen {
         // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
 
+        Constants.WINDOW_HEIGHT = height;
+        Constants.WINDOW_WIDTH = width;
+
         Logger.LOGGER.info("ENGINE", "Resizing window!");
 
     }
@@ -225,20 +218,12 @@ public class Engine implements Screen {
     public void dispose() {
 
         Logger.LOGGER.info("ENGINE", "On cleanup");
-  
-        // Call cleanup on all entities, without removing them from the list
-        for (Entity e : entities) {
-            e.cleanup();  // call Entity own cleanup
-        }
 
         // Clear the list after cleanup
         entities.clear();
 
-
         // Clean up textures
-        if (textures != null) {
-            textures.cleanup();
-        }
+        if (textures != null) { textures.cleanup(); }
 
         terrain.cleanup();
         camera.cleanup();
@@ -246,14 +231,9 @@ public class Engine implements Screen {
         renderer.cleanup();
 
         if (soundManager != null) soundManager.cleanup();
-        
         if (batch != null) batch.dispose();
         if (shape != null) shape.dispose();
-
-        System.gc(); // Help GC    
     
     }
-
-
 
 }

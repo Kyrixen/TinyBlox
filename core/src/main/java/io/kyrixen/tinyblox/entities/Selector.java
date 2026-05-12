@@ -26,8 +26,6 @@ public class Selector {
     // For sound
     private final Sfx sfxManager;
 
-    // Helper Array
-    private ArrayList<Entity> entities;
 
     // Cords
     private int x;
@@ -46,17 +44,16 @@ public class Selector {
     private float breakDelay = 0.55f;
     
     // Renderer
-    ShapeRenderer sr;
+    final ShapeRenderer sr;
 
     // Max distance that cursor can be from entity
     private final byte REACH = 2;
 
 
-    public Selector(Entity entity, ArrayList<Entity> entities, Sfx sfxManager) {
+    public Selector(Entity entity, Sfx sfxManager) {
 
         // Initialize the selector with the given entity
         this.entity = entity;
-        this.entities = entities;
         this.sfxManager = sfxManager;
         this.sr = new ShapeRenderer();
 
@@ -66,7 +63,7 @@ public class Selector {
     }
 
 
-    public void update(Terrain terrain, Camera camera, int damage) {
+    public void update(Terrain terrain, Camera camera, ArrayList<Entity> entities, int damage) {
         
         float mouseWorldX = Peripheal.getMouseX() / camera.zoom + camera.x;
         float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheal.getMouseY()) / camera.zoom + camera.y;
@@ -93,13 +90,27 @@ public class Selector {
         
         if(this.x == entity.x && this.y == entity.y) return;
 
-        checkPlace(terrain);
-        checkDestroy(terrain);
-        checkHit(damage);
+        checkPlace(terrain, entities);
+        checkDestroy(terrain, entities);
+        checkHit(damage, entities);
 
     }
 
-    private void checkHit(int damage) {
+    public void render(Camera camera) {
+
+        sr.setColor(Color.WHITE);
+        
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
+        sr.end();
+    
+    }
+
+
+    // Checkers //
+
+    // Check if can hit entity
+    private void checkHit(int damage, ArrayList<Entity> entities) {
 
         // Check for mouse interaction
         Entity e = checkEntityCollision(entities);
@@ -110,7 +121,8 @@ public class Selector {
 
     }
 
-    private void checkPlace(Terrain terrain) {
+    // Check if can place tile
+    private void checkPlace(Terrain terrain, ArrayList<Entity> entities) {
 
         if(!Peripheal.mousePressed(Input.Buttons.RIGHT)) return;
         if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
@@ -131,14 +143,15 @@ public class Selector {
 
         if(current == null) return;
 
-        if(current.level() >= 2);
+        if(current.level() >= 2) return;
         else { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.DIRT, (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(20)); }
 
         this.lastPlace = System.currentTimeMillis();
 
     }
 
-    private void checkDestroy(Terrain terrain) {
+    // Check if can destroy tile
+    private void checkDestroy(Terrain terrain, ArrayList<Entity> entities) {
 
         if(!Peripheal.mousePressed(Input.Buttons.LEFT)) return;
         if(System.currentTimeMillis() - lastBreak < breakDelay * 1000) return;
@@ -168,17 +181,7 @@ public class Selector {
 
     }
 
-    public void render(Camera camera) {
-
-        sr.setColor(Color.WHITE);
-        
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
-        sr.end();
-    
-    }
-
-
+    // Checks entity collision
     public Entity checkEntityCollision(ArrayList<Entity> entities) {
 
         for (Entity e : entities) {
@@ -191,19 +194,6 @@ public class Selector {
 
         return null;
     
-    }
-
-    public void cleanup(){
-    
-        entity = null;
-        entities = null;
-        
-        x = 0;
-        y = 0;
-     
-        width = 0;
-        height = 0;
-
     }
 
 }
