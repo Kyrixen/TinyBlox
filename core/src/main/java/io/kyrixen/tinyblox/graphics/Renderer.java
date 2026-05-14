@@ -2,6 +2,7 @@ package io.kyrixen.tinyblox.graphics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
@@ -11,6 +12,11 @@ public class Renderer {
 
     // Own camera
     private Camera camera;
+
+    // Missing texture colors
+    private static final Color MISSING_GREEN = Color.valueOf("2fac60");
+    private static final Color MISSING_BLUE = Color.valueOf("217095");
+
 
     // Pass the camera
     public Renderer(Camera camera) {
@@ -57,6 +63,23 @@ public class Renderer {
 
         shapeRenderer.end();
     
+    }
+
+    // Draws missing texture (something like null block in minecraft)
+    public static void drawMissingTexture(float x, float y, float w, float h, ShapeRenderer shapeRenderer) {
+
+        shapeRenderer.begin(ShapeType.Filled);
+
+        shapeRenderer.setColor(MISSING_GREEN);
+        shapeRenderer.rect(x, y, w / 2f, h);
+
+        shapeRenderer.setColor(MISSING_BLUE);
+        shapeRenderer.rect(x + w / 2f, y, w / 2f, h);
+
+        shapeRenderer.setColor(1f, 1f, 1f, 1f);
+
+        shapeRenderer.end();
+
     }
 
     // Unload resources

@@ -296,8 +296,6 @@ public class Terrain {
         w = 0;
         h = 0;
 
-        System.gc(); // Help GC
-
     }
 
 }

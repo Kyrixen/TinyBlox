@@ -52,18 +52,19 @@ public class Engine implements Screen {
     @Override
     public void show() {
     
+        // Renderers init
+        batch = new SpriteBatch();
+        shape = new ShapeRenderer();
+
         // Module components init
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
         renderer = new Renderer(camera);
         controller = new Controller();
-        textures = new Textures(camera);
+        textures = new Textures(camera, shape);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, (byte) 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f, false);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
-        
-        batch = new SpriteBatch();
-        shape = new ShapeRenderer();
 
         init();
 

@@ -75,10 +75,7 @@ public class Chunk {
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
         // Check if textures are loaded
-        if (tex == null || tex.terrainTileset == null) {
-            Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
-            return;
-        }
+        if (tex == null || tex.terrainTileset == null) Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
 
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {

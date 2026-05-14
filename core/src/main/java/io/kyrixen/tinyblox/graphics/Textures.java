@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import io.kyrixen.tinyblox.Constants;
@@ -18,6 +19,8 @@ public class Textures {
     // Camera Object
     private Camera camera;
 
+    // Shape renderer object
+    private ShapeRenderer shapeRenderer;
 
     // Create texture vars
     public static Texture menuBackgroundImage;
@@ -44,8 +47,9 @@ public class Textures {
     public static Texture whiteSlider;
 
     // Constructor (Init camera var)
-    public Textures(Camera camera) {
+    public Textures(Camera camera, ShapeRenderer shapeRenderer) {
         this.camera = camera;
+        this.shapeRenderer = shapeRenderer;
     }
 
 
@@ -74,22 +78,21 @@ public class Textures {
     // Draw a single tile / texture with camera offset
     public void draw(Texture tex, int x, int y, int w, int h, SpriteBatch batch) {
 
-        if (tex == null) return;
-
         // Apply camera offset
         float screenX = (x - camera.x) * camera.zoom;
         float screenY = (y - camera.y) * camera.zoom;
         float renderW = w * camera.zoom;
         float renderH = h * camera.zoom;
 
-        batch.draw(tex, screenX, screenY, renderW, renderH, 0, 0, tex.getWidth(), tex.getHeight(), false, false);
+        if (tex == null) { batch.end(); Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, shapeRenderer); batch.begin(); }
+        else batch.draw(tex, screenX, screenY, renderW, renderH, 0, 0, tex.getWidth(), tex.getHeight(), false, false);
+
 
     }
 
     // Draw one tile from a tileset
     public void drawTileset(Texture tileset, int x, int y, int w, int h, int tileX, int tileY, int tileSize, SpriteBatch batch) {
         
-        if (tileset == null) return;
 
         int srcX = tileX * tileSize;
         int srcY = tileY * tileSize;
@@ -99,7 +102,8 @@ public class Textures {
         float renderW = w * camera.zoom;
         float renderH = h * camera.zoom;
 
-        batch.draw(tileset, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
+        if (tileset == null) { batch.end(); Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, shapeRenderer); batch.begin(); }
+        else batch.draw(tileset, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }
 
