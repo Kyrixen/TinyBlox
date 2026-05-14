@@ -118,8 +118,11 @@ public class Player extends Entity {
 
     // Getters
 
+    private long last_debug_print;
     public void stats(Camera camera){
+        if(System.currentTimeMillis() - last_debug_print < 3.0f * 1000) return;
         Logger.LOGGER.debug("PLAYER", "Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
+        last_debug_print = System.currentTimeMillis();
     }
 
     public Selector getSelector() {
