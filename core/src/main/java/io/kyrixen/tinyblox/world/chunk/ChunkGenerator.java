@@ -1,8 +1,8 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
-import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class ChunkGenerator {
 

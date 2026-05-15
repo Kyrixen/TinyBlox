@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.world.fastnoiselite;
+package fastnoiselite;
 
 // MIT License
 //

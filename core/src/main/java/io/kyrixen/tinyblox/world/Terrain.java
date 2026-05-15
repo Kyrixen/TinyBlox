@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -13,7 +14,6 @@ import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.Tile;
 import io.kyrixen.tinyblox.world.chunk.TileStack;
-import io.kyrixen.tinyblox.world.fastnoiselite.FastNoiseLite;
 
 public class Terrain {
 
