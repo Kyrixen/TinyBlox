@@ -1,5 +1,7 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import io.kyrixen.tinyblox.entities.inventory.Item;
+
 // Tile class
 public class Tile {
 
@@ -69,6 +71,29 @@ public class Tile {
     public TileType type() { return type; }
 
     public byte level() { return level; }
+
+    public Item getItem() {
+
+        switch (type) {
+            
+            case GRASS:        
+                return Item.GRASS;
+            
+            case DIRT:        
+                return Item.DIRT;
+            
+            case WATER:        
+                return Item.WATER;
+            
+            case STONE:        
+                return Item.STONE;
+
+            default:
+                return Item.NONE;
+
+        }
+
+    }
 
     @Override
     public String toString() {

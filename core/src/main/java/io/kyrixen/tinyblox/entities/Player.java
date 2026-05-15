@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Input;
 
+import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -25,6 +26,9 @@ public class Player extends Entity {
         super(id, x, y, soundManager);
         
         this.type = EntityType.PLAYER;
+
+        this.hotbarSlotCount = 6;
+        this.inventory = new Inventory(this.hotbarSlotCount);
 
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
@@ -61,6 +65,10 @@ public class Player extends Entity {
         autoRegenerate(true, deltaTime);
 
         exhausted = stamina <= 0 && !tireless;
+
+        int scroll = Peripheal.mouseScroll();
+        if(scroll < 0) inventory.previousSlot();
+        if(scroll > 0) inventory.nextSlot();
 
         if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;
         if(dirX == 0 && dirY == 0) { moving = false; return; }

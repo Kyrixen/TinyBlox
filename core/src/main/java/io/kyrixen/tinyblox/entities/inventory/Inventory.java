@@ -59,12 +59,23 @@ public class Inventory {
         return slots[hotbarSlot].getItem();
     }
 
-    public ItemStack currentStack() {
+    public ItemStack getCurrentStack() {
         return slots[hotbarSlot];
+    }
+
+    public byte getCurrentSlot() {
+        return hotbarSlot;
     }
 
     public byte getMaxStorage() {
         return (byte) slots.length;
+    }
+
+    public ItemStack getSlot(byte position) {
+
+        if(position >= this.getMaxStorage()) return null;
+        return slots[position];
+
     }
 
     public void nextSlot() {
@@ -74,7 +85,7 @@ public class Inventory {
 
     public void previousSlot() {
         hotbarSlot--;
-        if(hotbarSlot < 0) hotbarSlot = (byte) (slots.length - 1);
+        if(hotbarSlot < 0) hotbarSlot = (byte) (this.getMaxStorage() - 1);
     }
 
         public byte getEmptySlot() {
@@ -120,6 +131,29 @@ public class Inventory {
             if(itemStack.getItem() == item && !itemStack.isEmpty()) { return true; }
         }
         return false;
+    }
+
+
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("Inventory {\n");
+
+        for(byte i = 0; i < this.getMaxStorage(); i++) {
+
+            if(i == hotbarSlot) builder.append("> ");
+            else builder.append("  ");
+
+            builder.append("Slot " + i + " { item=" + this.getSlot(i).getItem() + ", count=" + this.getSlot(i).getCount() + "} \n");
+        
+        }
+
+        builder.append("}");
+
+        return builder.toString();
+
     }
 
 }

@@ -2,10 +2,32 @@ package io.kyrixen.tinyblox.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 
 public class Peripheal {
 
+    // Scroll var
+    private static int scrollType = 0;
 
+    // Register scroll event
+    static {
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+
+            @Override
+            public boolean scrolled(float amountX, float amountY) {
+
+                if (amountY > 0)
+                    scrollType = 1;
+                else if (amountY < 0)
+                    scrollType = -1;
+                else
+                    scrollType = 0;
+
+                return true;
+            }
+        });
+    }
     // Key Handling //
 
     public static boolean keyReleased(int k) {
@@ -35,6 +57,16 @@ public class Peripheal {
 
     public static boolean mousePressed(int b) {
         return Gdx.input.isButtonPressed(b);
+    }
+
+
+    public static int mouseScroll() {
+
+        int tempScroll = scrollType;
+        scrollType = 0;
+
+        return tempScroll;
+    
     }
 
     public static boolean anyMousePressed() {

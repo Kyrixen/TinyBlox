@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.TerrainCollision;
+import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -81,6 +82,10 @@ public class Entity implements Stats.Health, Stats.Stamina {
     Texture texture = null;
     EntityType type;
 
+    // Inventory of the entity
+    Inventory inventory;
+    byte hotbarSlotCount = 3;
+
     // Stats //
 
     protected float health;
@@ -111,6 +116,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
         this.height = Constants.GRID_SIZE;
 
         this.soundManager = soundManager;
+
+        this.inventory = new Inventory(this.hotbarSlotCount);
 
         // Defaults
         this.type = EntityType.DEFAULT;

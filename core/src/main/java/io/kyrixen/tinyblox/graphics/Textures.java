@@ -36,6 +36,9 @@ public class Textures {
     public Texture waterTexture;
     public Texture airTexture;
     public Texture terrainTileset;
+
+    // HUD Textures
+    public static Texture hotbarSlot;
     
     // UI Textures
     public static Texture dialogCorner;
@@ -149,6 +152,12 @@ public class Textures {
         airTexture = load("textures/terrain/air.png");
         terrainTileset = load("textures/terrain/terrain.png");
     
+    }
+
+    public void initHUDTextures() {
+
+        hotbarSlot = load("textures/hud/inventory/hotbar_slot.png");
+
     }
 
     public static void initUITextures() {

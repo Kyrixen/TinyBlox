@@ -37,15 +37,17 @@ public class ItemStack {
 
     public void remove(byte count) {
         this.count -= count;
-        if(this.count < 0) { this.count = 0; }
+        if(this.count <= 0) { this.count = 0; this.item = Item.NONE; }
     }
 
     public void setCount(byte amount) {
         this.count = amount;
+        if(this.count <= 0) { this.count = 0; this.item = Item.NONE; }
     }
 
     public void setItem(Item item) {
         this.item = item;
+        if(this.item == Item.NONE) this.count = 0;
     }
 
 }

@@ -76,6 +76,9 @@ public class Engine implements Screen {
         // Initialize renderer and controller
         renderer.init();
         controller.init();
+
+        // Initialize sprites
+        textures.initHUDTextures();
         textures.initTextures();
 
         // Terrain init
