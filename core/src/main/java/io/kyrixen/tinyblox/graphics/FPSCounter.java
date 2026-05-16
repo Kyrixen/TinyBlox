@@ -2,17 +2,19 @@ package io.kyrixen.tinyblox.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import io.kyrixen.tinyblox.Constants;
 
 public class FPSCounter {
 
-    private final BitmapFont fpsFont;
+    protected BitmapFont fpsFont;
+    protected GlyphLayout layout = new GlyphLayout();
 
     public FPSCounter() {
-        fpsFont = new BitmapFont(); // Default font
-        fpsFont.getData().setScale(2f); // Larger text
+        generateFont("fonts/editundo.ttf", 40);
     }
 
     public int getFPS() { return Gdx.graphics.getFramesPerSecond(); }
@@ -27,5 +29,19 @@ public class FPSCounter {
     public void cleanup() {
         fpsFont.dispose();
     }
-    
+
+    private void generateFont(String path, int size) {
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
+
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = size;
+
+        fpsFont = generator.generateFont(parameter);
+
+        generator.dispose();
+
+    }
+
 }
