@@ -1,7 +1,10 @@
 package io.kyrixen.tinyblox.entities.inventory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
@@ -10,55 +13,95 @@ import io.kyrixen.tinyblox.graphics.Textures;
 
 public class InventoryRenderer {
     
+    // Inventory to render
     private Inventory inventoryRender;
 
-    private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;
+    // Font specific vars
+    protected BitmapFont font;
+    protected GlyphLayout layout = new GlyphLayout();
 
+    // UI Spacer vars
+    private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;
     private static final float SLOT_SPACING = 90f;
 
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;
+        generateFont("fonts/editundo.ttf", 32);
     }
 
+    // Full render method
     public void render(SpriteBatch batch) {
+
+        batch.begin();
         renderSlots(batch);
         renderCounts(batch);
         renderItems(batch);
-    }
-
-    public void renderSlots(SpriteBatch batch) {
-
-        float slotX = Gdx.graphics.getWidth() - SLOT_SPACING;
-        float slotY = Gdx.graphics.getHeight() - SLOT_SPACING;
-        
-        batch.begin();
-        for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) { batch.draw(Textures.hotbarSlot, slotX, slotY - (i * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE); }
         batch.end();
 
     }
 
-    public void renderItems(SpriteBatch batch) {
-
-
-
-    }
-
-    public void renderCounts(SpriteBatch batch) {
-
-
+    // Renders item slots
+    public void renderSlots(SpriteBatch batch) {
+        
+        for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
+            batch.draw(Textures.hotbarSlot, this.getSlotX(), this.getSlotY() - (i * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
+        }
         
     }
 
-    public void drawHighlight(ShapeRenderer shapeRenderer) {
+    // Renders items
+    public void renderItems(SpriteBatch batch) {
+    
+        for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
+            if(inventoryRender.getSlot(i).isEmpty()) continue;
+            font.draw(batch, inventoryRender.getSlot(i).getItem().name(), this.getSlotX() + 6, this.getSlotY() - (i * SLOT_SPACING) + 52);
+        }
+        
+    }
 
-        float slotX = Gdx.graphics.getWidth() - SLOT_SPACING;
-        float slotY = Gdx.graphics.getHeight() - SLOT_SPACING;
+    // Renders item counts
+    public void renderCounts(SpriteBatch batch) {
+
+        for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
+            if(inventoryRender.getSlot(i).isEmpty()) continue;
+            font.draw(batch, String.valueOf(inventoryRender.getSlot(i).getCount()), this.getSlotX() + 6, this.getSlotY() - (i * SLOT_SPACING) + 18);
+        }
+        
+    }
+
+    // Draws current hotbar
+    public void drawHighlight(ShapeRenderer shapeRenderer) {
         
         shapeRenderer.begin(ShapeType.Line);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
-        shapeRenderer.rect(slotX, slotY - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
+        shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
         shapeRenderer.end();
 
+    }
+
+    // Generates temporary font
+    private void generateFont(String path, int size) {
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
+
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter =new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = size;
+
+        font = generator.generateFont(parameter);
+
+        generator.dispose();
+
+    }
+
+    // Helper getters //
+
+    private float getSlotX() {
+        return Gdx.graphics.getWidth() - SLOT_SPACING;
+    }
+
+    private float getSlotY() {
+        return Gdx.graphics.getHeight() - SLOT_SPACING;
     }
 
 }
