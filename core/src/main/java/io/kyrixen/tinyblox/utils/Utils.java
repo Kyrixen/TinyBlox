@@ -9,23 +9,6 @@ import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.Tile;
 
 public class Utils {
-    
-    @Deprecated
-    // Not used (used in LWJGL version)
-    public static float getFloatColor(int color) {
-
-        float floatColor = color / 255.0f;
-        
-        return floatColor;
-    
-    }
-
-    @Deprecated
-    // For sounds
-    public static float getFloatVolume(int volume) {
-        float floatVolume = volume / 100.0f;
-        return floatVolume;
-    }
 
     // For better func
     public static void betterTilesetDraw(int x, int y, int tix, int tiy, Textures texture, SpriteBatch batch){
