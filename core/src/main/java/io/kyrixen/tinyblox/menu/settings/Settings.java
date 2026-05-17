@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
+import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.menu.Menu;
 import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton;
@@ -17,7 +18,6 @@ import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.Slider;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.utils.Utils;
 
 public class Settings implements Screen {
     
@@ -104,9 +104,9 @@ public class Settings implements Screen {
 
         if(exitButton.pressed()) main.setScreen(new Menu(main));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
-        if(vsyncButton.pressed()) { Constants.VSYNC = !Constants.VSYNC; Utils.updateVsync(); }
+        if(vsyncButton.pressed()) { Renderer.updateVsync(!Constants.VSYNC); }
 
-        if(fpsSlider.pressed()) { Constants.FPS = fpsSlider.getValue(); Utils.updateFPS(); }
+        if(fpsSlider.pressed()) { Renderer.updateFPS(fpsSlider.getValue()); }
         if(musicSlider.pressed()) { Constants.VOLUME = musicSlider.getValue(); }
 
     }

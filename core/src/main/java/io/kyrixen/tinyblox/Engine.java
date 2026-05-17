@@ -116,6 +116,8 @@ public class Engine implements Screen {
         update(delta);
         render();
 
+        renderer.limitFPS();
+
     }
 
     private void update(float delta) {

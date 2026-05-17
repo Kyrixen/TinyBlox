@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -80,6 +81,21 @@ public class Renderer {
 
         shapeRenderer.end();
 
+    }
+
+    // FPS Limiter method (empty because handled via libGDX itself)
+    public void limitFPS() {}
+
+    // Update methods //
+
+    public static void updateVsync(boolean vsync) {
+        Constants.VSYNC = vsync;
+        Gdx.graphics.setVSync(Constants.VSYNC);
+    }
+    
+    public static void updateFPS(int fps) {
+        Constants.FPS = fps;
+        Gdx.graphics.setForegroundFPS(Constants.FPS);
     }
 
     // Unload resources

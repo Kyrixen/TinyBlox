@@ -1,6 +1,5 @@
 package io.kyrixen.tinyblox.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
@@ -78,14 +77,6 @@ public class Utils {
         Logger.LOGGER.debug("WORLD", "Safe spawn found at: " + bestTileX + ", " + bestTileY);
         return new int[]{bestTileX, bestTileY};
 
-    }
-
-    public static void updateVsync() {
-        Gdx.graphics.setVSync(Constants.VSYNC);
-    }
-    
-    public static void updateFPS() {
-        Gdx.graphics.setForegroundFPS(Constants.FPS);
     }
 
     public static float getFloatSound(int volume) {
