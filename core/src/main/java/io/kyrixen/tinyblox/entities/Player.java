@@ -6,8 +6,11 @@ package io.kyrixen.tinyblox.entities;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
+import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -21,6 +24,8 @@ public class Player extends Entity {
     private Selector selector;
     private Camera camera;
 
+    private InventoryRenderer inventoryRenderer;
+
     public Player(int id, int x, int y, Camera camera, Sfx soundManager) {
     
         super(id, x, y, soundManager);
@@ -29,6 +34,7 @@ public class Player extends Entity {
 
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);
+        this.inventoryRenderer = new InventoryRenderer(inventory);
 
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
@@ -89,6 +95,10 @@ public class Player extends Entity {
         selector.render(camera);
     }
 
+    public void renderInvetory(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        inventoryRenderer.render(batch);
+        inventoryRenderer.drawHighlight(shapeRenderer);
+    }
 
     // Overrides //
 

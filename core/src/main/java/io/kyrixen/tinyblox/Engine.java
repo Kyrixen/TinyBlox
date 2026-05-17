@@ -185,6 +185,7 @@ public class Engine implements Screen {
         shape.end();
 
         player.renderSelector(camera);
+        player.renderInvetory(batch, shape);
 
         batch.begin();
         fpsCounter.printFPS(batch);
