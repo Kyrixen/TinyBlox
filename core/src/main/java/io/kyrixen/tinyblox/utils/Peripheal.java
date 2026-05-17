@@ -38,6 +38,10 @@ public class Peripheal {
         return Gdx.input.isKeyPressed(k);
     }
 
+    public static boolean keyJustPressed(int k) {
+        return Gdx.input.isKeyJustPressed(k);
+    }
+
     public static boolean anyKeyPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.ANY_KEY);
     }
@@ -57,6 +61,10 @@ public class Peripheal {
 
     public static boolean mousePressed(int b) {
         return Gdx.input.isButtonPressed(b);
+    }
+
+    public static boolean mouseJustPressed(int b) {
+        return Gdx.input.isButtonJustPressed(b);
     }
 
 

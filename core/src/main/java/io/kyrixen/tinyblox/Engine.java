@@ -19,6 +19,7 @@ import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -132,6 +133,8 @@ public class Engine implements Screen {
         // Update camera
         camera.follow(player);
         player.updateSelector(terrain, entities);
+
+        if(Peripheal.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
 
         for (Entity e : entities) {
 

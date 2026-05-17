@@ -147,4 +147,8 @@ public class Player extends Entity {
         return this.selector;
     }
 
+    public InventoryRenderer getInventoryRenderer() {
+        return this.inventoryRenderer;
+    }
+
 }

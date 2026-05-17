@@ -24,6 +24,9 @@ public class InventoryRenderer {
     private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;
     private static final float SLOT_SPACING = 90f;
 
+    // Inventory visibility
+    private boolean visible = true;
+
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;
         generateFont("fonts/editundo.ttf", 32);
@@ -31,6 +34,8 @@ public class InventoryRenderer {
 
     // Full render method
     public void render(SpriteBatch batch) {
+
+        if(!visible) return;
 
         batch.begin();
         renderSlots(batch);
@@ -72,6 +77,8 @@ public class InventoryRenderer {
     // Draws current hotbar
     public void drawHighlight(ShapeRenderer shapeRenderer) {
         
+        if(!visible) return;
+
         shapeRenderer.begin(ShapeType.Line);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
@@ -102,6 +109,12 @@ public class InventoryRenderer {
 
     private float getSlotY() {
         return Gdx.graphics.getHeight() - SLOT_SPACING;
+    }
+
+    // Setters //
+
+    public void toggleRendering() {
+        this.visible = !visible;
     }
 
 }
