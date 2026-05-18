@@ -2,7 +2,6 @@ package io.kyrixen.tinyblox.entities;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -70,7 +69,7 @@ public class Selector {
     }
 
 
-    public void update(Terrain terrain, Camera camera, ArrayList<Entity> entities, int damage) {
+    public void update(Camera camera) {
         
         float mouseWorldX = Peripheal.getMouseX() / camera.zoom + camera.x;
         float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheal.getMouseY()) / camera.zoom + camera.y;
@@ -96,11 +95,7 @@ public class Selector {
         this.y = tileY * Constants.GRID_SIZE;
         
         if(this.x == entity.x && this.y == entity.y) return;
-
-        checkPlace(terrain, entities);
-        checkDestroy(terrain, entities);
-        checkHit(damage, entities);
-
+        
     }
 
     public void render(Camera camera) {
@@ -117,21 +112,20 @@ public class Selector {
     // Checkers //
 
     // Check if can hit entity
-    private void checkHit(int damage, ArrayList<Entity> entities) {
+    public void checkHit(int damage, ArrayList<Entity> entities) {
 
         // Check for mouse interaction
         Entity e = checkEntityCollision(entities);
 
-        if(e != null && Peripheal.mousePressed(Input.Buttons.LEFT)){
+        if(e != null){
             if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40));
         }
 
     }
 
     // Check if can place tile
-    private void checkPlace(Terrain terrain, ArrayList<Entity> entities) {
+    public void checkPlace(Terrain terrain, ArrayList<Entity> entities) {
 
-        if(!Peripheal.mousePressed(Input.Buttons.RIGHT)) return;
         if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
         
         Entity e = checkEntityCollision(entities);
@@ -162,9 +156,8 @@ public class Selector {
     }
 
     // Check if can destroy tile
-    private void checkDestroy(Terrain terrain, ArrayList<Entity> entities) {
+    public void checkDestroy(Terrain terrain, ArrayList<Entity> entities) {
 
-        if(!Peripheal.mousePressed(Input.Buttons.LEFT)) return;
         if(System.currentTimeMillis() - lastBreak < breakDelay * 1000) return;
         
         Entity e = checkEntityCollision(entities);

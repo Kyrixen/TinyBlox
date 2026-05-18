@@ -19,7 +19,6 @@ import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -74,9 +73,8 @@ public class Engine implements Screen {
 
     private void init() {
 
-        // Initialize renderer and controller
+        // Initialize renderer
         renderer.init();
-        controller.init();
 
         // Initialize sprites
         textures.initHUDTextures();
@@ -125,16 +123,14 @@ public class Engine implements Screen {
 
         timeCycle.updateDayTime(delta);
 
-        controller.update(player);
+        controller.update(player, terrain, entities);
 
         Entity.updateAll(delta, terrain, entities);
         terrain.update();
 
         // Update camera
         camera.follow(player);
-        player.updateSelector(terrain, entities);
-
-        if(Peripheal.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
+        player.updateSelector();
 
         for (Entity e : entities) {
 

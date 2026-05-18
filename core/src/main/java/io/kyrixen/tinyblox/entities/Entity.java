@@ -286,22 +286,6 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
     }
 
-    // Sprinting
-    public void sprint(){
-
-        if(isExhausted()) { this.setSpeed(Speed.SLOW); return; }
-
-        this.setSpeed(Speed.NORMAL); // Faster movement when sprinting
-        
-        if(System.currentTimeMillis() - lastSprint >= sprintDelay * 1000) {
-        
-            stamina -= 5; 
-            lastSprint = System.currentTimeMillis();
-        
-        }
-    
-    }
-
     // Auto recovers stamina
     @Override
     public void autoRecover(boolean state, float delta) {

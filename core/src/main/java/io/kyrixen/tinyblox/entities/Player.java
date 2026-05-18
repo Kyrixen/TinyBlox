@@ -2,10 +2,6 @@
 
 package io.kyrixen.tinyblox.entities;
 
-
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -14,7 +10,6 @@ import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.graphics.Textures;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -63,7 +58,6 @@ public class Player extends Entity {
        this.texture = textures.playerTexture;
     }
 
-
     @Override
     public void update(float deltaTime, Terrain terrain) {
 
@@ -71,10 +65,6 @@ public class Player extends Entity {
         autoRegenerate(true, deltaTime);
 
         exhausted = stamina <= 0 && !tireless;
-
-        int scroll = Peripheal.mouseScroll();
-        if(scroll < 0) inventory.previousSlot();
-        if(scroll > 0) inventory.nextSlot();
 
         if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;
         if(dirX == 0 && dirY == 0) { moving = false; return; }
@@ -87,8 +77,16 @@ public class Player extends Entity {
 
     }
 
-    public void updateSelector(Terrain terrain, ArrayList<Entity> entites) {
-        selector.update(terrain, camera, entites, 30);
+    public void updateSelector() {
+        selector.update(camera);
+    }
+
+    // Checks inventory hotbar change
+    public void checkInventoryScrolling(int scroll) {
+
+        if(scroll < 0) inventory.previousSlot();
+        if(scroll > 0) inventory.nextSlot();
+
     }
 
     public void renderSelector(Camera camera) {
@@ -120,10 +118,10 @@ public class Player extends Entity {
     }
 
 
-    @Override
+    // Sprinting logic
     public void sprint(){
 
-        if(isExhausted() || !Peripheal.anyWASDPressed() || !Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)) { setSpeed(Speed.NORMAL); return; }
+        if(isExhausted()) { setSpeed(Speed.NORMAL); return; }
             
         this.setSpeed(Speed.SPEEDY);
                     
