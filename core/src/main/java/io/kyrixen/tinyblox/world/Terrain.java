@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -21,18 +20,12 @@ public class Terrain {
     // For passing the chunk size
     public final byte size;
     
-    // Helper texture
-    private TextureManager tex;
-    
     // Dimensions
     private int w;
     private int h;
 
     // Seed
     public static int seed;
-
-    // Camera helper
-    private Camera cam;
 
     // Renderer
     private TileRenderer tileRenderer;
@@ -44,14 +37,11 @@ public class Terrain {
     public static HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
-    public Terrain(int w, int h, TileRenderer tileRenderer, TextureManager texture, Camera camera, ShapeRenderer shapeRenderer, int seed, float frequency) {
+    public Terrain(int w, int h, TileRenderer tileRenderer, ShapeRenderer shapeRenderer, int seed, float frequency) {
 
         this.size = Constants.CHUNK_SIZE;
 
         Terrain.seed = seed;
-
-        this.tex = texture;
-        this.cam = camera;
         
         this.w = w;
         this.h = h;
@@ -81,7 +71,7 @@ public class Terrain {
 
             for(short y = 0; y < chunkCountY; y++){
 
-                Chunk c = new Chunk(x, y, size, true, tex, cam);
+                Chunk c = new Chunk(x, y, size, true);
         
                 //ChunkBuilder cb = new ChunkBuilder(x, y, size);
                 
@@ -133,7 +123,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
+    public void renderDepthOverlay(Camera camera, ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -149,7 +139,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(shapeRenderer, timeCycle);
+                c.renderDepthOverlay(camera, shapeRenderer, timeCycle);
     
             }
     
@@ -164,7 +154,7 @@ public class Terrain {
 
         if(!chunks.containsKey(cPos)){
 
-            Chunk c = new Chunk(cX, cY, size, true, tex, cam);
+            Chunk c = new Chunk(cX, cY, size, true);
             ChunkGenerator.generate(c, noise);
             chunks.put(cPos, c);
 
@@ -214,7 +204,7 @@ public class Terrain {
     }
 
     // Draw edges on different heights
-    public void drawHeightEdges(ShapeRenderer  shapeRenderer) {
+    public void drawHeightEdges(Camera cam, ShapeRenderer  shapeRenderer) {
 
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
 
@@ -263,7 +253,8 @@ public class Terrain {
     }
 
     // Update terrain
-    public void update(){
+    public void update(Camera camera) {
+
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
 
@@ -273,7 +264,7 @@ public class Terrain {
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
-                c.checkIfOnScreen();
+                c.checkIfOnScreen(camera);
 
             }
 
@@ -294,14 +285,7 @@ public class Terrain {
             chunks.clear();
         
         }
-
-        tex = null;
-        cam = null;
-        noise = null;
-
-        w = 0;
-        h = 0;
-
+        
     }
 
 }

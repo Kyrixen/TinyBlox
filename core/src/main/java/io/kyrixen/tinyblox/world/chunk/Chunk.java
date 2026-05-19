@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
-import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
 
@@ -26,16 +24,10 @@ public class Chunk {
     public static final int MIN_X = 0;
     public static final int MIN_Y = 0;
 
-    // Own camera object
-    private Camera cam;
-
     // Chunk properties
     public boolean loaded;
     public boolean rendered;
     public boolean modified;
-
-    // Textures helper
-    private TextureManager tex;
 
     // Stores chunk tiles
     private TileStack[][] chunk;
@@ -43,7 +35,7 @@ public class Chunk {
     private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
 
     // Construct chunk
-    public Chunk(int x, int y, int size, boolean loaded, TextureManager tex, Camera cam){
+    public Chunk(int x, int y, int size, boolean loaded){
 
         this.cX = x;
         this.cY = y;
@@ -56,9 +48,6 @@ public class Chunk {
                 this.chunk[xPos][yPos] = new TileStack();
             }
         }
-        
-        this.tex = tex;
-        this.cam = cam;
         
         this.modified = false;
         this.loaded = loaded;
@@ -76,9 +65,6 @@ public class Chunk {
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
         
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        // Check if textures are loaded
-        if (tex == null || tex.getTexture(terrainTileset) == null) Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
 
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
@@ -102,7 +88,7 @@ public class Chunk {
         
     }
 
-    public void renderDepthOverlay(ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
+    public void renderDepthOverlay(Camera cam, ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;
@@ -111,12 +97,6 @@ public class Chunk {
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
         
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        // Check if textures are loaded
-        if (tex == null || tex.getTexture(terrainTileset) == null) {
-            Logger.LOGGER.warn("WORLD", "Textures not loaded for chunk " + cX + "," + cY);
-            return;
-        }
 
         float light = timeCycle.getBrightness();
 
@@ -180,7 +160,7 @@ public class Chunk {
     public int getChunkSize() { return this.CHUNK_SIZE; }
 
     // Check loading
-    public void checkIfOnScreen() {
+    public void checkIfOnScreen(Camera cam) {
 
         int chunkWorldSize = CHUNK_SIZE * Constants.GRID_SIZE;
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
@@ -250,8 +230,6 @@ public class Chunk {
         // Mark unloaded and remove references
         loaded = false;
         rendered = false;
-        cam = null;
-        tex = null;
         
 
     }

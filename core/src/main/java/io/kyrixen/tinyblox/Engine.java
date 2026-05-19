@@ -67,7 +67,7 @@ public class Engine implements Screen {
         renderer = new Renderer(camera);
         controller = new Controller();
         tileRenderer = new TileRenderer(camera, textures, shape);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, textures, camera, shape, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, shape, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
@@ -132,7 +132,7 @@ public class Engine implements Screen {
         controller.update(player, terrain, entities);
 
         Entity.updateAll(delta, terrain, entities);
-        terrain.update();
+        terrain.update(camera);
 
         // Update camera
         camera.follow(player);
@@ -181,12 +181,12 @@ public class Engine implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shape.begin(ShapeType.Filled);
-        terrain.renderDepthOverlay(shape, timeCycle);
+        terrain.renderDepthOverlay(camera, shape, timeCycle);
         shape.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         shape.begin(ShapeType.Line);
-        terrain.drawHeightEdges(shape);
+        terrain.drawHeightEdges(camera, shape);
         shape.end();
 
         player.renderSelector(camera);
