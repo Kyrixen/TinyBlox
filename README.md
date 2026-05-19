@@ -14,6 +14,18 @@ TinyBlox focuses on modular architecture, terrain systems, entities, world inter
 
 ---
 
+## Current Focus
+
+TinyBlox is currently focused on:
+
+- Sandbox interaction systems
+- Terrain/topology experimentation
+- Modular engine architecture
+- Procedural terrain generation
+- Lightweight rendering and gameplay systems
+
+---
+
 ## Features
 
 - 2D tile-based terrain
@@ -37,7 +49,6 @@ TinyBlox is structured into modular systems including:
 
 - `Engine`
 - `Renderer`
-- `Textures`
 - `Camera`
 - `Terrain`
 - `Chunk`
@@ -46,7 +57,6 @@ TinyBlox is structured into modular systems including:
 - `Entity`
 - `Player`
 - `Enemy`
-- `Utils`
 
 The project is designed for experimentation, learning, and gradual expansion into a larger sandbox/survival game.
 
@@ -61,7 +71,6 @@ The project is designed for experimentation, learning, and gradual expansion int
 >Systems, mechanics, rendering, terrain generation, saves,
 >and architecture may change frequently between versions.
 >
->Also this README is created by AI(ChatGPT) because creators of TinyBlox are NOT good writers
 
 ---
 
@@ -79,17 +88,13 @@ The project is designed for experimentation, learning, and gradual expansion int
 - [x] Entity system
 - [ ] RNG improvements
 - [ ] Combat mechanics
-- [ ] Inventory system
+- [x] Inventory system
 - [ ] Stats system
 - [ ] Dialogues
 - [ ] Helper NPCs
 - [ ] Biomes
 - [ ] World saving/loading
 - [ ] Boss fights
-- [ ] Multiplayer
-- [ ] Web support
-- [ ] Mobile support
-- [ ] 32-bit support
 
 ---
 
@@ -106,8 +111,8 @@ The project is designed for experimentation, learning, and gradual expansion int
 ### Clone Repository
 
 ```bash
-git clone https://github.com/Kyrixen/TinyEngineJava.git
-cd TinyEngineJava
+git clone https://github.com/Kyrixen/TinyBloxJava.git
+cd TinyBloxJava
 ````
 
 ### Build Project
@@ -132,9 +137,12 @@ cd TinyEngineJava
 | `A`                  | Move Left                  |
 | `S`                  | Move Down                  |
 | `D`                  | Move Right                 |
+| `I`                  | Show / Hide Inventory      |
 | `Left Shift`         | Sprint                     |
 | `Left Mouse Button`  | Destroy Block / Hit Entity |
 | `Right Mouse Button` | Place Block                |
+| `Scroll Up`          | Previous Inventory Slot    |
+| `Scroll Down`        | Next Inventory Slot        |
 
 ---
 
@@ -162,7 +170,6 @@ cd TinyEngineJava
 * Configurable controls
 * Zoomable camera
 * Better UI
-* Inventory system
 * Crafting mechanics
 
 ---
