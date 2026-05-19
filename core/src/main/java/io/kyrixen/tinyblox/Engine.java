@@ -23,6 +23,7 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
+import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.TileRenderer;
 
 public class Engine implements Screen {
@@ -88,6 +89,9 @@ public class Engine implements Screen {
 
         // Terrain init
         terrain.init();
+
+        // Time init
+        timeCycle.setDayTime(DayTime.DAY);
 
         // Spawn cords
         int[] spawn = Utils.spawnNearCenter();

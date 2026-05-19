@@ -8,10 +8,18 @@ public class TimeCycle {
       
     public static enum DayTime {
 
-        SUNSET,
-        DAY,
-        DAWN,
-        NIGHT
+        DAWN(0f),
+        DAY(0.25f),
+        SUNSET(0.50f),
+        NIGHT(0.75f);
+
+        private final float day_time;
+
+        DayTime(float day_time) {
+            this.day_time = day_time;
+        }
+
+        public float getTime() { return this.day_time; }
 
     }
 
@@ -35,8 +43,22 @@ public class TimeCycle {
     
     }
 
+    // Getters //
+
     public DayTime getDayTime() { return this.dayTime; }
+    public float getTime() { return this.time; }
 
     public float getBrightness() {return this.brightness; }
+
+    // Setters //
+
+    public void setDayTime(DayTime dayTime) {
+        this.dayTime = dayTime;
+        this.setTime(dayTime.getTime());
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
 
 }

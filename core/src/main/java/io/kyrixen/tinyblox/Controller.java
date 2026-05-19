@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.Player;
+import io.kyrixen.tinyblox.entities.Entity.Speed;
 import io.kyrixen.tinyblox.utils.Peripheal;
 import io.kyrixen.tinyblox.world.Terrain;
 
@@ -32,7 +33,7 @@ public class Controller {
             if(Peripheal.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
 
             // Checks for sprinting
-            if(Peripheal.anyWASDPressed() && Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint();
+            if(Peripheal.anyWASDPressed() && Peripheal.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
 
     }
 
