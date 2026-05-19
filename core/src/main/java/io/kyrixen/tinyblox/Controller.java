@@ -13,7 +13,7 @@ import io.kyrixen.tinyblox.world.Terrain;
 public class Controller {
 
     // Update controller for entity
-    public void update(Player player, Terrain terrain, ArrayList<Entity> entities) {
+    public void update(float deltaTime, Player player, Terrain terrain, ArrayList<Entity> entities) {
     
             player.setDirX(0);
             player.setDirY(0);
@@ -26,7 +26,7 @@ public class Controller {
 
             // Selector input logic
             if(Peripheal.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
-            if(Peripheal.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(terrain, entities); player.getSelector().checkHit(30, entities); }
+            if(Peripheal.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(30, entities); }
 
             // Inventory input logic
             player.checkInventoryScrolling(Peripheal.mouseScroll());

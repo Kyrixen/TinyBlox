@@ -8,11 +8,19 @@ public class Tile {
     // Tile type enum
     public static enum TileType {
     
-        AIR,
-        GRASS,
-        DIRT,
-        WATER,
-        STONE
+        AIR(9999999f),
+        GRASS(0.20f),
+        DIRT(0.35f),
+        WATER(9999999f),
+        STONE(0.75f);
+
+        private final float mining_time;
+
+        TileType(float mining_time) {
+            this.mining_time = mining_time;
+        }
+
+        public float getMiningTime() { return this.mining_time; }
     
     }
 

@@ -133,7 +133,7 @@ public class Engine implements Screen {
 
         timeCycle.updateDayTime(delta);
 
-        controller.update(player, terrain, entities);
+        controller.update(delta, player, terrain, entities);
 
         Entity.updateAll(delta, terrain, entities);
         terrain.update(camera);

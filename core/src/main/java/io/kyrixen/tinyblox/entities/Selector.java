@@ -44,9 +44,10 @@ public class Selector {
     private long lastPlace = 0L;
     private float placeDelay = 0.30f;
 
-    // Break delay
-    private long lastBreak = 0L;
-    private float breakDelay = 0.55f;
+    // Break vars
+    private float miningProgress;
+    private int targetX;
+    private int targetY;
     
     // Renderer
     final ShapeRenderer sr;
@@ -64,7 +65,6 @@ public class Selector {
         this.sr = new ShapeRenderer();
 
         this.lastPlace = System.currentTimeMillis();
-        this.lastBreak = System.currentTimeMillis();
     
     }
 
@@ -156,15 +156,18 @@ public class Selector {
     }
 
     // Check if can destroy tile
-    public void checkDestroy(Terrain terrain, ArrayList<Entity> entities) {
+    public void checkDestroy(float deltaTime, Terrain terrain, ArrayList<Entity> entities) {
 
-        if(System.currentTimeMillis() - lastBreak < breakDelay * 1000) return;
-        
         Entity e = checkEntityCollision(entities);
-        if(e != null) return;
+        if(e != null) { miningProgress = 0f; return; }
 
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
+        int playerTileX = entity.x() / Constants.GRID_SIZE;
+        int playerTileY = entity.y() / Constants.GRID_SIZE;
+
+        if(tileX == playerTileX && tileY == playerTileY) return;
+
         byte localTileX = (byte) (tileX % terrain.size);
         byte localTileY = (byte) (tileY % terrain.size);
 
@@ -172,11 +175,22 @@ public class Selector {
         short chunkPosY = (short) (tileY / terrain.size);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
+        if(chunk == null) return;
 
         Tile current = chunk.getTileStack(localTileX, localTileY).top();
-
         if(current == null) return;
-        if(current.type() == TileType.AIR) return;
+
+        if(!(tileX == targetX && tileY == targetY)) { 
+        
+            miningProgress = 0f;
+            targetX = tileX;
+            targetY = tileY;
+        
+        }
+
+        miningProgress += deltaTime;
+
+        if(miningProgress < current.type().getMiningTime()) return;
 
         this.entityInventory.add(current.getItem(), (byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
@@ -184,7 +198,7 @@ public class Selector {
         if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(30)); }
         else { chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(35)); }
 
-        this.lastBreak = System.currentTimeMillis();
+        miningProgress = 0f;
 
     }
 
