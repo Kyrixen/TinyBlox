@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -54,8 +56,8 @@ public class Player extends Entity {
     
 
     @Override
-    public void initTexture(Textures textures) {
-       this.texture = textures.playerTexture;
+    public void initTexture() {
+       this.texture = new TextureID("tinyblox", TextureType.ENTITY, "player");
     }
 
     @Override
@@ -93,8 +95,8 @@ public class Player extends Entity {
         selector.render(camera);
     }
 
-    public void renderInvetory(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        inventoryRenderer.render(batch);
+    public void renderInvetory(TextureManager tex, SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        inventoryRenderer.render(tex, batch);
         inventoryRenderer.drawHighlight(shapeRenderer);
     }
 

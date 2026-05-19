@@ -10,17 +10,19 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.Renderer;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.Menu;
 import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton;
 import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton.ToggleButtonState;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.Slider;
+import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Logger;
 
 public class Settings implements Screen {
-    
 
     public boolean exit = false;
     
@@ -37,8 +39,16 @@ public class Settings implements Screen {
 
     private SpriteBatch batch;
 
-    public Settings(Main main) {
+    private TextureManager tex;
+    private UIRenderer uiRenderer;
+
+    private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
+    private static final TextureID whiteSlider = new TextureID("tinyblox", TextureType.UI,"white_slider");
+
+    public Settings(Main main, TextureManager textureManager, UIRenderer uiRenderer) {
         this.main = main;
+        this.tex = textureManager;
+        this.uiRenderer = uiRenderer;
     }
 
     @Override
@@ -61,24 +71,22 @@ public class Settings implements Screen {
 
 
     private void init() {
-
-        Textures.initSettingsBackground();
     
         exitButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "EXIT", 48);
-        exitButton.initTexture(Textures.grayButton);
+        exitButton.initTexture(tex.getTexture(grayButton));
 
         fpsButton.init(Constants.GRID_SIZE * 17, 288, 48 * 5, 16 * 5, "SHOW FPS", 48);
-        fpsButton.initTexture(Textures.grayButton);
+        fpsButton.initTexture(tex.getTexture(grayButton));
 
         vsyncButton.init(Constants.GRID_SIZE * 17, 374, 48 * 5, 16 * 5, "VSYNC", 48);
-        vsyncButton.initTexture(Textures.grayButton);
+        vsyncButton.initTexture(tex.getTexture(grayButton));
         vsyncButton.setToggleState(ToggleButtonState.ON);
 
         fpsSlider.init(Constants.GRID_SIZE * 10, 128, 128 * 4, 16 * 4, 0.24f, 1000f, "FPS");
-        fpsSlider.initTexture(Textures.whiteSlider, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
+        fpsSlider.initTexture(tex.getTexture(whiteSlider), Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
 
         musicSlider.init(Constants.GRID_SIZE * 10, 208, 128 * 4, 16 * 4, 0.70f, 100f, "VOLUME");
-        musicSlider.initTexture(Textures.whiteSlider, Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
+        musicSlider.initTexture(tex.getTexture(whiteSlider), Color.LIGHT_GRAY, Color.GRAY, Color.DARK_GRAY);
 
     }
 
@@ -102,7 +110,7 @@ public class Settings implements Screen {
         fpsSlider.updateState();
         musicSlider.updateState();
 
-        if(exitButton.pressed()) main.setScreen(new Menu(main));
+        if(exitButton.pressed()) main.setScreen(new Menu(main, tex));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
         if(vsyncButton.pressed()) { Renderer.updateVsync(!Constants.VSYNC); }
 
@@ -115,7 +123,7 @@ public class Settings implements Screen {
 
         ScreenUtils.clear(Color.LIGHT_GRAY);
 
-        Textures.showSettingsBackground(batch);
+        uiRenderer.showSettingsBackground(batch);
 
         batch.begin();
         exitButton.render(batch);

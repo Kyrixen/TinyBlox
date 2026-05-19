@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.TileStack;
 
 public class Terrain {
@@ -21,7 +22,7 @@ public class Terrain {
     public final byte size;
     
     // Helper texture
-    private Textures tex;
+    private TextureManager tex;
     
     // Dimensions
     private int w;
@@ -33,6 +34,9 @@ public class Terrain {
     // Camera helper
     private Camera cam;
 
+    // Renderer
+    private TileRenderer tileRenderer;
+
     // Noise generator
     private FastNoiseLite noise;
 
@@ -40,9 +44,9 @@ public class Terrain {
     public static HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
-    public Terrain(int w, int h, byte size, Textures texture, Camera camera, int seed, float frequency, boolean multiplayer) {
-        
-        this.size = size;
+    public Terrain(int w, int h, TileRenderer tileRenderer, TextureManager texture, Camera camera, ShapeRenderer shapeRenderer, int seed, float frequency) {
+
+        this.size = Constants.CHUNK_SIZE;
 
         Terrain.seed = seed;
 
@@ -51,6 +55,8 @@ public class Terrain {
         
         this.w = w;
         this.h = h;
+
+        this.tileRenderer = tileRenderer;
 
         noise = new FastNoiseLite();
 
@@ -118,7 +124,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.render(batch, timeCycle);
+                c.render(tileRenderer, batch, timeCycle);
 
             }
 

@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
@@ -33,14 +35,15 @@ public class Chunk {
     public boolean modified;
 
     // Textures helper
-    private Textures tex;
+    private TextureManager tex;
 
     // Stores chunk tiles
     private TileStack[][] chunk;
 
+    private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
 
     // Construct chunk
-    public Chunk(int x, int y, int size, boolean loaded, Textures tex, Camera cam){
+    public Chunk(int x, int y, int size, boolean loaded, TextureManager tex, Camera cam){
 
         this.cX = x;
         this.cY = y;
@@ -64,7 +67,7 @@ public class Chunk {
     }
 
     // Render chunk
-    public void render(SpriteBatch batch, TimeCycle timeCycle) {
+    public void render(TileRenderer tileRenderer, SpriteBatch batch, TimeCycle timeCycle) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
@@ -75,7 +78,7 @@ public class Chunk {
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
         // Check if textures are loaded
-        if (tex == null || tex.terrainTileset == null) Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
+        if (tex == null || tex.getTexture(terrainTileset) == null) Logger.LOGGER.warn("WORLD", "Textures or terrainTileset not loaded for chunk " + cX + "," + cY);
 
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
@@ -90,7 +93,7 @@ public class Chunk {
                 
                 batch.setColor(timeCycle.getBrightness(), timeCycle.getBrightness(), timeCycle.getBrightness(), 1.0f);
 
-                tex.drawTileset(tex.terrainTileset, globalX, globalY, Constants.GRID_SIZE, Constants.GRID_SIZE, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
+                tileRenderer.drawTileset(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
                 
                 batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -110,7 +113,7 @@ public class Chunk {
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
         // Check if textures are loaded
-        if (tex == null || tex.terrainTileset == null) {
+        if (tex == null || tex.getTexture(terrainTileset) == null) {
             Logger.LOGGER.warn("WORLD", "Textures not loaded for chunk " + cX + "," + cY);
             return;
         }

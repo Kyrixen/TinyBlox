@@ -3,7 +3,8 @@ package io.kyrixen.tinyblox.entities;
 import java.util.Random;
 
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -44,8 +45,8 @@ public class Enemy extends Entity {
 
 
     @Override
-    public void initTexture(Textures textures) {
-       this.texture = textures.enemyTexture;
+    public void initTexture() {
+       this.texture = new TextureID("tinyblox", TextureType.ENTITY, "enemy");
     }
 
 

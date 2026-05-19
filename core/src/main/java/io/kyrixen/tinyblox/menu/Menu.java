@@ -10,9 +10,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Engine;
 import io.kyrixen.tinyblox.Main;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
+import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Logger;
 
@@ -29,8 +32,15 @@ public class Menu implements Screen {
 
     private SpriteBatch batch;
 
-    public Menu(Main main) {
+    private TextureManager tex;
+    private UIRenderer uiRenderer;
+
+    private static final TextureID brownButton = new TextureID("tinyblox", TextureType.UI,"brown_button");
+
+    public Menu(Main main, TextureManager tex) {
         this.main = main;
+        this.tex = tex;
+        this.uiRenderer = new UIRenderer(tex);
     }
 
     @Override
@@ -50,14 +60,14 @@ public class Menu implements Screen {
 
     private void init() {
         
-        Textures.initMenuBackground();
-        Textures.initUITextures();
+        tex.loadBackgrounds();
+        tex.loadUI();
 
         playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 48);
-        playButton.initTexture(Textures.brownButton);
+        playButton.initTexture(tex.getTexture(brownButton));
     
         settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 48);
-        settingsButton.initTexture(Textures.brownButton);
+        settingsButton.initTexture(tex.getTexture(brownButton));
     
     }
 
@@ -77,8 +87,8 @@ public class Menu implements Screen {
         playButton.updateState();
         settingsButton.updateState();
 
-        if(playButton.pressed()) main.setScreen(new Engine());
-        if(settingsButton.pressed()) main.setScreen(new Settings(this.main));
+        if(playButton.pressed()) main.setScreen(new Engine(tex));
+        if(settingsButton.pressed()) main.setScreen(new Settings(this.main, this.tex, this.uiRenderer));
 
     }
 
@@ -86,7 +96,7 @@ public class Menu implements Screen {
 
         ScreenUtils.clear(Color.CYAN);
         
-        Textures.showMenuBackground(batch);
+        uiRenderer.showMenuBackground(batch);
 
         batch.begin();
         playButton.render(batch);

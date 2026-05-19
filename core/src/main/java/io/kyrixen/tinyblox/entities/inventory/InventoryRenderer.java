@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 
 public class InventoryRenderer {
     
@@ -27,18 +29,21 @@ public class InventoryRenderer {
     // Inventory visibility
     private boolean visible = true;
 
+    // Slot texture
+    private static final TextureID hotbarSlot = new TextureID("tinyblox", TextureType.HUD, "hotbar_slot");
+
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;
         generateFont("fonts/editundo.ttf", 32);
     }
 
     // Full render method
-    public void render(SpriteBatch batch) {
+    public void render(TextureManager tex, SpriteBatch batch) {
 
         if(!visible) return;
 
         batch.begin();
-        renderSlots(batch);
+        renderSlots(tex, batch);
         renderCounts(batch);
         renderItems(batch);
         batch.end();
@@ -46,10 +51,10 @@ public class InventoryRenderer {
     }
 
     // Renders item slots
-    public void renderSlots(SpriteBatch batch) {
+    public void renderSlots(TextureManager tex, SpriteBatch batch) {
         
         for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
-            batch.draw(Textures.hotbarSlot, this.getSlotX(), this.getSlotY() - (i * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
+            batch.draw(tex.getTexture(hotbarSlot), this.getSlotX(), this.getSlotY() - (i * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
         }
         
     }

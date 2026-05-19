@@ -19,8 +19,9 @@ public class Constants {
     public static final int MAP_WIDTH = 1024;
     public static final int MAP_HEIGHT = 1024;
 
-    // Tile size
+    // Tile stuff
     public static final int GRID_SIZE = 16;
+    public static final byte CHUNK_SIZE = 12;
 
     // Rendering stuff
     public static final byte RENDER_DISTANCE = 3;

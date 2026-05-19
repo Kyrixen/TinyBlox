@@ -16,13 +16,14 @@ import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.entities.Entity.EntityType;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.Renderer;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer;
 
 public class Engine implements Screen {
 
@@ -38,7 +39,8 @@ public class Engine implements Screen {
     // Module components
     private Renderer renderer;
     private Controller controller;
-    private Textures textures;
+    private TextureManager textures;
+    private TileRenderer tileRenderer;
     private Camera camera;
     private Terrain terrain;
     private TimeCycle timeCycle;
@@ -48,6 +50,10 @@ public class Engine implements Screen {
     SpriteBatch batch;
     ShapeRenderer shape;
 
+
+    public Engine(TextureManager tex) {
+        this.textures = tex;
+    }
 
     @Override
     public void show() {
@@ -60,8 +66,8 @@ public class Engine implements Screen {
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
         renderer = new Renderer(camera);
         controller = new Controller();
-        textures = new Textures(camera, shape);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, (byte) 12, textures, camera, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f, false);
+        tileRenderer = new TileRenderer(camera, textures, shape);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, textures, camera, shape, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
@@ -77,8 +83,8 @@ public class Engine implements Screen {
         renderer.init();
 
         // Initialize sprites
-        textures.initHUDTextures();
-        textures.initTextures();
+        textures.loadHUD();
+        textures.loadGame();
 
         // Terrain init
         terrain.init();
@@ -102,7 +108,7 @@ public class Engine implements Screen {
         enemy1.setTarget(player);
         enemy1.setChasing(true);
 
-        Entity.initTextureAll(textures, entities);
+        Entity.initTextureAll(entities);
 
     }
 
@@ -167,7 +173,7 @@ public class Engine implements Screen {
 
         terrain.render(batch, timeCycle);    
 
-        Entity.renderAll(timeCycle, textures, entities, batch);
+        Entity.renderAll(timeCycle, tileRenderer, entities, batch);
 
         batch.end();
 
@@ -184,7 +190,7 @@ public class Engine implements Screen {
         shape.end();
 
         player.renderSelector(camera);
-        player.renderInvetory(batch, shape);
+        player.renderInvetory(textures, batch, shape);
 
         batch.begin();
         fpsCounter.printFPS(batch);

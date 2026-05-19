@@ -2,16 +2,17 @@ package io.kyrixen.tinyblox.entities;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.TerrainCollision;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.graphics.Textures;
+import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer;
 
 
 // Implement stats
@@ -79,7 +80,7 @@ public class Entity implements Stats.Health, Stats.Stamina {
     protected long lastDamage = 0L;
 
     // Texture and type of entity
-    Texture texture = null;
+    TextureID texture = null;
     EntityType type;
 
     // Inventory of the entity
@@ -128,8 +129,8 @@ public class Entity implements Stats.Health, Stats.Stamina {
 
 
     // Get texture (default entity texture)
-    public void initTexture(Textures textures) {
-        this.texture = textures.entityTexture;
+    public void initTexture() {
+        this.texture = new TextureID("tinyblox", TextureType.ENTITY, "entity");
     }
 
     // Tries to move
@@ -160,13 +161,13 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Render entity
-    public void render(TimeCycle timeCycle, Textures textures, SpriteBatch batch){
+    public void render(TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch){
 
         // Get brightness
         float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
 
         batch.setColor(brightness, brightness, brightness, 1.0f);
-        textures.draw(this.texture, x, y, width, height, batch);
+        tileRenderer.draw(this.texture, x, y, batch);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     }
@@ -305,16 +306,16 @@ public class Entity implements Stats.Health, Stats.Stamina {
     }
 
     // Helper func (renders all entites)
-    public static void renderAll(TimeCycle timeCycle, Textures textures, ArrayList<Entity> entities, SpriteBatch batch) {
+    public static void renderAll(TimeCycle timeCycle, TileRenderer tileRenderer, ArrayList<Entity> entities, SpriteBatch batch) {
         for (Entity e : entities) {
-            e.render(timeCycle, textures, batch);
+            e.render(timeCycle, tileRenderer, batch);
         }
     }
 
     // Helper func too (init textures for all entites)
-    public static void initTextureAll(Textures textures, ArrayList<Entity> entities) {
+    public static void initTextureAll(ArrayList<Entity> entities) {
         for (Entity e : entities) {
-            e.initTexture(textures);
+            e.initTexture();
         }
     }
 
