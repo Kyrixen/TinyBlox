@@ -4,6 +4,7 @@ package io.kyrixen.tinyblox.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
@@ -73,7 +74,7 @@ public class Player extends Entity {
 
         moving = tryMove(terrain);
 
-        if(moving) soundManager.walk.play(Utils.getFloatSound(15));
+        if(moving) soundManager.walk.play(Utils.getFloatSound(15), MathUtils.random(0.9f, 1.1f), 0f);
 
         lastMove = System.currentTimeMillis();
 

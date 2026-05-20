@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.entities.Enemy;
 import io.kyrixen.tinyblox.entities.Entity;
@@ -156,7 +157,7 @@ public class Engine implements Screen {
         entities.removeIf(e -> {
 
             if(e.type() != EntityType.PLAYER && e.isDead()){
-                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatSound(35));
+                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
                 return true;
             }
 

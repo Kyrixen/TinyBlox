@@ -2,6 +2,8 @@ package io.kyrixen.tinyblox.entities;
 
 import java.util.Random;
 
+import com.badlogic.gdx.math.MathUtils;
+
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
@@ -95,7 +97,7 @@ public class Enemy extends Entity {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 
-            if(player.damage(25)) soundManager.hitplayer.play(Utils.getFloatSound(40)); 
+            if(player.damage(25)) soundManager.hitplayer.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f); 
                         
         }
 

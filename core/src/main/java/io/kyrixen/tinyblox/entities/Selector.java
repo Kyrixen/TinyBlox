@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
@@ -108,7 +109,7 @@ public class Selector {
         Entity e = checkEntityCollision(entities);
 
         if(e != null){
-            if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40));
+            if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
         }
 
     }
@@ -123,6 +124,11 @@ public class Selector {
 
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
+        int playerTileX = entity.x() / Constants.GRID_SIZE;
+        int playerTileY = entity.y() / Constants.GRID_SIZE;
+
+        if(tileX == playerTileX && tileY == playerTileY) return;
+
         byte localTileX = (byte) (tileX % terrain.size);
         byte localTileY = (byte) (tileY % terrain.size);
 
@@ -136,7 +142,7 @@ public class Selector {
         if(current.level() >= 2) return;
         if(this.entityInventory.getCurrentStack().getItem() == Item.NONE) return;
 
-        chunk.getTileStack(localTileX, localTileY).push(new Tile(entityInventory.getCurrentStack().getItem().toTileType(), (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(20));
+        chunk.getTileStack(localTileX, localTileY).push(new Tile(entityInventory.getCurrentStack().getItem().toTileType(), (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
         
         entityInventory.getCurrentStack().remove((byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
@@ -185,8 +191,8 @@ public class Selector {
         this.entityInventory.add(current.getItem(), (byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
         
-        if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(30)); }
-        else { chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(35)); }
+        if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(20), MathUtils.random(0.95f, 1.05f), 0f); }
+        else { chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f); }
 
         miningProgress = 0f;
 
