@@ -11,7 +11,7 @@ public class Sfx {
     public Sound explosion;
     public Sound hitentity;
     public Sound hitplayer;
-    public Sound pickupcoin;
+    public Sound pickupitem;
     public Sound powerup;
     public Sound destroy;
     public Sound place;
@@ -24,7 +24,7 @@ public class Sfx {
         explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/explosion.wav"));
         hitentity = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/hitEntity.wav"));
         hitplayer = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/hitPlayer.wav"));
-        pickupcoin = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/pickupCoin.wav"));
+        pickupitem = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/pickupItem.wav"));
         powerup = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/powerUp.wav"));
         destroy = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/destroy.wav"));
         place = Gdx.audio.newSound(Gdx.files.internal("sounds/sfx/place.wav"));
@@ -33,7 +33,7 @@ public class Sfx {
         sfxs.add(explosion);
         sfxs.add(hitentity);
         sfxs.add(hitplayer);
-        sfxs.add(pickupcoin);
+        sfxs.add(pickupitem);
         sfxs.add(powerup);
         sfxs.add(destroy);
         sfxs.add(place);

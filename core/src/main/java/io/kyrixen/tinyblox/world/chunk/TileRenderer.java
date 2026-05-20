@@ -34,6 +34,22 @@ public class TileRenderer {
 
         batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
 
+    }
+
+    // Draw a single tile / texture with camera offset and custom width / height
+    public void draw(TextureID tile, int x, int y, float w, float h, SpriteBatch batch) {
+
+        // Apply camera offset
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
+
+        Texture tileTex = tex.getTexture(tile);
+
+        if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tile.toString());
+
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
 
     }
 
@@ -47,6 +63,23 @@ public class TileRenderer {
         float screenY = (y - camera.y) * camera.zoom;
         float renderW = Constants.GRID_SIZE * camera.zoom;
         float renderH = Constants.GRID_SIZE * camera.zoom;
+
+        Texture tilesetTex = tex.getTexture(tileset);
+
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
+    
+    }
+
+    // Draw one tile from a tileset and with custom width and height
+    public void drawTileset(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, SpriteBatch batch) {
+        
+        int srcX = tileX * tileSize;
+        int srcY = tileY * tileSize;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
 
         Texture tilesetTex = tex.getTexture(tileset);
 
