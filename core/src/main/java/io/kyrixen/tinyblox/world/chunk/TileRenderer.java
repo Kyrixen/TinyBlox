@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -33,8 +32,7 @@ public class TileRenderer {
 
         if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tile.toString());
 
-        if (tileTex == null) { Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, tex, batch); }
-        else batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
 
 
     }
@@ -52,11 +50,7 @@ public class TileRenderer {
 
         Texture tilesetTex = tex.getTexture(tileset);
 
-        // Check if textures are loaded
-        if (tex == null || tex.getTexture(tileset) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tileset.toString());
-
-        if (tilesetTex == null) { Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, tex, batch); }
-        else batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }
 

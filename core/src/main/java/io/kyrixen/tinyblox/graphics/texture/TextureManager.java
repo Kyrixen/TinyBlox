@@ -14,6 +14,8 @@ public class TextureManager {
     // List of loaded textures
     private final Map<TextureID, Texture> loadedTextures = new HashMap<>();
 
+    // Texture for missing texture
+    private static final TextureID MISSING_TEXTURE = new TextureID("tinyblox", TextureType.MISC, "missing_texture");
 
     // Load texture
     public void load(TextureID identifier, String path) {
@@ -37,7 +39,7 @@ public class TextureManager {
     
         Texture asset = loadedTextures.get(identifier);
 
-        if(asset == null) Logger.LOGGER.error("TEXTURES", "Texture not loaded: " + identifier.toString());
+        if(asset == null) { Logger.LOGGER.error("TEXTURES", "Texture not loaded: " + identifier.toString());  return loadedTextures.get(MISSING_TEXTURE); }
 
         return asset;
     
