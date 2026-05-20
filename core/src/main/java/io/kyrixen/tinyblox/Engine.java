@@ -65,10 +65,10 @@ public class Engine implements Screen {
 
         // Module components init
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
-        renderer = new Renderer(camera);
+        renderer = new Renderer();
         controller = new Controller();
-        tileRenderer = new TileRenderer(camera, textures, shape);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, shape, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
+        tileRenderer = new TileRenderer(camera, textures);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
@@ -79,9 +79,6 @@ public class Engine implements Screen {
 
 
     private void init() {
-
-        // Initialize renderer
-        renderer.init();
 
         // Initialize sprites
         textures.loadHUD();
@@ -171,35 +168,42 @@ public class Engine implements Screen {
 
     private void render() {
 
+        // Clear window
         renderer.clear();
-           
+
+        // World
         batch.begin();
-
-        terrain.render(batch, timeCycle);    
-
+        terrain.render(batch, timeCycle);
         Entity.renderAll(timeCycle, tileRenderer, entities, batch);
-
         batch.end();
 
-
+        // World highlights
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         shape.begin(ShapeType.Filled);
         terrain.renderDepthOverlay(camera, shape, timeCycle);
         shape.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         shape.begin(ShapeType.Line);
         terrain.drawHeightEdges(camera, shape);
+        player.renderSelector(shape, camera);
         shape.end();
 
-        player.renderSelector(camera);
-        player.renderInvetory(textures, batch, shape);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
+        // UI
         batch.begin();
+        player.renderInvetory(textures, batch);
         fpsCounter.printFPS(batch);
         batch.end();
 
+
+        // UI highlights
+        shape.begin(ShapeType.Line);
+        player.drawInventoryHighlight(shape);
+        shape.end();
+    
     }
 
     @Override
@@ -244,7 +248,6 @@ public class Engine implements Screen {
         terrain.cleanup();
         camera.cleanup();
         fpsCounter.cleanup();
-        renderer.cleanup();
 
         if (soundManager != null) soundManager.cleanup();
         if (batch != null) batch.dispose();

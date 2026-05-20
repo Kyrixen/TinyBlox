@@ -91,12 +91,15 @@ public class Player extends Entity {
 
     }
 
-    public void renderSelector(Camera camera) {
-        selector.render(camera);
+    public void renderSelector(ShapeRenderer shape, Camera camera) {
+        selector.render(shape, camera);
     }
 
-    public void renderInvetory(TextureManager tex, SpriteBatch batch, ShapeRenderer shapeRenderer) {
+    public void renderInvetory(TextureManager tex, SpriteBatch batch) {
         inventoryRenderer.render(tex, batch);
+    }
+
+    public void drawInventoryHighlight(ShapeRenderer shapeRenderer) {
         inventoryRenderer.drawHighlight(shapeRenderer);
     }
 

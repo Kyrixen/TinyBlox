@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.sound.UISounds;
-import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
 
 // Toggle button
@@ -98,7 +98,7 @@ public class ToggleButton extends Button {
 
         if(hover) {
 
-            if(Peripheal.mousePressed(Input.Buttons.LEFT) && Gdx.input.justTouched()) {
+            if(Peripheral.mousePressed(Input.Buttons.LEFT) && Gdx.input.justTouched()) {
             
                 state = ButtonState.PRESS;
             

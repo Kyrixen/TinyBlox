@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
-public class Peripheal {
+public class Peripheral {
 
     // Scroll var
     private static int scrollType = 0;

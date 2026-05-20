@@ -37,7 +37,7 @@ public class Terrain {
     public static HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
-    public Terrain(int w, int h, TileRenderer tileRenderer, ShapeRenderer shapeRenderer, int seed, float frequency) {
+    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
 
         this.size = Constants.CHUNK_SIZE;
 

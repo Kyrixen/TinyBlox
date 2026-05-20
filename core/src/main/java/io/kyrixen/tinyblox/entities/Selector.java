@@ -12,7 +12,7 @@ import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -31,7 +31,6 @@ public class Selector {
     // For sound
     private final Sfx sfxManager;
 
-
     // Cords
     private int x;
     private int y;
@@ -48,9 +47,6 @@ public class Selector {
     private float miningProgress;
     private int targetX;
     private int targetY;
-    
-    // Renderer
-    final ShapeRenderer sr;
 
     // Max distance that cursor can be from entity
     private final byte REACH = 2;
@@ -62,7 +58,6 @@ public class Selector {
         this.entity = entity;
         this.entityInventory = entity.inventory;
         this.sfxManager = sfxManager;
-        this.sr = new ShapeRenderer();
 
         this.lastPlace = System.currentTimeMillis();
     
@@ -71,8 +66,8 @@ public class Selector {
 
     public void update(Camera camera) {
         
-        float mouseWorldX = Peripheal.getMouseX() / camera.zoom + camera.x;
-        float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheal.getMouseY()) / camera.zoom + camera.y;
+        float mouseWorldX = Peripheral.getMouseX() / camera.zoom + camera.x;
+        float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheral.getMouseY()) / camera.zoom + camera.y;
 
         int tileX = (int)(mouseWorldX / Constants.GRID_SIZE);
         int tileY = (int)(mouseWorldY / Constants.GRID_SIZE);
@@ -98,14 +93,9 @@ public class Selector {
         
     }
 
-    public void render(Camera camera) {
-
+    public void render(ShapeRenderer sr, Camera camera) {
         sr.setColor(Color.WHITE);
-        
-        sr.begin(ShapeRenderer.ShapeType.Line);
         sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
-        sr.end();
-    
     }
 
 

@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.sound.UISounds;
-import io.kyrixen.tinyblox.utils.Peripheal;
+import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
 
 // Slider
@@ -106,11 +106,11 @@ public class Slider {
 
         hover = mX >= x && mX <= x + w && mY >= y && mY <= y + h;
 
-        if(hover && Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(Utils.getFloatSound(50)); wasDragged = true; } }
+        if(hover && Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(Utils.getFloatSound(50)); wasDragged = true; } }
         if(hover) { if(!wasHovered) { uiSoundManager.options.play(Utils.getFloatSound(70)); wasHovered = true; } }
         if(!hover) wasHovered = false;
 
-        if(!Peripheal.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }
+        if(!Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }
 
         if(dragging) {
             percent = (float)(mX - x) / w;

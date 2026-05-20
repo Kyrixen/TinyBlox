@@ -2,7 +2,6 @@ package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.Renderer;
@@ -14,12 +13,10 @@ import io.kyrixen.tinyblox.world.Camera;
 public class TileRenderer {
     
     private Camera camera;
-    private ShapeRenderer shapeRenderer;
     private TextureManager tex;
 
-    public TileRenderer(Camera camera, TextureManager textureManager, ShapeRenderer shapeRenderer) {
+    public TileRenderer(Camera camera, TextureManager textureManager) {
         this.camera = camera;
-        this.shapeRenderer = shapeRenderer;
         this.tex = textureManager;
     }
 
@@ -36,7 +33,7 @@ public class TileRenderer {
 
         if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tile.toString());
 
-        if (tileTex == null) { batch.end(); Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, shapeRenderer); batch.begin(); }
+        if (tileTex == null) { Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, tex, batch); }
         else batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
 
 
@@ -45,7 +42,6 @@ public class TileRenderer {
     // Draw one tile from a tileset
     public void drawTileset(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, SpriteBatch batch) {
         
-
         int srcX = tileX * tileSize;
         int srcY = tileY * tileSize;
 
@@ -59,7 +55,7 @@ public class TileRenderer {
         // Check if textures are loaded
         if (tex == null || tex.getTexture(tileset) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tileset.toString());
 
-        if (tilesetTex == null) { batch.end(); Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, shapeRenderer); batch.begin(); }
+        if (tilesetTex == null) { Renderer.drawMissingTexture(screenX, screenY, renderW, renderH, tex, batch); }
         else batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
     
     }

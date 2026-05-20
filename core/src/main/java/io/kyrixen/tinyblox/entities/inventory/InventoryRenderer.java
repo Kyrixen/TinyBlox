@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
@@ -42,11 +41,9 @@ public class InventoryRenderer {
 
         if(!visible) return;
 
-        batch.begin();
         renderSlots(tex, batch);
         renderCounts(batch);
         renderItems(batch);
-        batch.end();
 
     }
 
@@ -84,10 +81,8 @@ public class InventoryRenderer {
         
         if(!visible) return;
 
-        shapeRenderer.begin(ShapeType.Line);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
-        shapeRenderer.end();
 
     }
 

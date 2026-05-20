@@ -57,6 +57,8 @@ public class TextureManager {
     // Load textures
     public void loadGame() {
     
+        this.load(new TextureID("tinyblox", TextureType.MISC, "missing_texture"), "textures/misc/missing_texture.png");
+
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "entity"), "textures/entities/entity.png");
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "player"), "textures/entities/player.png");
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "enemy"), "textures/entities/enemy.png");
