@@ -11,12 +11,13 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.TileStack;
 
 public class EnemySpawner {
 
-    private float spawnTimer = 1f;
+    private float spawnTimer = 3.5f;
     private long lastSpawn = 0L;
 
     private Sfx soundManager;
@@ -85,6 +86,15 @@ public class EnemySpawner {
 
         }
 
+    }
+
+    public void updateSpawnRate(TimeCycle timeCycle) {
+        if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(1f);
+        else this.setSpawnTimer(3.5f);
+    }
+
+    public void setSpawnTimer(float spawnTimer) {
+        this.spawnTimer = spawnTimer;
     }
 
 }

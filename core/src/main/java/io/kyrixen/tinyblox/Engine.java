@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
@@ -133,6 +132,7 @@ public class Engine implements Screen {
     private void update(float delta) {
 
         timeCycle.updateDayTime(delta);
+        enemySpawner.updateSpawnRate(timeCycle);
         controller.update(delta, player, terrain, entities);
 
         enemySpawner.spawn(player, entities, terrain);
@@ -164,19 +164,27 @@ public class Engine implements Screen {
                 
         }
 
+        ArrayList<Entity> spawnedEntities = new ArrayList<>();
         entities.removeIf(e -> {
 
             if(!(e instanceof MobEntity)) return false;
             MobEntity mob = (MobEntity) e;
 
             if(!(mob instanceof Player) && mob.isDead()){
-                if(mob instanceof Enemy) soundManager.explosion.play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
+            
+                if(mob instanceof Enemy) { 
+                    Enemy enemy = (Enemy) mob;
+                    enemy.throwLoot(player, spawnedEntities);
+                }
+                
                 return true;
+            
             }
 
             return false;
         
         });
+        entities.addAll(spawnedEntities);
 
     }
 

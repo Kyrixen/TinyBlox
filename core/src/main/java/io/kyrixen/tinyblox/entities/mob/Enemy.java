@@ -1,10 +1,14 @@
 package io.kyrixen.tinyblox.entities.mob;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.collision.EntityCollision;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.ItemEntity;
+import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.Sfx;
@@ -98,6 +102,27 @@ public class Enemy extends MobEntity {
 
             if(player.damage(25)) soundManager.hitplayer.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f); 
                         
+        }
+
+    }
+
+    // Get loot from enemy
+    public void throwLoot(MobEntity mob, ArrayList<Entity> entities) {
+
+        soundManager.explosion.play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
+        int loopCount = MathUtils.random(1, 3);
+
+        for(int i = 0; i < loopCount; i++) {
+
+            int itemCount = MathUtils.random(1, i + MathUtils.random(1, 3));
+            Item itemType = Item.fromInt(MathUtils.random(1, Item.values().length - 1));
+
+            if(itemType == Item.NONE) continue;
+
+            for(int j = 0; j < itemCount; j++) {
+                entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + MathUtils.random(-3, 3), this.y() + MathUtils.random(-3, 3), soundManager, itemType, mob));
+            }
+
         }
 
     }
