@@ -2,13 +2,20 @@
 
 package io.kyrixen.tinyblox.entities.mob;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import io.kyrixen.tinyblox.collision.EntityCollision;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.Selector;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
+import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
@@ -89,6 +96,32 @@ public class Player extends MobEntity {
         if(scroll < 0) inventory.previousSlot();
         if(scroll > 0) inventory.nextSlot();
 
+    }
+
+    // Checks if any item drops near
+    public void checkDropPickup(ArrayList<Entity> entities) {
+        
+        Iterator<Entity> iterator = entities.iterator();
+
+        while (iterator.hasNext()) {
+
+            Entity e = iterator.next();
+
+            if (e == this) continue;
+            if (!(e instanceof ItemEntity)) continue;
+            if (!EntityCollision.checkCollision(this, e)) continue;
+
+            ItemEntity itemEntity = (ItemEntity) e;
+            Item itemDrop = itemEntity.pickup();
+
+            this.inventory.add(itemDrop, (byte) 1);
+
+            iterator.remove();
+    
+        }
+
+        Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.inventory.toString());
+    
     }
 
     public void renderSelector(ShapeRenderer shape, Camera camera) {

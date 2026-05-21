@@ -139,7 +139,9 @@ public class Engine implements Screen {
         // Update camera
         camera.follow(player);
         player.updateSelector();
+        player.checkDropPickup(entities);
 
+        
         for (Entity e : entities) {
 
             if(!(e instanceof Enemy)) continue;
@@ -181,7 +183,6 @@ public class Engine implements Screen {
         // World
         batch.begin();
         terrain.render(batch, timeCycle);
-        Entity.renderAll(timeCycle, tileRenderer, entities, batch);
         batch.end();
 
         // World highlights
@@ -191,6 +192,11 @@ public class Engine implements Screen {
         shape.begin(ShapeType.Filled);
         terrain.renderDepthOverlay(camera, shape, timeCycle);
         shape.end();
+
+        // Entities
+        batch.begin();
+        Entity.renderAll(timeCycle, tileRenderer, entities, batch);
+        batch.end();
 
         shape.begin(ShapeType.Line);
         terrain.drawHeightEdges(camera, shape);

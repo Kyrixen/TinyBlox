@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
-import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
@@ -22,7 +22,7 @@ import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.Tile;
 import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 
-public class Selector {
+public class Selector extends Entity {
 
     // Entity using the selector
     private MobEntity mob;
@@ -32,14 +32,6 @@ public class Selector {
 
     // For sound
     private final Sfx sfxManager;
-
-    // Cords
-    private int x;
-    private int y;
-
-    // Dimensions
-    private int width;
-    private int height;
 
     // Place delay
     private long lastPlace = 0L;
@@ -56,6 +48,8 @@ public class Selector {
 
     public Selector(MobEntity mob, Sfx sfxManager) {
 
+        super(5, mob.x(), mob.y(), mob.width(), mob.height());
+
         // Initialize the selector with the given mob
         this.mob = mob;
         this.entityInventory = mob.getInventory();
@@ -64,7 +58,6 @@ public class Selector {
         this.lastPlace = System.currentTimeMillis();
     
     }
-
 
     public void update(Camera camera) {
         
@@ -107,7 +100,7 @@ public class Selector {
     public void checkHit(int damage, ArrayList<Entity> entities) {
 
         // Check for mouse interaction
-        MobEntity e = checkEntityCollision(entities);
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
 
         if(e != null){
             if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
@@ -120,7 +113,7 @@ public class Selector {
 
         if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
         
-        Entity e = checkEntityCollision(entities);
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
         if(e != null) return;
 
         int tileX = this.x / Constants.GRID_SIZE;
@@ -155,7 +148,7 @@ public class Selector {
     // Check if can destroy tile
     public void checkDestroy(float deltaTime, Terrain terrain, ArrayList<Entity> entities) {
 
-        MobEntity e = checkEntityCollision(entities);
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
         if(e != null) { miningProgress = 0f; return; }
 
         int tileX = this.x / Constants.GRID_SIZE;
@@ -186,36 +179,19 @@ public class Selector {
         }
 
         miningProgress += deltaTime;
-
         if(miningProgress < current.type().getMiningTime()) return;
 
-        this.entityInventory.add(current.getItem(), (byte) 1);
-        Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
-        
         if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(20), MathUtils.random(0.95f, 1.05f), 0f); }
-        else { chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f); }
+        else {
 
-        miningProgress = 0f;
-
-    }
-
-    // Checks mob collision
-    public MobEntity checkEntityCollision(ArrayList<Entity> entities) {
-
-        for (Entity e : entities) {
-
-            if(!(e instanceof MobEntity)) return null;
-
-            MobEntity mob = (MobEntity) e;
-
-            if (mob instanceof Player) continue;
-
-            if (mob.x < this.x + this.width && mob.x + mob.width > this.x && mob.y < this.y + this.height && mob.y + mob.height > this.y) return mob;
+            Item dropItem = current.getItem();
+            chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
+            entities.add(new ItemEntity(2, this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem));
 
         }
 
-        return null;
-    
+        miningProgress = 0f;
+
     }
 
 }
