@@ -8,9 +8,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.Entity.EntityType;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
@@ -24,7 +25,7 @@ import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 public class Selector {
 
     // Entity using the selector
-    private Entity entity;
+    private MobEntity mob;
 
     // Entitys inventory
     private Inventory entityInventory;
@@ -49,15 +50,15 @@ public class Selector {
     private int targetX;
     private int targetY;
 
-    // Max distance that cursor can be from entity
+    // Max distance that cursor can be from mob
     private final byte REACH = 2;
 
 
-    public Selector(Entity entity, Sfx sfxManager) {
+    public Selector(MobEntity mob, Sfx sfxManager) {
 
-        // Initialize the selector with the given entity
-        this.entity = entity;
-        this.entityInventory = entity.inventory;
+        // Initialize the selector with the given mob
+        this.mob = mob;
+        this.entityInventory = mob.getInventory();
         this.sfxManager = sfxManager;
 
         this.lastPlace = System.currentTimeMillis();
@@ -74,23 +75,23 @@ public class Selector {
         int tileY = (int)(mouseWorldY / Constants.GRID_SIZE);
 
         // Keep selector same size as player
-        this.width = this.entity.width;
-        this.height = this.entity.height;
+        this.width = this.mob.width;
+        this.height = this.mob.height;
 
-        Vector2 distance = new Vector2(tileX - entity.x / Constants.GRID_SIZE, tileY - entity.y / Constants.GRID_SIZE);
+        Vector2 distance = new Vector2(tileX - mob.x / Constants.GRID_SIZE, tileY - mob.y / Constants.GRID_SIZE);
 
         if(distance.len() > REACH) {
             distance.nor();
             distance.scl(REACH);
         }
 
-        tileX = entity.x / Constants.GRID_SIZE + Math.round(distance.x);
-        tileY = entity.y / Constants.GRID_SIZE + Math.round(distance.y);
+        tileX = mob.x / Constants.GRID_SIZE + Math.round(distance.x);
+        tileY = mob.y / Constants.GRID_SIZE + Math.round(distance.y);
 
         this.x = tileX * Constants.GRID_SIZE;
         this.y = tileY * Constants.GRID_SIZE;
         
-        if(this.x == entity.x && this.y == entity.y) return;
+        if(this.x == mob.x && this.y == mob.y) return;
         
     }
 
@@ -102,11 +103,11 @@ public class Selector {
 
     // Checkers //
 
-    // Check if can hit entity
+    // Check if can hit mob
     public void checkHit(int damage, ArrayList<Entity> entities) {
 
         // Check for mouse interaction
-        Entity e = checkEntityCollision(entities);
+        MobEntity e = checkEntityCollision(entities);
 
         if(e != null){
             if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
@@ -124,8 +125,8 @@ public class Selector {
 
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
-        int playerTileX = entity.x() / Constants.GRID_SIZE;
-        int playerTileY = entity.y() / Constants.GRID_SIZE;
+        int playerTileX = mob.x() / Constants.GRID_SIZE;
+        int playerTileY = mob.y() / Constants.GRID_SIZE;
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
@@ -154,13 +155,13 @@ public class Selector {
     // Check if can destroy tile
     public void checkDestroy(float deltaTime, Terrain terrain, ArrayList<Entity> entities) {
 
-        Entity e = checkEntityCollision(entities);
+        MobEntity e = checkEntityCollision(entities);
         if(e != null) { miningProgress = 0f; return; }
 
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
-        int playerTileX = entity.x() / Constants.GRID_SIZE;
-        int playerTileY = entity.y() / Constants.GRID_SIZE;
+        int playerTileX = mob.x() / Constants.GRID_SIZE;
+        int playerTileY = mob.y() / Constants.GRID_SIZE;
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
@@ -198,14 +199,18 @@ public class Selector {
 
     }
 
-    // Checks entity collision
-    public Entity checkEntityCollision(ArrayList<Entity> entities) {
+    // Checks mob collision
+    public MobEntity checkEntityCollision(ArrayList<Entity> entities) {
 
         for (Entity e : entities) {
 
-            if (e.type() == EntityType.PLAYER) continue;
+            if(!(e instanceof MobEntity)) return null;
 
-            if (e.x < this.x + this.width && e.x + e.width > this.x && e.y < this.y + this.height && e.y + e.height > this.y) return e;
+            MobEntity mob = (MobEntity) e;
+
+            if (mob instanceof Player) continue;
+
+            if (mob.x < this.x + this.width && mob.x + mob.width > this.x && mob.y < this.y + this.height && mob.y + mob.height > this.y) return mob;
 
         }
 

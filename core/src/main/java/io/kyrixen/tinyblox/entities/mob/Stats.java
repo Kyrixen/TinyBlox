@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.entities;
+package io.kyrixen.tinyblox.entities.mob;
 
 
 // Implementations for Entity.java

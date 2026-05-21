@@ -13,8 +13,11 @@ public class ItemEntity extends Entity {
     // Item type
     private final Item item;
 
+    Sfx soundManager;
+
     public ItemEntity(int id, int x, int y, Sfx soundManager, Item item) {
-        super(id, x, y, soundManager);
+        super(id, x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
+        this.soundManager = soundManager;
         this.item = item;
         this.texture = item.textureID();
     }

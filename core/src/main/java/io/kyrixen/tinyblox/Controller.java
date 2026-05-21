@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Input;
 
 import io.kyrixen.tinyblox.entities.Entity;
-import io.kyrixen.tinyblox.entities.Player;
 import io.kyrixen.tinyblox.entities.Entity.Speed;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.world.Terrain;
 

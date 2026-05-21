@@ -11,10 +11,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 
-import io.kyrixen.tinyblox.entities.Enemy;
 import io.kyrixen.tinyblox.entities.Entity;
-import io.kyrixen.tinyblox.entities.Player;
-import io.kyrixen.tinyblox.entities.Entity.EntityType;
+import io.kyrixen.tinyblox.entities.mob.Enemy;
+import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
@@ -142,7 +142,10 @@ public class Engine implements Screen {
 
         for (Entity e : entities) {
 
-            if(e.type() == EntityType.ENEMY){ Enemy en = (Enemy) e; en.check(player); }
+            if(!(e instanceof Enemy)) continue;
+            Enemy en = (Enemy) e;
+
+            en.check(player);
 
         }
 
@@ -156,8 +159,11 @@ public class Engine implements Screen {
 
         entities.removeIf(e -> {
 
-            if(e.type() != EntityType.PLAYER && e.isDead()){
-                if(e.type() == EntityType.ENEMY) soundManager.explosion.play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
+            if(!(e instanceof MobEntity)) return false;
+            MobEntity mob = (MobEntity) e;
+
+            if(!(mob instanceof Player) && mob.isDead()){
+                if(mob instanceof Enemy) soundManager.explosion.play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
                 return true;
             }
 

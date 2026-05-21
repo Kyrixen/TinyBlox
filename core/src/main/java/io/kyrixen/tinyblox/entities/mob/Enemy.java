@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.entities;
+package io.kyrixen.tinyblox.entities.mob;
 
 import java.util.Random;
 
@@ -12,22 +12,21 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 
-public class Enemy extends Entity {
+public class Enemy extends MobEntity {
 
     final Random random = new Random();
 
     // What entity it targets (99% it is player but why not :D)
-    Entity target;
+    private MobEntity target;
 
     // If its chasing entity
-    boolean chasing;
+    private boolean chasing;
 
 
     public Enemy(int id, int x, int y, Sfx soundManager) {
         
         super(id, x, y, soundManager);
-        
-        this.type = EntityType.ENEMY;
+
         this.chasing = false;
 
         this.damageDelay = 0.50f;
@@ -80,7 +79,7 @@ public class Enemy extends Entity {
 
     // Setters
 
-    public void setTarget(Entity target) {
+    public void setTarget(MobEntity target) {
         this.target = target;
     }
 
@@ -91,7 +90,7 @@ public class Enemy extends Entity {
 
 
     // Checks collision
-    public void check(Entity player){
+    public void check(MobEntity player){
 
         if (EntityCollision.checkCollision(player, this)) {
                         
@@ -132,8 +131,8 @@ public class Enemy extends Entity {
         if (target == null) return;
 
         // Calculate distance to target
-        int dx = target.x - this.x;
-        int dy = target.y - this.y;
+        int dx = target.x() - this.x;
+        int dy = target.y() - this.y;
 
         // Decide which direction to move
         if (Math.abs(dx) > Math.abs(dy)) {

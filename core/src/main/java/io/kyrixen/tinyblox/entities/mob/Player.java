@@ -1,11 +1,12 @@
 // Kyrixen: Sorry i have no energy for explaining.
 
-package io.kyrixen.tinyblox.entities;
+package io.kyrixen.tinyblox.entities.mob;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import io.kyrixen.tinyblox.entities.Selector;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
@@ -17,7 +18,7 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 
-public class Player extends Entity {
+public class Player extends MobEntity {
 
     private Selector selector;
     private Camera camera;
@@ -27,8 +28,6 @@ public class Player extends Entity {
     public Player(int id, int x, int y, Camera camera, Sfx soundManager) {
     
         super(id, x, y, soundManager);
-        
-        this.type = EntityType.PLAYER;
 
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);
