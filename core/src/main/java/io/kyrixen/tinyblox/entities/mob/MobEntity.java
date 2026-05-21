@@ -184,4 +184,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     
     public Inventory getInventory() { return inventory; }
 
+    @Override
+    public String toString() {
+        return "MobEntity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", moving: " + Boolean.toString(this.moving) + " }";
+    }
+
 }

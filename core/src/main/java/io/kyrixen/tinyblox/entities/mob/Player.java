@@ -118,9 +118,9 @@ public class Player extends MobEntity {
 
             iterator.remove();
     
-        }
+            Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.inventory.toString());
 
-        Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.inventory.toString());
+        }
     
     }
 
@@ -186,5 +186,11 @@ public class Player extends MobEntity {
     public InventoryRenderer getInventoryRenderer() {
         return this.inventoryRenderer;
     }
+
+    @Override
+    public String toString() {
+        return "Player(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", stamina: " + this.stamina + ", moving: " + Boolean.toString(this.moving) + " }";
+    }
+
 
 }

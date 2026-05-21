@@ -36,4 +36,7 @@ public class Constants {
     // Day and Night Cycle
     public static final float FULL_TIME_CYCLE = 300f;
 
+    // Entity settings
+    public static final byte MAX_ENTITY_COUNT = 15;
+
 }

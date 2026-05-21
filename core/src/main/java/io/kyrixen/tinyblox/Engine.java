@@ -22,6 +22,7 @@ import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
+import io.kyrixen.tinyblox.world.EnemySpawner;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
@@ -48,6 +49,7 @@ public class Engine implements Screen {
     private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
     public Sfx soundManager;
+    private EnemySpawner enemySpawner;
 
     SpriteBatch batch;
     ShapeRenderer shape;
@@ -73,6 +75,7 @@ public class Engine implements Screen {
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
+        enemySpawner = new EnemySpawner(soundManager);
 
         init();
 
@@ -95,13 +98,13 @@ public class Engine implements Screen {
         int[] spawn = Utils.spawnNearCenter();
 
         // Create player
-        player = new Player(0, spawn[0], spawn[1], camera, soundManager);
+        player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], camera, soundManager);
 
         // Add to list
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(0, spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, soundManager);
+        Enemy enemy1 = new Enemy(Utils.generateEntityID(), spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, soundManager);
         
         // Add to list
         entities.add(enemy1);
@@ -130,8 +133,10 @@ public class Engine implements Screen {
     private void update(float delta) {
 
         timeCycle.updateDayTime(delta);
-
         controller.update(delta, player, terrain, entities);
+
+        enemySpawner.spawn(player, entities, terrain);
+        enemySpawner.update(player, entities);
 
         Entity.updateAll(delta, terrain, entities);
         terrain.update(camera);

@@ -185,4 +185,10 @@ public class Entity {
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Entity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", moving: " + Boolean.toString(this.moving) + " }";
+    }
+
 }

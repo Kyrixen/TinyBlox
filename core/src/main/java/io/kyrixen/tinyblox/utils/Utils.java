@@ -7,6 +7,9 @@ import io.kyrixen.tinyblox.world.chunk.Tile;
 
 public class Utils {
 
+    // Entity ID counter var
+    private static int LAST_ENTITY_ID = 0;
+
     // Finds a safe spawn near the center using only chunks
     public static int[] spawnNearCenter() {
 
@@ -57,6 +60,10 @@ public class Utils {
     public static float getFloatSound(int volume) {
         float baseSound = volume / 100.0f;
         return baseSound / (100f / Constants.VOLUME);
+    }
+
+    public static int generateEntityID() {
+        return LAST_ENTITY_ID++;
     }
 
 }

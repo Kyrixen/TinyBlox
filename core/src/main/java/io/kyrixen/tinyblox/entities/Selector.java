@@ -48,7 +48,7 @@ public class Selector extends Entity {
 
     public Selector(MobEntity mob, Sfx sfxManager) {
 
-        super(5, mob.x(), mob.y(), mob.width(), mob.height());
+        super(Utils.generateEntityID(), mob.x(), mob.y(), mob.width(), mob.height());
 
         // Initialize the selector with the given mob
         this.mob = mob;
@@ -186,7 +186,7 @@ public class Selector extends Entity {
 
             Item dropItem = current.getItem();
             chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
-            entities.add(new ItemEntity(2, this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem));
+            entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem));
 
         }
 

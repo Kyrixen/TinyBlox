@@ -1,0 +1,90 @@
+package io.kyrixen.tinyblox.world;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.MathUtils;
+
+import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.mob.Enemy;
+import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
+import io.kyrixen.tinyblox.world.chunk.TileStack;
+
+public class EnemySpawner {
+
+    private float spawnTimer = 1f;
+    private long lastSpawn = 0L;
+
+    private Sfx soundManager;
+
+    public EnemySpawner(Sfx soundManager) {
+        this.soundManager = soundManager;
+        lastSpawn = System.currentTimeMillis();
+    }
+
+    public void spawn(Player player, ArrayList<Entity> entities, Terrain terrain) {
+
+        if(System.currentTimeMillis() - lastSpawn < spawnTimer * 1000) return;
+        
+        long enemiesCount = entities.stream().filter(e -> e instanceof Enemy).count();
+
+        if(enemiesCount >= Constants.MAX_ENTITY_COUNT) return;
+
+        short playerChunkX = (short) ((player.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+        short playerChunkY = (short) ((player.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+
+        short pickedChunkX = (short) MathUtils.random(playerChunkX - Constants.RENDER_DISTANCE, playerChunkX + Constants.RENDER_DISTANCE);
+        short pickedChunkY = (short) MathUtils.random(playerChunkY - Constants.RENDER_DISTANCE, playerChunkY + Constants.RENDER_DISTANCE);
+        Chunk pickedChunk = terrain.getChunk(pickedChunkX, pickedChunkY);
+        
+        if(pickedChunk == null) return;
+
+        byte pickedLocalX = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
+        byte pickedLocalY = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
+        TileStack tileStack = pickedChunk.getTileStack(pickedLocalX, pickedLocalY);
+
+        if(tileStack.height() != player.level()) return;
+
+        int worldX = (pickedChunkX * Constants.CHUNK_SIZE + pickedLocalX) * Constants.GRID_SIZE;
+        int worldY = (pickedChunkY * Constants.CHUNK_SIZE + pickedLocalY) * Constants.GRID_SIZE;
+
+        Enemy newEnemy = new Enemy(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+        newEnemy.initTexture();
+
+        newEnemy.setChasing(false);
+        newEnemy.setTarget(player);
+        
+        entities.add(newEnemy);
+
+        lastSpawn = System.currentTimeMillis();
+
+        Logger.LOGGER.debug("ENEMY_SPAWNER", entities.toString());
+
+    }
+
+    public void update(Player player, ArrayList<Entity> entities) {
+        
+        short playerChunkX = (short) ((player.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+        short playerChunkY = (short) ((player.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+
+        for(Entity e : entities) {
+
+            if(!(e instanceof Enemy)) continue;
+            Enemy enemy = (Enemy) e;
+
+            short enemyChunkX = (short) ((enemy.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+            short enemyChunkY = (short) ((enemy.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
+
+            boolean chase = Math.abs(enemyChunkX - playerChunkX) <= 1 && Math.abs(enemyChunkY - playerChunkY) <= 1;
+
+            enemy.setChasing(chase);
+
+        }
+
+    }
+
+}

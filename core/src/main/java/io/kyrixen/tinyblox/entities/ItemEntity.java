@@ -83,4 +83,10 @@ public class ItemEntity extends Entity {
         return this.item;
     }
 
+    @Override
+    public String toString() {
+        return "ItemEntity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + " }";
+    }
+
+
 }

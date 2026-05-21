@@ -159,4 +159,9 @@ public class Enemy extends MobEntity {
 
     }
 
+    @Override
+    public String toString() {
+        return "Enemy(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
+    }
+
 }
