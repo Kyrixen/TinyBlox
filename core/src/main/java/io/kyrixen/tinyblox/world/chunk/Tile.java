@@ -9,10 +9,12 @@ public class Tile {
     public static enum TileType {
     
         AIR(9999999f),
+        LEAVES(0.10f),
         GRASS(0.20f),
         DIRT(0.35f),
         WATER(9999999f),
-        STONE(0.75f);
+        STONE(0.75f),
+        WOOD(0.50F);
 
         private final float mining_time;
 
@@ -49,12 +51,14 @@ public class Tile {
     private static int getTileX(TileType type) {
 
         switch (type) {
-            case GRASS: return 1;
-            case STONE: return 0;
-            case DIRT : return 0;
-            case WATER: return 1;
-            case AIR  : return 0;
-            default   : return 0;
+            case GRASS  : return 1;
+            case STONE  : return 0;
+            case DIRT   : return 0;
+            case WATER  : return 1;
+            case AIR    : return 2;
+            case WOOD   : return 0;
+            case LEAVES : return 2;
+            default     : return 0;
         }
 
     }
@@ -64,12 +68,14 @@ public class Tile {
     private static int getTileY(TileType type) {
     
         switch (type) {
-            case GRASS: return 0;
-            case STONE: return 1;
-            case DIRT : return 0;
-            case WATER: return 1;
-            case AIR  : return 2;
-            default   : return 0;
+            case GRASS  : return 0;
+            case STONE  : return 1;
+            case DIRT   : return 0;
+            case WATER  : return 1;
+            case AIR    : return 1;
+            case WOOD   : return 2; 
+            case LEAVES : return 0;
+            default     : return 0;
         }
     
     }
@@ -95,6 +101,9 @@ public class Tile {
             
             case STONE:        
                 return Item.STONE;
+
+            case WOOD:
+                return Item.WOOD;
 
             default:
                 return Item.NONE;

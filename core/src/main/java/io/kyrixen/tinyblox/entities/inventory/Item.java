@@ -11,8 +11,8 @@ public enum Item {
     GRASS(24, new TextureID("tinyblox", TextureType.TERRAIN, "grass"), 1),
     DIRT(24, new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), 2),
     WATER(24, new TextureID("tinyblox", TextureType.TERRAIN, "water"), 3),
-    STONE(24, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4);
-
+    STONE(24, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
+    WOOD(24, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 5);
 
     // Max stackable size
     private final byte maxSize;
@@ -44,6 +44,9 @@ public enum Item {
             
             case STONE:        
                 return TileType.STONE;
+
+            case WOOD:
+                return TileType.WOOD;
 
             default:
                 return TileType.AIR;

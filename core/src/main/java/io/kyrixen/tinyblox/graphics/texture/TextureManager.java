@@ -70,6 +70,8 @@ public class TextureManager {
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), "textures/terrain/dirt.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "water"), "textures/terrain/water.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "stone"), "textures/terrain/stone.png");
+        this.load(new TextureID("tinyblox", TextureType.TERRAIN, "wood"), "textures/terrain/wood.png");
+        this.load(new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), "textures/terrain/leaves.png");
         
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles"), "textures/terrain/terrain.png");
     
