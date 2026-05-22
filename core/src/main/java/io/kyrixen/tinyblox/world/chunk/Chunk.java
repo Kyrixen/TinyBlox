@@ -2,12 +2,14 @@ package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
+import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 
 public class Chunk {
 
@@ -86,6 +88,62 @@ public class Chunk {
             }
         }
         
+    }
+
+    // Tries to place trees
+    public void tryToSpawnTree(int maxAttempts) {
+
+        byte TREE_RADIUS = 1;
+        byte FREE_SPACE_RADIUS = 1;
+
+        for(int attempts = 0; attempts < maxAttempts; attempts++) {
+
+            byte choosenX = (byte) MathUtils.random(3, this.getChunkSize() - 4); 
+            byte choosenY = (byte) MathUtils.random(3, this.getChunkSize() - 4);
+
+            TileStack tileStack = this.getTileStack(choosenX, choosenY);
+            if(tileStack == null) continue;
+
+            if(tileStack.height() == 0) continue;
+            if(tileStack.top().type() != TileType.GRASS) continue;
+
+            boolean canSpawn = true;
+            for(byte neighborX = (byte) -(TREE_RADIUS + FREE_SPACE_RADIUS); neighborX <= TREE_RADIUS + FREE_SPACE_RADIUS; neighborX++) {
+
+                for(byte neighborY = (byte) -(TREE_RADIUS + FREE_SPACE_RADIUS); neighborY <= TREE_RADIUS + FREE_SPACE_RADIUS; neighborY++) {
+
+                    if(neighborX == 0 && neighborY == 0) continue;
+                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
+                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).top() == null) continue;
+
+                    byte level = this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).top().level();
+
+                    if(level != tileStack.top().level()) canSpawn = false;
+
+                }
+
+            }
+
+            if(!canSpawn) continue;
+
+            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.WOOD, (byte) 1));
+            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.LEAVES, (byte) 2));
+
+            for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
+
+                for(byte neighborY = (byte) -TREE_RADIUS; neighborY <= TREE_RADIUS; neighborY++) {
+
+                    if(neighborX == 0 && neighborY == 0) continue;
+                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
+
+                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).push(new Tile(TileType.LEAVES, (byte) 1));
+
+                }
+
+            }
+
+        }
+
     }
 
     public void renderDepthOverlay(Camera cam, ShapeRenderer shapeRenderer, TimeCycle timeCycle) {

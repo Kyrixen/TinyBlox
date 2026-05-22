@@ -105,6 +105,9 @@ public class Tile {
             case WOOD:
                 return Item.WOOD;
 
+            case LEAVES:
+                return Item.LEAVES;
+
             default:
                 return Item.NONE;
 

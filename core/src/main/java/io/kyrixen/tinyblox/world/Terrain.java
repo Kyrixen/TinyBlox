@@ -82,6 +82,7 @@ public class Terrain {
                 //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
                 
                 ChunkGenerator.generate(c, noise);
+                c.tryToSpawnTree(10);
                 //c.set(cb.build());
                 
                 // Store chunk
