@@ -80,6 +80,7 @@ public class TextureManager {
     public void loadHUD() {
 
         this.load(new TextureID("tinyblox", TextureType.HUD, "hotbar_slot"), "textures/hud/inventory/hotbar_slot.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), "textures/hud/inventory/items/wood_pickaxe.png");
 
     }
 

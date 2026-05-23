@@ -7,22 +7,27 @@ import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 // Item object used for inventory
 public enum Item {
     
-    NONE(0, null, 0),
-    GRASS(24, new TextureID("tinyblox", TextureType.TERRAIN, "grass"), 1),
-    DIRT(24, new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), 2),
-    WATER(24, new TextureID("tinyblox", TextureType.TERRAIN, "water"), 3),
-    STONE(24, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
-    WOOD(24, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 5),
-    LEAVES(24, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 6);
+    NONE(0, false, false, null, 0),
+    GRASS(24, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "grass"), 1),
+    DIRT(24, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), 2),
+    WATER(24, false, true, new TextureID("tinyblox", TextureType.TERRAIN, "water"), 3),
+    STONE(24, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
+    WOOD(24, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 5),
+    LEAVES(24, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 6),
+    WOODEN_PICKAXE(1, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 7);
 
     // Max stackable size
     private final byte maxSize;
     private final TextureID textureID;
     private final int itemID;
+    private final boolean placeable;
+    private final boolean obtainable;
 
     // Constructor
-    Item(int maxSize, TextureID textureID, int itemID) {
+    Item(int maxSize, boolean obtainable, boolean placeable, TextureID textureID, int itemID) {
         this.maxSize = (byte) maxSize;
+        this.obtainable = obtainable;
+        this.placeable = placeable;
         this.textureID = textureID;
         this.itemID = itemID;
     }
@@ -65,6 +70,14 @@ public enum Item {
 
     public int getItemID() {
         return this.itemID;
+    }
+
+    public boolean canPlace() {
+        return this.placeable;
+    }
+
+    public boolean canRoll() {
+        return this.obtainable;
     }
 
     public static Item fromInt(int id) {

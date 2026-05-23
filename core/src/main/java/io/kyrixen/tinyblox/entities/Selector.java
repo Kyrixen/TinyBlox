@@ -116,6 +116,8 @@ public class Selector extends Entity {
         MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
         if(e != null) return;
 
+        if(!entityInventory.currentItem().canPlace()) return;
+
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
         int playerTileX = mob.x() / Constants.GRID_SIZE;
@@ -177,8 +179,10 @@ public class Selector extends Entity {
             targetY = tileY;
         
         }
-
-        miningProgress += deltaTime;
+        
+        if(entityInventory.currentItem() == Item.WOODEN_PICKAXE) miningProgress += deltaTime * 2;
+        else miningProgress += deltaTime;
+        
         if(miningProgress < current.type().getMiningTime()) return;
 
         if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(20), MathUtils.random(0.95f, 1.05f), 0f); }

@@ -114,10 +114,10 @@ public class Enemy extends MobEntity {
 
         for(int i = 0; i < loopCount; i++) {
 
-            int itemCount = MathUtils.random(1, i + MathUtils.random(1, 3));
-            Item itemType = Item.fromInt(MathUtils.random(1, Item.values().length - 1));
+            int itemCount = MathUtils.random(1, i + MathUtils.random(1, 4));
+            Item itemType = Item.fromInt(MathUtils.random(0, Item.values().length - 1));
 
-            if(itemType == Item.NONE) continue;
+            if(!itemType.canRoll()) continue;
 
             for(int j = 0; j < itemCount; j++) {
                 entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + MathUtils.random(-3, 3), this.y() + MathUtils.random(-3, 3), soundManager, itemType, mob));
