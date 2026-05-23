@@ -35,6 +35,9 @@ public class Controller {
             // Checks for sprinting
             if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
 
+            // Crafting debug
+            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.C)) player.tryCraftPickaxe();
+
     }
 
 }
