@@ -98,7 +98,7 @@ public class Enemy extends MobEntity {
     // Checks collision
     public void check(MobEntity player){
 
-        if (EntityCollision.checkCollision(player, this)) {
+        if (EntityCollision.checkTileCollision(player, this)) {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 

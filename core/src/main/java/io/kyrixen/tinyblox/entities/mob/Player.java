@@ -111,7 +111,7 @@ public class Player extends MobEntity {
 
             if (e == this) continue;
             if (!(e instanceof ItemEntity)) continue;
-            if (!EntityCollision.checkCollision(this, e)) continue;
+            if (!EntityCollision.checkAABBCollision(this, e)) continue;
 
             ItemEntity itemEntity = (ItemEntity) e;
             Item itemDrop = itemEntity.pickup();

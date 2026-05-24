@@ -2,14 +2,15 @@ package io.kyrixen.tinyblox.collision;
 
 import java.util.ArrayList;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 
 public class EntityCollision {
 
-    // Check collision between entities
-    public static boolean checkCollision(Entity e1, Entity e2) {
+    // Check AABB collision between entities
+    public static boolean checkAABBCollision(Entity e1, Entity e2) {
         
         return (e1.x() < e2.x() + e2.width() &&
                 e1.x() + e1.width() > e2.x() &&
@@ -17,6 +18,19 @@ public class EntityCollision {
                 e1.y() + e1.height() > e2.y());
     
     }    
+
+    // Check Tile collision between entities
+    public static boolean checkTileCollision(Entity e1, Entity e2) {
+
+        int e1TileX = (e1.x() + e1.width() / 2) / Constants.GRID_SIZE;
+        int e2TileX = (e2.x() + e2.width() / 2) / Constants.GRID_SIZE;
+
+        int e1TileY = (e1.y() + e1.height() / 2) / Constants.GRID_SIZE;
+        int e2TileY = (e2.y() + e2.height() / 2) / Constants.GRID_SIZE;
+
+        return e1TileX == e2TileX && e1TileY == e2TileY;
+
+    }
 
     // Checks mob collision
     public static MobEntity checkMobEntityCollision(Entity entity, ArrayList<Entity> entities) {
@@ -28,7 +42,7 @@ public class EntityCollision {
 
             if (mob instanceof Player) continue;
 
-            if (checkCollision(entity, mob)) return mob;
+            if (checkTileCollision(entity, mob)) return mob;
 
         }
 
@@ -42,7 +56,7 @@ public class EntityCollision {
         for (Entity e : entities) {
 
             if (e instanceof Player) continue;
-            if (checkCollision(entity, e)) return e;
+            if (checkTileCollision(entity, e)) return e;
 
         }
 
