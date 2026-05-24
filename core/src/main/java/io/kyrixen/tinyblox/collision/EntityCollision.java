@@ -37,7 +37,7 @@ public class EntityCollision {
 
         for (Entity e : entities) {
 
-            if(!(e instanceof MobEntity)) return null;
+            if(!(e instanceof MobEntity)) continue;
             MobEntity mob = (MobEntity) e;
 
             if (mob instanceof Player) continue;

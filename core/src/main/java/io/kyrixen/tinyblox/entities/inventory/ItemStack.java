@@ -17,7 +17,7 @@ public class ItemStack {
     }
 
     public boolean isFull() {
-        return this.count >= item.getMaxSize();
+        return !isEmpty() && this.count >= item.getMaxSize();
     }
 
     public Item getItem() {

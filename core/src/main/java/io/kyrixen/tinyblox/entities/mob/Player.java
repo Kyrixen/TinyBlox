@@ -102,7 +102,9 @@ public class Player extends MobEntity {
 
     // Checks if any item drops near
     public void checkDropPickup(ArrayList<Entity> entities) {
-        
+
+        if(inventory.isFull()) return;
+
         Iterator<Entity> iterator = entities.iterator();
 
         while (iterator.hasNext()) {
@@ -111,7 +113,7 @@ public class Player extends MobEntity {
 
             if (e == this) continue;
             if (!(e instanceof ItemEntity)) continue;
-            if (!EntityCollision.checkAABBCollision(this, e)) continue;
+            if (!EntityCollision.checkTileCollision(this, e)) continue;
 
             ItemEntity itemEntity = (ItemEntity) e;
             Item itemDrop = itemEntity.pickup();

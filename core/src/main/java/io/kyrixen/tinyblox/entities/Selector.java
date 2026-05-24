@@ -20,7 +20,6 @@ import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.Tile;
-import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
 
 public class Selector extends Entity {
 
@@ -180,19 +179,15 @@ public class Selector extends Entity {
         
         }
         
-        if(entityInventory.currentItem() == Item.WOODEN_PICKAXE) miningProgress += deltaTime * 2;
-        else miningProgress += deltaTime;
+        miningProgress += deltaTime * entityInventory.currentItem().getMiningSpeed();
         
         if(miningProgress < current.type().getMiningTime()) return;
 
-        if(current.level() <= 0) { chunk.getTileStack(localTileX, localTileY).push(new Tile(TileType.AIR, (byte) -1)); sfxManager.destroy.play(Utils.getFloatSound(20), MathUtils.random(0.95f, 1.05f), 0f); }
-        else {
+        if(current.level() <= 0) return;
 
-            Item dropItem = current.getItem();
-            chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
-            entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
-
-        }
+        Item dropItem = current.getItem();
+        chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
+        entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;
 
