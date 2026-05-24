@@ -11,6 +11,29 @@ import io.kyrixen.tinyblox.world.Camera;
 
 public class TileRenderer {
     
+    // Flip helper enum
+    public enum FlipType {
+
+        NONE(false, false),
+        X_AXIS(true, false),
+        Y_AXIS(false, true),
+        XY_AXIS(true, true);
+    
+        private final boolean flipX;
+        private final boolean flipY;
+
+        FlipType(boolean flipX, boolean flipY) {
+            this.flipX = flipX;
+            this.flipY = flipY;
+        }
+
+        public boolean getFlipX() { return this.flipX; }
+
+        public boolean getFlipY() { return this.flipY; }
+
+    }
+
+
     private Camera camera;
     private TextureManager tex;
 
@@ -20,7 +43,7 @@ public class TileRenderer {
     }
 
     // Draw a single tile / texture with camera offset
-    public void draw(TextureID tile, int x, int y, SpriteBatch batch) {
+    public void draw(TextureID tile, int x, int y, FlipType flip, SpriteBatch batch) {
 
         // Apply camera offset
         float screenX = (x - camera.x) * camera.zoom;
@@ -32,12 +55,12 @@ public class TileRenderer {
 
         if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tile.toString());
 
-        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), flip.getFlipX(), flip.getFlipY());
 
     }
 
     // Draw a single tile / texture with camera offset and custom width / height
-    public void draw(TextureID tile, int x, int y, float w, float h, SpriteBatch batch) {
+    public void draw(TextureID tile, int x, int y, float w, float h, FlipType flip, SpriteBatch batch) {
 
         // Apply camera offset
         float screenX = (x - camera.x) * camera.zoom;
@@ -49,12 +72,12 @@ public class TileRenderer {
 
         if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture not loaded: " + tile.toString());
 
-        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), false, false);
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), flip.getFlipX(), flip.getFlipY());
 
     }
 
     // Draw one tile from a tileset
-    public void drawTileset(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, SpriteBatch batch) {
+    public void drawTileset(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, FlipType flip, SpriteBatch batch) {
         
         int srcX = tileX * tileSize;
         int srcY = tileY * tileSize;
@@ -66,12 +89,12 @@ public class TileRenderer {
 
         Texture tilesetTex = tex.getTexture(tileset);
 
-        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
     
     }
 
     // Draw one tile from a tileset and with custom width and height
-    public void drawTileset(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, SpriteBatch batch) {
+    public void drawTileset(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, SpriteBatch batch) {
         
         int srcX = tileX * tileSize;
         int srcY = tileY * tileSize;
@@ -83,7 +106,7 @@ public class TileRenderer {
 
         Texture tilesetTex = tex.getTexture(tileset);
 
-        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, false, false);
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
     
     }
 

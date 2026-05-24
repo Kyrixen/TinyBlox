@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
 
 public class Chunk {
 
@@ -81,7 +82,7 @@ public class Chunk {
                 
                 batch.setColor(timeCycle.getBrightness(), timeCycle.getBrightness(), timeCycle.getBrightness(), 1.0f);
 
-                tileRenderer.drawTileset(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, batch);
+                tileRenderer.drawTileset(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
                 
                 batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 

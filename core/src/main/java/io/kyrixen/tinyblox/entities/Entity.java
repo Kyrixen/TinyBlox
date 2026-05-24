@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
 
 
 // Implement stats
@@ -59,6 +60,7 @@ public class Entity {
     protected boolean moving = false;
     protected Speed speed = Speed.SLOW;
     protected long lastMove = 0L;
+    protected FlipType flip = FlipType.NONE;
 
     // Texture and type of entity
     protected TextureID texture = null;
@@ -75,6 +77,7 @@ public class Entity {
         this.height = h;
 
         this.setSpeed(Speed.SLOW);
+        this.updateFlip();
 
     }
 
@@ -90,12 +93,18 @@ public class Entity {
         return moving;
     }
 
+    public void updateFlip() {
+        if(dirX < 0) this.flip = FlipType.X_AXIS;
+        else if(dirX > 0) this.flip = FlipType.NONE;
+    }
+
 
     // Update entity
     public void update(float deltaTime, Terrain terrain) {
 
         if(System.currentTimeMillis() - lastMove >= speed.getMoveDelay() * 1000) {
         
+            updateFlip();
             tryMove(terrain);
 
             // Resets dirs
@@ -115,7 +124,7 @@ public class Entity {
         float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
 
         batch.setColor(brightness, brightness, brightness, 1.0f);
-        tileRenderer.draw(this.texture, x, y, batch);
+        tileRenderer.draw(this.texture, x, y, this.flip, batch);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     }

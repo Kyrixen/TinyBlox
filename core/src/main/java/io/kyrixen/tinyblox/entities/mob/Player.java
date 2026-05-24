@@ -79,6 +79,7 @@ public class Player extends MobEntity {
         if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;
         if(dirX == 0 && dirY == 0) { moving = false; return; }
 
+        updateFlip();
         moving = tryMove(terrain);
 
         if(moving) soundManager.walk.play(Utils.getFloatSound(15), MathUtils.random(0.9f, 1.1f), 0f);

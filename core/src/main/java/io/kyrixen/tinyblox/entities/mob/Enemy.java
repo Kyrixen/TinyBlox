@@ -59,14 +59,16 @@ public class Enemy extends MobEntity {
     public void update(float deltaTime, Terrain terrain) {
 
         if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;  
-    
+
         if(chasing){
             chaseTarget();
         } else{
             wanderAround();
         }
         
-        tryMove(terrain);
+
+        updateFlip();
+        moving = tryMove(terrain);
 
         exhausted = stamina <= 0 && !tireless;
 

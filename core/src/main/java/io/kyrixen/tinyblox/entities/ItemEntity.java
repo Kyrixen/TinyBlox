@@ -11,6 +11,7 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
 
 public class ItemEntity extends Entity {
 
@@ -80,7 +81,7 @@ public class ItemEntity extends Entity {
         float itemBrightness = brightness * 0.9f + 0.1f;
 
         batch.setColor(itemBrightness + 0.15f, itemBrightness + 0.15f, itemBrightness + 0.15f, 1.0f);
-        tileRenderer.draw(this.texture, (int) (x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, batch);
+        tileRenderer.draw(this.texture, (int) (x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, batch);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     }
