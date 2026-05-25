@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.entities.inventory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,7 @@ public class InventoryRenderer {
     // UI Spacer vars
     private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;
     private static final float SLOT_SPACING = 90f;
+    private static final float ITEM_SIZE = SLOT_SIZE - 32;
 
     // Inventory visibility
     private boolean visible = true;
@@ -43,7 +45,7 @@ public class InventoryRenderer {
 
         renderSlots(tex, batch);
         renderCounts(batch);
-        renderItems(batch);
+        renderItems(tex, batch);
 
     }
 
@@ -57,11 +59,19 @@ public class InventoryRenderer {
     }
 
     // Renders items
-    public void renderItems(SpriteBatch batch) {
+    public void renderItems(TextureManager tex, SpriteBatch batch) {
     
         for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
+        
             if(inventoryRender.getSlot(i).isEmpty()) continue;
-            font.draw(batch, inventoryRender.getSlot(i).getItem().name(), this.getSlotX() + 6, this.getSlotY() - (i * SLOT_SPACING) + 52);
+
+            float itemX = this.getSlotX() + (SLOT_SIZE - ITEM_SIZE) / 2f;
+            float itemY = (this.getSlotY() - (i * SLOT_SPACING)) + (SLOT_SIZE - ITEM_SIZE) / 2f;
+            
+            Texture itemTexture = tex.getTexture(inventoryRender.getSlot(i).getItem().textureID());
+
+            batch.draw(itemTexture, itemX, itemY, ITEM_SIZE, ITEM_SIZE);
+        
         }
         
     }
