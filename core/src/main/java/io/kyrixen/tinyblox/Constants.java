@@ -28,7 +28,7 @@ public class Constants {
     public static final byte BUFFER = 2;
 
     // Version
-    public static final String VERSION = "dev_pre-6";
+    public static final String VERSION = "dev_pre-7";
 
     // Dev settings
     public static final boolean DEBUG = true;
