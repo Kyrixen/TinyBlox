@@ -116,9 +116,11 @@ public class Player extends MobEntity {
             if (!EntityCollision.checkTileCollision(this, e)) continue;
 
             ItemEntity itemEntity = (ItemEntity) e;
-            Item itemDrop = itemEntity.pickup();
+            Item itemDrop = itemEntity.getItem();
 
-            this.inventory.add(itemDrop, (byte) 1);
+            if(!this.inventory.add(itemDrop, (byte) 1)) continue;
+
+            itemEntity.pickup();
 
             iterator.remove();
     
@@ -129,7 +131,7 @@ public class Player extends MobEntity {
     }
 
     // Temporary debug craft
-    public void tryCraftPickaxe() {
+    public void tryCraftWoodenPickaxe() {
 
         ItemStack woodStack = inventory.getStack(Item.WOOD);
         if(woodStack == null) return;
@@ -142,6 +144,28 @@ public class Player extends MobEntity {
         pickaxeStack.setItem(Item.WOODEN_PICKAXE);
         pickaxeStack.setCount((byte) 1);
 
+
+    }
+
+    // Temporary debug craft
+    public void tryCraftStonePickaxe() {
+
+        ItemStack woodStack = inventory.getStack(Item.WOOD);
+        ItemStack stoneStack = inventory.getStack(Item.STONE);
+
+        if(woodStack == null) return;
+        if(stoneStack == null) return;
+
+
+        if(woodStack.getCount() < 1) return;
+        if(stoneStack.getCount() < 1) return;
+
+        woodStack.remove((byte) 1);
+        stoneStack.remove((byte) 1);
+
+        ItemStack pickaxeStack = inventory.getSlot(inventory.getEmptySlot());
+        pickaxeStack.setItem(Item.STONE_PICKAXE);
+        pickaxeStack.setCount((byte) 1);
 
     }
 

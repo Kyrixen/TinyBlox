@@ -19,14 +19,16 @@ public class Inventory {
         }
     }
 
-    public void add(Item item, byte count) {
+    public boolean add(Item item, byte count) {
 
         ItemStack itemStack = getAvailableStack(item);
 
-        if(itemStack == null) return;
+        if(itemStack == null) return false;
         if(itemStack.isEmpty()) itemStack.setItem(item);
 
         itemStack.add(count);
+        
+        return true;
 
     }
 

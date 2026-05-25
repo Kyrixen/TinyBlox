@@ -36,7 +36,8 @@ public class Controller {
             if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
 
             // Crafting debug
-            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.C)) player.tryCraftPickaxe();
+            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.C)) player.tryCraftWoodenPickaxe();
+            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.V)) player.tryCraftStonePickaxe();
 
     }
 

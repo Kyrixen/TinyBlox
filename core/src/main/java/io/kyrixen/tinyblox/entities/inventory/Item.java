@@ -14,7 +14,8 @@ public enum Item {
     STONE(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
     WOOD(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 5),
     LEAVES(24, 0.5f, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 6),
-    WOODEN_PICKAXE(1, 1.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 7);
+    WOODEN_PICKAXE(1, 1.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 7),
+    STONE_PICKAXE(1, 2.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 8);
 
     // Max stackable size
     private final byte maxSize;
