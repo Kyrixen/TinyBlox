@@ -1,8 +1,8 @@
 # TinyBlox
 
-A lightweight 2D sandbox/survival engine and experimental game written in Java using the LibGDX framework for rendering, input handling, and audio playback.
+A lightweight pseudo-3D sandbox/survival game and experimental engine written in Java using the LibGDX framework for rendering, input handling, and audio playback.
 
-TinyBlox focuses on modular architecture, terrain systems, entities, world interaction, and experimental gameplay mechanics.
+TinyBlox focuses on atmospheric exploration, topology-aware terrain, modular architecture, procedural generation, and lightweight sandbox gameplay systems.
 
 ---
 
@@ -18,28 +18,36 @@ TinyBlox focuses on modular architecture, terrain systems, entities, world inter
 
 TinyBlox is currently focused on:
 
-- Sandbox interaction systems
-- Terrain/topology experimentation
-- Modular engine architecture
-- Procedural terrain generation
-- Lightweight rendering and gameplay systems
+* Sandbox interaction systems
+* Terrain/topology experimentation
+* Atmospheric pseudo-3D rendering
+* Procedural terrain generation
+* Lightweight gameplay architecture
+* Exploration and progression systems
 
 ---
 
 ## Features
 
-- 2D tile-based terrain
-- Stacked terrain system
-- Player and enemy entities
-- Health and stamina systems
-- Camera follow system
-- Keyboard and mouse input handling
-- Audio playback system
-- Chunk-based tile rendering
-- Block placing and destroying
-- Directional selector system
-- Chunk-based terrain architecture
-- Modular engine structure
+* Layered pseudo-3D terrain system
+* Chunk-based world architecture
+* Procedural terrain generation
+* Terrain depth/topology rendering
+* Procedural tree generation
+* Player and enemy entities
+* Health and stamina systems
+* Inventory and item systems
+* Item drops and pickups
+* Tool progression system
+* Basic crafting system
+* Ore generation
+* Camera follow system
+* Keyboard and mouse input handling
+* Audio playback system
+* Block placing and destroying
+* Directional selector system
+* Day/night cycle
+* Modular engine structure
 
 ---
 
@@ -47,62 +55,76 @@ TinyBlox is currently focused on:
 
 TinyBlox is structured into modular systems including:
 
-- `Engine`
-- `Renderer`
-- `Camera`
-- `Terrain`
-- `Chunk`
-- `Tile`
-- `Controller`
-- `Entity`
-- `Player`
-- `Enemy`
+* `Engine`
+* `Renderer`
+* `Camera`
+* `Terrain`
+* `Chunk`
+* `Tile`
+* `TileStack`
+* `Controller`
+* `Entity`
+* `MobEntity`
+* `Player`
+* `Enemy`
+* `Inventory`
 
 The project is designed for experimentation, learning, and gradual expansion into a larger sandbox/survival game.
 
+The world uses lightweight layered terrain instead of voxel rendering, focusing on topology, traversal, silhouettes, and atmospheric exploration.
+
 ---
 
->[!IMPORTANT]
+> [!IMPORTANT]
 >
->TinyBlox is currently in active development.
+> TinyBlox is currently in active development.
 >
->This is NOT a finished game.
+> This is NOT a finished game.
 >
->Systems, mechanics, rendering, terrain generation, saves,
->and architecture may change frequently between versions.
->
+> Systems, mechanics, rendering, terrain generation, saves,
+> and architecture may change frequently between versions.
 
 ---
 
 ## Game Mechanics
 
-- [x] Player movement
-- [x] Terrain system
-- [x] Chunk system
-- [x] Block placing
-- [x] Block destroying
-- [x] Basic enemy AI
-- [x] Menu system
-- [x] Sound system
-- [x] Camera follow
-- [x] Entity system
-- [ ] RNG improvements
-- [ ] Combat mechanics
-- [x] Inventory system
-- [ ] Stats system
-- [ ] Dialogues
-- [ ] Helper NPCs
-- [ ] Biomes
-- [ ] World saving/loading
-- [ ] Boss fights
+* [x] Player movement
+* [x] Terrain system
+* [x] Chunk system
+* [x] Layered TileStack terrain
+* [x] Procedural terrain generation
+* [x] Procedural tree generation
+* [x] Inventory system
+* [x] Item entities and pickups
+* [x] Tool progression
+* [x] Basic crafting
+* [x] Ore generation
+* [x] Block placing
+* [x] Block destroying
+* [x] Basic enemy AI
+* [x] Combat system
+* [x] Menu system
+* [x] Sound system
+* [x] Camera follow
+* [x] Entity system
+* [x] Day/night cycle
+* [ ] Ladder
+* [ ] RNG improvements
+* [ ] Stats system
+* [ ] Dialogues
+* [ ] Helper NPCs
+* [ ] Biomes
+* [ ] Cave generation
+* [ ] World saving/loading
+* [ ] Boss fights
 
 ---
 
 ## Requirements
 
-- Java 8+
-- Gradle 9.3.1+
-- Desktop OS (Windows/Linux/macOS)
+* Java 17+
+* Gradle 9.3.1+
+* Desktop OS (Windows/Linux/macOS)
 
 ---
 
@@ -113,7 +135,7 @@ The project is designed for experimentation, learning, and gradual expansion int
 ```bash
 git clone https://github.com/Kyrixen/TinyBloxJava.git
 cd TinyBloxJava
-````
+```
 
 ### Build Project
 
@@ -146,14 +168,23 @@ cd TinyBloxJava
 
 ---
 
+## Debug Controls
+
+| Key | Action               |
+| --- | -------------------- |
+| `C` | Craft Wooden Pickaxe |
+| `V` | Craft Stone Pickaxe  |
+
+---
+
 ## Notes
 
-* Terrain and entities are rendered relative to the camera.
-* Textures currently use a 16x16 pixel style.
-* Systems are still experimental and may be rewritten.
+* The world uses layered TileStacks for pseudo-3D topology rendering.
+* Textures currently use a 16x16 pixel-art style.
+* Systems are still experimental and may evolve significantly.
 * Performance optimization is ongoing.
 * Terrain/world generation is under active development.
-* Some systems may be placeholder implementations.
+* Some systems currently use temporary or debug implementations.
 
 ---
 
@@ -161,6 +192,8 @@ cd TinyBloxJava
 
 * Better terrain generation
 * Biome system
+* Cave generation
+* Traversal systems (ladders/climbing)
 * Lighting/shadows
 * Animated textures
 * Improved AI
@@ -170,7 +203,7 @@ cd TinyBloxJava
 * Configurable controls
 * Zoomable camera
 * Better UI
-* Crafting mechanics
+* Expanded crafting/progression
 
 ---
 
@@ -254,7 +287,7 @@ By contributing code or assets to TinyBlox, you agree that your contributions ma
 
 ## Credits
 
-Created by Kyrixen Tirev
+Created by Kyrixen
 
 Built using:
 
