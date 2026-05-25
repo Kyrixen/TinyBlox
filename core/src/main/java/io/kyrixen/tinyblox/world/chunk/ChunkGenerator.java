@@ -55,7 +55,12 @@ public class ChunkGenerator {
                     if(materialNoise < 0.60f) chunk.getTileStack(tx, ty).push(new Tile(TileType.DIRT, (byte) 1));
                     else chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 1));
                 
-                }  if(level >= 2) chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 2));
+                }  if(level >= 2) {
+
+                    if(materialNoise < 0.90f) chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 2));
+                    else chunk.getTileStack(tx, ty).push(new Tile(TileType.IRON, (byte) 2));
+
+                }
                 
             }
 

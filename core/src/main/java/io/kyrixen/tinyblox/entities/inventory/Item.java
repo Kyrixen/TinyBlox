@@ -12,10 +12,11 @@ public enum Item {
     DIRT(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), 2),
     WATER(24, 0.5f, false, true, new TextureID("tinyblox", TextureType.TERRAIN, "water"), 3),
     STONE(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
-    WOOD(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 5),
-    LEAVES(24, 0.5f, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 6),
-    WOODEN_PICKAXE(1, 1.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 7),
-    STONE_PICKAXE(1, 2.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 8);
+    IRON(12, 0.25f, false, true, new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), 5),
+    WOOD(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 6),
+    LEAVES(24, 0.5f, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 7),
+    WOODEN_PICKAXE(1, 1.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 8),
+    STONE_PICKAXE(1, 2.5f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 9);
 
     // Max stackable size
     private final byte maxSize;
@@ -53,6 +54,9 @@ public enum Item {
             
             case STONE:        
                 return TileType.STONE;
+
+            case IRON:
+                return TileType.IRON;
 
             case WOOD:
                 return TileType.WOOD;

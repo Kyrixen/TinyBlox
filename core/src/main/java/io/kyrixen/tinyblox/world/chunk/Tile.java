@@ -14,6 +14,7 @@ public class Tile {
         DIRT(0.35f),
         WATER(9999999f),
         STONE(0.75f),
+        IRON(1.25f),
         WOOD(0.50F);
 
         private final float mining_time;
@@ -53,6 +54,7 @@ public class Tile {
         switch (type) {
             case GRASS  : return 1;
             case STONE  : return 0;
+            case IRON   : return 1;
             case DIRT   : return 0;
             case WATER  : return 1;
             case AIR    : return 2;
@@ -70,6 +72,7 @@ public class Tile {
         switch (type) {
             case GRASS  : return 0;
             case STONE  : return 1;
+            case IRON   : return 2;
             case DIRT   : return 0;
             case WATER  : return 1;
             case AIR    : return 1;
@@ -101,6 +104,9 @@ public class Tile {
             
             case STONE:        
                 return Item.STONE;
+
+            case IRON:
+                return Item.IRON;
 
             case WOOD:
                 return Item.WOOD;
