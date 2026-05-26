@@ -15,7 +15,8 @@ public class Tile {
         WATER(9999999f),
         STONE(0.75f),
         IRON(1.25f),
-        WOOD(0.50F);
+        WOOD(0.50f),
+        LADDER(0.45f);
 
         private final float mining_time;
 
@@ -60,6 +61,7 @@ public class Tile {
             case AIR    : return 2;
             case WOOD   : return 0;
             case LEAVES : return 2;
+            case LADDER : return 2;
             default     : return 0;
         }
 
@@ -78,6 +80,7 @@ public class Tile {
             case AIR    : return 1;
             case WOOD   : return 2; 
             case LEAVES : return 0;
+            case LADDER : return 2;
             default     : return 0;
         }
     
@@ -113,6 +116,9 @@ public class Tile {
 
             case LEAVES:
                 return Item.LEAVES;
+
+            case LADDER:
+                return Item.LADDER;
 
             default:
                 return Item.NONE;

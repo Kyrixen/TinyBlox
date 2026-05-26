@@ -3,7 +3,10 @@ package io.kyrixen.tinyblox.graphics.texture;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
@@ -13,6 +16,7 @@ public class TextureManager {
 
     // List of loaded textures
     private final Map<TextureID, Texture> loadedTextures = new HashMap<>();
+    private final Map<TextureID, Texture> loadedTextureOutlines = new HashMap<>();
 
     // Texture for missing texture
     private static final TextureID MISSING_TEXTURE = new TextureID("tinyblox", TextureType.MISC, "missing_texture");
@@ -25,15 +29,54 @@ public class TextureManager {
         try {
 
             Texture asset = new Texture(path);
+            Texture assetOutline = this.generateDepthOverlay(asset.getTextureData());
+
             if(loadedTextures.containsKey(identifier)) { Logger.LOGGER.error("TEXTURES", "ID already registered!: " + identifier.toString()); return; }
 
             loadedTextures.put(identifier, asset);
+            loadedTextureOutlines.put(identifier, assetOutline);
 
         } catch(GdxRuntimeException e) {
             Logger.LOGGER.error("TEXTURES", "File not found: " + path);
         }
 
     }
+
+    // Generates overlay for all tiles
+    public Texture generateDepthOverlay(TextureData data) {
+
+        if(!data.isPrepared()) data.prepare();
+
+        Pixmap original = data.consumePixmap();
+        Pixmap overlay = new Pixmap(original.getWidth(), original.getHeight(), Pixmap.Format.RGBA8888);
+        
+        overlay.setColor(0f, 0f, 0f, 0f);
+        overlay.fill();
+
+        for(int x = 0; x < original.getWidth(); x++) {
+
+            for(int y = 0; y < original.getHeight(); y++) {
+
+                int pixel = original.getPixel(x, y);
+
+                if((pixel & 0x000000ff) == 0) continue;
+
+                overlay.setColor(1f, 1f, 1f, 1f);
+                overlay.drawPixel(x, y);
+
+            }
+
+        }
+        
+        Texture result = new Texture(overlay);
+ 
+        result.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        overlay.dispose();
+
+        return result;
+
+    }
+
 
     public Texture getTexture(TextureID identifier) {
     
@@ -44,7 +87,17 @@ public class TextureManager {
         return asset;
     
     }
+    
+    public Texture getOutlineTexture(TextureID identifier) {
+    
+        Texture outline = loadedTextureOutlines.get(identifier);
 
+        if(outline == null) { Logger.LOGGER.error("TEXTURES", "Texture overlay not loaded: " + identifier.toString());  return loadedTextures.get(MISSING_TEXTURE); }
+
+        return outline;
+    
+    }
+    
     
     // Load functions //
 
@@ -73,6 +126,7 @@ public class TextureManager {
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), "textures/terrain/iron.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "wood"), "textures/terrain/wood.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), "textures/terrain/leaves.png");
+        this.load(new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), "textures/terrain/ladder.png");
         
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles"), "textures/terrain/terrain.png");
     
@@ -101,14 +155,15 @@ public class TextureManager {
     
     }
 
-
     // Cleanup resources
     public void cleanup() {
 
         for(Texture tex : loadedTextures.values()) { tex.dispose(); }
+        for(Texture out : loadedTextureOutlines.values()) { out.dispose(); }
 
         // Clear loaded textures list
-        loadedTextures.clear(); // removes references to Textures
+        loadedTextures.clear();
+        loadedTextureOutlines.clear();
 
     }
  

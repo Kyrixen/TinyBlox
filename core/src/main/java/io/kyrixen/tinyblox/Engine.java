@@ -202,12 +202,10 @@ public class Engine implements Screen {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        shape.begin(ShapeType.Filled);
-        terrain.renderDepthOverlay(camera, shape, timeCycle);
-        shape.end();
 
-        // Entities
+        // Entities and Terrain Depth Overlay
         batch.begin();
+        terrain.renderDepthOverlay(camera, timeCycle, tileRenderer, batch);
         Entity.renderAll(timeCycle, tileRenderer, entities, batch);
         batch.end();
 

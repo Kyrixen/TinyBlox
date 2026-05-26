@@ -1,7 +1,6 @@
 package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
@@ -73,20 +72,23 @@ public class Chunk {
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
             for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
                 
-                Tile tile = this.getTileStack(tx, ty).top();
-
-                if(tile == null) continue;
+                TileStack tileStack = this.getTileStack(tx, ty);
+                if(tileStack == null || tileStack.isEmpty()) continue;
                 
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
                 
-                batch.setColor(timeCycle.getBrightness(), timeCycle.getBrightness(), timeCycle.getBrightness(), 1.0f);
+                for(byte layer = 0; layer < tileStack.height(); layer++) {
 
-                tileRenderer.drawTileset(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
-                
-                batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+                    Tile stackedTile = tileStack.get(layer);
+                    if(stackedTile == null) continue;
 
+                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX, stackedTile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
+
+                }
+            
             }
+
         }
         
     }
@@ -147,7 +149,8 @@ public class Chunk {
 
     }
 
-    public void renderDepthOverlay(Camera cam, ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
+    // Render depth for the top tile
+    public void renderDepthOverlay(Camera cam, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;
@@ -173,22 +176,24 @@ public class Chunk {
                 switch(tile.level()) {
 
                     case -1:
-                        shapeRenderer.setColor(0f, 0f, 0f, 0.20f * light);
+                        batch.setColor(0f, 0f, 0f, 0.20f * light);
                         break;
 
                     case 0:
                         continue;
 
                     case 1:
-                        shapeRenderer.setColor(1f, 1f, 1f, 0.20f * light);
+                        batch.setColor(1f, 1f, 1f, 0.20f * light);
                         break;
 
                     case 2:
-                        shapeRenderer.setColor(1f, 1f, 1f, 0.40f * light);
+                        batch.setColor(1f, 1f, 1f, 0.40f * light);
                         break;
                 }
 
-                shapeRenderer.rect((globalX - cam.x) * cam.zoom, (globalY - cam.y) * cam.zoom, Constants.GRID_SIZE * cam.zoom, Constants.GRID_SIZE * cam.zoom);
+                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
+                
+                batch.setColor(1f, 1f, 1f, 1f);
             
             }
         

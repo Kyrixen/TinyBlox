@@ -76,6 +76,41 @@ public class TileRenderer {
 
     }
 
+    // Draw a single tile / texture overlay with camera offset
+    public void drawOutline(TextureID tile, int x, int y, FlipType flip, SpriteBatch batch) {
+
+        // Apply camera offset
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = Constants.GRID_SIZE * camera.zoom;
+        float renderH = Constants.GRID_SIZE * camera.zoom;
+
+        Texture tileTex = tex.getOutlineTexture(tile);
+
+        if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture outline not loaded: " + tile.toString());
+
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), flip.getFlipX(), flip.getFlipY());
+
+    }
+
+    // Draw a single tile / texture overlay with camera offset and with custom width and height
+    public void drawOutline(TextureID tile, int x, int y, float w, float h, FlipType flip, SpriteBatch batch) {
+
+        // Apply camera offset
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
+
+        Texture tileTex = tex.getOutlineTexture(tile);
+
+        if (tex == null || tex.getTexture(tile) == null) Logger.LOGGER.warn("TILE_RENDERER", "Tile texture outline not loaded: " + tile.toString());
+
+        batch.draw(tileTex, screenX, screenY, renderW, renderH, 0, 0, tileTex.getWidth(), tileTex.getHeight(), flip.getFlipX(), flip.getFlipY());
+
+    }
+
+
     // Draw one tile from a tileset
     public void drawTileset(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, FlipType flip, SpriteBatch batch) {
         
@@ -105,6 +140,40 @@ public class TileRenderer {
         float renderH = h * camera.zoom;
 
         Texture tilesetTex = tex.getTexture(tileset);
+
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
+    
+    }
+
+    // Draw one overlay from a tileset
+    public void drawTilesetOutline(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, FlipType flip, SpriteBatch batch) {
+        
+        int srcX = tileX * tileSize;
+        int srcY = tileY * tileSize;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = Constants.GRID_SIZE * camera.zoom;
+        float renderH = Constants.GRID_SIZE * camera.zoom;
+
+        Texture tilesetTex = tex.getOutlineTexture(tileset);
+
+        batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
+    
+    }
+
+    // Draw one overlay from a tileset with custom width and height
+    public void drawTilesetOutline(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, SpriteBatch batch) {
+        
+        int srcX = tileX * tileSize;
+        int srcY = tileY * tileSize;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
+
+        Texture tilesetTex = tex.getOutlineTexture(tileset);
 
         batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
     

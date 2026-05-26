@@ -124,7 +124,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(Camera camera, ShapeRenderer shapeRenderer, TimeCycle timeCycle) {
+    public void renderDepthOverlay(Camera camera, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -140,7 +140,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(camera, shapeRenderer, timeCycle);
+                c.renderDepthOverlay(camera, timeCycle, tileRenderer, batch);
     
             }
     
