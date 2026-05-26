@@ -134,7 +134,7 @@ public class Selector extends Entity {
         Tile current = chunk.getTileStack(localTileX, localTileY).top();
 
         if(current == null) return;
-        if(current.level() >= 2) return;
+        if(current.level() >= Constants.MAX_WORLD_HEIGHT) return;
         if(this.entityInventory.getCurrentStack().getItem() == Item.NONE) return;
 
         chunk.getTileStack(localTileX, localTileY).push(new Tile(entityInventory.getCurrentStack().getItem().toTileType(), (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);

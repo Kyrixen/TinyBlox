@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
@@ -26,6 +27,7 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.TileStack;
 
 public class Player extends MobEntity {
 
@@ -219,8 +221,15 @@ public class Player extends MobEntity {
     // Climb up method
     public void tryClimbUp(Terrain terrain) {
 
-        Tile current = terrain.getWorldTileStack(x / width(), y / height()).top();
+        TileStack tileStack = terrain.getWorldTileStack(x / width(), y / height());
+        if(tileStack == null) return;
+        if (this.level >= tileStack.height()) return;
+
+        Tile current = tileStack.get(this.level);
         if(current == null) return;
+        
+        if(current.level() >= Constants.MAX_WORLD_HEIGHT) return;
+        if(current.level() != this.level) return;
  
         if(!current.type().isClimbable()) return;
 
@@ -231,8 +240,15 @@ public class Player extends MobEntity {
     // Climb down method
     public void tryClimbDown(Terrain terrain) {
 
-        Tile current = terrain.getWorldTileStack(x / width(), y / height()).get((byte) (this.level - 1));
+        TileStack tileStack = terrain.getWorldTileStack(x / width(), y / height());
+        if(tileStack == null) return;
+        if(this.level - 1 < 0) return;
+
+        Tile current = tileStack.get((byte) (this.level - 1));
         if(current == null) return;
+        
+        if(current.level() <= Constants.MIN_WORLD_HEIGHT) return;
+        if(current.level() != this.level - 1) return;
  
         if(!current.type().isClimbable()) return;
 

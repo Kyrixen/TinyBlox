@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Camera;
@@ -107,7 +108,8 @@ public class Chunk {
             TileStack tileStack = this.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
 
-            if(tileStack.height() == 0) continue;
+            if(tileStack.height() < Constants.MIN_WORLD_HEIGHT) continue;
+            if(tileStack.height() >= Constants.MAX_WORLD_HEIGHT) continue;
             if(tileStack.top().type() != TileType.GRASS) continue;
 
             boolean canSpawn = true;
@@ -129,8 +131,10 @@ public class Chunk {
 
             if(!canSpawn) continue;
 
-            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.WOOD, (byte) 1));
-            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.LEAVES, (byte) 2));
+            byte baseLevel = tileStack.top().level();
+
+            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.WOOD, (byte) (baseLevel + 1)));
+            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.LEAVES, (byte) (baseLevel + 2)));
 
             for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
 
@@ -139,7 +143,7 @@ public class Chunk {
                     if(neighborX == 0 && neighborY == 0) continue;
                     if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
 
-                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).push(new Tile(TileType.LEAVES, (byte) 1));
+                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).push(new Tile(TileType.LEAVES, (byte) (baseLevel + 1)));
 
                 }
 
@@ -150,7 +154,7 @@ public class Chunk {
     }
 
     // Render depth for the top tile
-    public void renderDepthOverlay(Camera cam, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
+    public void renderDepthOverlay(Camera cam, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;
@@ -173,24 +177,16 @@ public class Chunk {
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
 
-                switch(tile.level()) {
+                int levelDiff = Math.abs(tile.level() - player.level());
+                float normalized = (float) levelDiff / (Constants.MAX_WORLD_HEIGHT - Constants.MIN_WORLD_HEIGHT);
+                
+                float alpha = normalized * 0.35f;
+                alpha = Math.min(alpha, 0.45f);             
 
-                    case -1:
-                        batch.setColor(0f, 0f, 0f, 0.20f * light);
-                        break;
-
-                    case 0:
-                        continue;
-
-                    case 1:
-                        batch.setColor(1f, 1f, 1f, 0.20f * light);
-                        break;
-
-                    case 2:
-                        batch.setColor(1f, 1f, 1f, 0.40f * light);
-                        break;
-                }
-
+                if(tile.level() > player.level()) batch.setColor(1f, 1f, 1f, alpha * light);
+                else if(tile.level() < player.level()) batch.setColor(0f, 0f, 0f, alpha * light);
+                else batch.setColor(1f, 1f, 1f, 0f);
+                
                 tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
                 
                 batch.setColor(1f, 1f, 1f, 1f);

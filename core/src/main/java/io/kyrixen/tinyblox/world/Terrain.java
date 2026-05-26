@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -124,7 +125,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(Camera camera, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
+    public void renderDepthOverlay(Camera camera, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -140,7 +141,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(camera, timeCycle, tileRenderer, batch);
+                c.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
     
             }
     

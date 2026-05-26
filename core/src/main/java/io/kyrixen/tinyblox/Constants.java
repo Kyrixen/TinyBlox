@@ -15,9 +15,12 @@ public class Constants {
     public static boolean SHOW_FPS = false;
     public static boolean VSYNC = true;
 
-    // World size
+    // World stuff
     public static final int MAP_WIDTH = 1024;
     public static final int MAP_HEIGHT = 1024;
+
+    public static final byte MAX_WORLD_HEIGHT = 16;
+    public static final byte MIN_WORLD_HEIGHT = 6;
 
     // Tile stuff
     public static final int GRID_SIZE = 16;

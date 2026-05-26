@@ -71,7 +71,7 @@ public class Engine implements Screen {
         renderer = new Renderer();
         controller = new Controller();
         tileRenderer = new TileRenderer(camera, textures);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.03f);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new Sfx();
@@ -99,19 +99,22 @@ public class Engine implements Screen {
 
         // Create player
         player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], camera, soundManager);
+        player.setLevel((byte) spawn[2]);
 
         // Add to list
         entities.add(player);
 
         // Create enemy
         Enemy enemy1 = new Enemy(Utils.generateEntityID(), spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, soundManager);
-        
+        player.setLevel((byte) spawn[2]);
+
         // Add to list
         entities.add(enemy1);
 
         // Configure enemy
         enemy1.setTarget(player);
         enemy1.setChasing(true);
+        enemy1.setLevel((byte) spawn[2]);
 
         Entity.initTextureAll(entities);
 
@@ -208,7 +211,7 @@ public class Engine implements Screen {
 
         // Entities and Terrain Depth Overlay
         batch.begin();
-        terrain.renderDepthOverlay(camera, timeCycle, tileRenderer, batch);
+        terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
         Entity.renderAll(timeCycle, tileRenderer, entities, batch);
         batch.end();
 

@@ -18,6 +18,8 @@ public class Utils {
 
         int bestTileX = centerX;
         int bestTileY = centerY;
+        byte bestLevel = 0;
+
         double bestDist = Double.MAX_VALUE;
                 
         // Iterate over all chunks
@@ -28,8 +30,8 @@ public class Utils {
                     Tile t = c.getTileStack(localX, localY).top(); 
 
                     if (t == null) continue;
-                    if(t.type() == Tile.TileType.AIR) continue;
-                    if(t.level() != 0) continue;
+                    if(t.level() < Constants.MIN_WORLD_HEIGHT) continue;
+                    if(t.level() >= Constants.MAX_WORLD_HEIGHT) continue;
                    
                     int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
                     int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;
@@ -44,6 +46,7 @@ public class Utils {
                         bestDist = dist;
                         bestTileX = globalX;
                         bestTileY = globalY;
+                        bestLevel = t.level();
                     }
             
                 }
@@ -53,7 +56,7 @@ public class Utils {
         }
 
         Logger.LOGGER.debug("WORLD", "Safe spawn found at: " + bestTileX + ", " + bestTileY);
-        return new int[]{bestTileX, bestTileY};
+        return new int[]{bestTileX, bestTileY, bestLevel + 1};
 
     }
 

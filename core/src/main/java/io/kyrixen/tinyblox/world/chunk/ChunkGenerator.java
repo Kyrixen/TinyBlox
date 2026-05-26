@@ -1,5 +1,7 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import com.badlogic.gdx.math.MathUtils;
+
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
@@ -32,36 +34,48 @@ public class ChunkGenerator {
                 int tileY = chunk.getY() * chunk.getChunkSize() + ty;
 
                 // Skip tiles outside world tile bounds
-                if (tileX < 0 || tileY < 0 ||
-                    tileX >= worldTilesX || tileY >= worldTilesY) {
-                    continue;
-                }
+                if (tileX < 0 || tileY < 0 || tileX >= worldTilesX || tileY >= worldTilesY) continue;
+                
 
                 float terrainNoise = (noise.GetNoise(tileX, tileY) + 1f) / 2f;
                 float materialNoise = (noise.GetNoise(tileX + 9999, tileY + 9999) + 1f) / 2f;
 
-                byte level;
-                if(terrainNoise < 0.55f)      level = 0;
-                else if(terrainNoise < 0.80f) level = 1;
-                else                          level = 2;
-
-
-                if(materialNoise < 0.20f) chunk.getTileStack(tx, ty).push(new Tile(TileType.WATER, (byte) 0));
-                else if(materialNoise < 0.50f) chunk.getTileStack(tx, ty).push(new Tile(TileType.DIRT, (byte) 0));
-                else chunk.getTileStack(tx, ty).push(new Tile(TileType.GRASS, (byte) 0));
-            
-                if(level >= 1) {
+                int variation = MathUtils.floor(terrainNoise * (Constants.MAX_WORLD_HEIGHT - Constants.MIN_WORLD_HEIGHT));
+                byte level = (byte) (Constants.MIN_WORLD_HEIGHT + variation);
                 
-                    if(materialNoise < 0.60f) chunk.getTileStack(tx, ty).push(new Tile(TileType.DIRT, (byte) 1));
-                    else chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 1));
-                
-                }  if(level >= 2) {
+                TileType type;
+                for(byte currentLevel = 0; currentLevel <= level; currentLevel++) {
 
-                    if(materialNoise < 0.90f) chunk.getTileStack(tx, ty).push(new Tile(TileType.STONE, (byte) 2));
-                    else chunk.getTileStack(tx, ty).push(new Tile(TileType.IRON, (byte) 2));
+                    int depthFromSurface = level - currentLevel;
+                    
+                    if(currentLevel == 0) {
+                        type = TileType.WATER;
+                    } else if(depthFromSurface == 0) {
+                        
+                        if(currentLevel >= 13) type = TileType.STONE;
+                        else type = TileType.GRASS;
+                    
+                    } else if(depthFromSurface <= 2) {
+                        type = TileType.DIRT;
+                    } else {
+                    
+                        if(materialNoise < 0.90f) type = TileType.STONE;
+                        else type = TileType.IRON;
+                    
+                    }
+
+                    chunk.getTileStack(tx, ty).push(new Tile(type, currentLevel));
 
                 }
-                
+
+                Tile topTile = chunk.getTileStack(tx, ty).top();
+                if(topTile == null) continue;
+
+                if(topTile.type() != TileType.DIRT || topTile.level() > Constants.MAX_WORLD_HEIGHT * 0.75f) continue;
+
+                chunk.getTileStack(tx, ty).pop();
+                chunk.getTileStack(tx, ty).push(new Tile(TileType.GRASS, topTile.level()));
+
             }
 
         }
