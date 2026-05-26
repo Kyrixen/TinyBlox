@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -113,6 +114,8 @@ public class Engine implements Screen {
         enemy1.setChasing(true);
 
         Entity.initTextureAll(entities);
+
+        player.getInventory().add(Item.LADDER, (byte) 36);
 
     }
 

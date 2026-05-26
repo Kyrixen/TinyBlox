@@ -24,6 +24,10 @@ public class Controller {
             if (Peripheral.keyPressed(Input.Keys.A)) player.setDirX(-1);
             if (Peripheral.keyPressed(Input.Keys.D)) player.setDirX(1);
 
+            // Climb movement input
+            if(Peripheral.keyJustPressed(Input.Keys.SPACE)) player.tryClimbUp(terrain);
+            if(Peripheral.keyJustPressed(Input.Keys.SHIFT_LEFT)) player.tryClimbDown(terrain);
+
             // Selector input logic
             if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
             if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(30, entities); }
@@ -33,7 +37,7 @@ public class Controller {
             if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
 
             // Checks for sprinting
-            if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
+            if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
 
             // Crafting debug
             if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.C)) player.tryCraftWoodenPickaxe();

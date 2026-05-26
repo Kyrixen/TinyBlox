@@ -25,6 +25,7 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.Tile;
 
 public class Player extends MobEntity {
 
@@ -214,6 +215,31 @@ public class Player extends MobEntity {
         lastSprint = System.currentTimeMillis();
     
     }
+
+    // Climb up method
+    public void tryClimbUp(Terrain terrain) {
+
+        Tile current = terrain.getWorldTileStack(x / width(), y / height()).top();
+        if(current == null) return;
+ 
+        if(!current.type().isClimbable()) return;
+
+        this.level++;
+
+    }
+
+    // Climb down method
+    public void tryClimbDown(Terrain terrain) {
+
+        Tile current = terrain.getWorldTileStack(x / width(), y / height()).get((byte) (this.level - 1));
+        if(current == null) return;
+ 
+        if(!current.type().isClimbable()) return;
+
+        this.level--;
+
+    }
+
 
     // Getters
 

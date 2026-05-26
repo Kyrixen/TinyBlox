@@ -56,9 +56,13 @@ public class TerrainCollision {
                 // Collision overlap check
                 if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) {
 
-                    // Walkable only if not air(void) and exactly one level below entity
-                    boolean walkable = tile.type() != Tile.TileType.AIR && tile.level() == e.level() - 1;
-                    if (!walkable) return false;
+                    // Walkable only if walkable and exactly one level below entity
+                    boolean below = tile.level() == e.level() - 1;
+                    boolean climbable = tile.type().isClimbable() && e.level() == tile.level();
+
+                    boolean blocked = !below && !climbable;
+
+                    if(blocked) return false;
                 
                 }
             

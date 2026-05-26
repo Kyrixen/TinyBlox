@@ -108,7 +108,7 @@ The world uses lightweight layered terrain instead of voxel rendering, focusing 
 * [x] Camera follow
 * [x] Entity system
 * [x] Day/night cycle
-* [ ] Ladder
+* [x] Ladder (partial)
 * [ ] RNG improvements
 * [ ] Stats system
 * [ ] Dialogues
@@ -160,7 +160,9 @@ cd TinyBloxJava
 | `S`                  | Move Down                  |
 | `D`                  | Move Right                 |
 | `I`                  | Show / Hide Inventory      |
-| `Left Shift`         | Sprint                     |
+| `Left Control`       | Sprint                     |
+| `Space`              | Climb Up                   |
+| `Left Shift`         | Climb Down                 |
 | `Left Mouse Button`  | Destroy Block / Hit Entity |
 | `Right Mouse Button` | Place Block                |
 | `Scroll Up`          | Previous Inventory Slot    |

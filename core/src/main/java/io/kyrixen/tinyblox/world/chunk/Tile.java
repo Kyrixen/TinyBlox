@@ -8,23 +8,26 @@ public class Tile {
     // Tile type enum
     public static enum TileType {
     
-        AIR(9999999f),
-        LEAVES(0.10f),
-        GRASS(0.20f),
-        DIRT(0.35f),
-        WATER(9999999f),
-        STONE(0.75f),
-        IRON(1.25f),
-        WOOD(0.50f),
-        LADDER(0.45f);
+        AIR(9999999f, false),
+        LEAVES(0.10f, false),
+        GRASS(0.20f, false),
+        DIRT(0.35f, false),
+        WATER(9999999f, false),
+        STONE(0.75f, false),
+        IRON(1.25f, false),
+        WOOD(0.50f, false),
+        LADDER(0.45f, true);
 
         private final float mining_time;
+        private final boolean climbable;
 
-        TileType(float mining_time) {
+        TileType(float mining_time, boolean climbable) {
             this.mining_time = mining_time;
+            this.climbable = climbable;
         }
 
         public float getMiningTime() { return this.mining_time; }
+        public boolean isClimbable() { return this.climbable; }
     
     }
 
