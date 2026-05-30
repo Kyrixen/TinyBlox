@@ -30,13 +30,13 @@ public class Terrain {
     private final int seed;
 
     // Renderer
-    private TileRenderer tileRenderer;
+    private final TileRenderer tileRenderer;
 
     // Noise generator
-    private FastNoiseLite noise;
+    private final FastNoiseLite noise;
 
     // For storing chunks
-    private HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
+    private final HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
     public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {

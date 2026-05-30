@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.graphics;
+package io.kyrixen.tinyblox.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,14 +6,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 
-public class Renderer {
+public class RendererUtils {
 
-    public void clear() {
+    public static void clear() {
         ScreenUtils.clear(Color.DARK_GRAY);
     }
 
     // FPS Limiter method (empty because handled via libGDX itself)
-    public void limitFPS() {}
+    public static void limitFPS() {}
 
     // Update methods //
 

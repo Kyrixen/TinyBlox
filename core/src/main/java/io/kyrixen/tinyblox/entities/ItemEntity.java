@@ -25,7 +25,7 @@ public class ItemEntity extends Entity {
     // Player
     private final MobEntity mob;
 
-    Sfx soundManager;
+    private final Sfx soundManager;
 
     public ItemEntity(int id, int x, int y, Sfx soundManager, Item item, MobEntity mob) {
 

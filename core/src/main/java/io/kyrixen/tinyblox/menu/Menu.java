@@ -23,7 +23,7 @@ public class Menu implements Screen {
 
     public boolean exit = false;
     
-    private Main main;
+    private final Main main;
 
     private UISounds uiSoundManager;
 
@@ -32,8 +32,8 @@ public class Menu implements Screen {
 
     private SpriteBatch batch;
 
-    private TextureManager tex;
-    private UIRenderer uiRenderer;
+    private final TextureManager tex;
+    private final UIRenderer uiRenderer;
 
     private static final TextureID brownButton = new TextureID("tinyblox", TextureType.UI,"brown_button");
 

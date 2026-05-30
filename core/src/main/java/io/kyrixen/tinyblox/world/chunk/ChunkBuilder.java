@@ -5,7 +5,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ChunkBuilder {
 
-    private byte size;
+    private final byte size;
 
     private Tile[][] buildedChunk;
 
@@ -42,13 +42,5 @@ public class ChunkBuilder {
     }
 
     public Tile[][] build() { return buildedChunk; }
-
-    public void cleanup() {
-
-        buildedChunk = new Tile[size][size];
-
-        this.size = 0;
-
-    }
 
 }

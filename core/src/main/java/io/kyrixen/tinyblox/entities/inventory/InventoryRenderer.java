@@ -16,11 +16,11 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 public class InventoryRenderer {
     
     // Inventory to render
-    private Inventory inventoryRender;
+    private final Inventory inventoryRender;
 
     // Font specific vars
     protected BitmapFont font;
-    protected GlyphLayout layout = new GlyphLayout();
+    protected final GlyphLayout layout = new GlyphLayout();
 
     // UI Spacer vars
     private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;

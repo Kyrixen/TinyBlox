@@ -21,7 +21,7 @@ public class EnemySpawner {
     private float spawnTimer = 8.5f;
     private long lastSpawn = 0L;
 
-    private Sfx soundManager;
+    private final Sfx soundManager;
 
     public EnemySpawner(Sfx soundManager) {
         this.soundManager = soundManager;

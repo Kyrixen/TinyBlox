@@ -10,7 +10,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 public class UIRenderer {
 
     // Texture Manager var
-    private TextureManager tex;
+    private final TextureManager tex;
 
     // Background textures
     private static final TextureID menuBackgroundImage = new TextureID("tinyblox", TextureType.BACKGROUND, "menu_background");

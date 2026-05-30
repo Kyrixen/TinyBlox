@@ -34,8 +34,8 @@ public class TileRenderer {
     }
 
 
-    private Camera camera;
-    private TextureManager tex;
+    private final Camera camera;
+    private final TextureManager tex;
 
     public TileRenderer(Camera camera, TextureManager textureManager) {
         this.camera = camera;

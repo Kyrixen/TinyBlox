@@ -160,6 +160,7 @@ cd TinyBloxJava
 | `S`                  | Move Down                  |
 | `D`                  | Move Right                 |
 | `I`                  | Show / Hide Inventory      |
+| `Q`                  | Drop Item                  |
 | `Left Control`       | Sprint                     |
 | `Space`              | Climb Up                   |
 | `Left Shift`         | Climb Down                 |

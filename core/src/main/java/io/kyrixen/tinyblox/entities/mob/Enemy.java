@@ -1,7 +1,6 @@
 package io.kyrixen.tinyblox.entities.mob;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -17,8 +16,6 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 
 public class Enemy extends MobEntity {
-
-    final Random random = new Random();
 
     // What entity it targets (99% it is player but why not :D)
     private MobEntity target;
@@ -131,7 +128,7 @@ public class Enemy extends MobEntity {
     // Wander logic
     private void wanderAround() {
 
-        int direction = random.nextInt(4) + 1;
+        int direction = MathUtils.random(1, 4);
 
         switch (direction) {
             case 1:

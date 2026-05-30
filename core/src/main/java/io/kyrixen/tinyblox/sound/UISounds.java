@@ -12,7 +12,7 @@ public class UISounds {
     public Sound click;
     public Sound options;
     
-    ArrayList<Sound> uis = new ArrayList<>();
+    private final ArrayList<Sound> uis = new ArrayList<>();
 
     public UISounds(){
 

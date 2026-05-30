@@ -16,8 +16,8 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     protected long lastDamage = 0L;
 
     // Inventory of the entity
-    Inventory inventory;
-    byte hotbarSlotCount = 3;
+    protected Inventory inventory;
+    protected byte hotbarSlotCount = 3;
 
     // Stats //
 
@@ -35,7 +35,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     protected boolean autoRecover = true;
 
     // Sound manager
-    Sfx soundManager;
+    protected final Sfx soundManager;
 
     public MobEntity(int id, int x, int y, Sfx soundManager) {
         

@@ -25,10 +25,10 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 public class Selector extends Entity {
 
     // Entity using the selector
-    private MobEntity mob;
+    private final MobEntity mob;
 
     // Entitys inventory
-    private Inventory mobEntityInventory;
+    private final Inventory mobEntityInventory;
 
     // For sound
     private final Sfx sfxManager;
@@ -66,10 +66,6 @@ public class Selector extends Entity {
 
         int tileX = (int)(mouseWorldX / Constants.GRID_SIZE);
         int tileY = (int)(mouseWorldY / Constants.GRID_SIZE);
-
-        // Keep selector same size as player
-        this.width = this.mob.width;
-        this.height = this.mob.height;
 
         Vector2 distance = new Vector2(tileX - mob.x / Constants.GRID_SIZE, tileY - mob.y / Constants.GRID_SIZE);
 

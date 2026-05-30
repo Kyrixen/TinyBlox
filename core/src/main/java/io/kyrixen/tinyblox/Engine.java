@@ -16,10 +16,10 @@ import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
-import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
@@ -40,19 +40,18 @@ public class Engine implements Screen {
     private ArrayList<Entity> entities = new ArrayList<>();
 
     // Module components
-    private Renderer renderer;
     private Controller controller;
-    private TextureManager textures;
+    private final TextureManager textures;
     private TileRenderer tileRenderer;
     private Camera camera;
     private Terrain terrain;
     private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
-    public Sfx soundManager;
+    private Sfx soundManager;
     private EnemySpawner enemySpawner;
 
-    SpriteBatch batch;
-    ShapeRenderer shape;
+    private SpriteBatch batch;
+    private ShapeRenderer shape;
 
 
     public Engine(TextureManager tex) {
@@ -68,7 +67,6 @@ public class Engine implements Screen {
 
         // Module components init
         camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
-        renderer = new Renderer();
         controller = new Controller();
         tileRenderer = new TileRenderer(camera, textures);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
@@ -131,7 +129,7 @@ public class Engine implements Screen {
         update(delta);
         render();
 
-        renderer.limitFPS();
+        RendererUtils.limitFPS();
 
     }
 
@@ -196,8 +194,8 @@ public class Engine implements Screen {
 
     private void render() {
 
-        // Clear window
-        renderer.clear();
+        // Clear window //
+
 
         // Lower World
         batch.begin();

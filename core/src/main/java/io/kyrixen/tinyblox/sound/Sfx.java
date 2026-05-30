@@ -16,7 +16,7 @@ public class Sfx {
     public Sound destroy;
     public Sound place;
 
-    ArrayList<Sound> sfxs = new ArrayList<>();
+    private final ArrayList<Sound> sfxs = new ArrayList<>();
 
     public Sfx(){
 

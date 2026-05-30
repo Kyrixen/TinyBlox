@@ -11,7 +11,7 @@ import io.kyrixen.tinyblox.Constants;
 public class FPSCounter {
 
     protected BitmapFont fpsFont;
-    protected GlyphLayout layout = new GlyphLayout();
+    protected final GlyphLayout layout = new GlyphLayout();
 
     public FPSCounter() {
         generateFont("fonts/editundo.ttf", 40);

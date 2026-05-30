@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
-import io.kyrixen.tinyblox.graphics.Renderer;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
@@ -21,12 +20,13 @@ import io.kyrixen.tinyblox.menu.ui.Slider;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RendererUtils;
 
 public class Settings implements Screen {
 
     public boolean exit = false;
     
-    private Main main;
+    private final Main main;
 
     private Button exitButton;
     private ToggleButton fpsButton;
@@ -39,8 +39,8 @@ public class Settings implements Screen {
 
     private SpriteBatch batch;
 
-    private TextureManager tex;
-    private UIRenderer uiRenderer;
+    private final TextureManager tex;
+    private final UIRenderer uiRenderer;
 
     private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
     private static final TextureID whiteSlider = new TextureID("tinyblox", TextureType.UI,"white_slider");
@@ -112,9 +112,9 @@ public class Settings implements Screen {
 
         if(exitButton.pressed()) main.setScreen(new Menu(main, tex));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
-        if(vsyncButton.pressed()) { Renderer.updateVsync(!Constants.VSYNC); }
+        if(vsyncButton.pressed()) { RendererUtils.updateVsync(!Constants.VSYNC); }
 
-        if(fpsSlider.pressed()) { Renderer.updateFPS(fpsSlider.getValue()); }
+        if(fpsSlider.pressed()) { RendererUtils.updateFPS(fpsSlider.getValue()); }
         if(musicSlider.pressed()) { Constants.VOLUME = musicSlider.getValue(); }
 
     }

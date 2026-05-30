@@ -8,7 +8,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 // Tile stack (used for storing)
 public class TileStack  {
 
-    private List<Tile> tiles;
+    private final List<Tile> tiles;
 
     public TileStack(List<Tile> tiles) {
         this.tiles = tiles;

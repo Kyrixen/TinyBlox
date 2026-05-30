@@ -31,8 +31,8 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class Player extends MobEntity {
 
-    private Selector selector;
-    private Camera camera;
+    private final Selector selector;
+    private final Camera camera;
 
     private InventoryRenderer inventoryRenderer;
 

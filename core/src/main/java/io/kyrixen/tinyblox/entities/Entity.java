@@ -39,14 +39,14 @@ public class Entity {
     protected int y;
 
     // Dimensions
-    protected int width;
-    protected int height;
+    protected final int width;
+    protected final int height;
 
     // Height
     protected byte level = 1;
 
     // Identifier
-    protected int id;
+    protected final int id;
     
     // Directions
     protected int dirX = 0;
