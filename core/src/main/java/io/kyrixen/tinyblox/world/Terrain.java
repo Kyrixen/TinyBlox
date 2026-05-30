@@ -101,7 +101,7 @@ public class Terrain {
     }
 
     // Render lower visible chunks
-    public void renderLower(Player player, SpriteBatch batch) {
+    public void renderLower(Player player, TimeCycle timeCycle, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -117,7 +117,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderLower(player, tileRenderer, batch);
+                c.renderLower(player, tileRenderer, timeCycle, batch);
 
             }
 
@@ -126,7 +126,7 @@ public class Terrain {
     }
 
     // Render above visible chunks
-    public void renderAbove(Player player, SpriteBatch batch) {
+    public void renderAbove(Player player, TimeCycle timeCycle, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -152,7 +152,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderAbove(player, tileAbovePlayer, tileRenderer, batch);
+                c.renderAbove(player, tileAbovePlayer, tileRenderer, timeCycle, batch);
 
             }
 

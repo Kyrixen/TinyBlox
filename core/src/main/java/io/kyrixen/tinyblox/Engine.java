@@ -92,7 +92,7 @@ public class Engine implements Screen {
         terrain.init();
 
         // Time init
-        timeCycle.setDayTime(DayTime.DAY);
+        timeCycle.setDayTime(DayTime.NIGHT);
 
         // Spawn cords
         int[] spawn = Utils.spawnNearCenter();
@@ -201,7 +201,7 @@ public class Engine implements Screen {
 
         // Lower World
         batch.begin();
-        terrain.renderLower(player, batch);
+        terrain.renderLower(player, timeCycle, batch);
         batch.end();
 
         // World highlights
@@ -216,7 +216,7 @@ public class Engine implements Screen {
 
         // Above Terrain and Terrain Depth Overlay
         batch.begin();
-        terrain.renderAbove(player, batch);
+        terrain.renderAbove(player, timeCycle, batch);
         terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
         batch.end();
 
