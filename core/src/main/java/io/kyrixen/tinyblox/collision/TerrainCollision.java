@@ -5,7 +5,6 @@ import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class TerrainCollision {
@@ -59,11 +58,11 @@ public class TerrainCollision {
                 // Collision overlap check
                 if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) {
 
-                    // Walkable only if there is floor below and no solid tile at entity level
-                    boolean below = floor != null && floor.type() != TileType.AIR && floor.type() != TileType.VOID;
+                    // Movement requires supporting terrain or climbable tile
+                    boolean ground = floor != null && floor.type().isTerrain();
                     boolean climbable = entityLevel != null && entityLevel.type().isClimbable();
 
-                    boolean blocked = (!below && !climbable) || (entityLevel != null && !entityLevel.type().isWalkable() && !climbable);
+                    boolean blocked = (!ground && !climbable) || (entityLevel != null && !entityLevel.type().isPassable() && !climbable);
 
                     if(blocked) return false;
                 

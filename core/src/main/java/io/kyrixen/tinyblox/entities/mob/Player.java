@@ -231,7 +231,7 @@ public class Player extends MobEntity {
         if(!current.type().isClimbable()) return;
 
         Tile above = tileStack.get((byte)(this.level + 1));
-        if(above != null && !above.type().isWalkable() && !above.type().isClimbable()) return;
+        if(above != null && !above.type().isPassable() && !above.type().isClimbable()) return;
 
         this.level++;
 

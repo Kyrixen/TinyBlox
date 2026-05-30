@@ -21,41 +21,44 @@ public class Tile {
 
         private final float mining_time;
         private final boolean climbable;
-        private final boolean walkable;
+        private final boolean passable;
         private final boolean terrain;
 
-        TileType(float mining_time, boolean walkable, boolean climbable, boolean terrain) {
+        TileType(float mining_time, boolean passable, boolean climbable, boolean terrain) {
             this.mining_time = mining_time;
-            this.walkable = walkable;
+            this.passable = passable;
             this.climbable = climbable;
             this.terrain = terrain;
         }
 
         public float getMiningTime() { return this.mining_time; }
+        
         public boolean isClimbable() { return this.climbable; }
-        public boolean isWalkable() { return this.walkable; }
-        public boolean isTerrainish() { return this.terrain; }
+        public boolean isPassable() { return this.passable; }
+        public boolean isTerrain() { return this.terrain; }
+        
+        public boolean isEmpty() { return this == TileType.AIR; }
     
     }
 
     // Texture atlas coords
-    int tileX, tileY;
+    private final int tileX, tileY;
 
     // Tile data
-    TileType type;
+    private final TileType type;
 
     // Terrain height
-    byte level;
+    private final byte level;
 
     // Constructs tile
-    public Tile(TileType type, byte height) {
+    public Tile(TileType type, byte level) {
 
         this.type = type;
 
         this.tileX = getTileX(type);
         this.tileY = getTileY(type);
         
-        this.level = height;
+        this.level = level;
 
     }
 

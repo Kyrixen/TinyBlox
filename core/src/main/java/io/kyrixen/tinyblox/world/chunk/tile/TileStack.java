@@ -36,10 +36,7 @@ public class TileStack  {
         for(int i = tiles.size() - 1; i >= 0; i--) {
 
             Tile tile = tiles.get(i);
-
-            if(tile == null) continue;
-            if(tile.type() == TileType.VOID) continue;
-            if(tile.type() == TileType.AIR) continue;
+            if(!isTerrain(tile)) continue;
 
             return tile;
 
@@ -54,10 +51,7 @@ public class TileStack  {
         for(int i = 0; i < tiles.size(); i++) {
 
             Tile tile = tiles.get(i);
-
-            if(tile == null) continue;
-            if(tile.type() == TileType.VOID) continue;
-            if(tile.type() == TileType.AIR) continue;
+            if(!isTerrain(tile)) continue;
 
             return tile;
 
@@ -67,30 +61,7 @@ public class TileStack  {
 
     }
 
-    @Deprecated
-    public void push(Tile tile) {
-        if(getAtLevel(tile.level()) != null) return;
-
-        for(int i = 0; i < tiles.size(); i++) {
-            
-            if(this.tiles.get(i).level() < tile.level()) continue;
-            
-            this.tiles.add(i, tile);
-            
-            return;
-        
-        }
-
-        this.tiles.add(tile);
-    }
-
-    @Deprecated
-    public void pop() {
-        if(this.isEmpty()) return;
-        this.tiles.remove(tiles.size() - 1);
-    }
-
-    public void popAtLayer(byte level) {
+    public void removeAtLayer(byte level) {
 
         if(level < 0 || level >= this.tiles.size()) return;
 
@@ -108,10 +79,10 @@ public class TileStack  {
 
     }
 
-    public Tile get(byte height) {
+    public Tile get(byte level) {
 
-        if(height < 0 || height >= tiles.size()) return null;
-        return tiles.get(height);
+        if(level < 0 || level >= tiles.size()) return null;
+        return tiles.get(level);
 
     }
 
@@ -122,7 +93,7 @@ public class TileStack  {
             Tile tile = tiles.get(i);
 
             if(tile == null) continue;
-            if(!tile.type().isTerrainish()) continue;
+            if(!tile.type().isTerrain()) continue;
 
             return tile;
 
@@ -132,23 +103,19 @@ public class TileStack  {
 
     }
 
-    @Deprecated
-    public Tile getAtLevel(byte level) {
-        for(Tile tile : tiles) { if(tile == null) continue; if(tile.level() == level) return tile; }
-        return null;
-    }
-
     public boolean isEmpty() {
 
-        for(Tile tile : tiles) {
+        for(Tile tile : tiles) { if(!isTerrain(tile)) continue; return false; }
+        return true;
 
-            if(tile == null) continue;
-            if(tile.type() == TileType.VOID) continue;
-            if(tile.type() == TileType.AIR) continue;
+    }
 
-            return false;
+    // Helper method
+    private boolean isTerrain(Tile tile) {
 
-        }
+        if(tile == null) return false;
+        if(tile.type() == TileType.VOID) return false;
+        if(tile.type() == TileType.AIR) return false;
 
         return true;
 
