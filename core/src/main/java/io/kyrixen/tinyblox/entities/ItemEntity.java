@@ -52,8 +52,8 @@ public class ItemEntity extends Entity {
 
         floatOffsetY += dirY * 10f * deltaTime;
         floatOffsetX += dirX * 1f * deltaTime;
-        if (Math.abs(floatOffsetY) > 3f) dirY = dirY  * -1;
-        if (Math.abs(floatOffsetX) > 2f) dirX = dirX  * -1;
+        if(Math.abs(floatOffsetY) > 3f) dirY = dirY  * -1;
+        if(Math.abs(floatOffsetX) > 2f) dirX = dirX  * -1;
         
         float itemCenterX = x + width / 2f;
         float itemCenterY = y + height / 2f;
@@ -62,7 +62,7 @@ public class ItemEntity extends Entity {
 
         float dx = mobCenterX - itemCenterX;
         float dy = mobCenterY - itemCenterY;
-        float distance = (float)Math.sqrt(dx * dx + dy * dy);
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
         if(distance <= 1f || distance > 64f) return;
 

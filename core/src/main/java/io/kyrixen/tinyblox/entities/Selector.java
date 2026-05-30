@@ -11,6 +11,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -28,7 +29,7 @@ public class Selector extends Entity {
     private MobEntity mob;
 
     // Entitys inventory
-    private Inventory entityInventory;
+    private Inventory mobEntityInventory;
 
     // For sound
     private final Sfx sfxManager;
@@ -52,7 +53,7 @@ public class Selector extends Entity {
 
         // Initialize the selector with the given mob
         this.mob = mob;
-        this.entityInventory = mob.getInventory();
+        this.mobEntityInventory = mob.getInventory();
         this.sfxManager = sfxManager;
 
         this.lastPlace = System.currentTimeMillis();
@@ -116,7 +117,7 @@ public class Selector extends Entity {
         MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
         if(e != null) return;
 
-        if(!entityInventory.currentItem().canPlace()) return;
+        if(!mobEntityInventory.currentItem().canPlace()) return;
 
         int tileX = this.x / Constants.GRID_SIZE;
         int tileY = this.y / Constants.GRID_SIZE;
@@ -146,13 +147,13 @@ public class Selector extends Entity {
         }
 
         if(placeLevel >= Constants.MAX_WORLD_HEIGHT) return;
-        if(this.entityInventory.getCurrentStack().isEmpty()) return;
+        if(this.mobEntityInventory.getCurrentStack().isEmpty()) return;
 
-        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.entityInventory.getCurrentStack().getItem().toTileType(), placeLevel), placeLevel);
+        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().toTileType(), placeLevel), placeLevel);
         sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
 
-        entityInventory.getCurrentStack().remove((byte) 1);
-        Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
+        mobEntityInventory.getCurrentStack().remove((byte) 1);
+        Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.mobEntityInventory.toString());
 
         this.lastPlace = System.currentTimeMillis();
 
@@ -195,7 +196,7 @@ public class Selector extends Entity {
         
         }
         
-        miningProgress += deltaTime * entityInventory.currentItem().getMiningSpeed();
+        miningProgress += deltaTime * mobEntityInventory.currentItem().getMiningSpeed();
         
         if(miningProgress < current.type().getMiningTime()) return;
 
@@ -206,6 +207,20 @@ public class Selector extends Entity {
         entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;
+
+    }
+    
+    // Drop one item from MobEntity inventory
+    public void dropItem(ArrayList<Entity> entities) {
+
+        ItemStack currenStack = mobEntityInventory.getCurrentStack();
+        if(currenStack == null) return;
+        if(currenStack.isEmpty()) return;
+
+        ItemEntity itemEntity = new ItemEntity(Utils.generateEntityID(), this.x() + MathUtils.random(-3, 3), this.y() + MathUtils.random(-3, 3), sfxManager, currenStack.getItem(), mob);
+        entities.add(itemEntity);
+
+        currenStack.remove((byte) 1);
 
     }
 

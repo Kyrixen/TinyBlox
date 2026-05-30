@@ -35,6 +35,7 @@ public class Controller {
             // Inventory input logic
             player.checkInventoryScrolling(Peripheral.mouseScroll());
             if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
+            if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(entities);
 
             // Checks for sprinting
             if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
