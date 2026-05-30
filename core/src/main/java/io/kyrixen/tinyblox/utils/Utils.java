@@ -11,7 +11,7 @@ public class Utils {
     private static int LAST_ENTITY_ID = 0;
 
     // Finds a safe spawn near the center using only chunks
-    public static int[] spawnNearCenter() {
+    public static int[] spawnNearCenter(Terrain terrain) {
 
         int centerX = (Constants.MAP_WIDTH * Constants.GRID_SIZE) / 2;
         int centerY = (Constants.MAP_HEIGHT * Constants.GRID_SIZE) / 2;
@@ -23,7 +23,7 @@ public class Utils {
         double bestDist = Double.MAX_VALUE;
                 
         // Iterate over all chunks
-        for (Chunk c : Terrain.chunks.values()) {
+        for (Chunk c : terrain.getChunks().values()) {
             for (byte localX = 0; localX < c.getChunkSize(); localX++) {
                 for (byte localY = 0; localY < c.getChunkSize(); localY++) {
 

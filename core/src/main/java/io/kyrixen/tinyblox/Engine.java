@@ -92,10 +92,10 @@ public class Engine implements Screen {
         terrain.init();
 
         // Time init
-        timeCycle.setDayTime(DayTime.NIGHT);
+        timeCycle.setDayTime(DayTime.DAY);
 
         // Spawn cords
-        int[] spawn = Utils.spawnNearCenter();
+        int[] spawn = Utils.spawnNearCenter(terrain);
 
         // Create player
         player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], camera, soundManager);

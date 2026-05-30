@@ -5,30 +5,32 @@ import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class TileCollision {
     
-    // Tile collision
-    public static Tile blockCollision(Entity e){
+    // Entity Tile collision
+    public static Tile getEntityTile(Entity e, Terrain terrain) {
 
-        for(Chunk c : Terrain.chunks.values()){
-            for (byte tx = 0; tx < c.getChunkSize(); tx++) {
-                for (byte ty = 0; ty < c.getChunkSize(); ty++) {
+        int globalTileX = (int) (e.x() + e.width() / 2f) / Constants.GRID_SIZE;
+        int globalTileY = (int) (e.y() + e.height() / 2f) / Constants.GRID_SIZE;
 
-                    Tile t = c.getTileStack(tx, ty).top();
-                    if(t == null) continue;
+        short entityChunkX = (short) (globalTileX / terrain.size);
+        short entityChunkY = (short) (globalTileY / terrain.size);
 
-                    int globalX = (c.getX() * c.getChunkSize() + tx) * Constants.GRID_SIZE;
-                    int globalY = (c.getY() * c.getChunkSize() + ty) * Constants.GRID_SIZE;
-                    
-                    if(e.x() < globalX + Constants.GRID_SIZE && e.x() + e.width() > globalX && e.y() < globalY + Constants.GRID_SIZE && e.y() + e.height() > globalY) return t;
-                
-                }
-            }
+        Chunk entityChunk = terrain.getChunk(entityChunkX, entityChunkY);
+        if(entityChunk == null) return null;
 
-        }
+        byte localTileX = (byte) (globalTileX % entityChunk.getChunkSize());
+        byte localTileY = (byte) (globalTileY % entityChunk.getChunkSize());
 
-        return null;
+        TileStack entityStack = entityChunk.getTileStack(localTileX, localTileY);
+        if(entityStack == null) return null;
+
+        Tile entityTile = entityStack.get(e.level());
+        if(entityTile == null) return null;
+
+        return entityTile;
 
     }
 

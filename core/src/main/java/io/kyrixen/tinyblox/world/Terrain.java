@@ -23,11 +23,11 @@ public class Terrain {
     public final byte size;
     
     // Dimensions
-    private int w;
-    private int h;
+    private final int w;
+    private final int h;
 
     // Seed
-    public static int seed;
+    private final int seed;
 
     // Renderer
     private TileRenderer tileRenderer;
@@ -36,14 +36,14 @@ public class Terrain {
     private FastNoiseLite noise;
 
     // For storing chunks
-    public static HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
+    private HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
 
     // Constructs terrain
     public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
 
         this.size = Constants.CHUNK_SIZE;
 
-        Terrain.seed = seed;
+        this.seed = seed;
         
         this.w = w;
         this.h = h;
@@ -185,6 +185,16 @@ public class Terrain {
     
         }
     
+    }
+
+    // Get chunk map
+    public HashMap<ChunkPos, Chunk> getChunks() {
+        return this.chunks;
+    }
+
+    // Get seed
+    public int getSeed() {
+        return this.seed;
     }
 
     // Find chunk if doesnt exist create chunk
