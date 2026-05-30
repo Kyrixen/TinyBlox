@@ -37,17 +37,10 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      # Upload desktop runnable jar
-      - name: Upload artifact JAR
+      # Upload runnable artifact jar
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: tinyblox-jar
           path: lwjgl3/build/libs/*.jar
-      
-      # Upload distributions
-      - name: Upload game distributions
-        uses: actions/upload-artifact@v4
-        with:
-          name: tinyblox-distributions
-          path: lwjgl3/build/distributions/*
           
