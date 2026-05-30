@@ -12,9 +12,10 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
-import io.kyrixen.tinyblox.world.chunk.Tile;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer;
-import io.kyrixen.tinyblox.world.chunk.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class Terrain {
 
@@ -99,8 +100,8 @@ public class Terrain {
 
     }
 
-    // Render visible chunks
-    public void render(SpriteBatch batch, TimeCycle timeCycle) {
+    // Render lower visible chunks
+    public void renderLower(Player player, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -116,13 +117,50 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.render(tileRenderer, batch, timeCycle);
+                c.renderLower(player, tileRenderer, batch);
 
             }
 
         }
 
     }
+
+    // Render above visible chunks
+    public void renderAbove(Player player, SpriteBatch batch) {
+        
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
+        
+        
+        boolean tileAbovePlayer = false;
+
+        TileStack playerTileStack = this.getWorldTileStack(player.x() / Constants.GRID_SIZE, player.y() / Constants.GRID_SIZE);
+        if(playerTileStack != null) {
+            Tile above = playerTileStack.get((byte) (player.level() + 1));
+            tileAbovePlayer = above != null && above.type() != TileType.AIR;
+        }
+
+
+        for(short cx = 0; cx < chunkCountX; cx++){
+
+            for(short cy = 0; cy < chunkCountY; cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+
+                if (c == null) continue;
+
+                // If not visible dont render
+                if(!c.rendered) continue;
+
+                c.renderAbove(player, tileAbovePlayer, tileRenderer, batch);
+
+            }
+
+        }
+
+    }
+
+    
 
     // Render overlay for visible chunks
     public void renderDepthOverlay(Camera camera, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {

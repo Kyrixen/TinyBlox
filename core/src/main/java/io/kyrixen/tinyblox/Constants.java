@@ -29,6 +29,7 @@ public class Constants {
     // Rendering stuff
     public static final byte RENDER_DISTANCE = 3;
     public static final byte BUFFER = 2;
+    public static final byte ROOF_REVEAL_RADIUS = 3;
 
     // Version
     public static final String VERSION = "dev_pre-8";

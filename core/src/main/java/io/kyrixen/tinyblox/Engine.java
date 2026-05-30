@@ -26,7 +26,7 @@ import io.kyrixen.tinyblox.world.EnemySpawner;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 
 public class Engine implements Screen {
 
@@ -199,9 +199,9 @@ public class Engine implements Screen {
         // Clear window
         renderer.clear();
 
-        // World
+        // Lower World
         batch.begin();
-        terrain.render(batch, timeCycle);
+        terrain.renderLower(player, batch);
         batch.end();
 
         // World highlights
@@ -209,10 +209,15 @@ public class Engine implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 
-        // Entities and Terrain Depth Overlay
+        // Entities
         batch.begin();
-        terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
         Entity.renderAll(timeCycle, tileRenderer, entities, batch);
+        batch.end();
+
+        // Above Terrain and Terrain Depth Overlay
+        batch.begin();
+        terrain.renderAbove(player, batch);
+        terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
         batch.end();
 
         shape.begin(ShapeType.Line);

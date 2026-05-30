@@ -26,8 +26,8 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.chunk.Tile;
-import io.kyrixen.tinyblox.world.chunk.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class Player extends MobEntity {
 
@@ -221,17 +221,17 @@ public class Player extends MobEntity {
     // Climb up method
     public void tryClimbUp(Terrain terrain) {
 
-        TileStack tileStack = terrain.getWorldTileStack(x / width(), y / height());
+        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
         if(tileStack == null) return;
-        if (this.level >= tileStack.height()) return;
 
         Tile current = tileStack.get(this.level);
         if(current == null) return;
-        
-        if(current.level() >= Constants.MAX_WORLD_HEIGHT) return;
-        if(current.level() != this.level) return;
- 
+
+        if(this.level + 1 > Constants.MAX_WORLD_HEIGHT) return;
         if(!current.type().isClimbable()) return;
+
+        Tile above = tileStack.get((byte)(this.level + 1));
+        if(above != null && !above.type().isWalkable() && !above.type().isClimbable()) return;
 
         this.level++;
 
@@ -240,17 +240,16 @@ public class Player extends MobEntity {
     // Climb down method
     public void tryClimbDown(Terrain terrain) {
 
-        TileStack tileStack = terrain.getWorldTileStack(x / width(), y / height());
+        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
         if(tileStack == null) return;
-        if(this.level - 1 < 0) return;
 
-        Tile current = tileStack.get((byte) (this.level - 1));
-        if(current == null) return;
-        
-        if(current.level() <= Constants.MIN_WORLD_HEIGHT) return;
-        if(current.level() != this.level - 1) return;
- 
-        if(!current.type().isClimbable()) return;
+        if(this.level - 1 < Constants.MIN_WORLD_HEIGHT) return;
+
+        Tile current = tileStack.get(this.level);
+        Tile below = tileStack.get((byte) (this.level - 1));
+
+        boolean canClimb =  (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable());
+        if(!canClimb) return;
 
         this.level--;
 

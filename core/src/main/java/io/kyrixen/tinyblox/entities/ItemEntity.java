@@ -10,8 +10,8 @@ import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 public class ItemEntity extends Entity {
 

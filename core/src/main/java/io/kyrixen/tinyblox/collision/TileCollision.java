@@ -4,7 +4,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 
 public class TileCollision {
     

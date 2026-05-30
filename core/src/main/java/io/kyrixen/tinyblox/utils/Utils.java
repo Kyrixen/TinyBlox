@@ -3,7 +3,7 @@ package io.kyrixen.tinyblox.utils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 
 public class Utils {
 
@@ -27,11 +27,11 @@ public class Utils {
             for (byte localX = 0; localX < c.getChunkSize(); localX++) {
                 for (byte localY = 0; localY < c.getChunkSize(); localY++) {
 
-                    Tile t = c.getTileStack(localX, localY).top(); 
+                    Tile t = c.getTileStack(localX, localY).getTopTerrain();
 
                     if (t == null) continue;
                     if(t.level() < Constants.MIN_WORLD_HEIGHT) continue;
-                    if(t.level() >= Constants.MAX_WORLD_HEIGHT) continue;
+                    if(t.level() + 1 >= Constants.MAX_WORLD_HEIGHT) continue;
                    
                     int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
                     int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;

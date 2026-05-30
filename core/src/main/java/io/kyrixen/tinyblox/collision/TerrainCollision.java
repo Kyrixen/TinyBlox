@@ -4,7 +4,9 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class TerrainCollision {
 
@@ -34,20 +36,21 @@ public class TerrainCollision {
             for (int tileY = topTile; tileY <= bottomTile; tileY++) {
 
                 // Find chunk
-                short chunkX = (short)(tileX / terrain.size);
-                short chunkY = (short)(tileY / terrain.size);
+                short chunkX = (short) (tileX / terrain.size);
+                short chunkY = (short) (tileY / terrain.size);
 
                 Chunk c = terrain.getChunk(chunkX, chunkY);
 
                 if (c == null || !c.loaded) continue;
 
                 // Local tile
-                byte localX = (byte)(tileX % c.getChunkSize());
-                byte localY = (byte)(tileY % c.getChunkSize());
+                byte localX = (byte) (tileX % c.getChunkSize());
+                byte localY = (byte) (tileY % c.getChunkSize());
 
-                Tile tile = c.getTileStack(localX, localY).top();
+                TileStack tileStack = c.getTileStack(localX, localY);
 
-                if (tile == null) continue;
+                Tile floor = tileStack.get((byte) (e.level() - 1));
+                Tile entityLevel = tileStack.get(e.level());
 
                 // Tile world cords
                 int tx = tileX * tileSize;
@@ -56,11 +59,11 @@ public class TerrainCollision {
                 // Collision overlap check
                 if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) {
 
-                    // Walkable only if walkable and exactly one level below entity
-                    boolean below = tile.level() == e.level() - 1;
-                    boolean climbable = tile.type().isClimbable() && e.level() == tile.level();
+                    // Walkable only if there is floor below and no solid tile at entity level
+                    boolean below = floor != null && floor.type() != TileType.AIR && floor.type() != TileType.VOID;
+                    boolean climbable = entityLevel != null && entityLevel.type().isClimbable();
 
-                    boolean blocked = !below && !climbable;
+                    boolean blocked = (!below && !climbable) || (entityLevel != null && !entityLevel.type().isWalkable() && !climbable);
 
                     if(blocked) return false;
                 

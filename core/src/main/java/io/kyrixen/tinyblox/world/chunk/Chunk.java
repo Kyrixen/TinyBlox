@@ -2,6 +2,7 @@ package io.kyrixen.tinyblox.world.chunk;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -9,8 +10,11 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
-import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 public class Chunk {
 
@@ -58,8 +62,8 @@ public class Chunk {
         
     }
 
-    // Render chunk
-    public void render(TileRenderer tileRenderer, SpriteBatch batch, TimeCycle timeCycle) {
+    // Render above chunk
+    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, SpriteBatch batch) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
@@ -79,12 +83,84 @@ public class Chunk {
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
                 
-                for(byte layer = 0; layer < tileStack.height(); layer++) {
+
+                float tileCenterX = globalX + Constants.GRID_SIZE / 2f;
+                float tileCenterY = globalY + Constants.GRID_SIZE / 2f;
+                float playerCenterX = player.x() + player.width() / 2f;
+                float playerCenterY = player.y() + player.height() / 2f;
+
+                float distX = tileCenterX - playerCenterX;
+                float distY = tileCenterY - playerCenterY;
+                int dist = (int) Vector2.len(distX, distY);
+                
+                float revealRadius = Constants.ROOF_REVEAL_RADIUS * Constants.GRID_SIZE;
+
+                for(byte layer = 0; layer < tileStack.stackSize(); layer++) {
 
                     Tile stackedTile = tileStack.get(layer);
                     if(stackedTile == null) continue;
+                    if(stackedTile.level() <= player.level()) continue;
+                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX, stackedTile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
+                    batch.setColor(1f, 1f, 1f, 1f);
+                    
+                    int levelDiff = stackedTile.level() - player.level();                    
+
+                    if(tileAbovePlayer && levelDiff > 0 && dist <= revealRadius) {
+
+                        // Tbh this math wizard alpha calculation thing did ai
+                        float alpha = dist / revealRadius;
+
+                        alpha = MathUtils.clamp(alpha, 0f, 1f);
+                        alpha = alpha * alpha * (3f - 2f * alpha);
+                        alpha = MathUtils.clamp(alpha, 0.25f, 1f);
+                        
+                        batch.setColor(1f, 1f, 1f, alpha);
+                    
+                    }
+                    
+                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
+                    batch.setColor(1f, 1f, 1f, 1f);
+
+                }
+            
+            }
+
+        }
+        
+    }
+
+
+    // Render lower chunk
+    public void renderLower(Player player, TileRenderer tileRenderer, SpriteBatch batch) {
+
+        // Check if can render chunk
+        if (!loaded || !rendered) return;
+
+        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        
+        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
+
+        // Render each tile
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
+                
+                TileStack tileStack = this.getTileStack(tx, ty);
+                if(tileStack == null || tileStack.isEmpty()) continue;
+                
+                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
+                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
+
+                for(byte layer = 0; layer < tileStack.stackSize(); layer++) {
+
+                    Tile stackedTile = tileStack.get(layer);
+                    if(stackedTile == null) continue;
+                    if(stackedTile.level() > player.level()) continue;
+                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
+                    
+                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
+                    batch.setColor(1f, 1f, 1f, 1f);
 
                 }
             
@@ -108,9 +184,16 @@ public class Chunk {
             TileStack tileStack = this.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
 
-            if(tileStack.height() < Constants.MIN_WORLD_HEIGHT) continue;
-            if(tileStack.height() >= Constants.MAX_WORLD_HEIGHT) continue;
-            if(tileStack.top().type() != TileType.GRASS) continue;
+            Tile topTile = tileStack.getTopTerrain();
+            if(topTile == null) continue;
+           
+            if(topTile.level() < Constants.MIN_WORLD_HEIGHT) continue;
+            if(topTile.level() + 2 > Constants.MAX_WORLD_HEIGHT) continue;
+           
+            if(topTile.type() != TileType.GRASS) continue;
+
+            byte baseLevel = topTile.level();
+            if(tileStack.top().level() > baseLevel) continue;
 
             boolean canSpawn = true;
             for(byte neighborX = (byte) -(TREE_RADIUS + FREE_SPACE_RADIUS); neighborX <= TREE_RADIUS + FREE_SPACE_RADIUS; neighborX++) {
@@ -121,20 +204,21 @@ public class Chunk {
                     if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
                     if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).top() == null) continue;
 
-                    byte level = this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).top().level();
+                    TileStack neighborStack = this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY));
+                    if(neighborStack == null) continue;
+                    Tile neighborTop = neighborStack.getTopTerrain();
 
-                    if(level != tileStack.top().level()) canSpawn = false;
-
+                    if(neighborTop == null || neighborTop.level() != baseLevel) { canSpawn = false; break; }
+                    if(neighborStack.top().level() > baseLevel) { canSpawn = false; break; }
+                    
                 }
 
             }
 
             if(!canSpawn) continue;
 
-            byte baseLevel = tileStack.top().level();
-
-            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.WOOD, (byte) (baseLevel + 1)));
-            this.getTileStack(choosenX, choosenY).push(new Tile(TileType.LEAVES, (byte) (baseLevel + 2)));
+            this.getTileStack(choosenX, choosenY).set(new Tile(TileType.WOOD, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
+            this.getTileStack(choosenX, choosenY).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 2)), (byte) (baseLevel + 2));
 
             for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
 
@@ -143,7 +227,7 @@ public class Chunk {
                     if(neighborX == 0 && neighborY == 0) continue;
                     if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
 
-                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).push(new Tile(TileType.LEAVES, (byte) (baseLevel + 1)));
+                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
 
                 }
 
@@ -187,7 +271,7 @@ public class Chunk {
                 else if(tile.level() < player.level()) batch.setColor(0f, 0f, 0f, alpha * light);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
-                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX, tile.tileY, Constants.GRID_SIZE, FlipType.NONE, batch);
+                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
                 
                 batch.setColor(1f, 1f, 1f, 1f);
             
@@ -260,14 +344,25 @@ public class Chunk {
             }
         }
 
-        for (byte localX = 0; localX < this.CHUNK_SIZE; localX++) {
-            for (byte localY = 0; localY < this.CHUNK_SIZE; localY++) {
-            
-                Tile tile = tiles[localX][localY].top();
-                if (tile == null) continue;
+        for(byte localX = 0; localX < this.CHUNK_SIZE; localX++) {
+            for(byte localY = 0; localY < this.CHUNK_SIZE; localY++) {
 
-                if (localX >= 0 && localX < CHUNK_SIZE && localY >= 0 && localY < CHUNK_SIZE) this.getTileStack(localX, localY).push(tile);
-        
+                TileStack sourceStack = tiles[localX][localY];
+
+                TileStack currentStack = this.getTileStack(localX, localY);
+
+                if(sourceStack == null) continue;
+
+                for(byte level = 0; level < sourceStack.stackSize(); level++) {
+
+                    Tile tile = sourceStack.get(level);
+
+                    if(tile == null) continue;
+
+                    currentStack.set(tile, level);
+
+                }
+
             }
         }
     

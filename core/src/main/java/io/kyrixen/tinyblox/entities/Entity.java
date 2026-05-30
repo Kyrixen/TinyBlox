@@ -9,8 +9,8 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer;
-import io.kyrixen.tinyblox.world.chunk.TileRenderer.FlipType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 
 // Implement stats

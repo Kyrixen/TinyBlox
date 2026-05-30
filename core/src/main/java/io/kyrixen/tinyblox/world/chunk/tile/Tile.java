@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.world.chunk;
+package io.kyrixen.tinyblox.world.chunk.tile;
 
 import io.kyrixen.tinyblox.entities.inventory.Item;
 
@@ -7,27 +7,34 @@ public class Tile {
 
     // Tile type enum
     public static enum TileType {
-    
-        AIR(9999999f, false),
-        LEAVES(0.10f, false),
-        GRASS(0.20f, false),
-        DIRT(0.35f, false),
-        WATER(9999999f, false),
-        STONE(0.75f, false),
-        IRON(1.25f, false),
-        WOOD(0.50f, false),
-        LADDER(0.45f, true);
+        
+        AIR(9999999f, true, false, false),
+        VOID(9999999f, false, false, false),
+        LEAVES(0.10f, false, false, false),
+        GRASS(0.20f, false, false, true),
+        DIRT(0.35f, false, false, true),
+        WATER(9999999f, true, false, true),
+        STONE(0.75f, false, false, true),
+        IRON(1.25f, false, false, false),
+        WOOD(0.50f, false, false, false),
+        LADDER(0.45f, true, true, false);
 
         private final float mining_time;
         private final boolean climbable;
+        private final boolean walkable;
+        private final boolean terrain;
 
-        TileType(float mining_time, boolean climbable) {
+        TileType(float mining_time, boolean walkable, boolean climbable, boolean terrain) {
             this.mining_time = mining_time;
+            this.walkable = walkable;
             this.climbable = climbable;
+            this.terrain = terrain;
         }
 
         public float getMiningTime() { return this.mining_time; }
         public boolean isClimbable() { return this.climbable; }
+        public boolean isWalkable() { return this.walkable; }
+        public boolean isTerrainish() { return this.terrain; }
     
     }
 
@@ -56,12 +63,13 @@ public class Tile {
     private static int getTileX(TileType type) {
 
         switch (type) {
+            case AIR    : return -1;
             case GRASS  : return 1;
             case STONE  : return 0;
             case IRON   : return 1;
             case DIRT   : return 0;
             case WATER  : return 1;
-            case AIR    : return 2;
+            case VOID   : return 2;
             case WOOD   : return 0;
             case LEAVES : return 2;
             case LADDER : return 2;
@@ -75,12 +83,13 @@ public class Tile {
     private static int getTileY(TileType type) {
     
         switch (type) {
+            case AIR    : return -1;
             case GRASS  : return 0;
             case STONE  : return 1;
             case IRON   : return 2;
             case DIRT   : return 0;
             case WATER  : return 1;
-            case AIR    : return 1;
+            case VOID   : return 1;
             case WOOD   : return 2; 
             case LEAVES : return 0;
             case LADDER : return 2;
@@ -94,6 +103,9 @@ public class Tile {
     public TileType type() { return type; }
 
     public byte level() { return level; }
+
+    public int tileX() { return tileX; }
+    public int tileY() { return tileY; }
 
     public Item getItem() {
 

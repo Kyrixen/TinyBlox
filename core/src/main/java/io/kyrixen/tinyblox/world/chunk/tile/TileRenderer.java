@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.world.chunk;
+package io.kyrixen.tinyblox.world.chunk.tile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

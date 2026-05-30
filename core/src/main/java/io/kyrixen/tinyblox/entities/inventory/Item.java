@@ -2,7 +2,7 @@ package io.kyrixen.tinyblox.entities.inventory;
 
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
-import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 // Item object used for inventory
 public enum Item {

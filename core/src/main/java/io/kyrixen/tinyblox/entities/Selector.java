@@ -19,7 +19,8 @@ import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Selector extends Entity {
 
@@ -131,14 +132,25 @@ public class Selector extends Entity {
         short chunkPosY = (short) (tileY / terrain.size);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
-        Tile current = chunk.getTileStack(localTileX, localTileY).top();
+        if(chunk == null) return;
 
-        if(current == null) return;
-        if(current.level() >= Constants.MAX_WORLD_HEIGHT) return;
-        if(this.entityInventory.getCurrentStack().getItem() == Item.NONE) return;
+        byte placeLevel = mob.level();
+        if(placeLevel - 1 < Constants.MIN_WORLD_HEIGHT) return;
 
-        chunk.getTileStack(localTileX, localTileY).push(new Tile(entityInventory.getCurrentStack().getItem().toTileType(), (byte) (current.level() + 1))); sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
+        Tile current = chunk.getTileStack(localTileX, localTileY).get(placeLevel);
         
+        if(current != null && current.type() != TileType.AIR) {
+            placeLevel = (byte) (placeLevel - 1);
+            current = chunk.getTileStack(localTileX, localTileY).get(placeLevel); 
+            if(current != null && current.type() != TileType.AIR) return;
+        }
+
+        if(placeLevel >= Constants.MAX_WORLD_HEIGHT) return;
+        if(this.entityInventory.getCurrentStack().isEmpty()) return;
+
+        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.entityInventory.getCurrentStack().getItem().toTileType(), placeLevel), placeLevel);
+        sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
+
         entityInventory.getCurrentStack().remove((byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.entityInventory.toString());
 
@@ -168,8 +180,12 @@ public class Selector extends Entity {
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;
 
-        Tile current = chunk.getTileStack(localTileX, localTileY).top();
-        if(current == null) return;
+        Tile current = chunk.getTileStack(localTileX, localTileY).get(mob.level());
+        
+        if(current == null || current.type() == TileType.AIR) {
+            current = chunk.getTileStack(localTileX, localTileY).get((byte) (mob.level() - 1)); 
+            if(current == null || current.type() == TileType.AIR) return;
+        }
 
         if(!(tileX == targetX && tileY == targetY)) { 
         
@@ -186,7 +202,7 @@ public class Selector extends Entity {
         if(current.level() <= 0) return;
 
         Item dropItem = current.getItem();
-        chunk.getTileStack(localTileX, localTileY).pop(); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
+        chunk.getTileStack(localTileX, localTileY).popAtLayer(current.level()); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
         entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;

@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.world.chunk;
 
-import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ChunkBuilder {
 

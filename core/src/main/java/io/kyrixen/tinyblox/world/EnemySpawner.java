@@ -13,7 +13,8 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class EnemySpawner {
 
@@ -47,8 +48,10 @@ public class EnemySpawner {
         byte pickedLocalX = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
         byte pickedLocalY = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
         TileStack tileStack = pickedChunk.getTileStack(pickedLocalX, pickedLocalY);
+        Tile top = tileStack.getTopTerrain();
 
-        if(tileStack.height() != player.level()) return;
+        if(top == null) return;
+        if(top.level() + 1 != player.level()) return;
 
         int worldX = (pickedChunkX * Constants.CHUNK_SIZE + pickedLocalX) * Constants.GRID_SIZE;
         int worldY = (pickedChunkY * Constants.CHUNK_SIZE + pickedLocalY) * Constants.GRID_SIZE;
@@ -58,7 +61,7 @@ public class EnemySpawner {
 
         newEnemy.setChasing(false);
         newEnemy.setTarget(player);
-        newEnemy.setLevel((byte) (tileStack.top().level() + 1));
+        newEnemy.setLevel((byte) (top.level() + 1));
         
         entities.add(newEnemy);
 

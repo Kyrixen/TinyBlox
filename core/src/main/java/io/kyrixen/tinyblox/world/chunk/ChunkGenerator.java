@@ -4,7 +4,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.world.chunk.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ChunkGenerator {
 
@@ -46,16 +47,16 @@ public class ChunkGenerator {
                 TileType type;
                 for(byte currentLevel = 0; currentLevel <= level; currentLevel++) {
 
-                    int depthFromSurface = level - currentLevel;
+                    int levelDiff = level - currentLevel;
                     
                     if(currentLevel == 0) {
                         type = TileType.WATER;
-                    } else if(depthFromSurface == 0) {
+                    } else if(levelDiff == 0) {
                         
                         if(currentLevel >= 13) type = TileType.STONE;
                         else type = TileType.GRASS;
                     
-                    } else if(depthFromSurface <= 2) {
+                    } else if(levelDiff <= 2) {
                         type = TileType.DIRT;
                     } else {
                     
@@ -64,17 +65,16 @@ public class ChunkGenerator {
                     
                     }
 
-                    chunk.getTileStack(tx, ty).push(new Tile(type, currentLevel));
+                    chunk.getTileStack(tx, ty).set(new Tile(type, currentLevel), currentLevel);
 
                 }
 
-                Tile topTile = chunk.getTileStack(tx, ty).top();
+                Tile topTile = chunk.getTileStack(tx, ty).getTopTerrain();
                 if(topTile == null) continue;
 
                 if(topTile.type() != TileType.DIRT || topTile.level() > Constants.MAX_WORLD_HEIGHT * 0.75f) continue;
 
-                chunk.getTileStack(tx, ty).pop();
-                chunk.getTileStack(tx, ty).push(new Tile(TileType.GRASS, topTile.level()));
+                chunk.getTileStack(tx, ty).set(new Tile(TileType.GRASS, topTile.level()), topTile.level());
 
             }
 
