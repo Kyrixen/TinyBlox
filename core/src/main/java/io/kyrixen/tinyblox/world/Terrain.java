@@ -13,7 +13,6 @@ import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
@@ -131,13 +130,20 @@ public class Terrain {
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
         
-        
         boolean tileAbovePlayer = false;
 
         TileStack playerTileStack = this.getWorldTileStack(player.x() / Constants.GRID_SIZE, player.y() / Constants.GRID_SIZE);
         if(playerTileStack != null) {
-            Tile above = playerTileStack.get((byte) (player.level() + 1));
-            tileAbovePlayer = above != null && above.type() != TileType.AIR;
+        
+            for(byte level = 0; level < playerTileStack.stackSize(); level++) {
+
+                Tile current = playerTileStack.get(level);
+                if(current == null || current.type().isEmpty()) continue;
+
+                if(player.level() < current.level()) tileAbovePlayer = true;
+
+            }
+       
         }
 
 

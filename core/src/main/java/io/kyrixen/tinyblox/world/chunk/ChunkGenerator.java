@@ -41,8 +41,8 @@ public class ChunkGenerator {
                 float terrainNoise = (noise.GetNoise(tileX, tileY) + 1f) / 2f;
                 float materialNoise = (noise.GetNoise(tileX + 9999, tileY + 9999) + 1f) / 2f;
 
-                int variation = MathUtils.floor(terrainNoise * (Constants.MAX_WORLD_HEIGHT - Constants.MIN_WORLD_HEIGHT));
-                byte level = (byte) (Constants.MIN_WORLD_HEIGHT + variation);
+                int variation = MathUtils.floor(terrainNoise * (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT));
+                byte level = (byte) (Constants.MIN_TERRAIN_HEIGHT + variation);
                 
                 TileType type;
                 for(byte currentLevel = 0; currentLevel <= level; currentLevel++) {
@@ -72,7 +72,7 @@ public class ChunkGenerator {
                 Tile topTile = chunk.getTileStack(tx, ty).getTopTerrain();
                 if(topTile == null) continue;
 
-                if(topTile.type() != TileType.DIRT || topTile.level() > Constants.MAX_WORLD_HEIGHT * 0.75f) continue;
+                if(topTile.type() != TileType.DIRT || topTile.level() > Constants.MAX_TERRAIN_HEIGHT * 0.75f) continue;
 
                 chunk.getTileStack(tx, ty).set(new Tile(TileType.GRASS, topTile.level()), topTile.level());
 

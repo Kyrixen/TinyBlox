@@ -19,8 +19,11 @@ public class Constants {
     public static final int MAP_WIDTH = 1024;
     public static final int MAP_HEIGHT = 1024;
 
-    public static final byte MAX_WORLD_HEIGHT = 16;
-    public static final byte MIN_WORLD_HEIGHT = 6;
+    public static final byte MAX_WORLD_HEIGHT = 20;
+    public static final byte MIN_WORLD_HEIGHT = 0;
+    
+    public static final byte MAX_TERRAIN_HEIGHT = 16;
+    public static final byte MIN_TERRAIN_HEIGHT = 6;
 
     // Tile stuff
     public static final int GRID_SIZE = 16;

@@ -28,7 +28,7 @@ public class EntityCollision {
         int e1TileY = (e1.y() + e1.height() / 2) / Constants.GRID_SIZE;
         int e2TileY = (e2.y() + e2.height() / 2) / Constants.GRID_SIZE;
 
-        return e1TileX == e2TileX && e1TileY == e2TileY;
+        return e1TileX == e2TileX && e1TileY == e2TileY && e1.level() == e2.level();
 
     }
 

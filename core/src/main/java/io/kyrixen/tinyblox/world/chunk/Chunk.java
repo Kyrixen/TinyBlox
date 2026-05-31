@@ -190,8 +190,8 @@ public class Chunk {
             Tile topTile = tileStack.getTopTerrain();
             if(topTile == null) continue;
            
-            if(topTile.level() < Constants.MIN_WORLD_HEIGHT) continue;
-            if(topTile.level() + 2 > Constants.MAX_WORLD_HEIGHT) continue;
+            if(topTile.level() < Constants.MIN_TERRAIN_HEIGHT) continue;
+            if(topTile.level() + 2 > Constants.MAX_TERRAIN_HEIGHT) continue;
            
             if(topTile.type() != TileType.GRASS) continue;
 
@@ -265,13 +265,13 @@ public class Chunk {
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
 
                 int levelDiff = Math.abs(tile.level() - player.level());
-                float normalized = (float) levelDiff / (Constants.MAX_WORLD_HEIGHT - Constants.MIN_WORLD_HEIGHT);
+                float normalized = (float) levelDiff / (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT);
                 
-                float alpha = normalized * 0.35f;
-                alpha = Math.min(alpha, 0.45f);             
+                float alpha = normalized * 0.55f;
+                alpha = Math.min(alpha, 0.5f);             
 
                 if(tile.level() > player.level()) batch.setColor(1f, 1f, 1f, alpha * light);
-                else if(tile.level() < player.level()) batch.setColor(0f, 0f, 0f, alpha * light);
+                else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * light);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
                 tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);

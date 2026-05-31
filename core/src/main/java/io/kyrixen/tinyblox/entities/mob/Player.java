@@ -248,7 +248,7 @@ public class Player extends MobEntity {
         Tile current = tileStack.get(this.level);
         Tile below = tileStack.get((byte) (this.level - 1));
 
-        boolean canClimb =  (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable());
+        boolean canClimb =  (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable() && below.type().isPassable());
         if(!canClimb) return;
 
         this.level--;
@@ -261,7 +261,7 @@ public class Player extends MobEntity {
     private long last_debug_print;
     public void stats(Camera camera){
         if(System.currentTimeMillis() - last_debug_print < 3.0f * 1000) return;
-        Logger.LOGGER.debug("PLAYER", "Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
+        Logger.LOGGER.debug("PLAYER", "Player Health: " + this.health + " | Player Stamina: " + this.stamina + " | Player Pos: (" + this.x + ", " + this.level + ", " + this.y + ") | Camera: (" + camera.x + ", " + camera.y + ")");
         last_debug_print = System.currentTimeMillis();
     }
 

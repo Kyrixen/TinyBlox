@@ -79,6 +79,7 @@ public class Selector extends Entity {
 
         this.x = tileX * Constants.GRID_SIZE;
         this.y = tileY * Constants.GRID_SIZE;
+        this.setLevel(mob.level());
         
         if(this.x == mob.x && this.y == mob.y) return;
         
@@ -130,13 +131,13 @@ public class Selector extends Entity {
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;
 
-        byte placeLevel = mob.level();
-        if(placeLevel - 1 < Constants.MIN_WORLD_HEIGHT) return;
+        byte placeLevel = (byte) (mob.level() - 1);
+        if(placeLevel < Constants.MIN_WORLD_HEIGHT) return;
 
         Tile current = chunk.getTileStack(localTileX, localTileY).get(placeLevel);
         
         if(current != null && !current.type().isEmpty()) {
-            placeLevel = (byte) (placeLevel - 1);
+            placeLevel = (byte) (placeLevel + 1);
             current = chunk.getTileStack(localTileX, localTileY).get(placeLevel); 
             if(current != null && !current.type().isEmpty()) return;
         }

@@ -59,7 +59,7 @@ public class TerrainCollision {
                 if (nextX < tx + tileSize && nextX + e.width() > tx && nextY < ty + tileSize && nextY + e.height() > ty) {
 
                     // Movement requires supporting terrain or climbable tile
-                    boolean ground = floor != null && floor.type().isTerrain();
+                    boolean ground = floor != null && floor.type().canSupport();
                     boolean climbable = entityLevel != null && entityLevel.type().isClimbable();
 
                     boolean blocked = (!ground && !climbable) || (entityLevel != null && !entityLevel.type().isPassable() && !climbable);

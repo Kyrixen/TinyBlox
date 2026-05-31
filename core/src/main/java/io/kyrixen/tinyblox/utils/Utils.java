@@ -30,8 +30,8 @@ public class Utils {
                     Tile t = c.getTileStack(localX, localY).getTopTerrain();
 
                     if (t == null) continue;
-                    if(t.level() < Constants.MIN_WORLD_HEIGHT) continue;
-                    if(t.level() + 1 >= Constants.MAX_WORLD_HEIGHT) continue;
+                    if(t.level() < Constants.MIN_TERRAIN_HEIGHT) continue;
+                    if(t.level() + 1 >= Constants.MAX_TERRAIN_HEIGHT) continue;
                    
                     int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
                     int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;
