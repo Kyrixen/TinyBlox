@@ -136,6 +136,7 @@ public class Engine implements Screen {
     private void update(float delta) {
 
         timeCycle.updateDayTime(delta);
+        terrain.updateLighting(timeCycle);
         enemySpawner.updateSpawnRate(timeCycle);
         controller.update(delta, player, terrain, entities);
 
@@ -194,12 +195,12 @@ public class Engine implements Screen {
 
     private void render() {
 
-        // Clear window //
-
+        // Clear window
+        RendererUtils.clear();
 
         // Lower World
         batch.begin();
-        terrain.renderLower(player, timeCycle, batch);
+        terrain.renderLower(player, batch);
         batch.end();
 
         // World highlights
@@ -214,7 +215,7 @@ public class Engine implements Screen {
 
         // Above Terrain and Terrain Depth Overlay
         batch.begin();
-        terrain.renderAbove(player, timeCycle, batch);
+        terrain.renderAbove(player, batch);
         terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
         batch.end();
 

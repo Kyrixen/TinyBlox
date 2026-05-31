@@ -17,7 +17,8 @@ public class Tile {
         STONE(0.75f, false, true, false, true),
         IRON(1.25f, false, true, false, false),
         WOOD(0.50f, false, true, false, false),
-        LADDER(0.45f, true, true, true, false);
+        LADDER(0.45f, true, true, true, false),
+        CAGED_LAMP(0.6f, false, true, false, false);
 
         private final float mining_time;
         private final boolean climbable;
@@ -69,17 +70,18 @@ public class Tile {
     private static int getTileX(TileType type) {
 
         switch (type) {
-            case AIR    : return -1;
-            case GRASS  : return 1;
-            case STONE  : return 0;
-            case IRON   : return 1;
-            case DIRT   : return 0;
-            case WATER  : return 1;
-            case VOID   : return 2;
-            case WOOD   : return 0;
-            case LEAVES : return 2;
-            case LADDER : return 2;
-            default     : return 0;
+            case AIR        : return -1;
+            case GRASS      : return 1;
+            case STONE      : return 3;
+            case IRON       : return 3;
+            case DIRT       : return 0;
+            case WATER      : return 0;
+            case VOID       : return 1;
+            case WOOD       : return 2;
+            case LEAVES     : return 2;
+            case LADDER     : return 0;
+            case CAGED_LAMP : return 1;
+            default         : return 0;
         }
 
     }
@@ -89,17 +91,18 @@ public class Tile {
     private static int getTileY(TileType type) {
     
         switch (type) {
-            case AIR    : return -1;
-            case GRASS  : return 0;
-            case STONE  : return 1;
-            case IRON   : return 2;
-            case DIRT   : return 0;
-            case WATER  : return 1;
-            case VOID   : return 1;
-            case WOOD   : return 2; 
-            case LEAVES : return 0;
-            case LADDER : return 2;
-            default     : return 0;
+            case AIR        : return -1;
+            case GRASS      : return 0;
+            case STONE      : return 0;
+            case IRON       : return 1;
+            case DIRT       : return 0;
+            case WATER      : return 1;
+            case VOID       : return 1;
+            case WOOD       : return 1; 
+            case LEAVES     : return 0;
+            case LADDER     : return 2;
+            case CAGED_LAMP : return 2;
+            default         : return 0;
         }
     
     }
@@ -140,6 +143,9 @@ public class Tile {
 
             case LADDER:
                 return Item.LADDER;
+
+            case CAGED_LAMP:
+                return Item.CAGED_LAMP;
 
             default:
                 return Item.NONE;

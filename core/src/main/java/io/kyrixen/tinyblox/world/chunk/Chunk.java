@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +40,10 @@ public class Chunk {
     // Stores chunk tiles
     private TileStack[][] chunk;
 
+    // Stores light level for tiles
+    private Color[][] lightLevel;
+
+
     private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
 
     // Construct chunk
@@ -49,10 +54,12 @@ public class Chunk {
 
         this.CHUNK_SIZE = size;
         this.chunk = new TileStack[CHUNK_SIZE][CHUNK_SIZE];
+        this.lightLevel = new Color[CHUNK_SIZE][CHUNK_SIZE];
 
         for(byte xPos = 0; xPos < CHUNK_SIZE; xPos++) {
             for(byte yPos = 0; yPos < CHUNK_SIZE; yPos++) {
                 this.chunk[xPos][yPos] = new TileStack();
+                this.lightLevel[xPos][yPos] = new Color(1f, 1f, 1f, 1f);
             }
         }
         
@@ -63,7 +70,7 @@ public class Chunk {
     }
 
     // Render above chunk
-    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, TimeCycle timeCycle, SpriteBatch batch) {
+    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, SpriteBatch batch) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
@@ -82,13 +89,13 @@ public class Chunk {
                 
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-                
-                float brightness = timeCycle.getBrightness();
 
                 float tileCenterX = globalX + Constants.GRID_SIZE / 2f;
                 float tileCenterY = globalY + Constants.GRID_SIZE / 2f;
                 float playerCenterX = player.x() + player.width() / 2f;
                 float playerCenterY = player.y() + player.height() / 2f;
+
+                Color light = this.getLight(tx, ty);
 
                 float distX = tileCenterX - playerCenterX;
                 float distY = tileCenterY - playerCenterY;
@@ -103,7 +110,7 @@ public class Chunk {
                     if(stackedTile.level() <= player.level()) continue;
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
-                    batch.setColor(brightness, brightness, brightness, 1f);
+                    batch.setColor(light.r, light.g, light.b, 1f);
                     
                     int levelDiff = stackedTile.level() - player.level();                    
 
@@ -116,7 +123,7 @@ public class Chunk {
                         alpha = alpha * alpha * (3f - 2f * alpha);
                         alpha = MathUtils.clamp(alpha, 0.45f, 1f);
                         
-                        batch.setColor(brightness, brightness, brightness, alpha);
+                        batch.setColor(light.r, light.g, light.b, alpha);
                     
                     }
                     
@@ -133,7 +140,7 @@ public class Chunk {
 
 
     // Render lower chunk
-    public void renderLower(Player player, TileRenderer tileRenderer, TimeCycle timeCycle, SpriteBatch batch) {
+    public void renderLower(Player player, TileRenderer tileRenderer,SpriteBatch batch) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
@@ -142,8 +149,6 @@ public class Chunk {
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
         
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        float brightness = timeCycle.getBrightness();
 
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
@@ -155,15 +160,18 @@ public class Chunk {
                 int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
                 int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
 
+                Color light = this.getLight(tx, ty);
+
                 for(byte layer = 0; layer < tileStack.stackSize(); layer++) {
 
                     Tile stackedTile = tileStack.get(layer);
                     if(stackedTile == null) continue;
                     if(stackedTile.level() > player.level()) continue;
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
-                    
+
+                    batch.setColor(light.r, light.g, light.b, 1f);
                     tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
-                    batch.setColor(brightness, brightness, brightness, 1f);
+                    batch.setColor(1f, 1f, 1f, 1f);
 
                 }
             
@@ -251,7 +259,7 @@ public class Chunk {
         
         if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
 
-        float light = timeCycle.getBrightness();
+        float lightBrightness = timeCycle.getBrightness();
 
         // Render each tile
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
@@ -267,11 +275,11 @@ public class Chunk {
                 int levelDiff = Math.abs(tile.level() - player.level());
                 float normalized = (float) levelDiff / (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT);
                 
-                float alpha = normalized * 0.55f;
-                alpha = Math.min(alpha, 0.5f);             
+                float alpha = normalized * 0.8f;
+                alpha = Math.min(alpha, 0.55f);
 
-                if(tile.level() > player.level()) batch.setColor(1f, 1f, 1f, alpha * light);
-                else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * light);
+                if(tile.level() > player.level()) batch.setColor(0.97f, 0.97f, 0.97f, alpha * lightBrightness);
+                else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
                 tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
@@ -305,6 +313,19 @@ public class Chunk {
     public int getY(){ return this.cY; }
 
     public int getChunkSize() { return this.CHUNK_SIZE; }
+
+    // Update light
+    public void updateLighting(TimeCycle timeCycle) {
+
+        for(byte xPos = 0; xPos < lightLevel.length; xPos++) {
+            for(byte yPos = 0; yPos < lightLevel.length; yPos++) {
+            
+                this.setLight(xPos, yPos, timeCycle.getBrightnessColor());
+
+            }
+        }
+
+    }
 
     // Check loading
     public void checkIfOnScreen(Camera cam) {
@@ -377,6 +398,14 @@ public class Chunk {
 
     public TileStack getTileStack(byte localX, byte localY) {
         return this.chunk[localX][localY];
+    }
+
+    public Color getLight(byte xPos, byte yPos) {
+        return this.lightLevel[xPos][yPos];
+    }
+
+    public void setLight(byte xPos, byte yPos, Color light) {
+        this.lightLevel[xPos][yPos] = light;
     }
 
     // Unload resources

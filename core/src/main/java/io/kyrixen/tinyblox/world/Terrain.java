@@ -98,32 +98,29 @@ public class Terrain {
     }
 
     // Render lower visible chunks
-    public void renderLower(Player player, TimeCycle timeCycle, SpriteBatch batch) {
+    public void renderLower(Player player, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
         
         for(short cx = 0; cx < chunkCountX; cx++){
-
             for(short cy = 0; cy < chunkCountY; cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
-
                 if (c == null) continue;
 
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderLower(player, tileRenderer, timeCycle, batch);
+                c.renderLower(player, tileRenderer, batch);
 
             }
-
         }
 
     }
 
     // Render above visible chunks
-    public void renderAbove(Player player, TimeCycle timeCycle, SpriteBatch batch) {
+    public void renderAbove(Player player, SpriteBatch batch) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -146,25 +143,42 @@ public class Terrain {
 
 
         for(short cx = 0; cx < chunkCountX; cx++){
-
             for(short cy = 0; cy < chunkCountY; cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
-
                 if (c == null) continue;
 
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderAbove(player, tileAbovePlayer, tileRenderer, timeCycle, batch);
+                c.renderAbove(player, tileAbovePlayer, tileRenderer, batch);
 
             }
-
         }
 
     }
 
+    // Update chunk light
+    public void updateLighting(TimeCycle timeCycle) {
+        
+        int chunkCountX = (w + size - 1) / size;
+        int chunkCountY = (h + size - 1) / size;
+        
+        for(short cx = 0; cx < chunkCountX; cx++){
+            for(short cy = 0; cy < chunkCountY; cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+                if (c == null) continue;
+
+                // If not visible dont render
+                if(!c.rendered) continue;
+
+                c.updateLighting(timeCycle);
+
+            }
+        }
     
+    }
 
     // Render overlay for visible chunks
     public void renderDepthOverlay(Camera camera, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
@@ -177,7 +191,6 @@ public class Terrain {
             for(short cy = 0; cy < chunkCountY; cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
-
                 if (c == null) continue;
 
                 // If not visible dont render

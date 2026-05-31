@@ -16,8 +16,9 @@ public enum Item {
     WOOD(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 6),
     LEAVES(24, 0.5f, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 7),
     LADDER(36, 0.75f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), 8),
-    WOODEN_PICKAXE(1, 1.25f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 9),
-    STONE_PICKAXE(1, 2.0f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 10);
+    CAGED_LAMP(12, 0.25f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), 9),
+    WOODEN_PICKAXE(1, 1.25f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 10),
+    STONE_PICKAXE(1, 2.0f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 11);
 
     // Max stackable size
     private final byte maxSize;
@@ -67,6 +68,9 @@ public enum Item {
 
             case LADDER:
                 return TileType.LADDER;
+
+            case CAGED_LAMP:
+                return TileType.CAGED_LAMP;
 
             default:
                 return TileType.AIR;
