@@ -72,13 +72,13 @@ public class Settings implements Screen {
 
     private void init() {
     
-        exitButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "EXIT", 48);
+        exitButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "EXIT", 1.5f);
         exitButton.initTexture(tex.getTexture(grayButton));
 
-        fpsButton.init(Constants.GRID_SIZE * 17, 288, 48 * 5, 16 * 5, "SHOW FPS", 48);
+        fpsButton.init(Constants.GRID_SIZE * 17, 288, 48 * 5, 16 * 5, "SHOW FPS", 1.5f);
         fpsButton.initTexture(tex.getTexture(grayButton));
 
-        vsyncButton.init(Constants.GRID_SIZE * 17, 374, 48 * 5, 16 * 5, "VSYNC", 48);
+        vsyncButton.init(Constants.GRID_SIZE * 17, 374, 48 * 5, 16 * 5, "VSYNC", 1.5f);
         vsyncButton.initTexture(tex.getTexture(grayButton));
         vsyncButton.setToggleState(ToggleButtonState.ON);
 

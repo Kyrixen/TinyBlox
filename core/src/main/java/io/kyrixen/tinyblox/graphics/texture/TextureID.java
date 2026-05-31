@@ -56,7 +56,7 @@ public final class TextureID {
 
     @Override
     public String toString() {
-        return this.namespace + ":" + this.type.name() + ":" + this.id;
+        return this.namespace + ":" + this.type.name().toLowerCase() + ":" + this.id;
     }
 
 }

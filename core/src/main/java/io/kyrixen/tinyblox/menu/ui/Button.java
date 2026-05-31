@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import io.kyrixen.tinyblox.sound.UISounds;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -50,7 +49,7 @@ public class Button {
         this.uiSoundManager = uiSoundManager;
     }
 
-    public void init(int x, int y, int w, int h, String text, int fontSize) {
+    public void init(int x, int y, int w, int h, String text, float scale) {
 
         this.x = x;
         this.y = y;
@@ -60,23 +59,12 @@ public class Button {
 
         this.text = text;
 
-        generateFont("fonts/editundo.ttf", fontSize);
+        font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
+        font.getData().setScale(scale);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
     }
 
-    protected void generateFont(String path, int size) {
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
-
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter =new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        parameter.size = size;
-
-        font = generator.generateFont(parameter);
-
-        generator.dispose();
-
-    }
 
     public void initTexture(Texture buttonTexture) {
         this.buttonTexture = buttonTexture;

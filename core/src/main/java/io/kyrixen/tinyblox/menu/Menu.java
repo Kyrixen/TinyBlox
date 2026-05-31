@@ -63,10 +63,10 @@ public class Menu implements Screen {
         tex.loadBackgrounds();
         tex.loadUI();
 
-        playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 48);
+        playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 1.5f);
         playButton.initTexture(tex.getTexture(brownButton));
     
-        settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 48);
+        settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 1.5f);
         settingsButton.initTexture(tex.getTexture(brownButton));
     
     }

@@ -3,9 +3,7 @@ package io.kyrixen.tinyblox.entities.inventory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
@@ -20,7 +18,6 @@ public class InventoryRenderer {
 
     // Font specific vars
     protected BitmapFont font;
-    protected final GlyphLayout layout = new GlyphLayout();
 
     // UI Spacer vars
     private static final float SLOT_SIZE = Constants.GRID_SIZE * 5;
@@ -35,7 +32,9 @@ public class InventoryRenderer {
 
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;
-        generateFont("fonts/editundo.ttf", 32);
+        font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
+        font.getData().setScale(0.75f);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
     }
 
     // Full render method
@@ -93,21 +92,6 @@ public class InventoryRenderer {
 
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
-
-    }
-
-    // Generates temporary font
-    private void generateFont(String path, int size) {
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
-
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter =new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        parameter.size = size;
-
-        font = generator.generateFont(parameter);
-
-        generator.dispose();
 
     }
 

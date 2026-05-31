@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
@@ -72,7 +71,9 @@ public class Slider {
 
         this.shapeRenderer = new ShapeRenderer();
 
-        generateFont("fonts/editundo.ttf", 48);
+        font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
+        font.getData().setScale(1.75f);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
     }
 
@@ -83,20 +84,6 @@ public class Slider {
         this.hoverBarColor = hoverBarColor;
         this.percentageColor = percentageColor;
     
-    }
-
-    protected void generateFont(String path, int size) {
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
-
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter =new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        parameter.size = size;
-
-        font = generator.generateFont(parameter);
-
-        generator.dispose();
-
     }
 
     public void updateState() {
