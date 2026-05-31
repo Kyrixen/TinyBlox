@@ -114,7 +114,7 @@ public class Chunk {
 
                         alpha = MathUtils.clamp(alpha, 0f, 1f);
                         alpha = alpha * alpha * (3f - 2f * alpha);
-                        alpha = MathUtils.clamp(alpha, 0.25f, 1f);
+                        alpha = MathUtils.clamp(alpha, 0.45f, 1f);
                         
                         batch.setColor(brightness, brightness, brightness, alpha);
                     

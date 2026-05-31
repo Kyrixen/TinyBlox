@@ -89,8 +89,6 @@ public class Terrain {
                 // Store chunk
                 chunks.put(new ChunkPos(x, y), c);
 
-                //cb.cleanup();
-
             }
 
         }

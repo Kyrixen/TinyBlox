@@ -242,14 +242,16 @@ public class Player extends MobEntity {
 
         TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
         if(tileStack == null) return;
-
+        
         if(this.level - 1 < Constants.MIN_WORLD_HEIGHT) return;
 
         Tile current = tileStack.get(this.level);
-        Tile below = tileStack.get((byte) (this.level - 1));
+        Tile below = tileStack.get((byte)(this.level - 1));
 
-        boolean canClimb =  (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable() && below.type().isPassable());
+        boolean canClimb = (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable());
         if(!canClimb) return;
+
+        if(below != null && !below.type().isPassable()) return;
 
         this.level--;
 

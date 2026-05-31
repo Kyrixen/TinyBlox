@@ -44,6 +44,6 @@ public class Constants {
     public static final float FULL_TIME_CYCLE = 300f;
 
     // Entity settings
-    public static final byte MAX_ENTITY_COUNT = 15;
+    public static final byte MAX_ENTITY_COUNT = 8;
 
 }

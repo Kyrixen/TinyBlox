@@ -116,6 +116,7 @@ public class Enemy extends MobEntity {
             Item itemType = Item.fromInt(MathUtils.random(0, Item.values().length - 1));
             if(!itemType.canRoll()) continue;
             int itemCount = MathUtils.random(1, itemType.getMaxSize());
+            itemCount = MathUtils.clamp(itemCount, 0, 8);
 
             for(int j = 0; j < itemCount; j++) {
                 entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + MathUtils.random(-3, 3), this.y() + MathUtils.random(-3, 3), soundManager, itemType, mob));
