@@ -17,7 +17,7 @@ import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
-import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -47,7 +47,7 @@ public class Engine implements Screen {
     private Terrain terrain;
     private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
-    private Sfx soundManager;
+    private SoundManager soundManager;
     private EnemySpawner enemySpawner;
 
     private SpriteBatch batch;
@@ -72,7 +72,7 @@ public class Engine implements Screen {
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
-        soundManager = new Sfx();
+        soundManager = new SoundManager();
         enemySpawner = new EnemySpawner(soundManager);
 
         init();
@@ -88,6 +88,10 @@ public class Engine implements Screen {
 
         // Terrain init
         terrain.init();
+
+        // Sound init
+        soundManager.loadSFX();
+        soundManager.loadHUD();
 
         // Time init
         timeCycle.setDayTime(DayTime.DAY);

@@ -7,7 +7,8 @@ public class SoundID {
     // Sound type enum helper
     public enum SoundType {
         UI,
-        GAME,
+        SFX,
+        MUSIC,
         HUD,
         MISC
     }

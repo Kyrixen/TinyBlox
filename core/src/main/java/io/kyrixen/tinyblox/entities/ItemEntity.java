@@ -6,7 +6,9 @@ import com.badlogic.gdx.math.MathUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
-import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.sound.SoundID;
+import io.kyrixen.tinyblox.sound.SoundID.SoundType;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
@@ -25,9 +27,11 @@ public class ItemEntity extends Entity {
     // Player
     private final MobEntity mob;
 
-    private final Sfx soundManager;
+    private final SoundManager soundManager;
 
-    public ItemEntity(int id, int x, int y, Sfx soundManager, Item item, MobEntity mob) {
+    private final SoundID PICKUP_ITEM_SOUND = new SoundID("tinyblox", SoundType.SFX, "pickup_item");
+
+    public ItemEntity(int id, int x, int y, SoundManager soundManager, Item item, MobEntity mob) {
 
         super(id, x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
 
@@ -89,7 +93,7 @@ public class ItemEntity extends Entity {
 
     // Pick up the item
     public Item pickup() {
-        soundManager.pickupitem.play(Utils.getFloatSound(40), MathUtils.random(0.95f, 1.2f), 0f);
+        soundManager.getSound(PICKUP_ITEM_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.95f, 1.2f), 0f);
         return this.item;
     }
 

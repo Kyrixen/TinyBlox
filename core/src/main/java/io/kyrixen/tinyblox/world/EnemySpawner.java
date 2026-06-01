@@ -8,7 +8,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Player;
-import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
@@ -21,9 +21,9 @@ public class EnemySpawner {
     private float spawnTimer = 8.5f;
     private long lastSpawn = 0L;
 
-    private final Sfx soundManager;
+    private final SoundManager soundManager;
 
-    public EnemySpawner(Sfx soundManager) {
+    public EnemySpawner(SoundManager soundManager) {
         this.soundManager = soundManager;
         lastSpawn = System.currentTimeMillis();
     }

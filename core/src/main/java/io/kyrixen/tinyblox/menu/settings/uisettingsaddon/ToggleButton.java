@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.menu.ui.Button;
-import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
 
@@ -22,7 +22,7 @@ public class ToggleButton extends Button {
 
     private ToggleButtonState toggleState = ToggleButtonState.DISABLED;
 
-    public ToggleButton(UISounds uiSoundManager) {
+    public ToggleButton(SoundManager uiSoundManager) {
         super(uiSoundManager);
         this.toggleState = ToggleButtonState.OFF;
     }
@@ -104,7 +104,7 @@ public class ToggleButton extends Button {
             
                 if(!wasPressed) {
             
-                    uiSoundManager.click.play(Utils.getFloatSound(100));
+                    uiSoundManager.getSound(this.CLICK_SOUND).play(Utils.getFloatSound(100));
                     wasPressed = true;
             
                     if(toggleState == ToggleButtonState.DISABLED) return;
@@ -119,7 +119,7 @@ public class ToggleButton extends Button {
                 state = ButtonState.HOVER; 
             
                 if(!wasHovering) {
-                    uiSoundManager.hollow.play(Utils.getFloatSound(80));
+                    uiSoundManager.getSound(this.HOLLOW_SOUND).play(Utils.getFloatSound(80));
                     wasHovering = true;
                 }
             

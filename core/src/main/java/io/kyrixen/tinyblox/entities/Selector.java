@@ -13,7 +13,9 @@ import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
-import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.sound.SoundID;
+import io.kyrixen.tinyblox.sound.SoundID.SoundType;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -31,7 +33,7 @@ public class Selector extends Entity {
     private final Inventory mobEntityInventory;
 
     // For sound
-    private final Sfx sfxManager;
+    private final SoundManager sfxManager;
 
     // Place delay
     private long lastPlace = 0L;
@@ -45,8 +47,12 @@ public class Selector extends Entity {
     // Max distance that cursor can be from mob
     private final byte REACH = 2;
 
+    private final SoundID HIT_ENEMY_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_enemy");
+    private final SoundID PLACE_SOUND = new SoundID("tinyblox", SoundType.HUD, "place");
+    private final SoundID DESTROY_SOUND = new SoundID("tinyblox", SoundType.HUD, "destroy");
 
-    public Selector(MobEntity mob, Sfx sfxManager) {
+
+    public Selector(MobEntity mob, SoundManager sfxManager) {
 
         super(Utils.generateEntityID(), mob.x(), mob.y(), mob.width(), mob.height());
 
@@ -100,7 +106,7 @@ public class Selector extends Entity {
         MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
 
         if(e != null){
-            if(e.damage(damage)) sfxManager.hitentity.play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
+            if(e.damage(damage)) sfxManager.getSound(HIT_ENEMY_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
         }
 
     }
@@ -146,7 +152,7 @@ public class Selector extends Entity {
         if(this.mobEntityInventory.getCurrentStack().isEmpty()) return;
 
         chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().toTileType(), placeLevel), placeLevel);
-        sfxManager.place.play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
+        sfxManager.getSound(PLACE_SOUND).play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
 
         mobEntityInventory.getCurrentStack().remove((byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.mobEntityInventory.toString());
@@ -199,7 +205,7 @@ public class Selector extends Entity {
         if(current.level() <= 0) return;
 
         Item dropItem = current.getItem();
-        chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.destroy.play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
+        chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(Utils.getFloatSound(25), MathUtils.random(0.95f, 1.05f), 0f);
         entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;

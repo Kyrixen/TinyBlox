@@ -20,8 +20,10 @@ import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.sound.SoundID;
+import io.kyrixen.tinyblox.sound.SoundID.SoundType;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
-import io.kyrixen.tinyblox.sound.Sfx;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
@@ -36,7 +38,10 @@ public class Player extends MobEntity {
 
     private InventoryRenderer inventoryRenderer;
 
-    public Player(int id, int x, int y, Camera camera, Sfx soundManager) {
+    private final SoundID WALK_SOUND = new SoundID("tinyblox", SoundType.HUD, "walk");
+
+
+    public Player(int id, int x, int y, Camera camera, SoundManager soundManager) {
     
         super(id, x, y, soundManager);
 
@@ -85,7 +90,7 @@ public class Player extends MobEntity {
         updateFlip();
         moving = tryMove(terrain);
 
-        if(moving) soundManager.walk.play(Utils.getFloatSound(15), MathUtils.random(0.9f, 1.1f), 0f);
+        if(moving) soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), MathUtils.random(0.9f, 1.1f), 0f);
 
         lastMove = System.currentTimeMillis();
 

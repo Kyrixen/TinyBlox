@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.sound.SoundID;
+import io.kyrixen.tinyblox.sound.SoundID.SoundType;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
 
@@ -30,7 +32,7 @@ public class Slider {
     // Slider specific
     protected float percent = 0;
 
-    protected UISounds uiSoundManager;
+    protected final SoundManager uiSoundManager;
 
     protected Texture outlineTexture;
     
@@ -52,7 +54,10 @@ public class Slider {
     protected BitmapFont font;
     protected GlyphLayout layout = new GlyphLayout();
 
-    public Slider(UISounds uiSoundManager) {
+    protected final SoundID OPTIONS_SOUND = new SoundID("tinyblox", SoundType.UI, "options");
+    protected final SoundID SLIDER_SOUND = new SoundID("tinyblox", SoundType.UI, "slider");
+
+    public Slider(SoundManager uiSoundManager) {
         this.uiSoundManager = uiSoundManager;
     }
 
@@ -93,8 +98,8 @@ public class Slider {
 
         hover = mX >= x && mX <= x + w && mY >= y && mY <= y + h;
 
-        if(hover && Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.slider.play(Utils.getFloatSound(50)); wasDragged = true; } }
-        if(hover) { if(!wasHovered) { uiSoundManager.options.play(Utils.getFloatSound(70)); wasHovered = true; } }
+        if(hover && Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.getSound(SLIDER_SOUND).play(Utils.getFloatSound(50)); wasDragged = true; } }
+        if(hover) { if(!wasHovered) { uiSoundManager.getSound(OPTIONS_SOUND).play(Utils.getFloatSound(70)); wasHovered = true; } }
         if(!hover) wasHovered = false;
 
         if(!Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }

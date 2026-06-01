@@ -18,7 +18,7 @@ import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton.ToggleButt
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.Slider;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
-import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 
@@ -35,7 +35,7 @@ public class Settings implements Screen {
     private Slider fpsSlider;
     private Slider musicSlider;
 
-    private UISounds uiSoundManager;
+    private SoundManager uiSoundManager;
 
     private SpriteBatch batch;
 
@@ -56,7 +56,7 @@ public class Settings implements Screen {
 
         this.batch = new SpriteBatch();
         
-        this.uiSoundManager = new UISounds();
+        this.uiSoundManager = new SoundManager();
 
         this.exitButton = new Button(uiSoundManager);
         this.fpsButton = new ToggleButton(uiSoundManager);
@@ -72,6 +72,8 @@ public class Settings implements Screen {
 
     private void init() {
     
+        uiSoundManager.loadUI();
+
         exitButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "EXIT", 1.5f);
         exitButton.initTexture(tex.getTexture(grayButton));
 

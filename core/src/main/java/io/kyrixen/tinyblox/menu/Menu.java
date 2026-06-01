@@ -16,7 +16,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
-import io.kyrixen.tinyblox.sound.UISounds;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 
 public class Menu implements Screen {
@@ -25,7 +25,7 @@ public class Menu implements Screen {
     
     private final Main main;
 
-    private UISounds uiSoundManager;
+    private SoundManager uiSoundManager;
 
     private Button playButton;
     private Button settingsButton;
@@ -48,7 +48,7 @@ public class Menu implements Screen {
 
         this.batch = new SpriteBatch();
         
-        this.uiSoundManager = new UISounds();
+        this.uiSoundManager = new SoundManager();
 
         this.playButton = new Button(uiSoundManager);
         this.settingsButton = new Button(uiSoundManager);
@@ -62,6 +62,8 @@ public class Menu implements Screen {
         
         tex.loadBackgrounds();
         tex.loadUI();
+        
+        uiSoundManager.loadUI();
 
         playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 1.5f);
         playButton.initTexture(tex.getTexture(brownButton));

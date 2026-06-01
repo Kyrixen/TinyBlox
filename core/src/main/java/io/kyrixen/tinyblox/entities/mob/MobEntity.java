@@ -3,7 +3,7 @@ package io.kyrixen.tinyblox.entities.mob;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.sound.Sfx;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.world.Terrain;
 
 public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
@@ -35,9 +35,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     protected boolean autoRecover = true;
 
     // Sound manager
-    protected final Sfx soundManager;
+    protected final SoundManager soundManager;
 
-    public MobEntity(int id, int x, int y, Sfx soundManager) {
+    public MobEntity(int id, int x, int y, SoundManager soundManager) {
         
         super(id, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
 
