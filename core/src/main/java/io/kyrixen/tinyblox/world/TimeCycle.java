@@ -87,7 +87,7 @@ public class TimeCycle {
 
         }
 
-        brightness = 0.35f + 0.65f * (0.5f + 0.5f * MathUtils.sin((time - 0.25f) * MathUtils.PI2));
+        brightness = 0.35f + 0.8f * (0.5f + 0.5f * MathUtils.sin((time - 0.25f) * MathUtils.PI2));
         brightness = MathUtils.clamp(brightness, 0f, 1.25f);
 
     }

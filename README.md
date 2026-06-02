@@ -47,6 +47,7 @@ TinyBlox is currently focused on:
 * Block placing and destroying
 * Directional selector system
 * Day/night cycle
+* Atmospheric ambient/local lighting
 * Modular engine structure
 
 ---
@@ -109,6 +110,7 @@ The world uses lightweight layered terrain instead of voxel rendering, focusing 
 * [x] Entity system
 * [x] Day/night cycle
 * [x] Ladder (partial)
+* [x] Lighting (simple)
 * [ ] RNG improvements
 * [ ] Stats system
 * [ ] Dialogues
@@ -193,11 +195,9 @@ cd TinyBloxJava
 
 ## Future Improvements
 
-* Better terrain generation
 * Biome system
 * Cave generation
-* Traversal systems (ladders/climbing)
-* Lighting/shadows
+* Shadows
 * Animated textures
 * Improved AI
 * Save/load system
