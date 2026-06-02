@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -12,7 +13,6 @@ import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
@@ -80,17 +80,19 @@ public class ItemEntity extends Entity {
 
     @Override
     // Render item entity
-    public void render(TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack){
+    public void render(Terrain terrain, TileRenderer tileRenderer, RendererStack rendererStack) {
 
         SpriteBatch batch = rendererStack.batch;
 
-        // Get brightnesses
-        float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
-        float itemBrightness = brightness * 0.9f + 0.1f;
+        Color light = terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
 
-        batch.setColor(itemBrightness + 0.15f, itemBrightness + 0.15f, itemBrightness + 0.15f, 1.0f);
-        tileRenderer.draw(this.texture, (int) (x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, rendererStack);
-        batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        float r = 0.65f + light.r * 0.35f;
+        float g = 0.65f + light.g * 0.35f;
+        float b = 0.65f + light.b * 0.35f;
+
+        batch.setColor(r, g, b, 1f);
+        tileRenderer.draw(this.texture, (int)(x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, rendererStack);
+        batch.setColor(1f, 1f, 1f, 1f);
 
     }
 

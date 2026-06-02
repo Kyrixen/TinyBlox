@@ -326,6 +326,22 @@ public class Terrain {
     
     }
 
+    // Get world light color at cordinates
+    public Color getLightColor(int worldX, int worldY) {
+
+        short chunkX = (short) Math.floorDiv(worldX, this.size);
+        short chunkY = (short) Math.floorDiv(worldY, this.size);
+
+        byte localX = (byte) Math.floorMod(worldX, this.size);
+        byte localY = (byte) Math.floorMod(worldY, this.size);
+
+        Chunk c = getChunk(chunkX, chunkY);
+        if(c == null) return Color.WHITE;
+
+        return c.getLight(localX, localY);
+
+    }
+
     // Draw edges on different heights
     public void drawHeightEdges(RendererStack rendererStack) {
 

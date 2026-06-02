@@ -33,49 +33,65 @@ public class TimeCycle {
     private float tintG = 1f;
     private float tintB = 1f;
 
+    
     public void updateDayTime(float deltaTime) {
-     
-        time += deltaTime / Constants.FULL_TIME_CYCLE;        
+
+        time += deltaTime / Constants.FULL_TIME_CYCLE;
         time %= 1f;
 
-
+        // Dawn
         if(time < 0.25f) {
 
             dayTime = DayTime.DAWN;
-          
-            tintR = 0.75f;
-            tintG = 0.8f;
-            tintB = 0.95f;
+            float progress = time / 0.25f;
 
-        } else if(time < 0.5f) {
-          
-            dayTime = DayTime.DAY;
-          
-            tintR = 1f;
-            tintG = 1f;
-            tintB = 1f;
-
-        } else if(time < 0.75f) {
-          
-            dayTime = DayTime.SUNSET;
-          
-            tintR = 1f;
-            tintG = 0.7f;
-            tintB = 0.55f;
-
-        } else {
-
-            dayTime = DayTime.NIGHT;
-            
-            tintR = 0.4f;
-            tintG = 0.45f;
-            tintB = 0.65f;
+            tintR = MathUtils.lerp(0.75f, 1f, progress);
+            tintG = MathUtils.lerp(0.8f, 1f, progress);
+            tintB = MathUtils.lerp(0.95f, 1f, progress);
 
         }
 
-        brightness = 0.2f + 1.05f * (0.5f + 0.5f * MathUtils.sin(time * MathUtils.PI2));
-    
+        // Day
+        else if(time < 0.5f) {
+
+            dayTime = DayTime.DAY;
+            float progress = (time - 0.25f) / 0.25f;
+
+            tintR = MathUtils.lerp(1f, 1f, progress);
+            tintG = MathUtils.lerp(1f, 0.7f, progress);
+            tintB = MathUtils.lerp(1f, 0.55f, progress);
+
+        }
+
+        // Sunset
+        else if(time < 0.75f) {
+
+            dayTime = DayTime.SUNSET;
+            float progress = (time - 0.5f) / 0.25f;
+
+            tintR = MathUtils.lerp(1f, 0.4f, progress);
+            tintG = MathUtils.lerp(0.7f, 0.45f, progress);
+            tintB = MathUtils.lerp(0.55f, 0.65f, progress);
+
+        }
+
+        // Night
+        else {
+
+            dayTime = DayTime.NIGHT;
+            float progress = (time - 0.75f) / 0.25f;
+
+            tintR = MathUtils.lerp(0.4f, 0.75f, progress);
+            tintG = MathUtils.lerp(0.45f, 0.8f, progress);
+            tintB = MathUtils.lerp(0.65f, 0.95f, progress);
+
+        }
+
+        brightness = 0.35f + 0.65f * (0.5f + 0.5f * MathUtils.sin((time - 0.25f) * MathUtils.PI2));
+        brightness = MathUtils.clamp(brightness, 0f, 1.25f);
+
     }
+
 
     // Getters //
 

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.entities.Entity;
-import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -88,7 +87,7 @@ public class Engine implements Screen {
         soundManager.loadHUD();
 
         // Time init
-        timeCycle.setDayTime(DayTime.NIGHT);
+        timeCycle.setDayTime(DayTime.DAY);
 
         // Spawn cords
         int[] spawn = Utils.spawnNearCenter(terrain);
@@ -114,8 +113,8 @@ public class Engine implements Screen {
 
         Entity.initTextureAll(entities);
 
-        player.getInventory().add(Item.LADDER, (byte) 36);
-        player.getInventory().add(Item.CAGED_LAMP, (byte) 10);
+        //player.getInventory().add(Item.LADDER, (byte) 36);
+        //player.getInventory().add(Item.CAGED_LAMP, (byte) 10);
 
     }
 
@@ -215,7 +214,7 @@ public class Engine implements Screen {
 
         // Entities
         batch.begin();
-        Entity.renderAll(timeCycle, tileRenderer, entities, rendererStack);
+        Entity.renderAll(terrain, tileRenderer, entities, rendererStack);
         batch.end();
 
         // Above Terrain and Terrain Depth Overlay

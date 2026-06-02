@@ -2,14 +2,15 @@ package io.kyrixen.tinyblox.entities;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.TerrainCollision;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
@@ -119,14 +120,18 @@ public class Entity {
     }
 
     // Render entity
-    public void render(TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack){
+    public void render(Terrain terrain, TileRenderer tileRenderer, RendererStack rendererStack){
 
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness
-        float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
+        Color brightnessColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE));
 
-        batch.setColor(brightness, brightness, brightness, 1.0f);
+        brightnessColor.r = 0.5f + brightnessColor.r * 0.5f;
+        brightnessColor.g = 0.5f + brightnessColor.g * 0.5f;
+        brightnessColor.b = 0.5f + brightnessColor.b * 0.5f;
+
+        batch.setColor(brightnessColor.r, brightnessColor.g, brightnessColor.b, 1.0f);
         tileRenderer.draw(this.texture, x, y, this.flip, rendererStack);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -144,9 +149,9 @@ public class Entity {
     }
 
     // Helper func (renders all entites)
-    public static void renderAll(TimeCycle timeCycle, TileRenderer tileRenderer, ArrayList<Entity> entities, RendererStack rendererStack) {
+    public static void renderAll(Terrain terrain, TileRenderer tileRenderer, ArrayList<Entity> entities, RendererStack rendererStack) {
         for (Entity e : entities) {
-            e.render(timeCycle, tileRenderer, rendererStack);
+            e.render(terrain, tileRenderer, rendererStack);
         }
     }
 
