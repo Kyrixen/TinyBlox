@@ -2,12 +2,12 @@ package io.kyrixen.tinyblox.world;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -98,7 +98,7 @@ public class Terrain {
     }
 
     // Render lower visible chunks
-    public void renderLower(Player player, SpriteBatch batch) {
+    public void renderLower(Player player, RendererStack rendererStack) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -112,7 +112,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderLower(player, tileRenderer, batch);
+                c.renderLower(player, tileRenderer, rendererStack);
 
             }
         }
@@ -120,7 +120,7 @@ public class Terrain {
     }
 
     // Render above visible chunks
-    public void renderAbove(Player player, SpriteBatch batch) {
+    public void renderAbove(Player player, RendererStack rendererStack) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -151,7 +151,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.renderAbove(player, tileAbovePlayer, tileRenderer, batch);
+                c.renderAbove(player, tileAbovePlayer, tileRenderer, rendererStack);
 
             }
         }
@@ -181,7 +181,7 @@ public class Terrain {
     }
 
     // Render overlay for visible chunks
-    public void renderDepthOverlay(Camera camera, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
+    public void renderDepthOverlay(Player player, TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -196,7 +196,7 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
     
-                c.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
+                c.renderDepthOverlay(player, timeCycle, tileRenderer, rendererStack);
     
             }
     
@@ -271,7 +271,10 @@ public class Terrain {
     }
 
     // Draw edges on different heights
-    public void drawHeightEdges(Camera cam, ShapeRenderer  shapeRenderer) {
+    public void drawHeightEdges(RendererStack rendererStack) {
+
+        Camera cam = rendererStack.camera;
+        ShapeRenderer shapeRenderer = rendererStack.shape;
 
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
 

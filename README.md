@@ -300,4 +300,4 @@ Built using:
 
 ---
 
-Copyright (c) 2026 Kyrixen Tirev
+Copyright (c) 2026 Kyrixen

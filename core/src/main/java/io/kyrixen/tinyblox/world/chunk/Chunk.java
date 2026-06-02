@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.Camera;
@@ -70,10 +71,12 @@ public class Chunk {
     }
 
     // Render above chunk
-    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, SpriteBatch batch) {
+    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, RendererStack rendererStack) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
+
+        SpriteBatch batch = rendererStack.batch;
 
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
@@ -127,7 +130,7 @@ public class Chunk {
                     
                     }
                     
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
+                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                     batch.setColor(1f, 1f, 1f, 1f);
 
                 }
@@ -140,10 +143,12 @@ public class Chunk {
 
 
     // Render lower chunk
-    public void renderLower(Player player, TileRenderer tileRenderer,SpriteBatch batch) {
+    public void renderLower(Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
 
         // Check if can render chunk
         if (!loaded || !rendered) return;
+
+        SpriteBatch batch = rendererStack.batch;
 
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
@@ -170,7 +175,7 @@ public class Chunk {
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
                     batch.setColor(light.r, light.g, light.b, 1f);
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
+                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                     batch.setColor(1f, 1f, 1f, 1f);
 
                 }
@@ -249,10 +254,12 @@ public class Chunk {
     }
 
     // Render depth for the top tile
-    public void renderDepthOverlay(Camera cam, Player player, TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch) {
+    public void renderDepthOverlay(Player player, TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack) {
 
         // Check if can render overlay for chunk
         if (!loaded || !rendered) return;
+
+        SpriteBatch batch = rendererStack.batch;
 
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
@@ -282,7 +289,7 @@ public class Chunk {
                 else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
-                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, batch);
+                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                 
                 batch.setColor(1f, 1f, 1f, 1f);
             

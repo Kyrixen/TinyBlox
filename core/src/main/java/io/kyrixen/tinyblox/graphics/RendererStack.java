@@ -2,6 +2,7 @@ package io.kyrixen.tinyblox.graphics;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Gdx;
 
@@ -20,8 +21,10 @@ public class RendererStack {
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
 		font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
-		camera = new Camera(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, Constants.RENDER_DISTANCE, 3f);
+		camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
 		
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
 	}
 	
 	public void dispose() {

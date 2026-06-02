@@ -48,11 +48,8 @@ public class Slider {
     protected boolean wasDragged = false;
     protected boolean wasHovered = false;
 
-    private ShapeRenderer shapeRenderer;
-
     protected String name;
 
-    protected BitmapFont font;
     protected GlyphLayout layout = new GlyphLayout();
 
     protected final SoundID OPTIONS_SOUND = new SoundID("tinyblox", SoundType.UI, "options");
@@ -74,12 +71,6 @@ public class Slider {
         this.maxValue = maxValue;
 
         this.name = name;
-
-        this.shapeRenderer = new ShapeRenderer();
-
-        font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
-        font.getData().setScale(1.75f);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
     }
 
@@ -116,6 +107,9 @@ public class Slider {
 
 		SpriteBatch batch = rendererStack.batch;
 		ShapeRenderer shapeRenderer = rendererStack.shape;
+        BitmapFont font = rendererStack.font;
+
+        font.getData().setScale(1.75f);
 
         // Draw outline/background
         batch.begin();
@@ -146,6 +140,7 @@ public class Slider {
         float textY = y + (h + layout.height) / 2f;
 
         font.draw(batch, name + " " + Integer.toString(this.getValue()), textX, textY);
+        font.setColor(Color.WHITE);
     
         batch.end();
     

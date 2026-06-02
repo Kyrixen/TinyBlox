@@ -3,6 +3,7 @@ package io.kyrixen.tinyblox.graphics.texture;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -28,7 +29,7 @@ public class TextureManager {
     
         try {
 
-            Texture asset = new Texture(path);
+            Texture asset = new Texture(Gdx.files.internal(path));
             Texture assetOutline = this.generateDepthOverlay(asset.getTextureData());
 
             if(loadedTextures.containsKey(identifier)) { Logger.LOGGER.error("TEXTURES", "ID already registered!: " + identifier.toString()); return; }

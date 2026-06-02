@@ -13,6 +13,7 @@ import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
@@ -91,9 +92,14 @@ public class Selector extends Entity {
         
     }
 
-    public void render(ShapeRenderer sr, Camera camera) {
+    public void render(RendererStack rendererStack) {
+    
+        ShapeRenderer sr = rendererStack.shape;
+        Camera camera = rendererStack.camera;
+
         sr.setColor(Color.WHITE);
         sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
+    
     }
 
 

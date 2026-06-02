@@ -2,6 +2,7 @@ package io.kyrixen.tinyblox.menu.settings.uisettingsaddon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.menu.ui.Button;
@@ -32,6 +33,9 @@ public class ToggleButton extends Button {
     public void render(RendererStack rendererStack) {
 
 		SpriteBatch batch = rendererStack.batch;
+        BitmapFont font = rendererStack.font;
+
+        font.getData().setScale(this.scale);
 
         float r = 1f;
         float g = 1f;

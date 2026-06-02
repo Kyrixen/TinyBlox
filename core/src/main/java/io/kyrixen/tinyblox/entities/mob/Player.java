@@ -5,8 +5,6 @@ package io.kyrixen.tinyblox.entities.mob;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
@@ -18,6 +16,7 @@ import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.SoundID;
@@ -177,16 +176,16 @@ public class Player extends MobEntity {
 
     }
 
-    public void renderSelector(ShapeRenderer shape, Camera camera) {
-        selector.render(shape, camera);
+    public void renderSelector(RendererStack rendererStack) {
+        selector.render(rendererStack);
     }
 
-    public void renderInvetory(TextureManager tex, SpriteBatch batch) {
-        inventoryRenderer.render(tex, batch);
+    public void renderInvetory(TextureManager tex, RendererStack rendererStack) {
+        inventoryRenderer.render(tex, rendererStack);
     }
 
-    public void drawInventoryHighlight(ShapeRenderer shapeRenderer) {
-        inventoryRenderer.drawHighlight(shapeRenderer);
+    public void drawInventoryHighlight(RendererStack rendererStack) {
+        inventoryRenderer.drawHighlight(rendererStack);
     }
 
     // Overrides //

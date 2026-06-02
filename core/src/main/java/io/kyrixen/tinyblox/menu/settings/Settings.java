@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
@@ -169,10 +168,6 @@ public class Settings implements Screen {
         Logger.LOGGER.info("SETTINGS", "On settings cleanup");
 
         if(rendererStack != null) rendererStack.dispose();
-
-        exitButton.dispose();
-        fpsButton.dispose();
-        vsyncButton.dispose();
 
         uiSoundManager.cleanup();
 

@@ -29,6 +29,7 @@ public class Button {
 
     // Size
     protected int w, h;
+    protected float scale;
 
     // Textures
     protected Texture buttonTexture;
@@ -45,7 +46,6 @@ public class Button {
     // Sound Manager
     protected final SoundManager uiSoundManager;
             
-    protected BitmapFont font;
     protected GlyphLayout layout = new GlyphLayout();
 
     protected final SoundID HOLLOW_SOUND = new SoundID("tinyblox", SoundType.UI, "hollow");
@@ -59,16 +59,13 @@ public class Button {
 
         this.x = x;
         this.y = y;
-
+        
         this.w = w;
         this.h = h;
-
+        this.scale = scale;
+        
         this.text = text;
-
-        font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
-        font.getData().setScale(scale);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
+        
     }
 
 
@@ -79,7 +76,10 @@ public class Button {
     public void render(RendererStack rendererStack) {
     
 		SpriteBatch batch = rendererStack.batch;
+        BitmapFont font = rendererStack.font;
     
+        font.getData().setScale(scale);
+
         switch (state) {
 
             case NOACTION:
@@ -125,10 +125,6 @@ public class Button {
 
         } else { state = ButtonState.NOACTION; wasHovering = false; wasPressed = false; }
     
-    }
-    
-    public void dispose() {
-        if(font != null) font.dispose();
     }
 
     // Get methods

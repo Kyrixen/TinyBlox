@@ -88,7 +88,7 @@ public class Menu implements Screen {
         playButton.updateState();
         settingsButton.updateState();
 
-        if(playButton.pressed()) main.setScreen(new Engine(tex));
+        if(playButton.pressed()) main.setScreen(new Engine(rendererStack, tex));
         if(settingsButton.pressed()) main.setScreen(new Settings(this.main, this.rendererStack, this.tex, this.uiRenderer));
 
     }
@@ -138,9 +138,6 @@ public class Menu implements Screen {
 
         if(rendererStack != null) rendererStack.dispose();
         
-        playButton.dispose();
-        settingsButton.dispose();
-
         uiSoundManager.cleanup();
     
     }

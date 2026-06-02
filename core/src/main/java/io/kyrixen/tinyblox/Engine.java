@@ -16,6 +16,7 @@ import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -42,33 +43,26 @@ public class Engine implements Screen {
     // Module components
     private Controller controller;
     private final TextureManager textures;
+    private final RendererStack rendererStack;
     private TileRenderer tileRenderer;
-    private Camera camera;
     private Terrain terrain;
     private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
     private SoundManager soundManager;
     private EnemySpawner enemySpawner;
 
-    private SpriteBatch batch;
-    private ShapeRenderer shape;
 
-
-    public Engine(TextureManager tex) {
+    public Engine(RendererStack rendererStack, TextureManager tex) {
         this.textures = tex;
+        this.rendererStack = rendererStack;
     }
 
     @Override
     public void show() {
-    
-        // Renderers init
-        batch = new SpriteBatch();
-        shape = new ShapeRenderer();
 
         // Module components init
-        camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
         controller = new Controller();
-        tileRenderer = new TileRenderer(camera, textures);
+        tileRenderer = new TileRenderer(textures);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
@@ -100,7 +94,7 @@ public class Engine implements Screen {
         int[] spawn = Utils.spawnNearCenter(terrain);
 
         // Create player
-        player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], camera, soundManager);
+        player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], rendererStack.camera, soundManager);
         player.setLevel((byte) spawn[2]);
 
         // Add to list
@@ -128,7 +122,7 @@ public class Engine implements Screen {
     @Override
     public void render(float delta) {
 
-        if (exit || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+        if(exit || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     
         update(delta);
         render();
@@ -138,6 +132,8 @@ public class Engine implements Screen {
     }
 
     private void update(float delta) {
+
+        Camera camera = rendererStack.camera;
 
         timeCycle.updateDayTime(delta);
         terrain.updateLighting(timeCycle);
@@ -199,12 +195,16 @@ public class Engine implements Screen {
 
     private void render() {
 
+        // Get renderers
+        SpriteBatch batch = rendererStack.batch;
+        ShapeRenderer shape = rendererStack.shape;
+
         // Clear window
         RendererUtils.clear();
 
         // Lower World
         batch.begin();
-        terrain.renderLower(player, batch);
+        terrain.renderLower(player, rendererStack);
         batch.end();
 
         // World highlights
@@ -214,32 +214,32 @@ public class Engine implements Screen {
 
         // Entities
         batch.begin();
-        Entity.renderAll(timeCycle, tileRenderer, entities, batch);
+        Entity.renderAll(timeCycle, tileRenderer, entities, rendererStack);
         batch.end();
 
         // Above Terrain and Terrain Depth Overlay
         batch.begin();
-        terrain.renderAbove(player, batch);
-        terrain.renderDepthOverlay(camera, player, timeCycle, tileRenderer, batch);
+        terrain.renderAbove(player, rendererStack);
+        terrain.renderDepthOverlay(player, timeCycle, tileRenderer, rendererStack);
         batch.end();
 
         shape.begin(ShapeType.Line);
-        terrain.drawHeightEdges(camera, shape);
-        player.renderSelector(shape, camera);
+        terrain.drawHeightEdges(rendererStack);
+        player.renderSelector(rendererStack);
         shape.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         // UI
         batch.begin();
-        player.renderInvetory(textures, batch);
-        fpsCounter.printFPS(batch);
+        player.renderInvetory(textures, rendererStack);
+        fpsCounter.printFPS(rendererStack);
         batch.end();
 
 
         // UI highlights
         shape.begin(ShapeType.Line);
-        player.drawInventoryHighlight(shape);
+        player.drawInventoryHighlight(rendererStack);
         shape.end();
     
     }
@@ -281,15 +281,12 @@ public class Engine implements Screen {
         entities.clear();
 
         // Clean up textures
-        if (textures != null) { textures.cleanup(); }
+        if(textures != null) { textures.cleanup(); }
 
         terrain.cleanup();
-        camera.cleanup();
-        fpsCounter.cleanup();
 
-        if (soundManager != null) soundManager.cleanup();
-        if (batch != null) batch.dispose();
-        if (shape != null) shape.dispose();
+        if(soundManager != null) soundManager.cleanup();
+        if(rendererStack != null) rendererStack.dispose();
     
     }
 

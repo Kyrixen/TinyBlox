@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
@@ -79,14 +80,16 @@ public class ItemEntity extends Entity {
 
     @Override
     // Render item entity
-    public void render(TimeCycle timeCycle, TileRenderer tileRenderer, SpriteBatch batch){
+    public void render(TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack){
+
+        SpriteBatch batch = rendererStack.batch;
 
         // Get brightnesses
         float brightness = 0.5f + timeCycle.getBrightness() * 0.5f;
         float itemBrightness = brightness * 0.9f + 0.1f;
 
         batch.setColor(itemBrightness + 0.15f, itemBrightness + 0.15f, itemBrightness + 0.15f, 1.0f);
-        tileRenderer.draw(this.texture, (int) (x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, batch);
+        tileRenderer.draw(this.texture, (int) (x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, rendererStack);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     }
