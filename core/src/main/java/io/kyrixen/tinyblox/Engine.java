@@ -88,7 +88,7 @@ public class Engine implements Screen {
         soundManager.loadHUD();
 
         // Time init
-        timeCycle.setDayTime(DayTime.DAY);
+        timeCycle.setDayTime(DayTime.NIGHT);
 
         // Spawn cords
         int[] spawn = Utils.spawnNearCenter(terrain);
@@ -115,6 +115,7 @@ public class Engine implements Screen {
         Entity.initTextureAll(entities);
 
         player.getInventory().add(Item.LADDER, (byte) 36);
+        player.getInventory().add(Item.CAGED_LAMP, (byte) 10);
 
     }
 
@@ -136,7 +137,7 @@ public class Engine implements Screen {
         Camera camera = rendererStack.camera;
 
         timeCycle.updateDayTime(delta);
-        terrain.updateLighting(timeCycle);
+        terrain.rebuildLighting(timeCycle);
         enemySpawner.updateSpawnRate(timeCycle);
         controller.update(delta, player, terrain, entities);
 

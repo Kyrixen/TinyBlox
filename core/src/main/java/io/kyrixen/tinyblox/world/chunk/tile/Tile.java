@@ -8,34 +8,37 @@ public class Tile {
     // Tile type enum
     public static enum TileType {
         
-        AIR(9999999f, true, false, false, false),
-        VOID(9999999f, false, false, false, false),
-        LEAVES(0.10f, false, true, false, false),
-        GRASS(0.20f, false, true, false, true),
-        DIRT(0.35f, false, true, false, true),
-        WATER(9999999f, true, false, false, true),
-        STONE(0.75f, false, true, false, true),
-        IRON(1.25f, false, true, false, false),
-        WOOD(0.50f, false, true, false, false),
-        LADDER(0.45f, true, true, true, false),
-        CAGED_LAMP(0.6f, false, true, false, false);
+        AIR(9999999f, true, false, false, false, 0f),
+        VOID(9999999f, false, false, false, false, 0f),
+        LEAVES(0.10f, false, true, false, false, 0f),
+        GRASS(0.20f, false, true, false, true, 0f),
+        DIRT(0.35f, false, true, false, true, 0f),
+        WATER(9999999f, true, false, false, true, 0f),
+        STONE(0.75f, false, true, false, true, 0f),
+        IRON(1.25f, false, true, false, false, 0.15f),
+        WOOD(0.50f, false, true, false, false, 0f),
+        LADDER(0.45f, true, true, true, false, 0f),
+        CAGED_LAMP(0.6f, false, true, false, false, 0.75f);
 
         private final float mining_time;
         private final boolean climbable;
         private final boolean passable;
         private final boolean terrain;
         private final boolean support;
+        private final float lightLevel;
 
-        TileType(float mining_time, boolean passable, boolean support, boolean climbable, boolean terrain) {
+        TileType(float mining_time, boolean passable, boolean support, boolean climbable, boolean terrain, float lightLevel) {
             this.mining_time = mining_time;
             this.passable = passable;
             this.climbable = climbable;
             this.terrain = terrain;
             this.support = support;
+            this.lightLevel = lightLevel;
         }
 
         public float getMiningTime() { return this.mining_time; }
-        
+        public float getLightLevel() { return this.lightLevel; }
+
         public boolean isClimbable() { return this.climbable; }
         public boolean isPassable() { return this.passable; }
         public boolean isTerrain() { return this.terrain; }

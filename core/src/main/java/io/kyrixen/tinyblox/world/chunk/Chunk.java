@@ -321,13 +321,14 @@ public class Chunk {
 
     public int getChunkSize() { return this.CHUNK_SIZE; }
 
-    // Update light
-    public void updateLighting(TimeCycle timeCycle) {
+
+    // Reset default lighting
+    public void resetAmbientLighting(Color ambient) {
 
         for(byte xPos = 0; xPos < lightLevel.length; xPos++) {
             for(byte yPos = 0; yPos < lightLevel.length; yPos++) {
             
-                this.setLight(xPos, yPos, timeCycle.getBrightnessColor());
+                this.setLight(xPos, yPos, ambient);
 
             }
         }
@@ -341,17 +342,19 @@ public class Chunk {
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
 
+        int camCenterX = cam.x + (int) (Constants.WINDOW_WIDTH / (2f * cam.zoom));
+        int camCenterY = cam.y + (int) (Constants.WINDOW_HEIGHT / (2f * cam.zoom));
+
         // Camera chunk coordinates (top-left of screen)
-        int camChunkX = cam.x / chunkWorldSize;
-        int camChunkY = cam.y / chunkWorldSize;
+        int camChunkX = camCenterX / chunkWorldSize;
+        int camChunkY = camCenterY / chunkWorldSize;
 
         int buffer = Constants.BUFFER; // Number of chunks beyond camera view
 
         // Determine rendered chunk range
-        // Determine rendered chunk range
-        int left   = Math.max(0, camChunkX - buffer);
+        int left   = Math.max(0, camChunkX - cam.RENDER_DISTANCE - buffer);
         int right  = Math.min(worldChunksX - 1, camChunkX + cam.RENDER_DISTANCE + buffer);
-        int top    = Math.max(0, camChunkY - buffer);
+        int top    = Math.max(0, camChunkY - cam.RENDER_DISTANCE - buffer);
         int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
 
         // Keep generated chunk data in RAM; only toggle rendering.
@@ -412,7 +415,7 @@ public class Chunk {
     }
 
     public void setLight(byte xPos, byte yPos, Color light) {
-        this.lightLevel[xPos][yPos] = light;
+        this.lightLevel[xPos][yPos].set(light);
     }
 
     // Unload resources

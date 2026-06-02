@@ -2,7 +2,9 @@ package io.kyrixen.tinyblox.world;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
@@ -159,7 +161,7 @@ public class Terrain {
     }
 
     // Update chunk light
-    public void updateLighting(TimeCycle timeCycle) {
+    public void rebuildLighting(TimeCycle timeCycle) {
         
         int chunkCountX = (w + size - 1) / size;
         int chunkCountY = (h + size - 1) / size;
@@ -173,11 +175,65 @@ public class Terrain {
                 // If not visible dont render
                 if(!c.rendered) continue;
 
-                c.updateLighting(timeCycle);
+                c.resetAmbientLighting(timeCycle.getBrightnessColor());
+
+                for(byte localX = 0; localX < c.get().length; localX++) {
+                    for(byte localY = 0; localY < c.get().length; localY++) {
+                    
+                        Tile current = c.getTileStack(localX, localY).top();
+                        if(current == null || current.type().getLightLevel() <= 0f) continue;
+
+                        int worldX = cx * this.size + localX;
+                        int worldY = cy * this.size + localY;
+
+                        applyRadialLight(worldX, worldY, current.type().getLightLevel());
+
+                    }
+                }
+        
+            }
+        }
+
+    }
+
+    // Applies lighting
+    private void applyRadialLight(int worldX, int worldY, float lightLevel) {
+
+        for(byte tx = -Constants.LIGHT_RADIUS; tx <= Constants.LIGHT_RADIUS; tx++) {
+            for(byte ty = -Constants.LIGHT_RADIUS; ty <= Constants.LIGHT_RADIUS; ty++) {
+        
+                int targetWorldX = worldX + tx;
+                int targetWorldY = worldY + ty;
+                short chunkX = (short) Math.floorDiv(targetWorldX, this.size);
+                short chunkY = (short) Math.floorDiv(targetWorldY, this.size);
+
+                Chunk c = this.getChunk(chunkX, chunkY);
+                if(c == null) continue;
+
+
+                int localLightX = Math.floorMod(targetWorldX, this.size);
+                int localLightY = Math.floorMod(targetWorldY, this.size);
+
+                float sourceDist = Vector2.len(tx, ty);
+                if(sourceDist > Constants.LIGHT_RADIUS) continue;
+
+                float lowerance = 1f - (sourceDist / Constants.LIGHT_RADIUS);
+                lowerance = Math.max(0f, lowerance);
+
+                Color lightColor = c.getLight((byte) localLightX, (byte) localLightY);
+
+
+                lightColor.r += 1f * lowerance * lightLevel;
+                lightColor.g += 0.8f * lowerance * lightLevel;
+                lightColor.b += 0.5f * lowerance * lightLevel;
+
+                lightColor.r = Math.min(lightColor.r, 1.25f);
+                lightColor.g = Math.min(lightColor.g, 1.25f);
+                lightColor.b = Math.min(lightColor.b, 1.25f);
 
             }
         }
-    
+
     }
 
     // Render overlay for visible chunks
