@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
@@ -18,6 +17,7 @@ import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Menu implements Screen {
 
@@ -30,23 +30,22 @@ public class Menu implements Screen {
     private Button playButton;
     private Button settingsButton;
 
-    private SpriteBatch batch;
+    private final RendererStack rendererStack;
 
     private final TextureManager tex;
     private final UIRenderer uiRenderer;
 
     private static final TextureID brownButton = new TextureID("tinyblox", TextureType.UI,"brown_button");
 
-    public Menu(Main main, TextureManager tex) {
+    public Menu(Main main, RendererStack rendererStack, TextureManager tex) {
         this.main = main;
+        this.rendererStack = rendererStack;
         this.tex = tex;
         this.uiRenderer = new UIRenderer(tex);
     }
 
     @Override
     public void show() {
-
-        this.batch = new SpriteBatch();
         
         this.uiSoundManager = new SoundManager();
 
@@ -90,7 +89,7 @@ public class Menu implements Screen {
         settingsButton.updateState();
 
         if(playButton.pressed()) main.setScreen(new Engine(tex));
-        if(settingsButton.pressed()) main.setScreen(new Settings(this.main, this.tex, this.uiRenderer));
+        if(settingsButton.pressed()) main.setScreen(new Settings(this.main, this.rendererStack, this.tex, this.uiRenderer));
 
     }
 
@@ -98,12 +97,12 @@ public class Menu implements Screen {
 
         ScreenUtils.clear(Color.CYAN);
         
-        uiRenderer.showMenuBackground(batch);
+        uiRenderer.showMenuBackground(rendererStack);
 
-        batch.begin();
-        playButton.render(batch);
-        settingsButton.render(batch);
-        batch.end();
+        rendererStack.batch.begin();
+        playButton.render(rendererStack);
+        settingsButton.render(rendererStack);
+        rendererStack.batch.end();
 
     }
 
@@ -137,7 +136,7 @@ public class Menu implements Screen {
 
         Logger.LOGGER.info("MENU", "On menu cleanup");
 
-        if(batch != null) batch.dispose();
+        if(rendererStack != null) rendererStack.dispose();
         
         playButton.dispose();
         settingsButton.dispose();

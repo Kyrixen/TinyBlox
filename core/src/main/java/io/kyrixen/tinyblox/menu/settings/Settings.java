@@ -21,6 +21,7 @@ import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Settings implements Screen {
 
@@ -37,7 +38,7 @@ public class Settings implements Screen {
 
     private SoundManager uiSoundManager;
 
-    private SpriteBatch batch;
+    private final RendererStack rendererStack;
 
     private final TextureManager tex;
     private final UIRenderer uiRenderer;
@@ -45,8 +46,9 @@ public class Settings implements Screen {
     private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
     private static final TextureID whiteSlider = new TextureID("tinyblox", TextureType.UI,"white_slider");
 
-    public Settings(Main main, TextureManager textureManager, UIRenderer uiRenderer) {
+    public Settings(Main main, RendererStack rendererStack, TextureManager textureManager, UIRenderer uiRenderer) {
         this.main = main;
+        this.rendererStack = rendererStack;
         this.tex = textureManager;
         this.uiRenderer = uiRenderer;
     }
@@ -54,8 +56,6 @@ public class Settings implements Screen {
     @Override
     public void show() {
 
-        this.batch = new SpriteBatch();
-        
         this.uiSoundManager = new SoundManager();
 
         this.exitButton = new Button(uiSoundManager);
@@ -112,7 +112,7 @@ public class Settings implements Screen {
         fpsSlider.updateState();
         musicSlider.updateState();
 
-        if(exitButton.pressed()) main.setScreen(new Menu(main, tex));
+        if(exitButton.pressed()) main.setScreen(new Menu(main, rendererStack, tex));
         if(fpsButton.pressed()) Constants.SHOW_FPS = !Constants.SHOW_FPS;
         if(vsyncButton.pressed()) { RendererUtils.updateVsync(!Constants.VSYNC); }
 
@@ -125,16 +125,16 @@ public class Settings implements Screen {
 
         ScreenUtils.clear(Color.LIGHT_GRAY);
 
-        uiRenderer.showSettingsBackground(batch);
+        uiRenderer.showSettingsBackground(rendererStack);
 
-        batch.begin();
-        exitButton.render(batch);
-        fpsButton.render(batch);
-        vsyncButton.render(batch);
-        batch.end();
+        rendererStack.batch.begin();
+        exitButton.render(rendererStack);
+        fpsButton.render(rendererStack);
+        vsyncButton.render(rendererStack);
+        rendererStack.batch.end();
 
-        fpsSlider.render(batch);
-        musicSlider.render(batch);
+        fpsSlider.render(rendererStack);
+        musicSlider.render(rendererStack);
 
     }
 
@@ -168,7 +168,7 @@ public class Settings implements Screen {
 
         Logger.LOGGER.info("SETTINGS", "On settings cleanup");
 
-        if(batch != null) batch.dispose();
+        if(rendererStack != null) rendererStack.dispose();
 
         exitButton.dispose();
         fpsButton.dispose();

@@ -47,7 +47,7 @@ public class SoundManager {
     
         Sound asset = loadedSounds.get(identifier);
 
-        if(asset == null) { Logger.LOGGER.error("TEXTURES", "Texture not loaded: " + identifier.toString());  return loadedSounds.get(MISSING_SOUND); }
+        if(asset == null) { Logger.LOGGER.error("SOUND", "Sound not loaded: " + identifier.toString());  return loadedSounds.get(MISSING_SOUND); }
 
         return asset;
     

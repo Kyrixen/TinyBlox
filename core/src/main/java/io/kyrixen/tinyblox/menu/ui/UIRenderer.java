@@ -6,6 +6,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class UIRenderer {
 
@@ -21,7 +22,9 @@ public class UIRenderer {
     }
 
     // Show Menu background
-    public void showMenuBackground(SpriteBatch batch){
+    public void showMenuBackground(RendererStack rendererStack){
+
+		SpriteBatch batch = rendererStack.batch;
 
         batch.begin();
         batch.draw(tex.getTexture(menuBackgroundImage), 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
@@ -30,7 +33,9 @@ public class UIRenderer {
     }
 
         // Show Settings background
-    public void showSettingsBackground(SpriteBatch batch){
+    public void showSettingsBackground(RendererStack rendererStack){
+
+		SpriteBatch batch = rendererStack.batch;
 
         batch.begin();
         batch.draw(tex.getTexture(settingsBackgroundImage), 0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);

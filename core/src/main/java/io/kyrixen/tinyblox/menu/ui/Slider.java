@@ -15,6 +15,7 @@ import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Slider
 public class Slider {
@@ -111,7 +112,10 @@ public class Slider {
 
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(RendererStack rendererStack) {
+
+		SpriteBatch batch = rendererStack.batch;
+		ShapeRenderer shapeRenderer = rendererStack.shape;
 
         // Draw outline/background
         batch.begin();

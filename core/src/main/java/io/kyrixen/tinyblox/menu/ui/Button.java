@@ -11,6 +11,7 @@ import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Button
 public class Button {
@@ -75,7 +76,9 @@ public class Button {
         this.buttonTexture = buttonTexture;
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(RendererStack rendererStack) {
+    
+		SpriteBatch batch = rendererStack.batch;
     
         switch (state) {
 

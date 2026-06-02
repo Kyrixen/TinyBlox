@@ -8,6 +8,7 @@ import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Toggle button
 public class ToggleButton extends Button {
@@ -28,7 +29,9 @@ public class ToggleButton extends Button {
     }
     
     @Override
-    public void render(SpriteBatch batch) {
+    public void render(RendererStack rendererStack) {
+
+		SpriteBatch batch = rendererStack.batch;
 
         float r = 1f;
         float g = 1f;
