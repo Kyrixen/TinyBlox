@@ -140,6 +140,12 @@ public class TextureManager {
         this.load(new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), "textures/hud/inventory/items/wood_pickaxe.png");
         this.load(new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), "textures/hud/inventory/items/stone_pickaxe.png");
 
+        this.load(new TextureID("tinyblox", TextureType.HUD, "crafting_menu_container"), "textures/hud/inventory/crafting_menu/container.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "crafting_menu_arrow"), "textures/hud/inventory/crafting_menu/arrow.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_hover"), "textures/hud/inventory/crafting_menu/button_hover.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_idle"), "textures/hud/inventory/crafting_menu/button_idle.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_selected"), "textures/hud/inventory/crafting_menu/button_selected.png");
+
     }
 
     public void loadUI() {

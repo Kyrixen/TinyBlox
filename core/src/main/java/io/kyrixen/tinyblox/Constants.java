@@ -37,7 +37,7 @@ public class Constants {
     public static final byte ROOF_REVEAL_RADIUS = 3;
 
     // Version
-    public static final String VERSION = "dev_pre-8";
+    public static final String VERSION = "dev_pre-9";
 
     // Dev settings
     public static final boolean DEBUG = true;

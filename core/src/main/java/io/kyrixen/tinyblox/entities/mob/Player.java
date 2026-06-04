@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
+import io.kyrixen.tinyblox.crafting.Crafting;
+import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.Selector;
@@ -32,10 +34,13 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class Player extends MobEntity {
 
+    private boolean inMenu = false;
+
     private final Selector selector;
     private final Camera camera;
 
-    private InventoryRenderer inventoryRenderer;
+    private final InventoryRenderer inventoryRenderer;
+    private final Crafting craftingManager;
 
     private final SoundID WALK_SOUND = new SoundID("tinyblox", SoundType.HUD, "walk");
 
@@ -47,6 +52,8 @@ public class Player extends MobEntity {
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);
         this.inventoryRenderer = new InventoryRenderer(inventory);
+
+        this.craftingManager = new Crafting(this.inventory);
 
         this.sprintDelay = 0.15f;
         this.damageDelay = 0.50f;
@@ -96,6 +103,7 @@ public class Player extends MobEntity {
     }
 
     public void updateSelector() {
+        if(this.inMenu) return;
         selector.update(camera);
     }
 
@@ -176,12 +184,19 @@ public class Player extends MobEntity {
 
     }
 
+    public void toggleMenuStat() { this.inMenu = !inMenu; }
+
+
     public void renderSelector(RendererStack rendererStack) {
         selector.render(rendererStack);
     }
 
     public void renderInvetory(TextureManager tex, RendererStack rendererStack) {
         inventoryRenderer.render(tex, rendererStack);
+    }
+
+    public void renderCraftingMenu(CraftingRenderer craftingRenderer, RendererStack rendererStack) {
+        craftingManager.render(craftingRenderer, rendererStack);
     }
 
     public void drawInventoryHighlight(RendererStack rendererStack) {
@@ -264,6 +279,8 @@ public class Player extends MobEntity {
 
     // Getters
 
+    public boolean isInMenu() { return inMenu; }
+
     private long last_debug_print;
     public void stats(Camera camera){
         if(System.currentTimeMillis() - last_debug_print < 3.0f * 1000) return;
@@ -277,6 +294,10 @@ public class Player extends MobEntity {
 
     public InventoryRenderer getInventoryRenderer() {
         return this.inventoryRenderer;
+    }
+
+    public Crafting getCraftingManager() {
+        return this.craftingManager;
     }
 
     @Override

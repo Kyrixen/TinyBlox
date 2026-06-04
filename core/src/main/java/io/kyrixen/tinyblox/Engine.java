@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
+import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
@@ -44,6 +46,7 @@ public class Engine implements Screen {
     private final TextureManager textures;
     private final RendererStack rendererStack;
     private TileRenderer tileRenderer;
+    private CraftingRenderer craftingRenderer;
     private Terrain terrain;
     private TimeCycle timeCycle;
     private FPSCounter fpsCounter;
@@ -62,6 +65,7 @@ public class Engine implements Screen {
         // Module components init
         controller = new Controller();
         tileRenderer = new TileRenderer(textures);
+        craftingRenderer = new CraftingRenderer(textures);
         terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
@@ -78,6 +82,9 @@ public class Engine implements Screen {
         // Initialize sprites
         textures.loadHUD();
         textures.loadGame();
+
+        // Load recipes
+        RecipeRegister.initRecipes();
 
         // Terrain init
         terrain.init();
@@ -233,6 +240,7 @@ public class Engine implements Screen {
         // UI
         batch.begin();
         player.renderInvetory(textures, rendererStack);
+        player.renderCraftingMenu(craftingRenderer, rendererStack);
         fpsCounter.printFPS(rendererStack);
         batch.end();
 

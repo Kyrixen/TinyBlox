@@ -18,31 +18,36 @@ public class Controller {
             player.setDirX(0);
             player.setDirY(0);
 
-            // Checks for movement input
-            if (Peripheral.keyPressed(Input.Keys.W)) player.setDirY(1);
-            if (Peripheral.keyPressed(Input.Keys.S)) player.setDirY(-1);
-            if (Peripheral.keyPressed(Input.Keys.A)) player.setDirX(-1);
-            if (Peripheral.keyPressed(Input.Keys.D)) player.setDirX(1);
+            if(!player.isInMenu()) {
 
-            // Climb movement input
-            if(Peripheral.keyJustPressed(Input.Keys.SPACE)) player.tryClimbUp(terrain);
-            if(Peripheral.keyJustPressed(Input.Keys.SHIFT_LEFT)) player.tryClimbDown(terrain);
+                // Checks for movement input
+                if (Peripheral.keyPressed(Input.Keys.W)) player.setDirY(1);
+                if (Peripheral.keyPressed(Input.Keys.S)) player.setDirY(-1);
+                if (Peripheral.keyPressed(Input.Keys.A)) player.setDirX(-1);
+                if (Peripheral.keyPressed(Input.Keys.D)) player.setDirX(1);
 
-            // Selector input logic
-            if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
-            if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(30, entities); }
+                // Climb movement input
+                if(Peripheral.keyJustPressed(Input.Keys.SPACE)) player.tryClimbUp(terrain);
+                if(Peripheral.keyJustPressed(Input.Keys.SHIFT_LEFT)) player.tryClimbDown(terrain);
 
-            // Inventory input logic
-            player.checkInventoryScrolling(Peripheral.mouseScroll());
-            if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
-            if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(entities);
+                // Selector input logic
+                if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
+                if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(30, entities); }
 
-            // Checks for sprinting
-            if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
+                // Inventory input logic
+                player.checkInventoryScrolling(Peripheral.mouseScroll());
+                if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
+                if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(entities);
 
-            // Crafting debug
-            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.C)) player.tryCraftWoodenPickaxe();
-            if(Constants.DEBUG && Peripheral.keyJustPressed(Input.Keys.V)) player.tryCraftStonePickaxe();
+                // Checks for sprinting
+                if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
+
+            }
+
+            // Crafting controls
+            if(Peripheral.keyJustPressed(Input.Keys.C)) { player.getCraftingManager().toggle(); player.toggleMenuStat(); }
+            player.getCraftingManager().update(Peripheral.getMouseX(), Constants.WINDOW_HEIGHT - Peripheral.getMouseY(), Peripheral.mouseJustPressed(Input.Buttons.LEFT));
+            player.getCraftingManager().updateScroll(Peripheral.mouseScroll());
 
     }
 

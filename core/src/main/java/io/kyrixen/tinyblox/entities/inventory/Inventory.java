@@ -48,8 +48,10 @@ public class Inventory {
 
         ItemStack itemStack = getStack(item);
 
+        if(itemStack == null) itemStack = getSlot(getEmptySlot());
         if(itemStack == null) return;
 
+        itemStack.setItem(item);
         itemStack.setCount(count);
 
     }
@@ -115,6 +117,19 @@ public class Inventory {
         if(emptySlot != -1) return slots[emptySlot];
 
         return null;
+
+    }
+
+    public int getTotalItemCount(Item item) {
+
+        int total = 0;
+
+        for(ItemStack itemStack : slots) {
+            if(itemStack.getItem() != item) continue;
+            total += itemStack.getCount();
+        }
+
+        return total;
 
     }
 
