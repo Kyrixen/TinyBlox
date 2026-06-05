@@ -3,6 +3,8 @@ package io.kyrixen.tinyblox.entities.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.kyrixen.tinyblox.entities.inventory.Equipment.EquipmentType;
+import io.kyrixen.tinyblox.entities.inventory.Equipment.ToolTier;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.utils.Utils;
@@ -26,8 +28,8 @@ public class ItemRegister {
     public final static Item LADDER = new Item("ladder", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), true, (byte) 36, TileType.LADDER);
     public final static Item CAGED_LAMP = new Item("caged_lamp", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
 
-    public final static Item WOODEN_PICKAXE = new Equipment("wooden_pickaxe", Utils.generateItemID(), new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), true, 1.25f);
-    public final static Item STONE_PICKAXE = new Equipment("stone_pickaxe", Utils.generateItemID(), new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), true, 2f);
+    public final static Item WOODEN_PICKAXE = new Equipment("wooden_pickaxe", new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), true, ToolTier.WOOD, EquipmentType.PICKAXE);
+    public final static Item STONE_PICKAXE = new Equipment("stone_pickaxe", new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), true, ToolTier.STONE, EquipmentType.PICKAXE);
     
 
     // Inits internal items

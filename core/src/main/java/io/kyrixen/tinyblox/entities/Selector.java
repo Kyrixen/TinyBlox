@@ -12,7 +12,6 @@ import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.inventory.Equipment;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.graphics.RendererStack;
@@ -108,13 +107,20 @@ public class Selector extends Entity {
     // Checkers //
 
     // Check if can hit mob
-    public void checkHit(int damage, ArrayList<Entity> entities) {
+    public void checkHit(ArrayList<Entity> entities) {
 
         // Check for mouse interaction
         MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
 
+        float damage = 20;
+
+        Item currentItem = this.mobEntityInventory.currentItem();
+        if(currentItem instanceof Equipment) { Equipment equipment = (Equipment) currentItem; damage = damage * equipment.getAttackDamage(); }
+        else damage = damage * 0.25f;
+
+
         if(e != null){
-            if(e.damage(damage)) sfxManager.getSound(HIT_ENEMY_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
+            if(e.damage((int) damage)) sfxManager.getSound(HIT_ENEMY_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f);
         }
 
     }
@@ -210,9 +216,8 @@ public class Selector extends Entity {
         }
         
         Item currentItem = mobEntityInventory.currentItem();
-        if(currentItem instanceof Equipment) { Equipment equipment = (Equipment) currentItem; miningProgress += deltaTime * equipment.getMiningSpeed(); }
-        else if(currentItem == ItemRegister.NONE) miningProgress += deltaTime * 0.75f;
-        else miningProgress += deltaTime * 0.25f;
+        if(currentItem instanceof Equipment) { Equipment equipment = (Equipment) currentItem; miningProgress += deltaTime * equipment.getStoneMiningSpeed(); }
+        else miningProgress += deltaTime * 0.5f;
 
         
         if(miningProgress < current.type().getMiningTime()) return;

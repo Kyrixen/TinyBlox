@@ -32,7 +32,7 @@ public class Controller {
 
                 // Selector input logic
                 if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
-                if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(30, entities); }
+                if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(entities); }
 
                 // Inventory input logic
                 player.checkInventoryScrolling(Peripheral.mouseScroll());
