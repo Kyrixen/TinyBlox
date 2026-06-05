@@ -8,28 +8,41 @@ public class Tile {
 
     // Tile type enum
     public static enum TileType {
+
+        AIR(9999999f, PreferedMiningType.NONE, true, false, false, false, 0f),
+        VOID(9999999f, PreferedMiningType.NONE, false, false, false, false, 0f),
+        LEAVES(0.10f, PreferedMiningType.WOOD, false, true, false, false, 0f),
+        GRASS(0.20f, PreferedMiningType.NONE, false, true, false, true, 0f),
+        DIRT(0.35f, PreferedMiningType.NONE, false, true, false, true, 0f),
+        WATER(9999999f, PreferedMiningType.NONE, true, false, false, true, 0f),
+        STONE(1.0f, PreferedMiningType.STONE, false, true, false, true, 0f),
+        IRON(1.75f, PreferedMiningType.STONE, false, true, false, false, 0.15f),
+        WOOD(0.60f, PreferedMiningType.WOOD, false, true, false, false, 0f),
+        LADDER(0.35f, PreferedMiningType.WOOD, true, true, true, false, 0f),
+        CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, true, false, false, 0.75f);
+
+
+        // Mining category enum
+        public enum PreferedMiningType {
         
-        AIR(9999999f, true, false, false, false, 0f),
-        VOID(9999999f, false, false, false, false, 0f),
-        LEAVES(0.10f, false, true, false, false, 0f),
-        GRASS(0.20f, false, true, false, true, 0f),
-        DIRT(0.35f, false, true, false, true, 0f),
-        WATER(9999999f, true, false, false, true, 0f),
-        STONE(0.75f, false, true, false, true, 0f),
-        IRON(1.25f, false, true, false, false, 0.15f),
-        WOOD(0.50f, false, true, false, false, 0f),
-        LADDER(0.45f, true, true, true, false, 0f),
-        CAGED_LAMP(0.6f, false, true, false, false, 0.75f);
+            NONE,
+            WOOD,
+            STONE,
+        
+        }
+
 
         private final float mining_time;
         private final boolean climbable;
         private final boolean passable;
         private final boolean terrain;
         private final boolean support;
+        private final PreferedMiningType miningType;
         private final float lightLevel;
 
-        TileType(float mining_time, boolean passable, boolean support, boolean climbable, boolean terrain, float lightLevel) {
+        TileType(float mining_time, PreferedMiningType miningType, boolean passable, boolean support, boolean climbable, boolean terrain, float lightLevel) {
             this.mining_time = mining_time;
+            this.miningType = miningType;
             this.passable = passable;
             this.climbable = climbable;
             this.terrain = terrain;
@@ -38,6 +51,8 @@ public class Tile {
         }
 
         public float getMiningTime() { return this.mining_time; }
+        public PreferedMiningType getPreferedMining() { return this.miningType; }
+        
         public float getLightLevel() { return this.lightLevel; }
 
         public boolean isClimbable() { return this.climbable; }

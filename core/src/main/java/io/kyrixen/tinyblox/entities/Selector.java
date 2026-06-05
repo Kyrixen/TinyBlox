@@ -216,8 +216,27 @@ public class Selector extends Entity {
         }
         
         Item currentItem = mobEntityInventory.currentItem();
-        if(currentItem instanceof Equipment) { Equipment equipment = (Equipment) currentItem; miningProgress += deltaTime * equipment.getStoneMiningSpeed(); }
-        else miningProgress += deltaTime * 0.5f;
+        if(currentItem instanceof Equipment) { 
+        
+            Equipment equipment = (Equipment) currentItem;
+            
+            switch (current.type().getPreferedMining()) {
+                
+                case NONE:
+                    miningProgress += deltaTime * 1f;    
+                    break;
+
+                case WOOD:
+                    miningProgress += deltaTime * equipment.getWoodMiningSpeed();
+                    break;
+                
+                case STONE:
+                    miningProgress += deltaTime * equipment.getStoneMiningSpeed();
+                    break;
+
+            }
+        
+        } else miningProgress += deltaTime * 0.5f;
 
         
         if(miningProgress < current.type().getMiningTime()) return;

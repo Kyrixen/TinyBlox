@@ -124,9 +124,12 @@ public class Engine implements Screen {
 
         Entity.initTextureAll(entities);
 
-        //player.getInventory().add(Item.LADDER, (byte) 36);
-        //player.getInventory().add(Item.CAGED_LAMP, (byte) 10);
-
+        //player.getInventory().add(ItemRegister.LADDER, (byte) 36);
+        //player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 10);
+    
+        player.getInventory().add(ItemRegister.IRON_AXE, (byte) 1);
+        player.getInventory().add(ItemRegister.IRON_PICKAXE, (byte) 1);
+    
     }
 
     // Game loop
