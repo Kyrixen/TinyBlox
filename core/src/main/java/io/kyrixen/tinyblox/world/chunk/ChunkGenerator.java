@@ -60,7 +60,8 @@ public class ChunkGenerator {
                         type = TileType.DIRT;
                     } else {
                     
-                        if(materialNoise < 0.90f) type = TileType.STONE;
+                        if(materialNoise < 0.80f) type = TileType.STONE;
+                        else if(materialNoise < 0.95f) type = TileType.COAL;
                         else type = TileType.IRON;
                     
                     }

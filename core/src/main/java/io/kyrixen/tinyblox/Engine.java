@@ -129,6 +129,7 @@ public class Engine implements Screen {
     
         player.getInventory().add(ItemRegister.IRON_AXE, (byte) 1);
         player.getInventory().add(ItemRegister.IRON_PICKAXE, (byte) 1);
+        player.getInventory().add(ItemRegister.COAL, (byte) 10);
     
     }
 

@@ -16,6 +16,7 @@ public class Tile {
         DIRT(0.35f, PreferedMiningType.NONE, false, true, false, true, 0f),
         WATER(9999999f, PreferedMiningType.NONE, true, false, false, true, 0f),
         STONE(1.0f, PreferedMiningType.STONE, false, true, false, true, 0f),
+        COAL(1.50f, PreferedMiningType.STONE, false, true, false, false, 0.05f),
         IRON(1.75f, PreferedMiningType.STONE, false, true, false, false, 0.15f),
         WOOD(0.60f, PreferedMiningType.WOOD, false, true, false, false, 0f),
         LADDER(0.35f, PreferedMiningType.WOOD, true, true, true, false, 0f),
@@ -92,6 +93,7 @@ public class Tile {
             case AIR        : return -1;
             case GRASS      : return 1;
             case STONE      : return 3;
+            case COAL       : return 2;
             case IRON       : return 3;
             case DIRT       : return 0;
             case WATER      : return 0;
@@ -113,6 +115,7 @@ public class Tile {
             case AIR        : return -1;
             case GRASS      : return 0;
             case STONE      : return 0;
+            case COAL       : return 2;
             case IRON       : return 1;
             case DIRT       : return 0;
             case WATER      : return 1;
@@ -150,6 +153,9 @@ public class Tile {
             
             case STONE:        
                 return ItemRegister.STONE;
+
+            case COAL:
+                return ItemRegister.COAL;
 
             case IRON:
                 return ItemRegister.IRON;

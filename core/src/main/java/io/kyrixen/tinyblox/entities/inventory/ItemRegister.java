@@ -22,6 +22,7 @@ public class ItemRegister {
     public final static Item DIRT = new Item("dirt", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), true, (byte) 24, TileType.DIRT);
     public final static Item STONE = new Item("stone", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "stone"), true, (byte) 24, TileType.STONE);
     public final static Item WATER = new Item("water", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "water"), false, (byte) 24, TileType.WATER);
+    public final static Item COAL = new Item("coal", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "coal_ore"), false, (byte) 12, TileType.COAL);
     public final static Item IRON = new Item("iron", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), false, (byte) 12, TileType.IRON);
     public final static Item WOOD = new Item("wood", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "wood"), true, (byte) 24, TileType.WOOD);
     public final static Item LEAVES = new Item("leaves", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), false, (byte) 24, TileType.LEAVES);
@@ -48,6 +49,7 @@ public class ItemRegister {
         ITEMS.add(DIRT);
         ITEMS.add(WATER);
         ITEMS.add(STONE);
+        ITEMS.add(COAL);
         ITEMS.add(IRON);
         ITEMS.add(LADDER);
         ITEMS.add(WOOD);        
