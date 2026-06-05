@@ -8,6 +8,7 @@ import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.SoundID;
@@ -118,8 +119,9 @@ public class Enemy extends MobEntity {
 
         for(int i = 0; i < loopCount; i++) {
 
-            Item itemType = Item.fromInt(MathUtils.random(0, Item.values().length - 1));
+            Item itemType = ItemRegister.getItemList().get(MathUtils.random(0, ItemRegister.getItemList().size() - 1));
             if(!itemType.canRoll()) continue;
+            
             int itemCount = MathUtils.random(1, itemType.getMaxSize());
             itemCount = MathUtils.clamp(itemCount, 0, 8);
 

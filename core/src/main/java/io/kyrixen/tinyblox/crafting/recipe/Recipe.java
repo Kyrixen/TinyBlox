@@ -17,7 +17,7 @@ public class Recipe {
 
     // Getters //
 
-    public String getName() { return this.output.getItem().name().toUpperCase().replace("_", " "); }
+    public String getName() { return this.output.getItem().getItemName().toUpperCase().replace("_", " "); }
     public ItemStack[] getIngredients() { return this.ingredients.clone(); }
     public ItemStack getOutput() { return new ItemStack(output.getItem(), output.getCount()); }
 

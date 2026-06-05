@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.world.chunk.tile;
 
 import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 
 // Tile class
 public class Tile {
@@ -124,34 +125,34 @@ public class Tile {
         switch (type) {
             
             case GRASS:        
-                return Item.GRASS;
+                return ItemRegister.GRASS;
             
             case DIRT:        
-                return Item.DIRT;
+                return ItemRegister.DIRT;
             
             case WATER:        
-                return Item.WATER;
+                return ItemRegister.WATER;
             
             case STONE:        
-                return Item.STONE;
+                return ItemRegister.STONE;
 
             case IRON:
-                return Item.IRON;
+                return ItemRegister.IRON;
 
             case WOOD:
-                return Item.WOOD;
+                return ItemRegister.WOOD;
 
             case LEAVES:
-                return Item.LEAVES;
+                return ItemRegister.LEAVES;
 
             case LADDER:
-                return Item.LADDER;
+                return ItemRegister.LADDER;
 
             case CAGED_LAMP:
-                return Item.CAGED_LAMP;
+                return ItemRegister.CAGED_LAMP;
 
             default:
-                return Item.NONE;
+                return ItemRegister.NONE;
 
         }
 

@@ -17,7 +17,6 @@ import io.kyrixen.tinyblox.entities.Selector;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.entities.inventory.Item;
-import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
@@ -143,45 +142,6 @@ public class Player extends MobEntity {
 
         }
     
-    }
-
-    // Temporary debug craft
-    public void tryCraftWoodenPickaxe() {
-
-        ItemStack woodStack = inventory.getStack(Item.WOOD);
-        if(woodStack == null) return;
-
-        if(woodStack.getCount() < 2) return;
-
-        woodStack.remove((byte) 2);
-
-        ItemStack pickaxeStack = inventory.getSlot(inventory.getEmptySlot());
-        pickaxeStack.setItem(Item.WOODEN_PICKAXE);
-        pickaxeStack.setCount((byte) 1);
-
-
-    }
-
-    // Temporary debug craft
-    public void tryCraftStonePickaxe() {
-
-        ItemStack woodStack = inventory.getStack(Item.WOOD);
-        ItemStack stoneStack = inventory.getStack(Item.STONE);
-
-        if(woodStack == null) return;
-        if(stoneStack == null) return;
-
-
-        if(woodStack.getCount() < 1) return;
-        if(stoneStack.getCount() < 1) return;
-
-        woodStack.remove((byte) 1);
-        stoneStack.remove((byte) 1);
-
-        ItemStack pickaxeStack = inventory.getSlot(inventory.getEmptySlot());
-        pickaxeStack.setItem(Item.STONE_PICKAXE);
-        pickaxeStack.setCount((byte) 1);
-
     }
 
     public void toggleMenuStat() { this.inMenu = !inMenu; }

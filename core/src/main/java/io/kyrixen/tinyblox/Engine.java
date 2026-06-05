@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -82,6 +83,9 @@ public class Engine implements Screen {
         // Initialize sprites
         textures.loadHUD();
         textures.loadGame();
+
+        // Load items
+        ItemRegister.initItems();
 
         // Load recipes
         RecipeRegister.initRecipes();

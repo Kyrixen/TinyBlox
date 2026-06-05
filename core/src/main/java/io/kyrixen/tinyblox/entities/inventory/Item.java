@@ -1,112 +1,53 @@
 package io.kyrixen.tinyblox.entities.inventory;
 
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 // Item object used for inventory
-public enum Item {
+public class Item {
     
-    NONE(0, 1f, false, false, null, 0),
-    GRASS(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "grass"), 1),
-    DIRT(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), 2),
-    WATER(24, 0.5f, false, true, new TextureID("tinyblox", TextureType.TERRAIN, "water"), 3),
-    STONE(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "stone"), 4),
-    IRON(12, 0.25f, false, true, new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), 5),
-    WOOD(24, 0.5f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "wood"), 6),
-    LEAVES(24, 0.5f, true,  true, new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), 7),
-    LADDER(36, 0.75f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), 8),
-    CAGED_LAMP(12, 0.25f, true, true, new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), 9),
-    WOODEN_PICKAXE(1, 1.25f, true, false, new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), 10),
-    STONE_PICKAXE(1, 2.0f, true, false, new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), 11);
+    // Item vars //
 
-    // Max stackable size
+    private final String name;
     private final byte maxSize;
     private final TextureID textureID;
     private final int itemID;
-    private final float miningSpeed;
-    private final boolean placeable;
     private final boolean obtainable;
+    private final TileType tileVariant;
 
-    // Constructor
-    Item(int maxSize, float miningSpeed,boolean obtainable, boolean placeable, TextureID textureID, int itemID) {
-        this.maxSize = (byte) maxSize;
-        this.miningSpeed = miningSpeed;
+    
+    // Constructor for Item
+    public Item(String name, int itemID, TextureID textureID, boolean obtainable, byte maxSize) {
+        this.name = name;
+        this.maxSize = maxSize;
         this.obtainable = obtainable;
-        this.placeable = placeable;
         this.textureID = textureID;
         this.itemID = itemID;
+        this.tileVariant = null;
     }
+    
+    // Constructor for Item / Tile
+    public Item(String name, int itemID, TextureID textureID, boolean obtainable, byte maxSize, TileType tile) {
+        this.name = name;
+        this.maxSize = maxSize;
+        this.obtainable = obtainable;
+        this.textureID = textureID;
+        this.itemID = itemID;
+        this.tileVariant = tile;
+    }
+    
 
-    // Getter
+    // Getters //
+
+    public String getItemName() { return this.name; }
     public byte getMaxSize() { return this.maxSize; }
 
-        public TileType toTileType() {
+    public TextureID textureID() { return this.textureID; }
+    public int getItemID() { return this.itemID; }
 
-        switch (this) {
-            
-            case GRASS:        
-                return TileType.GRASS;
-            
-            case DIRT:        
-                return TileType.DIRT;
-            
-            case WATER:        
-                return TileType.WATER;
-            
-            case STONE:        
-                return TileType.STONE;
+    public boolean canPlace() { return this.tileVariant != null; }
+    public boolean canRoll() { return this.obtainable; }
 
-            case IRON:
-                return TileType.IRON;
-
-            case WOOD:
-                return TileType.WOOD;
-
-            case LEAVES:
-                return TileType.LEAVES;
-
-            case LADDER:
-                return TileType.LADDER;
-
-            case CAGED_LAMP:
-                return TileType.CAGED_LAMP;
-
-            default:
-                return TileType.AIR;
-
-        }
-
-    }
-
-    public TextureID textureID() {
-        return this.textureID;
-    }
-
-    public int getItemID() {
-        return this.itemID;
-    }
-
-    public float getMiningSpeed() {
-        return this.miningSpeed;
-    }
-
-    public boolean canPlace() {
-        return this.placeable;
-    }
-
-    public boolean canRoll() {
-        return this.obtainable;
-    }
-
-    public static Item fromInt(int id) {
-
-        for(Item item : values()) {
-            if(item.itemID == id) return item;
-        }
-
-        return NONE;
-    
-    }
+    public TileType getTileVariant() { return this.tileVariant; }
 
 }

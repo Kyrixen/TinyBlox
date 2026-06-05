@@ -10,6 +10,9 @@ public class Utils {
     // Entity ID counter var
     private static int LAST_ENTITY_ID = 0;
 
+    // Item ID counter var
+    private static int LAST_ITEM_ID = 0;
+    
     // Finds a safe spawn near the center using only chunks
     public static int[] spawnNearCenter(Terrain terrain) {
 
@@ -67,6 +70,10 @@ public class Utils {
 
     public static int generateEntityID() {
         return LAST_ENTITY_ID++;
+    }
+
+    public static int generateItemID() {
+        return LAST_ITEM_ID++;
     }
 
 }

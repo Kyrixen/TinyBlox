@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
+import io.kyrixen.tinyblox.entities.inventory.Equipment;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.graphics.RendererStack;
@@ -155,9 +157,12 @@ public class Selector extends Entity {
         }
 
         if(placeLevel >= Constants.MAX_WORLD_HEIGHT) return;
-        if(this.mobEntityInventory.getCurrentStack().isEmpty()) return;
 
-        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().toTileType(), placeLevel), placeLevel);
+        ItemStack currentStack = this.mobEntityInventory.getCurrentStack();        
+        if(currentStack.isEmpty()) return;
+        if(!currentStack.getItem().canPlace()) return;
+
+        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().getTileVariant(), placeLevel), placeLevel);
         sfxManager.getSound(PLACE_SOUND).play(Utils.getFloatSound(15), MathUtils.random(0.95f, 1.05f), 0f);
 
         mobEntityInventory.getCurrentStack().remove((byte) 1);
@@ -204,7 +209,11 @@ public class Selector extends Entity {
         
         }
         
-        miningProgress += deltaTime * mobEntityInventory.currentItem().getMiningSpeed();
+        Item currentItem = mobEntityInventory.currentItem();
+        if(currentItem instanceof Equipment) { Equipment equipment = (Equipment) currentItem; miningProgress += deltaTime * equipment.getMiningSpeed(); }
+        else if(currentItem == ItemRegister.NONE) miningProgress += deltaTime * 0.75f;
+        else miningProgress += deltaTime * 0.25f;
+
         
         if(miningProgress < current.type().getMiningTime()) return;
 

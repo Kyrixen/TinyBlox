@@ -7,7 +7,7 @@ public class Inventory {
 
     public Inventory(byte slotCount) {
         slots = new ItemStack[slotCount];
-        for(byte i = 0; i < slots.length; i++) { slots[i] = new ItemStack(Item.NONE, (byte) 0); }
+        for(byte i = 0; i < slots.length; i++) { slots[i] = new ItemStack(ItemRegister.NONE, (byte) 0); }
     }
 
 
@@ -40,7 +40,7 @@ public class Inventory {
 
         itemStack.remove(count);
 
-        if(itemStack.isEmpty()) itemStack.setItem(Item.NONE);
+        if(itemStack.isEmpty()) itemStack.setItem(ItemRegister.NONE);
 
     }
 
