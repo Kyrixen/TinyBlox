@@ -29,7 +29,11 @@ public class ItemRegister {
     public final static Item LADDER = new Item("ladder", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), true, (byte) 36, TileType.LADDER);
     public final static Item CAGED_LAMP = new Item("caged_lamp", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
 
-    
+
+    public final static Item WOODEN_SWORD = new Equipment("wooden_sword", new TextureID("tinyblox", TextureType.HUD, "wooden_sword"), true, ToolTier.WOOD, EquipmentType.WEAPON);
+    public final static Item STONE_SWORD = new Equipment("stone_sword", new TextureID("tinyblox", TextureType.HUD, "stone_sword"), true, ToolTier.STONE, EquipmentType.WEAPON);
+    public final static Item IRON_SWORD = new Equipment("iron_sword", new TextureID("tinyblox", TextureType.HUD, "iron_sword"), false, ToolTier.IRON, EquipmentType.WEAPON);
+
     public final static Item WOODEN_PICKAXE = new Equipment("wooden_pickaxe", new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), true, ToolTier.WOOD, EquipmentType.PICKAXE);
     public final static Item STONE_PICKAXE = new Equipment("stone_pickaxe", new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), true, ToolTier.STONE, EquipmentType.PICKAXE);
     public final static Item IRON_PICKAXE = new Equipment("iron_pickaxe", new TextureID("tinyblox", TextureType.HUD, "iron_pickaxe"), false, ToolTier.IRON, EquipmentType.PICKAXE);
@@ -56,6 +60,10 @@ public class ItemRegister {
         ITEMS.add(LEAVES);
         ITEMS.add(CAGED_LAMP);
 
+
+        ITEMS.add(WOODEN_SWORD);
+        ITEMS.add(STONE_SWORD);
+        ITEMS.add(IRON_SWORD);
 
         ITEMS.add(WOODEN_PICKAXE);
         ITEMS.add(STONE_PICKAXE);

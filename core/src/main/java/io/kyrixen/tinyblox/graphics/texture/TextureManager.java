@@ -139,6 +139,10 @@ public class TextureManager {
 
         this.load(new TextureID("tinyblox", TextureType.HUD, "hotbar_slot"), "textures/hud/inventory/hotbar_slot.png");
 
+        this.load(new TextureID("tinyblox", TextureType.HUD, "wooden_sword"), "textures/hud/inventory/items/wood_sword.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "stone_sword"), "textures/hud/inventory/items/stone_sword.png");
+        this.load(new TextureID("tinyblox", TextureType.HUD, "iron_sword"), "textures/hud/inventory/items/iron_sword.png");
+
         this.load(new TextureID("tinyblox", TextureType.HUD, "wooden_pickaxe"), "textures/hud/inventory/items/wood_pickaxe.png");
         this.load(new TextureID("tinyblox", TextureType.HUD, "stone_pickaxe"), "textures/hud/inventory/items/stone_pickaxe.png");
         this.load(new TextureID("tinyblox", TextureType.HUD, "iron_pickaxe"), "textures/hud/inventory/items/iron_pickaxe.png");

@@ -9,7 +9,7 @@ public class Equipment extends Item {
     public enum EquipmentType {
 
         PICKAXE(0.35f, 0.15f, 1f),
-        AXE(0.50f, 1f, 0.15f),
+        AXE(0.45f, 1f, 0.15f),
         WEAPON(0.60f, 0.15f, 0.15f);
 
 
