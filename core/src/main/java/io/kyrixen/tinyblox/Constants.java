@@ -16,8 +16,8 @@ public class Constants {
     public static boolean VSYNC = true;
 
     // World stuff
-    public static final int MAP_WIDTH = 1024;
-    public static final int MAP_HEIGHT = 1024;
+    public static final int MAP_WIDTH = 256;
+    public static final int MAP_HEIGHT = 256;
 
     public static final byte MAX_WORLD_HEIGHT = 20;
     public static final byte MIN_WORLD_HEIGHT = 0;

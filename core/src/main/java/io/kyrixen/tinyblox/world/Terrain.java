@@ -84,10 +84,12 @@ public class Terrain {
                 //cb.setTile((byte) 7, (byte) 10, TileType.DIRT, false, (byte) 0);
                 //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
                 
-                ChunkGenerator.generate(c, noise);
-                c.tryToSpawnTree(10);
+                ChunkGenerator.generateChunk(c, noise);
+                ChunkGenerator.spawnTree(c, 10);
+                ChunkGenerator.spawnStructure(c, 10);
                 //c.set(cb.build());
                 
+
                 // Store chunk
                 chunks.put(new ChunkPos(x, y), c);
 
@@ -278,7 +280,7 @@ public class Terrain {
         if(!chunks.containsKey(cPos)){
 
             Chunk c = new Chunk(cX, cY, size, true);
-            ChunkGenerator.generate(c, noise);
+            ChunkGenerator.generateChunk(c, noise);
             chunks.put(cPos, c);
 
             Logger.LOGGER.debug("WORLD", "Generated new chunk!");

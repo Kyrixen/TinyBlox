@@ -29,6 +29,7 @@ import io.kyrixen.tinyblox.world.EnemySpawner;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
+import io.kyrixen.tinyblox.world.chunk.structures.StructureRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 
 public class Engine implements Screen {
@@ -40,7 +41,7 @@ public class Engine implements Screen {
     public boolean exit = false;
 
     // List of entities
-    private ArrayList<Entity> entities = new ArrayList<>();
+    private final ArrayList<Entity> entities = new ArrayList<>();
 
     // Module components
     private Controller controller;
@@ -89,6 +90,9 @@ public class Engine implements Screen {
 
         // Load recipes
         RecipeRegister.initRecipes();
+
+        // Load structures
+        StructureRegister.initStructures();
 
         // Terrain init
         terrain.init();

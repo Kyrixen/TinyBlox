@@ -15,7 +15,6 @@ import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 public class Chunk {
@@ -124,7 +123,7 @@ public class Chunk {
 
                         alpha = MathUtils.clamp(alpha, 0f, 1f);
                         alpha = alpha * alpha * (3f - 2f * alpha);
-                        alpha = MathUtils.clamp(alpha, 0.45f, 1f);
+                        alpha = MathUtils.clamp(alpha, 0.25f, 0.65f);
                         
                         batch.setColor(light.r, light.g, light.b, alpha);
                     
@@ -186,73 +185,6 @@ public class Chunk {
         
     }
 
-    // Tries to place trees
-    public void tryToSpawnTree(int maxAttempts) {
-
-        byte TREE_RADIUS = 1;
-        byte FREE_SPACE_RADIUS = 1;
-
-        for(int attempts = 0; attempts < maxAttempts; attempts++) {
-
-            byte choosenX = (byte) MathUtils.random(3, this.getChunkSize() - 4); 
-            byte choosenY = (byte) MathUtils.random(3, this.getChunkSize() - 4);
-
-            TileStack tileStack = this.getTileStack(choosenX, choosenY);
-            if(tileStack == null) continue;
-
-            Tile topTile = tileStack.getTopTerrain();
-            if(topTile == null) continue;
-           
-            if(topTile.level() < Constants.MIN_TERRAIN_HEIGHT) continue;
-            if(topTile.level() + 2 > Constants.MAX_TERRAIN_HEIGHT) continue;
-           
-            if(topTile.type() != TileType.GRASS) continue;
-
-            byte baseLevel = topTile.level();
-            if(tileStack.top().level() > baseLevel) continue;
-
-            boolean canSpawn = true;
-            for(byte neighborX = (byte) -(TREE_RADIUS + FREE_SPACE_RADIUS); neighborX <= TREE_RADIUS + FREE_SPACE_RADIUS; neighborX++) {
-
-                for(byte neighborY = (byte) -(TREE_RADIUS + FREE_SPACE_RADIUS); neighborY <= TREE_RADIUS + FREE_SPACE_RADIUS; neighborY++) {
-
-                    if(neighborX == 0 && neighborY == 0) continue;
-                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
-                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).top() == null) continue;
-
-                    TileStack neighborStack = this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY));
-                    if(neighborStack == null) continue;
-                    Tile neighborTop = neighborStack.getTopTerrain();
-
-                    if(neighborTop == null || neighborTop.level() != baseLevel) { canSpawn = false; break; }
-                    if(neighborStack.top().level() > baseLevel) { canSpawn = false; break; }
-                    
-                }
-
-            }
-
-            if(!canSpawn) continue;
-
-            this.getTileStack(choosenX, choosenY).set(new Tile(TileType.WOOD, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
-            this.getTileStack(choosenX, choosenY).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 2)), (byte) (baseLevel + 2));
-
-            for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
-
-                for(byte neighborY = (byte) -TREE_RADIUS; neighborY <= TREE_RADIUS; neighborY++) {
-
-                    if(neighborX == 0 && neighborY == 0) continue;
-                    if(this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
-
-                    this.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
-
-                }
-
-            }
-
-        }
-
-    }
-
     // Render depth for the top tile
     public void renderDepthOverlay(Player player, TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack) {
 
@@ -282,7 +214,7 @@ public class Chunk {
                 int levelDiff = Math.abs(tile.level() - player.level());
                 float normalized = (float) levelDiff / (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT);
                 
-                float alpha = normalized * 0.8f;
+                float alpha = normalized * 0.65f;
                 alpha = Math.min(alpha, 0.55f);
 
                 if(tile.level() > player.level()) batch.setColor(0.97f, 0.97f, 0.97f, alpha * lightBrightness);
@@ -299,6 +231,7 @@ public class Chunk {
 
     }
 
+    
     public void load(){
 
         if(!loaded) return;

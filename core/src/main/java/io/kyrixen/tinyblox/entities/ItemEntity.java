@@ -71,8 +71,8 @@ public class ItemEntity extends Entity {
 
         if(distance <= 1f || distance > 64f) return;
 
-        x += Math.round(dx / distance * 60f * deltaTime);
-        y += Math.round(dy / distance * 60f * deltaTime);
+        x += dx / distance * 20f * deltaTime;
+        y += dy / distance * 20f * deltaTime;
         level = mob.level();
 
     }
