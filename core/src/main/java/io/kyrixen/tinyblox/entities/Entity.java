@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.TerrainCollision;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
@@ -120,7 +122,7 @@ public class Entity {
     }
 
     // Render entity
-    public void render(Terrain terrain, TileRenderer tileRenderer, RendererStack rendererStack){
+    public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack){
 
         SpriteBatch batch = rendererStack.batch;
 
@@ -131,7 +133,23 @@ public class Entity {
         brightnessColor.g = 0.5f + brightnessColor.g * 0.5f;
         brightnessColor.b = 0.5f + brightnessColor.b * 0.5f;
 
-        batch.setColor(brightnessColor.r, brightnessColor.g, brightnessColor.b, 1.0f);
+        int levelDiff = level() - player.level();
+        
+        float alpha = 1f;
+        alpha = MathUtils.clamp(1f - levelDiff * 0.15f, 0.4f, 1f);
+
+        if(this != player) {
+
+            float multiplier = 1f + levelDiff * 0.15f;
+            multiplier = MathUtils.clamp(multiplier, 0.3f, 1.5f);
+
+            brightnessColor.r *= multiplier;
+            brightnessColor.g *= multiplier;
+            brightnessColor.b *= multiplier;
+
+        }
+
+        batch.setColor(brightnessColor.r, brightnessColor.g, brightnessColor.b, alpha);
         tileRenderer.draw(this.texture, x, y, this.flip, rendererStack);
         batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -149,9 +167,9 @@ public class Entity {
     }
 
     // Helper func (renders all entites)
-    public static void renderAll(Terrain terrain, TileRenderer tileRenderer, ArrayList<Entity> entities, RendererStack rendererStack) {
+    public static void renderAll(Terrain terrain, Player player, TileRenderer tileRenderer, ArrayList<Entity> entities, RendererStack rendererStack) {
         for (Entity e : entities) {
-            e.render(terrain, tileRenderer, rendererStack);
+            e.render(terrain, player, tileRenderer, rendererStack);
         }
     }
 

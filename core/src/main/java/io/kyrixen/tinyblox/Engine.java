@@ -226,7 +226,7 @@ public class Engine implements Screen {
 
         // Entities
         batch.begin();
-        Entity.renderAll(terrain, tileRenderer, entities, rendererStack);
+        Entity.renderAll(terrain, player, tileRenderer, entities, rendererStack);
         batch.end();
 
         // Above Terrain and Terrain Depth Overlay

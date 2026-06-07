@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
@@ -80,7 +81,7 @@ public class ItemEntity extends Entity {
 
     @Override
     // Render item entity
-    public void render(Terrain terrain, TileRenderer tileRenderer, RendererStack rendererStack) {
+    public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
 
         SpriteBatch batch = rendererStack.batch;
 
