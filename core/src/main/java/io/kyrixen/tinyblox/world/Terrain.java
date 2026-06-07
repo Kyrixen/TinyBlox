@@ -74,7 +74,7 @@ public class Terrain {
 
             for(short y = 0; y < chunkCountY; y++){
 
-                Chunk c = new Chunk(x, y, size, true);
+                Chunk c = new Chunk(x, y, size, seed, true);
         
                 //ChunkBuilder cb = new ChunkBuilder(x, y, size);
                 
@@ -279,7 +279,7 @@ public class Terrain {
 
         if(!chunks.containsKey(cPos)){
 
-            Chunk c = new Chunk(cX, cY, size, true);
+            Chunk c = new Chunk(cX, cY, size, seed, true);
             ChunkGenerator.generateChunk(c, noise);
             chunks.put(cPos, c);
 

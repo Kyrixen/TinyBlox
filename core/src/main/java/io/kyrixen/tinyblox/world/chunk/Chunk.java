@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -18,6 +19,9 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 public class Chunk {
+
+    // Chunk seed
+    private final long chunkSeed;
 
     // Count of tiles in chunk
     private final int CHUNK_SIZE;
@@ -47,7 +51,9 @@ public class Chunk {
     private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
 
     // Construct chunk
-    public Chunk(int x, int y, int size, boolean loaded){
+    public Chunk(int x, int y, int size, int seed, boolean loaded){
+
+        this.chunkSeed = RandomUtils.mixSeed(seed, x * 341873128712L ^ y * 132897987541L);
 
         this.cX = x;
         this.cY = y;
@@ -253,6 +259,8 @@ public class Chunk {
     public int getY(){ return this.cY; }
 
     public int getChunkSize() { return this.CHUNK_SIZE; }
+
+    public long getChunkSeed() { return this.chunkSeed; }
 
 
     // Reset default lighting

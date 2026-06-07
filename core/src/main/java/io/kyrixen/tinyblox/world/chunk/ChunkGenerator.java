@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure;
 import io.kyrixen.tinyblox.world.chunk.structures.StructureRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -92,10 +93,13 @@ public class ChunkGenerator {
         byte TREE_RADIUS = 1;
         byte FREE_SPACE_RADIUS = 1;
 
+        long treeSeed = RandomUtils.mixSeed(chunk.getChunkSeed(), 454654464352545L);
+        RandomUtils random = new RandomUtils(treeSeed);
+
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = (byte) MathUtils.random(3, chunk.getChunkSize() - 4); 
-            byte choosenY = (byte) MathUtils.random(3, chunk.getChunkSize() - 4);
+            byte choosenX = (byte) random.seedInt(3, chunk.getChunkSize() - 4); 
+            byte choosenY = (byte) random.seedInt(3, chunk.getChunkSize() - 4);
 
             TileStack tileStack = chunk.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
@@ -156,9 +160,13 @@ public class ChunkGenerator {
     // Tries to spawn structure
     public static void spawnStructure(Chunk chunk, int maxAttempts) {
 
+        long structureSeed = RandomUtils.mixSeed(chunk.getChunkSeed(), 1798635L);
+
+        RandomUtils random = new RandomUtils(structureSeed);
+
         for(Structure structure : StructureRegister.getStructures()) {
-            if(!MathUtils.randomBoolean(structure.getRarity().getChance())) continue;
-            placeStructure(chunk, structure, maxAttempts);
+            if(!random.seedBoolean(structure.getRarity().getChance())) continue;
+            placeStructure(structureSeed, chunk, structure, maxAttempts);
         }
 
     }
@@ -207,12 +215,16 @@ public class ChunkGenerator {
     }
 
     // Place structure
-    public static void placeStructure(Chunk chunk, Structure structure, int maxAttempts) {
+    public static void placeStructure(long structureSeed, Chunk chunk, Structure structure, int maxAttempts) {
+
+        long placementSeed =  RandomUtils.mixSeed(structureSeed, structure.getName().hashCode());
+
+        RandomUtils random = new RandomUtils(placementSeed);
 
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = (byte) MathUtils.random(structure.getWidth(), chunk.getChunkSize() - structure.getWidth()); 
-            byte choosenY = (byte) MathUtils.random(structure.getHeight(), chunk.getChunkSize() - structure.getHeight());
+            byte choosenX = (byte) random.seedInt(structure.getWidth(), chunk.getChunkSize() - structure.getWidth()); 
+            byte choosenY = (byte) random.seedInt(structure.getHeight(), chunk.getChunkSize() - structure.getHeight());
 
             if(!canPlaceStructure(chunk, structure, choosenX, choosenY)) continue;
 

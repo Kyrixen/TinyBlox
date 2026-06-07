@@ -2,14 +2,13 @@ package io.kyrixen.tinyblox.world;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
@@ -39,14 +38,14 @@ public class EnemySpawner {
         short playerChunkX = (short) ((player.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
         short playerChunkY = (short) ((player.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
 
-        short pickedChunkX = (short) MathUtils.random(playerChunkX - Constants.RENDER_DISTANCE, playerChunkX + Constants.RENDER_DISTANCE);
-        short pickedChunkY = (short) MathUtils.random(playerChunkY - Constants.RENDER_DISTANCE, playerChunkY + Constants.RENDER_DISTANCE);
+        short pickedChunkX = (short) RandomUtils.randomInt(playerChunkX - Constants.RENDER_DISTANCE, playerChunkX + Constants.RENDER_DISTANCE);
+        short pickedChunkY = (short) RandomUtils.randomInt(playerChunkY - Constants.RENDER_DISTANCE, playerChunkY + Constants.RENDER_DISTANCE);
         Chunk pickedChunk = terrain.getChunk(pickedChunkX, pickedChunkY);
         
         if(pickedChunk == null) return;
 
-        byte pickedLocalX = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
-        byte pickedLocalY = (byte) MathUtils.random(0, pickedChunk.getChunkSize() - 1);
+        byte pickedLocalX = (byte) RandomUtils.randomInt(0, pickedChunk.getChunkSize() - 1);
+        byte pickedLocalY = (byte) RandomUtils.randomInt(0, pickedChunk.getChunkSize() - 1);
         TileStack tileStack = pickedChunk.getTileStack(pickedLocalX, pickedLocalY);
         Tile top = tileStack.getTopTerrain();
 

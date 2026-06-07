@@ -15,6 +15,7 @@ import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 
@@ -105,7 +106,7 @@ public class Enemy extends MobEntity {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 
-            if(player.damage(25)) soundManager.getSound(HIT_PLAYER_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.85f, 1.15f), 0f); 
+            if(player.damage(25)) soundManager.getSound(HIT_PLAYER_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
                         
         }
 
@@ -114,19 +115,19 @@ public class Enemy extends MobEntity {
     // Get loot from enemy
     public void throwLoot(MobEntity mob, ArrayList<Entity> entities) {
 
-        soundManager.getSound(EXPLOSION_SOUND).play(Utils.getFloatSound(35), MathUtils.random(0.85f, 1.25f), 0f);
-        int loopCount = MathUtils.random(1, 3);
+        soundManager.getSound(EXPLOSION_SOUND).play(Utils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
+        int loopCount = RandomUtils.randomInt(1, 3);
 
         for(int i = 0; i < loopCount; i++) {
 
-            Item itemType = ItemRegister.getItemList().get(MathUtils.random(0, ItemRegister.getItemList().size() - 1));
+            Item itemType = ItemRegister.getItemList().get(RandomUtils.randomInt(0, ItemRegister.getItemList().size() - 1));
             if(!itemType.canRoll()) continue;
             
-            int itemCount = MathUtils.random(1, itemType.getMaxSize());
+            int itemCount = RandomUtils.randomInt(1, itemType.getMaxSize());
             itemCount = MathUtils.clamp(itemCount, 0, 8);
 
             for(int j = 0; j < itemCount; j++) {
-                entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + MathUtils.random(-3, 3), this.y() + MathUtils.random(-3, 3), soundManager, itemType, mob));
+                entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
             }
 
         }
@@ -136,7 +137,7 @@ public class Enemy extends MobEntity {
     // Wander logic
     private void wanderAround() {
 
-        int direction = MathUtils.random(1, 4);
+        int direction = RandomUtils.randomInt(1, 4);
 
         switch (direction) {
             case 1:

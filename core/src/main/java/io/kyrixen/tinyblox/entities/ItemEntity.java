@@ -2,7 +2,6 @@ package io.kyrixen.tinyblox.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Item;
@@ -11,6 +10,7 @@ import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
@@ -42,8 +42,8 @@ public class ItemEntity extends Entity {
         this.mob = mob;
         this.texture = item.textureID();
 
-        this.x += MathUtils.random(-3, 3);
-        this.y += MathUtils.random(-3, 3);
+        this.x += RandomUtils.randomInt(-3, 3);
+        this.y += RandomUtils.randomInt(-3, 3);
 
         this.dirY = 1;
         this.dirX = 1;
@@ -98,7 +98,7 @@ public class ItemEntity extends Entity {
 
     // Pick up the item
     public Item pickup() {
-        soundManager.getSound(PICKUP_ITEM_SOUND).play(Utils.getFloatSound(40), MathUtils.random(0.95f, 1.2f), 0f);
+        soundManager.getSound(PICKUP_ITEM_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.95f, 1.2f), 0f);
         return this.item;
     }
 

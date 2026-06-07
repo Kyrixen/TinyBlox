@@ -5,8 +5,6 @@ package io.kyrixen.tinyblox.entities.mob;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.crafting.Crafting;
@@ -25,6 +23,7 @@ import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -95,7 +94,7 @@ public class Player extends MobEntity {
         updateFlip();
         moving = tryMove(terrain);
 
-        if(moving) soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), MathUtils.random(0.9f, 1.1f), 0f);
+        if(moving) soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), RandomUtils.randomFloat(0.9f, 1.1f), 0f);
 
         lastMove = System.currentTimeMillis();
 
