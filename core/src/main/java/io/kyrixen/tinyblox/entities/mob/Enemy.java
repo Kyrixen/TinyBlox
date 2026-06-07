@@ -18,6 +18,9 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Enemy extends MobEntity {
 
@@ -26,6 +29,9 @@ public class Enemy extends MobEntity {
 
     // If its chasing entity
     private boolean chasing;
+
+    // Count the stuck count
+    private int stuckCounter = 0;
 
     private final SoundID HIT_PLAYER_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_player");
     private final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
@@ -64,11 +70,8 @@ public class Enemy extends MobEntity {
 
         if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;  
 
-        if(chasing){
-            chaseTarget();
-        } else{
-            wanderAround();
-        }
+        if(chasing) chaseTarget(terrain);
+        else wanderAround(terrain);
         
 
         updateFlip();
@@ -134,62 +137,100 @@ public class Enemy extends MobEntity {
 
     }
 
+
     // Wander logic
-    private void wanderAround() {
+    private void wanderAround(Terrain terrain) {
 
-        int direction = RandomUtils.randomInt(1, 4);
+        int direction;
 
-        switch (direction) {
-            case 1:
-                dirY = -1; // Up
-                break;
-            case 2:
-                dirY = 1; // Down
-                break;
-            case 3:
-                dirX = -1; // Left
-                break;
-            case 4:
-                dirX = 1; // Right
-                break;
+        for(int attempt = 0; attempt < 4; attempt++) {
+
+            dirX = 0;
+            dirY = 0;
+            
+            direction = RandomUtils.randomInt(1, 4);
+            
+            switch (direction) {
+        
+                case 1:
+                    dirY = -1; // Up
+                    break;
+                case 2:
+                    dirY = 1; // Down
+                    break;
+                case 3:
+                    dirX = -1; // Left
+                    break;
+                case 4:
+                    dirX = 1; // Right
+                    break;
+            
+            }
+
+            if(canMoveDirection(terrain)) return;
+
         }
 
     }
 
-    // Chase the target (Yeah this is the one of three or two parts which is ai generated (will be reworked better by human))
-    private void chaseTarget() {
+    // Chase the target
+    private void chaseTarget(Terrain terrain) {
 
-        // If there is no target, do nothing
+        // Safety check
         if (target == null) return;
 
-        // Calculate distance to target
-        int dx = target.x() - this.x;
-        int dy = target.y() - this.y;
+        int dx = target.x() - this.x();
+        int dy = target.y() - this.y();
 
-        // Decide which direction to move
-        if (Math.abs(dx) > Math.abs(dy)) {
+        // Calculate distance
+        int distX = Math.abs(dx);
+        int distY = Math.abs(dy);
 
-            // Move LEFT or RIGHT
-            if (dx > 0) {
-                dirX = 1;   // move right
-            } else {
-                dirX = -1;  // move left
-            }
+        if(stuckCounter > 5) { stuckCounter = 0; wanderAround(terrain); return; }
 
-        } else if (dy != 0) {
+        // Choose best
+        if(distX > distY) {
 
-            // Move UP or DOWN
-            if (dy > 0) {
-                dirY = 1;   // move down
-            } else {
-                dirY = -1;  // move up
-            }
+            if(dx > 0) dirX = 1;
+            else dirX = -1;
+
+            if(canMoveDirection(terrain)) { stuckCounter = 0; return; }
+            stuckCounter++;
+
+        } else {
+
+            if(dy > 0) dirY = 1;
+            else dirY = -1;
+
+            if(canMoveDirection(terrain)) { stuckCounter = 0; return; }
+            stuckCounter++;
 
         }
 
-        // If dx == 0 and dy == 0 -> already at target -> no movement
+        wanderAround(terrain);
+    
+    }
+
+    // Movement helper
+    private boolean canMoveDirection(Terrain terrain) {
+            
+        int enemyCenterX = x() / width();
+        int enemyCenterY = y() / height();
+
+        TileStack enemyStack = terrain.getWorldTileStack(enemyCenterX + dirX, enemyCenterY + dirY);
+        if(enemyStack == null) return false;
+        
+        Tile nextBelowTile = enemyStack.get((byte) (level() - 1));
+        Tile nextTile = enemyStack.get(level());
+        if(nextBelowTile == null) return false;
+
+        if(nextBelowTile.type() == TileType.AIR || nextBelowTile.type() == TileType.VOID) return false;
+        if(nextTile != null && nextTile.type() != TileType.AIR) return false;
+
+        return true;
 
     }
+
 
     @Override
     public String toString() {
