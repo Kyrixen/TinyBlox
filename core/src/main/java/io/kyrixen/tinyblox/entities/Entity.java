@@ -24,6 +24,7 @@ public class Entity {
     public enum Speed {
 
         NONE(Float.MAX_VALUE),
+        SNAIL(1.15f),
         SLOW(0.55f),
         NORMAL(0.30f),
         SPEEDY(0.15f),

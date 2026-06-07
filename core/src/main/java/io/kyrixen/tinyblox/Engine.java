@@ -115,7 +115,7 @@ public class Engine implements Screen {
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(Utils.generateEntityID(), spawn[0] + Constants.GRID_SIZE , spawn[1] + Constants.GRID_SIZE, soundManager);
+        Enemy enemy1 = new Enemy(Utils.generateEntityID(), spawn[0] + Constants.GRID_SIZE * 2 , spawn[1] + Constants.GRID_SIZE * 2, soundManager);
         player.setLevel((byte) spawn[2]);
 
         // Add to list
@@ -169,7 +169,7 @@ public class Engine implements Screen {
             if(!(e instanceof Enemy)) continue;
             Enemy en = (Enemy) e;
 
-            en.check(player);
+            en.checkHit(player);
 
         }
 

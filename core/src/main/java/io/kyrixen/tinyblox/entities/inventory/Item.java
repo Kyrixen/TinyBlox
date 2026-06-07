@@ -50,4 +50,11 @@ public class Item {
 
     public TileType getTileVariant() { return this.tileVariant; }
 
+
+    // Override
+    @Override
+    public String toString() {
+        return "Item { " + this.name.toUpperCase() + " }";
+    }
+
 }

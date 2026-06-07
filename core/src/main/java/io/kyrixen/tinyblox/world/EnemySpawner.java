@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.mob.Bomber;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.entities.mob.Slime;
+import io.kyrixen.tinyblox.entities.mob.Voidling;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
@@ -55,7 +58,29 @@ public class EnemySpawner {
         int worldX = (pickedChunkX * Constants.CHUNK_SIZE + pickedLocalX) * Constants.GRID_SIZE;
         int worldY = (pickedChunkY * Constants.CHUNK_SIZE + pickedLocalY) * Constants.GRID_SIZE;
 
-        Enemy newEnemy = new Enemy(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+        int enemyType = RandomUtils.randomInt(1, 4);
+        Enemy newEnemy = null;
+
+        switch (enemyType) {
+
+            case 1:
+                newEnemy = new Enemy(Utils.generateEntityID(), worldX, worldY, this.soundManager);    
+                break;
+
+            case 2:
+                newEnemy = new Slime(Utils.generateEntityID(), worldX, worldY, this.soundManager);    
+                break;
+            
+            case 3:
+                newEnemy = new Bomber(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+                break;
+
+            case 4:
+                newEnemy = new Voidling(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+                break;
+
+        }
+
         newEnemy.initTexture();
 
         newEnemy.setChasing(false);

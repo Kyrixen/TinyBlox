@@ -25,16 +25,19 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 public class Enemy extends MobEntity {
 
     // What entity it targets (99% it is player but why not :D)
-    private MobEntity target;
+    protected MobEntity target;
+
+    // Enemy attack damage
+    protected int attackDamage;
 
     // If its chasing entity
-    private boolean chasing;
+    protected boolean chasing;
 
     // Count the stuck count
-    private int stuckCounter = 0;
+    protected int stuckCounter = 0;
 
-    private final SoundID HIT_PLAYER_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_player");
-    private final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
+    protected final SoundID HIT_PLAYER_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_player");
+    protected final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
 
 
     public Enemy(int id, int x, int y, SoundManager soundManager) {
@@ -43,6 +46,7 @@ public class Enemy extends MobEntity {
 
         this.chasing = false;
 
+        this.attackDamage = 20;
         this.damageDelay = 0.50f;
 
         this.health = 50;
@@ -53,6 +57,8 @@ public class Enemy extends MobEntity {
         
         this.invincible = false;
         this.tireless = true;
+
+        this.setSpeed(Speed.NORMAL);
 
         this.lastMove = System.currentTimeMillis();
     
@@ -103,13 +109,13 @@ public class Enemy extends MobEntity {
 
 
     // Checks collision
-    public void check(MobEntity player){
+    public void checkHit(Player player){
 
         if (EntityCollision.checkTileCollision(player, this)) {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 
-            if(player.damage(25)) soundManager.getSound(HIT_PLAYER_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
+            if(player.damage(attackDamage)) soundManager.getSound(HIT_PLAYER_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
                         
         }
 
@@ -139,7 +145,7 @@ public class Enemy extends MobEntity {
 
 
     // Wander logic
-    private void wanderAround(Terrain terrain) {
+    protected void wanderAround(Terrain terrain) {
 
         int direction;
 
@@ -174,7 +180,7 @@ public class Enemy extends MobEntity {
     }
 
     // Chase the target
-    private void chaseTarget(Terrain terrain) {
+    protected void chaseTarget(Terrain terrain) {
 
         // Safety check
         if (target == null) return;
@@ -212,7 +218,7 @@ public class Enemy extends MobEntity {
     }
 
     // Movement helper
-    private boolean canMoveDirection(Terrain terrain) {
+    protected boolean canMoveDirection(Terrain terrain) {
             
         int enemyCenterX = x() / width();
         int enemyCenterY = y() / height();

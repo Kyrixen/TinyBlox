@@ -2,6 +2,8 @@ package io.kyrixen.tinyblox.collision;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.math.Vector2;
+
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
@@ -62,6 +64,11 @@ public class EntityCollision {
 
         return null;
     
+    }
+
+    // Checks entity distance
+    public static float checkEntityDistance(Entity e1, Entity e2) {
+        return Vector2.dst(e1.x() / e1.width(), e1.y() / e1.height(), e2.x() / e2.width(), e2.y() / e2.height());
     }
 
 }

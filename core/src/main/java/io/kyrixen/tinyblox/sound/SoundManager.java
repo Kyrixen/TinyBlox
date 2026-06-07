@@ -78,6 +78,7 @@ public class SoundManager {
     public void loadSFX() {
 
         this.load(new SoundID("tinyblox", SoundType.SFX, "explosion"), "sounds/sfx/explosion.wav");
+        this.load(new SoundID("tinyblox", SoundType.SFX, "bomber_detonate"), "sounds/sfx/bomberDetonate.wav");
         this.load(new SoundID("tinyblox", SoundType.SFX, "hit_player"), "sounds/sfx/hitPlayer.wav");
         this.load(new SoundID("tinyblox", SoundType.SFX, "hit_enemy"), "sounds/sfx/hitEnemy.wav");
         this.load(new SoundID("tinyblox", SoundType.SFX, "pickup_item"), "sounds/sfx/pickupItem.wav");

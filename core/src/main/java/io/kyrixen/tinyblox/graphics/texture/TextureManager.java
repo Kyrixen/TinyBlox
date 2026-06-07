@@ -118,6 +118,9 @@ public class TextureManager {
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "entity"), "textures/entities/entity.png");
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "player"), "textures/entities/player.png");
         this.load(new TextureID("tinyblox", TextureType.ENTITY, "enemy"), "textures/entities/enemy.png");
+        this.load(new TextureID("tinyblox", TextureType.ENTITY, "slime"), "textures/entities/slime.png");
+        this.load(new TextureID("tinyblox", TextureType.ENTITY, "bomber"), "textures/entities/bomber.png");
+        this.load(new TextureID("tinyblox", TextureType.ENTITY, "voidling"), "textures/entities/voidling.png");
 
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "air"), "textures/terrain/air.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "grass"), "textures/terrain/grass.png");
