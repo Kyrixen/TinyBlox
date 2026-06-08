@@ -14,7 +14,9 @@ import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 
@@ -108,10 +110,19 @@ public class Entity {
     // Update entity
     public void update(float deltaTime, Terrain terrain) {
 
-        if(System.currentTimeMillis() - lastMove >= speed.getMoveDelay() * 1000) {
+        TileStack entityStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        if(entityStack == null) return;
+        Tile belowTile = entityStack.get((byte) (level() - 1));
+        if(belowTile == null) return;
+
+        if(System.currentTimeMillis() - lastMove >= speed.getMoveDelay() / belowTile.type().getSlipperyModifier() * 1000) {
         
             updateFlip();
-            tryMove(terrain);
+            
+            if(dirX == 0 && dirY == 0) { moving = false; return; }
+            this.moving = tryMove(terrain);
+
+            if(moving) onMove();
 
             // Resets dirs
             dirX = 0;
@@ -221,6 +232,9 @@ public class Entity {
             this.lastDirX = 0;
         }
     }
+
+
+    protected void onMove() {}
 
 
     @Override

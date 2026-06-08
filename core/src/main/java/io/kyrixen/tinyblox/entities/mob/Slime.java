@@ -1,9 +1,16 @@
 package io.kyrixen.tinyblox.entities.mob;
 
+import java.util.ArrayList;
+
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.ItemEntity;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -56,6 +63,20 @@ public class Slime extends Enemy {
     @Override
     public void initTexture() {
         this.texture = new TextureID("tinyblox", TextureType.ENTITY, "slime");
+    }
+
+
+    @Override
+    public void throwLoot(MobEntity mob, ArrayList<Entity> entities) {
+        
+        soundManager.getSound(EXPLOSION_SOUND).play(Utils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
+    
+        int itemCount = RandomUtils.randomInt(1, 6);
+
+        for(int j = 0; j < itemCount; j++) {
+            entities.add(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, ItemRegister.SLIME, mob));
+        }
+
     }
 
 

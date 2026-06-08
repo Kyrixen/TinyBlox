@@ -86,17 +86,7 @@ public class Player extends MobEntity {
         autoRecover(true, deltaTime);
         autoRegenerate(true, deltaTime);
 
-        exhausted = stamina <= 0 && !tireless;
-
-        if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;
-        if(dirX == 0 && dirY == 0) { moving = false; return; }
-
-        updateFlip();
-        moving = tryMove(terrain);
-
-        if(moving) soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), RandomUtils.randomFloat(0.9f, 1.1f), 0f);
-
-        lastMove = System.currentTimeMillis();
+        super.update(deltaTime, terrain);
 
     }
 
@@ -259,6 +249,13 @@ public class Player extends MobEntity {
         return this.craftingManager;
     }
 
+
+    @Override
+    protected void onMove() {
+        soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), RandomUtils.randomFloat(0.9f, 1.1f), 0f);
+    }
+
+    
     @Override
     public String toString() {
         return "Player(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", stamina: " + this.stamina + ", moving: " + Boolean.toString(this.moving) + " }";

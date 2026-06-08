@@ -9,19 +9,19 @@ public class Tile {
     // Tile type enum
     public static enum TileType {
 
-        AIR(9999999f, PreferedMiningType.NONE, true, false, false, false, 0f),
-        VOID(9999999f, PreferedMiningType.NONE, false, false, false, false, 0f),
-        LEAVES(0.10f, PreferedMiningType.WOOD, false, true, false, false, 0f),
-        GRASS(0.20f, PreferedMiningType.NONE, false, true, false, true, 0f),
-        DIRT(0.35f, PreferedMiningType.NONE, false, true, false, true, 0f),
-        WATER(9999999f, PreferedMiningType.NONE, true, false, false, true, 0f),
-        STONE(1.0f, PreferedMiningType.STONE, false, true, false, true, 0f),
-        COAL(1.50f, PreferedMiningType.STONE, false, true, false, false, 0.05f),
-        IRON(1.75f, PreferedMiningType.STONE, false, true, false, false, 0.15f),
-        WOOD(0.60f, PreferedMiningType.WOOD, false, true, false, false, 0f),
-        LADDER(0.35f, PreferedMiningType.WOOD, true, true, true, false, 0f),
-        CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, true, false, false, 0.75f),
-        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, true, false, false, 0.03f);
+        AIR(9999999f, PreferedMiningType.NONE, true, 1.0f, false, false, false, 0f),
+        VOID(9999999f, PreferedMiningType.NONE, false, 1.0f, false, false, false, 0f),
+        LEAVES(0.10f, PreferedMiningType.WOOD, false, 1.05f, true, false, false, 0f),
+        GRASS(0.20f, PreferedMiningType.NONE, false, 1f, true, false, true, 0f),
+        DIRT(0.35f, PreferedMiningType.NONE, false, 0.95f, true, false, true, 0f),
+        WATER(9999999f, PreferedMiningType.NONE, true, 0.70f, false, false, true, 0f),
+        STONE(1.0f, PreferedMiningType.STONE, false, 0.9f, true, false, true, 0f),
+        COAL(1.50f, PreferedMiningType.STONE, false, 0.85f, true, false, false, 0.05f),
+        IRON(1.75f, PreferedMiningType.STONE, false, 0.85f, true, false, false, 0.15f),
+        WOOD(0.60f, PreferedMiningType.WOOD, false, 1f, true, false, false, 0f),
+        LADDER(0.35f, PreferedMiningType.WOOD, true, 1.15f, true, true, false, 0f),
+        CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, 0.95f, true, false, false, 0.75f),
+        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, 0.03f);
 
 
         // Mining category enum
@@ -37,15 +37,17 @@ public class Tile {
         private final float mining_time;
         private final boolean climbable;
         private final boolean passable;
+        private final float slipperyModifier;
         private final boolean terrain;
         private final boolean support;
         private final PreferedMiningType miningType;
         private final float lightLevel;
 
-        TileType(float mining_time, PreferedMiningType miningType, boolean passable, boolean support, boolean climbable, boolean terrain, float lightLevel) {
+        TileType(float mining_time, PreferedMiningType miningType, boolean passable, float slipperyModifier, boolean support, boolean climbable, boolean terrain, float lightLevel) {
             this.mining_time = mining_time;
             this.miningType = miningType;
             this.passable = passable;
+            this.slipperyModifier = slipperyModifier;
             this.climbable = climbable;
             this.terrain = terrain;
             this.support = support;
@@ -55,6 +57,8 @@ public class Tile {
         public float getMiningTime() { return this.mining_time; }
         public PreferedMiningType getPreferedMining() { return this.miningType; }
         
+        public float getSlipperyModifier() { return this.slipperyModifier; }
+
         public float getLightLevel() { return this.lightLevel; }
 
         public boolean isClimbable() { return this.climbable; }

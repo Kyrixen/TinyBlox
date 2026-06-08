@@ -85,6 +85,10 @@ public class Engine implements Screen {
         textures.loadHUD();
         textures.loadGame();
 
+        // Sound init
+        soundManager.loadSFX();
+        soundManager.loadHUD();
+
         // Load items
         ItemRegister.initItems();
 
@@ -96,10 +100,6 @@ public class Engine implements Screen {
 
         // Terrain init
         terrain.init();
-
-        // Sound init
-        soundManager.loadSFX();
-        soundManager.loadHUD();
 
         // Time init
         timeCycle.setDayTime(DayTime.DAY);

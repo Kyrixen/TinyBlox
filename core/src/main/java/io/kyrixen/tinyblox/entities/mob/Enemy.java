@@ -2,8 +2,6 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.math.MathUtils;
-
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
@@ -74,22 +72,10 @@ public class Enemy extends MobEntity {
     @Override
     public void update(float deltaTime, Terrain terrain) {
 
-        if(System.currentTimeMillis() - lastMove < speed.getMoveDelay() * 1000) return;  
+        super.update(deltaTime, terrain);
 
         if(chasing) chaseTarget(terrain);
         else wanderAround(terrain);
-        
-
-        updateFlip();
-        moving = tryMove(terrain);
-
-        exhausted = stamina <= 0 && !tireless;
-
-        lastMove = System.currentTimeMillis();
-
-        // Reset movement
-        dirX = 0;
-        dirY = 0;
 
     }
 
@@ -132,8 +118,7 @@ public class Enemy extends MobEntity {
             Item itemType = ItemRegister.getItemList().get(RandomUtils.randomInt(0, ItemRegister.getItemList().size() - 1));
             if(!itemType.canRoll()) continue;
             
-            int itemCount = RandomUtils.randomInt(1, itemType.getMaxSize());
-            itemCount = MathUtils.clamp(itemCount, 0, 3);
+            int itemCount = RandomUtils.randomInt(1, 3);
 
             for(int j = 0; j < itemCount; j++) {
                 entities.add(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
