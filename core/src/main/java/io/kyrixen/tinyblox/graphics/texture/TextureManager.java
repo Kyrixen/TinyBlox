@@ -133,6 +133,7 @@ public class TextureManager {
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), "textures/terrain/leaves.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), "textures/terrain/ladder.png");
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), "textures/terrain/caged_lamp.png");
+        this.load(new TextureID("tinyblox", TextureType.TERRAIN, "slime_tile"), "textures/terrain/slime_tile.png");
         
         this.load(new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles"), "textures/terrain/terrain.png");
     

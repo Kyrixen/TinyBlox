@@ -28,6 +28,7 @@ public class ItemRegister {
     public final static Item LEAVES = new Item("leaves", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), false, (byte) 24, TileType.LEAVES);
     public final static Item LADDER = new Item("ladder", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), true, (byte) 36, TileType.LADDER);
     public final static Item CAGED_LAMP = new Item("caged_lamp", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
+    public final static Item SLIME = new Item("slime", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "slime_tile"), false, (byte) 6, TileType.SLIME_TILE);
 
 
     public final static Item WOODEN_SWORD = new Equipment("wooden_sword", new TextureID("tinyblox", TextureType.HUD, "wooden_sword"), true, ToolTier.WOOD, EquipmentType.WEAPON);
