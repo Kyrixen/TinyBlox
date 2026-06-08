@@ -115,7 +115,7 @@ public class TileStack  {
 
         if(tile == null) return false;
         if(tile.type() == TileType.VOID) return false;
-        if(tile.type() == TileType.AIR) return false;
+        if(tile.type().isEmpty()) return false;
 
         return true;
 

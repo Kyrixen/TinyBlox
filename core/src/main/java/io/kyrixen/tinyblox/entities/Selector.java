@@ -43,8 +43,7 @@ public class Selector extends Entity {
 
     // Break vars
     private float miningProgress;
-    private int targetX;
-    private int targetY;
+    private Tile targetTile;
 
     // Max distance that cursor can be from mob
     private final byte REACH = 2;
@@ -56,7 +55,7 @@ public class Selector extends Entity {
 
     public Selector(MobEntity mob, SoundManager sfxManager) {
 
-        super(Utils.generateEntityID(), mob.x(), mob.y(), mob.width(), mob.height());
+        super(mob.x(), mob.y(), mob.width(), mob.height());
 
         // Initialize the selector with the given mob
         this.mob = mob;
@@ -72,8 +71,8 @@ public class Selector extends Entity {
         float mouseWorldX = Peripheral.getMouseX() / camera.zoom + camera.x;
         float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheral.getMouseY()) / camera.zoom + camera.y;
 
-        int tileX = (int)(mouseWorldX / Constants.GRID_SIZE);
-        int tileY = (int)(mouseWorldY / Constants.GRID_SIZE);
+        int tileX = (int) (mouseWorldX / Constants.GRID_SIZE);
+        int tileY = (int) (mouseWorldY / Constants.GRID_SIZE);
 
         Vector2 distance = new Vector2(tileX - mob.x / Constants.GRID_SIZE, tileY - mob.y / Constants.GRID_SIZE);
 
@@ -142,11 +141,11 @@ public class Selector extends Entity {
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
-        byte localTileX = (byte) (tileX % terrain.size);
-        byte localTileY = (byte) (tileY % terrain.size);
+        byte localTileX = (byte) Math.floorMod(tileX, terrain.size);
+        byte localTileY = (byte) Math.floorMod(tileY, terrain.size);
 
-        short chunkPosX = (short) (tileX / terrain.size);
-        short chunkPosY = (short) (tileY / terrain.size);
+        short chunkPosX = (short) Math.floorDiv(tileX, terrain.size);
+        short chunkPosY = (short) Math.floorDiv(tileY, terrain.size);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;
@@ -191,11 +190,11 @@ public class Selector extends Entity {
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
-        byte localTileX = (byte) (tileX % terrain.size);
-        byte localTileY = (byte) (tileY % terrain.size);
+        byte localTileX = (byte) Math.floorMod(tileX, terrain.size);
+        byte localTileY = (byte) Math.floorMod(tileY, terrain.size);
 
-        short chunkPosX = (short) (tileX / terrain.size);
-        short chunkPosY = (short) (tileY / terrain.size);
+        short chunkPosX = (short) Math.floorDiv(tileX, terrain.size);
+        short chunkPosY = (short) Math.floorDiv(tileY, terrain.size);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;
@@ -204,15 +203,12 @@ public class Selector extends Entity {
         
         if(current == null || current.type().isEmpty()) {
             current = chunk.getTileStack(localTileX, localTileY).get((byte) (mob.level() - 1)); 
-            if(current == null || current.type().isEmpty()) return;
+            if(current == null || current.type().isEmpty()) { miningProgress = 0f; return; }
         }
 
-        if(!(tileX == targetX && tileY == targetY)) { 
-        
+        if(current != targetTile) { 
             miningProgress = 0f;
-            targetX = tileX;
-            targetY = tileY;
-        
+            targetTile = current; 
         }
         
         Item currentItem = mobEntityInventory.currentItem();
@@ -245,9 +241,10 @@ public class Selector extends Entity {
 
         Item dropItem = current.getItem();
         chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(Utils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
-        entities.add(new ItemEntity(Utils.generateEntityID(), this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
+        entities.add(new ItemEntity(this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;
+        targetTile = null;
 
     }
     
@@ -258,7 +255,7 @@ public class Selector extends Entity {
         if(currenStack == null) return;
         if(currenStack.isEmpty()) return;
 
-        ItemEntity itemEntity = new ItemEntity(Utils.generateEntityID(), this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), sfxManager, currenStack.getItem(), mob);
+        ItemEntity itemEntity = new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), sfxManager, currenStack.getItem(), mob);
         entities.add(itemEntity);
 
         currenStack.remove((byte) 1);

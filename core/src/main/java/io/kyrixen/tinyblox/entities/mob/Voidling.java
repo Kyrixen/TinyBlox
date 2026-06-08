@@ -15,15 +15,14 @@ import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Voidling extends Enemy {
     
     private Player player = null;
 
-    public Voidling(int id, int x, int y, SoundManager soundManager) {
+    public Voidling(int x, int y, SoundManager soundManager) {
         
-        super(id, x, y, soundManager);
+        super(x, y, soundManager);
 
         this.maxHealth = 60;
         this.health = 60;
@@ -92,7 +91,7 @@ public class Voidling extends Enemy {
             if(choosenBelowTile == null) continue;
         
             Tile choosenTile = choosenStack.get((byte) (choosenBelowTile.level() + 1));
-            if(choosenTile != null && choosenTile.type() != TileType.AIR) continue;
+            if(choosenTile != null && !choosenTile.type().isEmpty()) continue;
 
             player.setX(choosenX);
             player.setY(choosenY);

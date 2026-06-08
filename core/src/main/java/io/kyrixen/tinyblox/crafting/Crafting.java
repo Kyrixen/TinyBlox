@@ -72,9 +72,10 @@ public class Crafting {
         int buttonX = containerX + 18;
         int recipeStartY = containerY + (containerH - 84) - buttonH - gap;
 
-        this.recipeButtons[0] = new RecipeButton(RecipeRegister.getRecipes().get(0), buttonX, recipeStartY - rowSpacing * 0, buttonW, buttonH, BUTTON_HOVER_TEXTURE, BUTTON_IDLE_TEXTURE, BUTTON_SELECTED_TEXTURE);
-        this.recipeButtons[1] = new RecipeButton(RecipeRegister.getRecipes().get(1), buttonX, recipeStartY - rowSpacing * 1, buttonW, buttonH, BUTTON_HOVER_TEXTURE, BUTTON_IDLE_TEXTURE, BUTTON_SELECTED_TEXTURE);
-        this.recipeButtons[2] = new RecipeButton(RecipeRegister.getRecipes().get(2), buttonX, recipeStartY - rowSpacing * 2, buttonW, buttonH, BUTTON_HOVER_TEXTURE, BUTTON_IDLE_TEXTURE, BUTTON_SELECTED_TEXTURE);
+        for(int i = 0; i < recipeButtons.length; i++) {
+            if(RecipeRegister.getRecipes().get(i) == null) continue;
+            this.recipeButtons[i] = new RecipeButton(RecipeRegister.getRecipes().get(i), buttonX, recipeStartY - rowSpacing * i, buttonW, buttonH, BUTTON_HOVER_TEXTURE, BUTTON_IDLE_TEXTURE, BUTTON_SELECTED_TEXTURE);
+        }
 
         this.updateScroll(0);
 

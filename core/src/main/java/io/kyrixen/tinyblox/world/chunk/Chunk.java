@@ -348,10 +348,12 @@ public class Chunk {
     }
 
     public TileStack getTileStack(byte localX, byte localY) {
+        if(localX < 0 || localX >= this.getChunkSize() || localY < 0 || localY >= this.getChunkSize()) return null;
         return this.chunk[localX][localY];
     }
 
     public Color getLight(byte xPos, byte yPos) {
+        if(xPos < 0 || xPos >= this.getChunkSize() || yPos < 0 || yPos >= this.getChunkSize()) return null;
         return this.lightLevel[xPos][yPos];
     }
 

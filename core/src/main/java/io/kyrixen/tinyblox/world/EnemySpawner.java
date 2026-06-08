@@ -12,7 +12,6 @@ import io.kyrixen.tinyblox.entities.mob.Voidling;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -64,19 +63,19 @@ public class EnemySpawner {
         switch (enemyType) {
 
             case 1:
-                newEnemy = new Enemy(Utils.generateEntityID(), worldX, worldY, this.soundManager);    
+                newEnemy = new Enemy(worldX, worldY, this.soundManager);    
                 break;
 
             case 2:
-                newEnemy = new Slime(Utils.generateEntityID(), worldX, worldY, this.soundManager);    
+                newEnemy = new Slime(worldX, worldY, this.soundManager);    
                 break;
             
             case 3:
-                newEnemy = new Bomber(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+                newEnemy = new Bomber(worldX, worldY, this.soundManager);
                 break;
 
             case 4:
-                newEnemy = new Voidling(Utils.generateEntityID(), worldX, worldY, this.soundManager);
+                newEnemy = new Voidling(worldX, worldY, this.soundManager);
                 break;
 
         }

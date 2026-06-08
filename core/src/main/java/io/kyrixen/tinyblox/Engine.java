@@ -14,6 +14,7 @@ import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
+import io.kyrixen.tinyblox.entities.mob.Bomber;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -108,15 +109,14 @@ public class Engine implements Screen {
         int[] spawn = Utils.spawnNearCenter(terrain);
 
         // Create player
-        player = new Player(Utils.generateEntityID(), spawn[0], spawn[1], rendererStack.camera, soundManager);
+        player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager);
         player.setLevel((byte) spawn[2]);
 
         // Add to list
         entities.add(player);
 
         // Create enemy
-        Enemy enemy1 = new Enemy(Utils.generateEntityID(), spawn[0] + Constants.GRID_SIZE * 2 , spawn[1] + Constants.GRID_SIZE * 2, soundManager);
-        player.setLevel((byte) spawn[2]);
+        Enemy enemy1 = new Bomber(spawn[0] + Constants.GRID_SIZE * 2 , spawn[1] + Constants.GRID_SIZE * 2, soundManager);
 
         // Add to list
         entities.add(enemy1);

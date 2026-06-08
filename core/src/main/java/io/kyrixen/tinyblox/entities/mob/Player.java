@@ -43,9 +43,9 @@ public class Player extends MobEntity {
     private final SoundID WALK_SOUND = new SoundID("tinyblox", SoundType.HUD, "walk");
 
 
-    public Player(int id, int x, int y, Camera camera, SoundManager soundManager) {
+    public Player(int x, int y, Camera camera, SoundManager soundManager) {
     
-        super(id, x, y, soundManager);
+        super(x, y, soundManager);
 
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);

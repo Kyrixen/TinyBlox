@@ -37,9 +37,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Sound manager
     protected final SoundManager soundManager;
 
-    public MobEntity(int id, int x, int y, SoundManager soundManager) {
+    public MobEntity(int x, int y, SoundManager soundManager) {
         
-        super(id, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
+        super(x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
 
         this.soundManager = soundManager;
 

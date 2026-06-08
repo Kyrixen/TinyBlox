@@ -33,9 +33,9 @@ public class Bomber extends Enemy {
     private long firstImpulse = 0L;
 
 
-    public Bomber(int id, int x, int y, SoundManager soundManager) {
+    public Bomber(int x, int y, SoundManager soundManager) {
     
-        super(id, x, y, soundManager);
+        super(x, y, soundManager);
     
         this.attackDamage = 65;
 

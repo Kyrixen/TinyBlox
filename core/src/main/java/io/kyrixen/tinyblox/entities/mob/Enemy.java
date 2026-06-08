@@ -40,9 +40,9 @@ public class Enemy extends MobEntity {
     protected final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
 
 
-    public Enemy(int id, int x, int y, SoundManager soundManager) {
+    public Enemy(int x, int y, SoundManager soundManager) {
         
-        super(id, x, y, soundManager);
+        super(x, y, soundManager);
 
         this.chasing = false;
 
@@ -133,10 +133,10 @@ public class Enemy extends MobEntity {
             if(!itemType.canRoll()) continue;
             
             int itemCount = RandomUtils.randomInt(1, itemType.getMaxSize());
-            itemCount = MathUtils.clamp(itemCount, 0, 8);
+            itemCount = MathUtils.clamp(itemCount, 0, 3);
 
             for(int j = 0; j < itemCount; j++) {
-                entities.add(new ItemEntity(Utils.generateEntityID(), this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
+                entities.add(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
             }
 
         }
@@ -230,8 +230,8 @@ public class Enemy extends MobEntity {
         Tile nextTile = enemyStack.get(level());
         if(nextBelowTile == null) return false;
 
-        if(nextBelowTile.type() == TileType.AIR || nextBelowTile.type() == TileType.VOID) return false;
-        if(nextTile != null && nextTile.type() != TileType.AIR) return false;
+        if(nextBelowTile.type().isEmpty() || nextBelowTile.type() == TileType.VOID) return false;
+        if(nextTile != null && !nextTile.type().isEmpty()) return false;
 
         return true;
 

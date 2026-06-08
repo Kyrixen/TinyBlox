@@ -202,10 +202,10 @@ public class ChunkGenerator {
                 if(currentStack == null) return false;
             
                 Tile currentTile = currentStack.get(centerLevel);
-                if(currentTile != null && currentTile.type() != TileType.AIR) return false;
+                if(currentTile != null && !currentTile.type().isEmpty()) return false;
                 
                 Tile belowTile = currentStack.get(centerTile.level());
-                if(belowTile == null || belowTile.type() == TileType.AIR) return false;
+                if(belowTile == null || belowTile.type().isEmpty()) return false;
             
             }
         }
@@ -237,7 +237,7 @@ public class ChunkGenerator {
                 for(byte structureY = 0; structureY < structure.getHeight(); structureY++) {
 
                     Tile structureTile = structure.getMap()[structureX][structureY];
-                    if(structureTile.type() == TileType.AIR) continue;
+                    if(structureTile.type().isEmpty()) continue;
 
                     Tile currentTile = new Tile(structureTile.type(), baseLevel);
 

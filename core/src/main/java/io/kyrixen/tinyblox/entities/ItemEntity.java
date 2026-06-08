@@ -33,9 +33,9 @@ public class ItemEntity extends Entity {
 
     private final SoundID PICKUP_ITEM_SOUND = new SoundID("tinyblox", SoundType.SFX, "pickup_item");
 
-    public ItemEntity(int id, int x, int y, SoundManager soundManager, Item item, MobEntity mob) {
+    public ItemEntity(int x, int y, SoundManager soundManager, Item item, MobEntity mob) {
 
-        super(id, x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
+        super(x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
 
         this.soundManager = soundManager;
 

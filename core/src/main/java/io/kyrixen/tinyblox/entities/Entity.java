@@ -12,6 +12,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.utils.Utils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
@@ -71,9 +72,9 @@ public class Entity {
     protected TextureID texture = null;
 
     // Constructs entity
-    public Entity(int id, int x, int y, int w, int h) {
+    public Entity(int x, int y, int w, int h) {
 
-        this.id = id;
+        this.id = Utils.generateEntityID();
         
         this.x = x;
         this.y = y;
@@ -93,12 +94,12 @@ public class Entity {
     }
 
     // Tries to move
-    public boolean tryMove(Terrain terrain){
+    protected boolean tryMove(Terrain terrain){
         moving = TerrainCollision.queryMove(this, terrain);
         return moving;
     }
 
-    public void updateFlip() {
+    protected void updateFlip() {
         if(dirX < 0) this.flip = FlipType.X_AXIS;
         else if(dirX > 0) this.flip = FlipType.NONE;
     }

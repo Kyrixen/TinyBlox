@@ -6,9 +6,9 @@ import io.kyrixen.tinyblox.sound.SoundManager;
 
 public class Slime extends Enemy {
     
-    public Slime(int id, int x, int y, SoundManager soundManager) {
+    public Slime(int x, int y, SoundManager soundManager) {
         
-        super(id, x, y, soundManager);
+        super(x, y, soundManager);
 
         this.attackDamage = 10;
 
