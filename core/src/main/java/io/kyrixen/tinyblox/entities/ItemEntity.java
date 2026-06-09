@@ -12,7 +12,7 @@ import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
@@ -99,7 +99,7 @@ public class ItemEntity extends Entity {
 
     // Pick up the item
     public Item pickup() {
-        soundManager.getSound(PICKUP_ITEM_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.95f, 1.2f), 0f);
+        soundManager.getSound(PICKUP_ITEM_SOUND).play(MiscUtils.getFloatSound(40), RandomUtils.randomFloat(0.95f, 1.2f), 0f);
         return this.item;
     }
 

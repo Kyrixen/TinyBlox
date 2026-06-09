@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Button
@@ -120,8 +120,8 @@ public class Button {
 
         if(hover) {
 
-            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { state = ButtonState.PRESS; if(!wasPressed) { uiSoundManager.getSound(CLICK_SOUND).play(Utils.getFloatSound(100)); wasPressed = true; } }
-            else { state = ButtonState.HOVER; if(!wasHovering) { uiSoundManager.getSound(HOLLOW_SOUND).play(Utils.getFloatSound(80)); wasHovering = true; } wasPressed = false; }
+            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) { state = ButtonState.PRESS; if(!wasPressed) { uiSoundManager.getSound(CLICK_SOUND).play(MiscUtils.getFloatSound(100)); wasPressed = true; } }
+            else { state = ButtonState.HOVER; if(!wasHovering) { uiSoundManager.getSound(HOLLOW_SOUND).play(MiscUtils.getFloatSound(80)); wasHovering = true; } wasPressed = false; }
 
         } else { state = ButtonState.NOACTION; wasHovering = false; wasPressed = false; }
     

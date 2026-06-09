@@ -10,12 +10,12 @@ public class Camera {
     public int y;
 
     // Window size
-    public int viewWidth;
-    public int viewHeight;
+    public final int viewWidth;
+    public final int viewHeight;
     public float zoom;
 
     // Like Minecraft
-    public int RENDER_DISTANCE;
+    public final int RENDER_DISTANCE;
 
 
     // Setup camera
@@ -51,20 +51,6 @@ public class Camera {
 
         x = Math.max(0, Math.min(x, maxX));
         y = Math.max(0, Math.min(y, maxY));
-
-    }
-
-    // Unload resources
-    public void cleanup(){
-
-        x = 0;
-        y = 0;
-
-        viewWidth = 0;
-        viewHeight = 0;
-        zoom = 0f;
-
-        RENDER_DISTANCE = 0;
 
     }
 

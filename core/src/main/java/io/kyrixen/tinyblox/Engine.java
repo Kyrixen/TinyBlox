@@ -23,7 +23,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -105,7 +105,7 @@ public class Engine implements Screen {
         timeCycle.setDayTime(DayTime.DAY);
 
         // Spawn cords
-        int[] spawn = Utils.spawnNearCenter(terrain);
+        int[] spawn = MiscUtils.spawnNearCenter(terrain);
 
         // Create player
         player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager);

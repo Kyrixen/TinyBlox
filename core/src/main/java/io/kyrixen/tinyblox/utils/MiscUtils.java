@@ -5,7 +5,7 @@ import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 
-public class Utils {
+public class MiscUtils {
 
     // Entity ID counter var
     private static int LAST_ENTITY_ID = 0;

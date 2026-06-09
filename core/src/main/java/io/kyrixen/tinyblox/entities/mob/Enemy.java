@@ -14,7 +14,7 @@ import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -101,7 +101,7 @@ public class Enemy extends MobEntity {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
 
-            if(player.damage(attackDamage)) soundManager.getSound(HIT_PLAYER_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
+            if(player.damage(attackDamage)) soundManager.getSound(HIT_PLAYER_SOUND).play(MiscUtils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
                         
         }
 
@@ -110,7 +110,7 @@ public class Enemy extends MobEntity {
     // Get loot from enemy
     public void throwLoot(MobEntity mob, ArrayList<Entity> entities) {
 
-        soundManager.getSound(EXPLOSION_SOUND).play(Utils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
+        soundManager.getSound(EXPLOSION_SOUND).play(MiscUtils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
         int loopCount = RandomUtils.randomInt(1, 3);
 
         for(int i = 0; i < loopCount; i++) {

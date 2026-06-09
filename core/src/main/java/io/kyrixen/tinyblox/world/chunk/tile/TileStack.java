@@ -16,6 +16,7 @@ public class TileStack  {
 
     public TileStack() {
         this.tiles = new ArrayList<>();
+        set(new Tile(TileType.VOID, (byte) 0), (byte) 0);
     }
 
     public byte stackSize() {
@@ -105,7 +106,12 @@ public class TileStack  {
 
     public boolean isEmpty() {
 
-        for(Tile tile : tiles) { if(!isTerrain(tile)) continue; return false; }
+        for(Tile tile : tiles) {
+            if(tile == null) continue;
+            if(tile.type().isEmpty()) continue;
+            return false;
+        }
+        
         return true;
 
     }

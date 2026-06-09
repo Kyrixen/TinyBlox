@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Toggle button
@@ -111,7 +111,7 @@ public class ToggleButton extends Button {
             
                 if(!wasPressed) {
             
-                    uiSoundManager.getSound(this.CLICK_SOUND).play(Utils.getFloatSound(100));
+                    uiSoundManager.getSound(this.CLICK_SOUND).play(MiscUtils.getFloatSound(100));
                     wasPressed = true;
             
                     if(toggleState == ToggleButtonState.DISABLED) return;
@@ -126,7 +126,7 @@ public class ToggleButton extends Button {
                 state = ButtonState.HOVER; 
             
                 if(!wasHovering) {
-                    uiSoundManager.getSound(this.HOLLOW_SOUND).play(Utils.getFloatSound(80));
+                    uiSoundManager.getSound(this.HOLLOW_SOUND).play(MiscUtils.getFloatSound(80));
                     wasHovering = true;
                 }
             

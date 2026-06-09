@@ -7,7 +7,7 @@ import io.kyrixen.tinyblox.entities.inventory.Equipment.EquipmentType;
 import io.kyrixen.tinyblox.entities.inventory.Equipment.ToolTier;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ItemRegister {
@@ -17,20 +17,20 @@ public class ItemRegister {
 
     // Helper items holders //
 
-    public final static Item NONE = new Item("none", Utils.generateItemID(), null, false, (byte) 0);
-    public final static Item GRASS = new Item("grass", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "grass"), true, (byte) 24, TileType.GRASS);
-    public final static Item DIRT = new Item("dirt", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), true, (byte) 24, TileType.DIRT);
-    public final static Item STONE = new Item("stone", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "stone"), true, (byte) 24, TileType.STONE);
-    public final static Item WATER = new Item("water", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "water"), false, (byte) 24, TileType.WATER);
-    public final static Item COAL = new Item("coal", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "coal_ore"), false, (byte) 12, TileType.COAL);
-    public final static Item IRON = new Item("iron", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), false, (byte) 12, TileType.IRON);
-    public final static Item WOOD = new Item("wood", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "wood"), true, (byte) 24, TileType.WOOD);
-    public final static Item LEAVES = new Item("leaves", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), false, (byte) 24, TileType.LEAVES);
-    public final static Item LADDER = new Item("ladder", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), true, (byte) 36, TileType.LADDER);
-    public final static Item CAGED_LAMP = new Item("caged_lamp", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
-    public final static Item SLIME = new Item("slime", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "slime_tile"), false, (byte) 6, TileType.SLIME_TILE);
-    public final static Item SAND = new Item("sand", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "sand"), true, (byte) 36, TileType.SAND);
-    public final static Item GLASS = new Item("glass", Utils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "glass"), true, (byte) 36, TileType.GLASS);
+    public final static Item NONE = new Item("none", MiscUtils.generateItemID(), null, false, (byte) 0);
+    public final static Item GRASS = new Item("grass", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "grass"), true, (byte) 24, TileType.GRASS);
+    public final static Item DIRT = new Item("dirt", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "dirt"), true, (byte) 24, TileType.DIRT);
+    public final static Item STONE = new Item("stone", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "stone"), true, (byte) 24, TileType.STONE);
+    public final static Item WATER = new Item("water", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "water"), false, (byte) 24, TileType.WATER);
+    public final static Item COAL = new Item("coal", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "coal_ore"), false, (byte) 12, TileType.COAL);
+    public final static Item IRON = new Item("iron", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "iron_ore"), false, (byte) 12, TileType.IRON);
+    public final static Item WOOD = new Item("wood", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "wood"), true, (byte) 24, TileType.WOOD);
+    public final static Item LEAVES = new Item("leaves", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "leaves"), false, (byte) 24, TileType.LEAVES);
+    public final static Item LADDER = new Item("ladder", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "ladder"), true, (byte) 36, TileType.LADDER);
+    public final static Item CAGED_LAMP = new Item("caged_lamp", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
+    public final static Item SLIME = new Item("slime", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "slime_tile"), false, (byte) 6, TileType.SLIME_TILE);
+    public final static Item SAND = new Item("sand", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "sand"), true, (byte) 36, TileType.SAND);
+    public final static Item GLASS = new Item("glass", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "glass"), true, (byte) 36, TileType.GLASS);
 
 
     public final static Item WOODEN_SWORD = new Equipment("wooden_sword", new TextureID("tinyblox", TextureType.HUD, "wooden_sword"), true, ToolTier.WOOD, EquipmentType.WEAPON);

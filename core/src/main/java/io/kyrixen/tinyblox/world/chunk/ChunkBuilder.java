@@ -10,17 +10,13 @@ public class ChunkBuilder {
     private Tile[][] buildedChunk;
 
     public ChunkBuilder(byte size) {
-
         this.size = size;
-
         buildedChunk = new Tile[size][size];
-
     }
 
-    public void setTile(byte tX, byte tY, TileType type, boolean solid, byte height) {
+    public void setTile(byte tX, byte tY, TileType type, byte height) {
 
         Tile t = new Tile(type, height);
-
         buildedChunk[tX][tY] = t;
 
     }
@@ -28,15 +24,12 @@ public class ChunkBuilder {
     public void fill(TileType type, byte height) {
 
         for (int tx = 0; tx < this.size; tx++) {
-        
             for (int ty = 0; ty < this.size; ty++) {
         
                 Tile tile = new Tile(type, height);
-        
                 buildedChunk[tx][ty] = tile;
         
             }
-        
         }
     
     }

@@ -12,7 +12,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
@@ -76,7 +76,7 @@ public class Entity {
     // Constructs entity
     public Entity(int x, int y, int w, int h) {
 
-        this.id = Utils.generateEntityID();
+        this.id = MiscUtils.generateEntityID();
         
         this.x = x;
         this.y = y;

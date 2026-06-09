@@ -14,7 +14,7 @@ import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Slider
@@ -90,8 +90,8 @@ public class Slider {
 
         hover = mX >= x && mX <= x + w && mY >= y && mY <= y + h;
 
-        if(hover && Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.getSound(SLIDER_SOUND).play(Utils.getFloatSound(50)); wasDragged = true; } }
-        if(hover) { if(!wasHovered) { uiSoundManager.getSound(OPTIONS_SOUND).play(Utils.getFloatSound(70)); wasHovered = true; } }
+        if(hover && Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = true; pressed = true; if(!wasDragged) { uiSoundManager.getSound(SLIDER_SOUND).play(MiscUtils.getFloatSound(50)); wasDragged = true; } }
+        if(hover) { if(!wasHovered) { uiSoundManager.getSound(OPTIONS_SOUND).play(MiscUtils.getFloatSound(70)); wasHovered = true; } }
         if(!hover) wasHovered = false;
 
         if(!Peripheral.mousePressed(Input.Buttons.LEFT)) { dragging = false; wasDragged = false; pressed = false; }

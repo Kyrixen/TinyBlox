@@ -32,7 +32,6 @@ public class RendererStack {
 		batch.dispose();
 		shape.dispose();
 		font.dispose();
-		camera.cleanup();
 		
 	}
 	

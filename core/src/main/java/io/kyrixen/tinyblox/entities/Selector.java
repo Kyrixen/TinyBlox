@@ -20,7 +20,7 @@ import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
@@ -119,7 +119,7 @@ public class Selector extends Entity {
 
 
         if(e != null){
-            if(e.damage((int) damage)) sfxManager.getSound(HIT_ENEMY_SOUND).play(Utils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f);
+            if(e.damage((int) damage)) sfxManager.getSound(HIT_ENEMY_SOUND).play(MiscUtils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f);
         }
 
     }
@@ -168,7 +168,7 @@ public class Selector extends Entity {
         if(!currentStack.getItem().canPlace()) return;
 
         chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().getTileVariant(), placeLevel), placeLevel);
-        sfxManager.getSound(PLACE_SOUND).play(Utils.getFloatSound(15), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
+        sfxManager.getSound(PLACE_SOUND).play(MiscUtils.getFloatSound(15), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
 
         mobEntityInventory.getCurrentStack().remove((byte) 1);
         Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.mobEntityInventory.toString());
@@ -240,7 +240,7 @@ public class Selector extends Entity {
         if(current.level() <= 0) return;
 
         Item dropItem = current.getItem();
-        chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(Utils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
+        chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(MiscUtils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
         entities.add(new ItemEntity(this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;

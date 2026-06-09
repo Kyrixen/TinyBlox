@@ -24,7 +24,7 @@ import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -252,7 +252,7 @@ public class Player extends MobEntity {
 
     @Override
     protected void onMove() {
-        soundManager.getSound(WALK_SOUND).play(Utils.getFloatSound(15), RandomUtils.randomFloat(0.9f, 1.1f), 0f);
+        soundManager.getSound(WALK_SOUND).play(MiscUtils.getFloatSound(15), RandomUtils.randomFloat(0.9f, 1.1f), 0f);
     }
 
     

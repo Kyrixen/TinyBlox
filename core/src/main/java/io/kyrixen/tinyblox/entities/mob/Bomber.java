@@ -13,7 +13,7 @@ import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.utils.RandomUtils;
-import io.kyrixen.tinyblox.utils.Utils;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
@@ -150,7 +150,7 @@ public class Bomber extends Enemy {
 
     @Override
     public void checkHit(Player player) {
-        if(!activated && EntityCollision.checkEntityDistance(player, this) <= 2.0f && level() == player.level()) { activated = true; firstImpulse = System.currentTimeMillis(); player.damage(attackDamage); soundManager.getSound(DETONATE_SOUND).play(Utils.getFloatSound(45), RandomUtils.randomFloat(0.90f, 1.1f), 0f); }
+        if(!activated && EntityCollision.checkEntityDistance(player, this) <= 2.0f && level() == player.level()) { activated = true; firstImpulse = System.currentTimeMillis(); player.damage(attackDamage); soundManager.getSound(DETONATE_SOUND).play(MiscUtils.getFloatSound(45), RandomUtils.randomFloat(0.90f, 1.1f), 0f); }
     }
 
 
