@@ -53,10 +53,11 @@ public class ChunkGenerator {
                     if(currentLevel == 0) {
                         type = TileType.WATER;
                     } else if(levelDiff == 0) {
-                        
+
                         if(currentLevel >= 13) type = TileType.STONE;
+                        else if(currentLevel <= 7) type = TileType.SAND;
                         else type = TileType.GRASS;
-                    
+                        
                     } else if(levelDiff <= 1) {
                         type = TileType.DIRT;
                     } else {
@@ -70,14 +71,7 @@ public class ChunkGenerator {
                     chunk.getTileStack(tx, ty).set(new Tile(type, currentLevel), currentLevel);
 
                 }
-
-                Tile topTile = chunk.getTileStack(tx, ty).getTopTerrain();
-                if(topTile == null) continue;
-
-                if(topTile.type() != TileType.DIRT || topTile.level() > Constants.MAX_TERRAIN_HEIGHT * 0.75f) continue;
-
-                chunk.getTileStack(tx, ty).set(new Tile(TileType.GRASS, topTile.level()), topTile.level());
-
+                        
             }
 
         }

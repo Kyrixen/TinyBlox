@@ -126,8 +126,6 @@ public class Engine implements Screen {
         enemy1.setLevel((byte) spawn[2]);
 
         Entity.initTextureAll(entities);
-
-        player.getInventory().add(ItemRegister.GLASS, (byte) 36);
     
     }
 

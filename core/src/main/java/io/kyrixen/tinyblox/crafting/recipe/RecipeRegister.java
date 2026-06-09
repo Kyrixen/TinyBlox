@@ -31,6 +31,7 @@ public class RecipeRegister {
 
         RECIPES.add(new Recipe(new ItemStack[] { new ItemStack(ItemRegister.WOOD, (byte) 4) }, new ItemStack(ItemRegister.LADDER, (byte) 12)));
         RECIPES.add(new Recipe(new ItemStack[] { new ItemStack(ItemRegister.COAL, (byte) 1), new ItemStack(ItemRegister.IRON, (byte) 4) }, new ItemStack(ItemRegister.CAGED_LAMP, (byte) 4)));
+        RECIPES.add(new Recipe(new ItemStack[] { new ItemStack(ItemRegister.SAND, (byte) 1) }, new ItemStack(ItemRegister.GLASS, (byte) 2)));
 
     }
 
