@@ -21,8 +21,8 @@ public class Tile {
         WOOD(0.60f, PreferedMiningType.WOOD, false, 1f, true, false, false, 0f),
         LADDER(0.35f, PreferedMiningType.WOOD, true, 1.15f, true, true, false, 0f),
         CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, 0.95f, true, false, false, 0.75f),
-        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, 0.03f);
-
+        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, 0.03f),
+        GLASS(0.15f, PreferedMiningType.NONE, false, 0.85f, true, false, false, 0.02f);
 
         // Mining category enum
         public enum PreferedMiningType {
@@ -108,6 +108,7 @@ public class Tile {
             case LADDER     : return 0;
             case CAGED_LAMP : return 1;
             case SLIME_TILE : return 2;
+            case GLASS      : return 0;   
             default         : return 0;
         }
 
@@ -131,6 +132,7 @@ public class Tile {
             case LADDER     : return 2;
             case CAGED_LAMP : return 2;
             case SLIME_TILE : return 2;
+            case GLASS      : return 3;
             default         : return 0;
         }
     
@@ -181,6 +183,9 @@ public class Tile {
 
             case SLIME_TILE:
                 return ItemRegister.SLIME;
+
+            case GLASS:
+                return ItemRegister.GLASS;
 
             default:
                 return ItemRegister.NONE;
