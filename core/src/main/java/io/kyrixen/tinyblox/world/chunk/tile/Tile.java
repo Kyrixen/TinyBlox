@@ -9,21 +9,21 @@ public class Tile {
     // Tile type enum
     public static enum TileType {
 
-        AIR(9999999f, PreferedMiningType.NONE, true, 1.0f, false, false, false, 0f),
-        VOID(9999999f, PreferedMiningType.NONE, false, 1.0f, false, false, false, 0f),
-        LEAVES(0.10f, PreferedMiningType.WOOD, false, 1.05f, true, false, false, 0f),
-        GRASS(0.20f, PreferedMiningType.NONE, false, 1f, true, false, true, 0f),
-        DIRT(0.35f, PreferedMiningType.NONE, false, 0.95f, true, false, true, 0f),
-        WATER(9999999f, PreferedMiningType.NONE, true, 0.70f, false, false, true, 0f),
-        STONE(1.0f, PreferedMiningType.STONE, false, 0.9f, true, false, true, 0f),
-        COAL(1.50f, PreferedMiningType.STONE, false, 0.85f, true, false, false, 0.05f),
-        IRON(1.75f, PreferedMiningType.STONE, false, 0.85f, true, false, false, 0.15f),
-        WOOD(0.60f, PreferedMiningType.WOOD, false, 1f, true, false, false, 0f),
-        LADDER(0.35f, PreferedMiningType.WOOD, true, 1.15f, true, true, false, 0f),
-        CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, 0.95f, true, false, false, 0.75f),
-        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, 0.03f),
-        SAND(0.4f, PreferedMiningType.NONE, false, 0.95f, true, false, true, 0f),
-        GLASS(0.15f, PreferedMiningType.NONE, false, 0.85f, true, false, false, 0.02f);
+        AIR(9999999f, PreferedMiningType.NONE, true, 1.0f, false, false, false, true, 0f),
+        VOID(9999999f, PreferedMiningType.NONE, false, 1.0f, false, false, false, false, 0f),
+        LEAVES(0.10f, PreferedMiningType.WOOD, false, 1.05f, true, false, false, false, 0f),
+        GRASS(0.20f, PreferedMiningType.NONE, false, 1f, true, false, true, false, 0f),
+        DIRT(0.35f, PreferedMiningType.NONE, false, 0.95f, true, false, true, false, 0f),
+        WATER(9999999f, PreferedMiningType.NONE, true, 0.70f, false, false, true, false, 0f),
+        STONE(1.0f, PreferedMiningType.STONE, false, 0.9f, true, false, true, false, 0f),
+        COAL(1.50f, PreferedMiningType.STONE, false, 0.85f, true, false, false, false, 0.05f),
+        IRON(1.75f, PreferedMiningType.STONE, false, 0.85f, true, false, false, false, 0.15f),
+        WOOD(0.60f, PreferedMiningType.WOOD, false, 1f, true, false, false, false, 0f),
+        LADDER(0.35f, PreferedMiningType.WOOD, true, 1.15f, true, true, false, true, 0f),
+        CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, 0.95f, true, false, false, false, 0.75f),
+        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, false, 0.03f),
+        SAND(0.4f, PreferedMiningType.NONE, false, 0.95f, true, false, true, false, 0f),
+        GLASS(0.15f, PreferedMiningType.NONE, false, 0.85f, true, false, false, true, 0.02f);
 
         // Mining category enum
         public enum PreferedMiningType {
@@ -41,10 +41,11 @@ public class Tile {
         private final float slipperyModifier;
         private final boolean terrain;
         private final boolean support;
+        private final boolean transparent;
         private final PreferedMiningType miningType;
         private final float lightLevel;
 
-        TileType(float mining_time, PreferedMiningType miningType, boolean passable, float slipperyModifier, boolean support, boolean climbable, boolean terrain, float lightLevel) {
+        TileType(float mining_time, PreferedMiningType miningType, boolean passable, float slipperyModifier, boolean support, boolean climbable, boolean terrain, boolean transparent, float lightLevel) {
             this.mining_time = mining_time;
             this.miningType = miningType;
             this.passable = passable;
@@ -52,6 +53,7 @@ public class Tile {
             this.climbable = climbable;
             this.terrain = terrain;
             this.support = support;
+            this.transparent = transparent;
             this.lightLevel = lightLevel;
         }
 
@@ -65,6 +67,7 @@ public class Tile {
         public boolean isClimbable() { return this.climbable; }
         public boolean isPassable() { return this.passable; }
         public boolean isTerrain() { return this.terrain; }
+        public boolean isTransparent() { return this.transparent; }
         public boolean canSupport() { return this.support; }
         
         public boolean isEmpty() { return this == TileType.AIR; }

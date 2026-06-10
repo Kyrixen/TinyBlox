@@ -1,5 +1,8 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -111,33 +114,45 @@ public class Chunk {
                 
                 float revealRadius = Constants.ROOF_REVEAL_RADIUS * Constants.GRID_SIZE;
 
-                for(byte layer = 0; layer < tileStack.stackSize(); layer++) {
+                List<Tile> transparentTiles = new ArrayList<>();
+                for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
 
                     Tile stackedTile = tileStack.get(layer);
+
                     if(stackedTile == null) continue;
                     if(stackedTile.level() <= player.level()) continue;
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
+                    if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
+
+                    // Draw first visible opaque tile
                     batch.setColor(light.r, light.g, light.b, 1f);
-                    
-                    int levelDiff = stackedTile.level() - player.level();                    
+
+                    int levelDiff = stackedTile.level() - player.level();
 
                     if(tileAbovePlayer && levelDiff > 0 && dist <= revealRadius) {
 
-                        // Tbh this math wizard alpha calculation thing did ai
                         float alpha = dist / revealRadius;
 
                         alpha = MathUtils.clamp(alpha, 0f, 1f);
                         alpha = alpha * alpha * (3f - 2f * alpha);
                         alpha = MathUtils.clamp(alpha, 0.25f, 0.65f);
-                        
+
                         batch.setColor(light.r, light.g, light.b, alpha);
-                    
+
                     }
-                    
+
                     tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+
+                    // Draw transparent tile on top
+                    for(int i = transparentTiles.size() - 1; i >= 0; i--) {
+                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                    }
+
                     batch.setColor(1f, 1f, 1f, 1f);
 
+                    break;
+                    
                 }
             
             }
@@ -172,17 +187,30 @@ public class Chunk {
 
                 Color light = this.getLight(tx, ty);
 
-                for(byte layer = 0; layer < tileStack.stackSize(); layer++) {
+                List<Tile> transparentTiles = new ArrayList<>();
+                for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
 
                     Tile stackedTile = tileStack.get(layer);
+
                     if(stackedTile == null) continue;
                     if(stackedTile.level() > player.level()) continue;
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
+                    if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
+
+                    // Draw first visible opaque tile
                     batch.setColor(light.r, light.g, light.b, 1f);
                     tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+
+                    // Draw transparent tile on top
+                    for(int i = transparentTiles.size() - 1; i >= 0; i--) {
+                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                    }
+                    
                     batch.setColor(1f, 1f, 1f, 1f);
 
+                    break;
+                    
                 }
             
             }
