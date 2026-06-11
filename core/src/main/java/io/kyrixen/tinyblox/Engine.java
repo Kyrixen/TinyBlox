@@ -168,7 +168,7 @@ public class Engine implements Screen {
             if(!(e instanceof Enemy)) continue;
             Enemy en = (Enemy) e;
 
-            en.checkHit(player);
+            en.checkPlayer(player);
 
         }
 

@@ -18,7 +18,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Slime extends Enemy {
     
-    protected final float slimify_delay = 2.30f;
+    protected float slimify_delay = 2.30f;
     protected long lastSlimify = 0L;
 
     public Slime(int x, int y, SoundManager soundManager) {
@@ -41,6 +41,9 @@ public class Slime extends Enemy {
     public void update(float deltaTime, Terrain terrain) {
 
         super.update(deltaTime, terrain);
+
+        if(chasing) slimify_delay = 1.15f;
+        else slimify_delay = 2.30f;
 
         if(System.currentTimeMillis() - lastSlimify < slimify_delay * 1000) return;
 

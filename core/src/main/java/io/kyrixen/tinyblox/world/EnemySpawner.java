@@ -107,7 +107,7 @@ public class EnemySpawner {
             short enemyChunkX = (short) ((enemy.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
             short enemyChunkY = (short) ((enemy.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
 
-            boolean chase = Math.abs(enemyChunkX - playerChunkX) <= 1 && Math.abs(enemyChunkY - playerChunkY) <= 1;
+            boolean chase = Math.abs(enemyChunkX - playerChunkX) <= enemy.getActivationRange() && Math.abs(enemyChunkY - playerChunkY) <= enemy.getActivationRange();
 
             enemy.setChasing(chase);
 

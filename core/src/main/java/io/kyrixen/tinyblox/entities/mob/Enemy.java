@@ -30,6 +30,7 @@ public class Enemy extends MobEntity {
 
     // If its chasing entity
     protected boolean chasing;
+    protected byte activationRange = 1;
 
     // Count the stuck count
     protected int stuckCounter = 0;
@@ -93,9 +94,14 @@ public class Enemy extends MobEntity {
         this.chasing = chasing;
     }
 
+    // Getter
+    public byte getActivationRange() {
+        return this.activationRange;
+    }
+
 
     // Checks collision
-    public void checkHit(Player player){
+    public void checkPlayer(Player player){
 
         if (EntityCollision.checkTileCollision(player, this)) {
                         

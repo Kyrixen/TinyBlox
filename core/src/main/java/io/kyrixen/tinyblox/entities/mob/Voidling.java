@@ -29,6 +29,8 @@ public class Voidling extends Enemy {
 
         this.attackDamage = 25;
 
+        this.activationRange = 3;
+
         this.setSpeed(Speed.SNAIL);
 
     }
@@ -38,8 +40,7 @@ public class Voidling extends Enemy {
 
         super.update(deltaTime, terrain);
 
-        if(player == null) return;
-        teleport(player, terrain);
+        if(player != null) teleportPlayer(player, terrain);
 
     }
 
@@ -74,7 +75,7 @@ public class Voidling extends Enemy {
 
     }
 
-    private void teleport(Player player, Terrain terrain) {
+    private void teleportPlayer(Player player, Terrain terrain) {
 
         for(int attempt = 0; attempt < 100; attempt++) {
 
@@ -111,7 +112,7 @@ public class Voidling extends Enemy {
     }
 
     @Override
-    public void checkHit(Player player) {
+    public void checkPlayer(Player player) {
 
         if(this.player != null) return;
         if(!EntityCollision.checkTileCollision(player, this)) return;
