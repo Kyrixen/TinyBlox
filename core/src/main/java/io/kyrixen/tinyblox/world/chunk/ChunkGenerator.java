@@ -55,7 +55,10 @@ public class ChunkGenerator {
                     } else if(levelDiff == 0) {
 
                         if(currentLevel >= 13) type = TileType.STONE;
-                        else if(currentLevel <= 7) type = TileType.SAND;
+                        else if(currentLevel <= 7) { 
+                            if(materialNoise < 0.75f) type = TileType.SAND;
+                            else type = TileType.CLAY; 
+                        }
                         else type = TileType.GRASS;
                         
                     } else if(levelDiff <= 1) {

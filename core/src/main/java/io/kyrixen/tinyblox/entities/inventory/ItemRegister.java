@@ -31,6 +31,8 @@ public class ItemRegister {
     public final static Item SLIME = new Item("slime", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "slime_tile"), false, (byte) 6, TileType.SLIME_TILE);
     public final static Item SAND = new Item("sand", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "sand"), true, (byte) 36, TileType.SAND);
     public final static Item GLASS = new Item("glass", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "glass"), true, (byte) 36, TileType.GLASS);
+    public final static Item CLAY = new Item("clay", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "clay"), true, (byte) 12, TileType.CLAY);
+    public final static Item BRICK = new Item("brick", MiscUtils.generateItemID(), new TextureID("tinyblox", TextureType.TERRAIN, "brick"), true, (byte) 24, TileType.BRICK);
 
 
     public final static Item WOODEN_SWORD = new Equipment("wooden_sword", new TextureID("tinyblox", TextureType.HUD, "wooden_sword"), true, ToolTier.WOOD, EquipmentType.WEAPON);
