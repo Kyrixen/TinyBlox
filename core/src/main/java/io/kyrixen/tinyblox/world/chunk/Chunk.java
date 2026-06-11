@@ -318,13 +318,11 @@ public class Chunk {
         int camChunkX = camCenterX / chunkWorldSize;
         int camChunkY = camCenterY / chunkWorldSize;
 
-        int buffer = Constants.BUFFER; // Number of chunks beyond camera view
-
         // Determine rendered chunk range
-        int left   = Math.max(0, camChunkX - cam.RENDER_DISTANCE - buffer);
-        int right  = Math.min(worldChunksX - 1, camChunkX + cam.RENDER_DISTANCE + buffer);
-        int top    = Math.max(0, camChunkY - cam.RENDER_DISTANCE - buffer);
-        int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE + buffer);
+        int left   = Math.max(0, camChunkX - cam.RENDER_DISTANCE);
+        int right  = Math.min(worldChunksX - 1, camChunkX + cam.RENDER_DISTANCE);
+        int top    = Math.max(0, camChunkY - cam.RENDER_DISTANCE);
+        int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE);
 
         // Keep generated chunk data in RAM; only toggle rendering.
         rendered = loaded && cX >= left && cX <= right && cY >= top && cY <= bottom;

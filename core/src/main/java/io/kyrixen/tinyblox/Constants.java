@@ -32,8 +32,7 @@ public class Constants {
     public static final byte CHUNK_SIZE = 12;
 
     // Rendering stuff
-    public static final byte RENDER_DISTANCE = 3;
-    public static final byte BUFFER = 2;
+    public static final byte RENDER_DISTANCE = 2;
     public static final byte ROOF_REVEAL_RADIUS = 3;
 
     // Version
