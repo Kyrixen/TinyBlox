@@ -1,2 +1,12 @@
+# Text files use Linux line endings
 * text=auto eol=lf
-*.bat text=auto eol=crlf
+
+# Windows scripts
+*.bat text eol=crlf
+
+# Binary assets
+*.png binary
+*.wav binary
+*.ico binary
+*.icns binary
+*.jar binary
