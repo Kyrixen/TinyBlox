@@ -17,6 +17,7 @@ import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Terrain {
 
@@ -85,6 +86,8 @@ public class Terrain {
                 //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
                 
                 ChunkGenerator.generateChunk(c, noise);
+                ChunkGenerator.spawnOre(c, TileType.COAL, 2);
+                ChunkGenerator.spawnOre(c, TileType.IRON, 1);
                 ChunkGenerator.spawnTree(c, 10);
                 ChunkGenerator.spawnStructure(c, 10);
                 //c.set(cb.build());

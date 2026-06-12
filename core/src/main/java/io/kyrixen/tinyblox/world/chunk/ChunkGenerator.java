@@ -63,13 +63,7 @@ public class ChunkGenerator {
                         
                     } else if(levelDiff <= 1) {
                         type = TileType.DIRT;
-                    } else {
-                    
-                        if(materialNoise < 0.70f) type = TileType.STONE;
-                        else if(materialNoise < 0.85f) type = TileType.COAL;
-                        else type = TileType.IRON;
-                    
-                    }
+                    } else type = TileType.STONE;
 
                     chunk.getTileStack(tx, ty).set(new Tile(type, currentLevel), currentLevel);
 
@@ -95,8 +89,8 @@ public class ChunkGenerator {
 
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = (byte) random.seedInt(3, chunk.getChunkSize() - 4); 
-            byte choosenY = (byte) random.seedInt(3, chunk.getChunkSize() - 4);
+            byte choosenX = random.seedByte((byte) 3, (byte) (chunk.getChunkSize() - 4)); 
+            byte choosenY = random.seedByte((byte) 3, (byte) (chunk.getChunkSize() - 4));
 
             TileStack tileStack = chunk.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
@@ -154,6 +148,59 @@ public class ChunkGenerator {
 
     }
 
+    // Tries to spawn ore
+    public static void spawnOre(Chunk chunk, TileType tileType, int maxAttempts) {
+
+        long oreSeed = RandomUtils.mixSeed(chunk.getChunkSeed(), tileType.hashCode() ^ 7655254381564L);
+        RandomUtils random = new RandomUtils(oreSeed);
+
+        byte oreSize = random.seedByte((byte) 1, (byte) 2);
+
+        for(int attempt = 0; attempt < maxAttempts; attempt++) {
+
+            byte choosenX = random.seedByte(oreSize, (byte) (chunk.getChunkSize() - oreSize));
+            byte choosenY = random.seedByte(oreSize, (byte) (chunk.getChunkSize() - oreSize));
+
+            TileStack tileStack = chunk.getTileStack(choosenX, choosenY);
+            if(tileStack == null) continue;
+
+            byte choosenLevel = -1;
+            for(int levelAttempt = 0; levelAttempt < maxAttempts; levelAttempt++) {
+
+                byte level = random.seedByte(Constants.MIN_WORLD_HEIGHT, tileStack.height());
+
+                Tile currentTile = tileStack.get(level);
+
+                if(currentTile == null) continue;
+                if(currentTile.type().isEmpty() || currentTile.type() != TileType.STONE) continue;
+
+                choosenLevel = level;
+
+                break;
+
+            }
+
+            if(choosenLevel < 0) continue;
+
+            for(byte neighborX = (byte) -oreSize; neighborX <= oreSize; neighborX++) {
+                for(byte neighborY = (byte) -oreSize; neighborY <= oreSize; neighborY++) {
+                
+                    TileStack neighborStack = chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY));
+                    if(neighborStack == null) continue;
+                    Tile neighborTile = neighborStack.get(choosenLevel);
+                    if(neighborTile == null) continue;
+
+                    if(neighborTile.type() != TileType.STONE) continue;
+
+                    neighborStack.set(new Tile(tileType, choosenLevel), choosenLevel);
+
+                }
+            }
+
+        }
+
+    }
+
     // Tries to spawn structure
     public static void spawnStructure(Chunk chunk, int maxAttempts) {
 
@@ -190,20 +237,25 @@ public class ChunkGenerator {
         if(centerTile == null) return false;
         byte centerLevel = (byte) (centerTile.level() + 1);
 
-        if(centerLevel > Constants.MAX_WORLD_HEIGHT) return false;
+        if(centerLevel + structure.getLayers() > Constants.MAX_WORLD_HEIGHT) return false;
+
 
         for(byte structureX = 0; structureX < structure.getWidth(); structureX++) {
             for(byte structureY = 0; structureY < structure.getHeight(); structureY++) {
 
                 TileStack currentStack = chunk.getTileStack((byte) (left + structureX), (byte) (top + structureY));
                 if(currentStack == null) return false;
-            
-                Tile currentTile = currentStack.get(centerLevel);
-                if(currentTile != null && !currentTile.type().isEmpty()) return false;
                 
                 Tile belowTile = currentStack.get(centerTile.level());
                 if(belowTile == null || belowTile.type().isEmpty()) return false;
             
+                for(byte structureLevel = 0; structureLevel < structure.getLayers(); structureLevel++) {
+                    
+                    Tile currentTile = currentStack.get((byte) (centerLevel + structureLevel));
+                    if(currentTile != null && !currentTile.type().isEmpty()) return false;
+
+                }
+
             }
         }
 
@@ -220,8 +272,8 @@ public class ChunkGenerator {
 
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = (byte) random.seedInt(structure.getWidth(), chunk.getChunkSize() - structure.getWidth()); 
-            byte choosenY = (byte) random.seedInt(structure.getHeight(), chunk.getChunkSize() - structure.getHeight());
+            byte choosenX = random.seedByte((byte) structure.getWidth(), (byte) (chunk.getChunkSize() - structure.getWidth())); 
+            byte choosenY = random.seedByte((byte) structure.getHeight(), (byte) (chunk.getChunkSize() - structure.getHeight()));
 
             if(!canPlaceStructure(chunk, structure, choosenX, choosenY)) continue;
 
@@ -233,12 +285,19 @@ public class ChunkGenerator {
             for(byte structureX = 0; structureX < structure.getWidth(); structureX++) {
                 for(byte structureY = 0; structureY < structure.getHeight(); structureY++) {
 
-                    Tile structureTile = structure.getMap()[structureX][structureY];
-                    if(structureTile.type().isEmpty()) continue;
+                    TileStack structureStack = structure.getMap()[structureX][structureY];
+                    
+                    for(byte layer = 0; layer < structure.getLayers(); layer++) {
 
-                    Tile currentTile = new Tile(structureTile.type(), baseLevel);
+                        Tile structureTile = structureStack.get(layer);
+                        if(structureTile == null) continue;
+                        if(structureTile.type().isEmpty()) continue;
 
-                    chunk.getTileStack((byte) (cornerX + structureX), (byte) (cornerY + structureY)).set(currentTile, baseLevel);
+                        Tile currentTile = new Tile(structureTile.type(), (byte) (baseLevel + layer));
+                        chunk.getTileStack((byte) (cornerX + structureX), (byte) (cornerY + structureY)).set(currentTile, (byte) (baseLevel + layer));
+
+                    }
+
 
                 }
             }

@@ -48,6 +48,23 @@ public class RandomUtils {
     }
 
 
+    // Byte //
+
+    public byte seedByte(byte start, byte end) {
+        if(start > end) return 0;
+        return (byte) (seedRandom.nextInt(end - start + 1) + start);
+    }
+
+    public static byte randomByte(byte start, byte end) {
+        if(start > end) return 0;
+        return (byte) (RANDOM.nextInt(end - start + 1) + start);
+    }
+
+    public static byte randomByte(byte end) {
+        return (byte) RANDOM.nextInt(end + 1);
+    }
+
+
     // Float //
     
     public float seedFloat(float start, float end) {

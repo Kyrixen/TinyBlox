@@ -19,53 +19,61 @@ public class StructureRegister {
 
     static {
 
-        StructureBuilder sb = new StructureBuilder("LAMP MONUMENT", (byte) 3, (byte) 3, Rarity.UNCOMMON);
+        StructureBuilder sb = new StructureBuilder("LAMP MONUMENT", (byte) 3, (byte) 3, (byte) 1, Rarity.UNCOMMON);
 
         sb.fill(TileType.WOOD);
 
-        sb.setTile((byte) 1, (byte) 0, TileType.STONE);
-        sb.setTile((byte) 0, (byte) 1, TileType.STONE);
-        sb.setTile((byte) 2, (byte) 1, TileType.STONE);
-        sb.setTile((byte) 1, (byte) 2, TileType.STONE);
+        sb.setTile((byte) 1, (byte) 0, (byte) 0, TileType.STONE);
+        sb.setTile((byte) 0, (byte) 1, (byte) 0, TileType.STONE);
+        sb.setTile((byte) 2, (byte) 1, (byte) 0, TileType.STONE);
+        sb.setTile((byte) 1, (byte) 2, (byte) 0, TileType.STONE);
 
-        sb.setTile((byte) 1, (byte) 1, TileType.CAGED_LAMP);
+        sb.setTile((byte) 1, (byte) 1, (byte) 0, TileType.CAGED_LAMP);
 
         LAMP_MONUMENT = sb.build();
 
 
-        sb = new StructureBuilder("ORE PILE", (byte) 2, (byte) 2, Rarity.COMMON);
+        sb = new StructureBuilder("ORE PILE", (byte) 2, (byte) 2, (byte) 1, Rarity.COMMON);
 
         sb.fill(TileType.STONE);
-        sb.setTile((byte) 0, (byte) 0, TileType.IRON);
-        sb.setTile((byte) 1, (byte) 1, TileType.COAL);
+        sb.setTile((byte) 0, (byte) 0, (byte) 0, TileType.IRON);
+        sb.setTile((byte) 1, (byte) 1, (byte) 0, TileType.COAL);
     
         ORE_PILE = sb.build();
 
 
-        sb = new StructureBuilder("WATCHTOWER RUIN", (byte) 5, (byte) 5, Rarity.RARE);
+        // Watchtower Ruin
 
-        sb.fill(TileType.STONE);
+        sb = new StructureBuilder("WATCHTOWER RUIN", (byte) 5, (byte) 5, (byte) 4, Rarity.RARE);
 
-        sb.setTile((byte) 0, (byte) 0, TileType.WOOD);
-        sb.setTile((byte) 4, (byte) 0, TileType.WOOD);
-        sb.setTile((byte) 0, (byte) 4, TileType.WOOD);
-        sb.setTile((byte) 4, (byte) 4, TileType.WOOD);
+        sb.fill(TileType.AIR);
 
-        sb.setTile((byte) 2, (byte) 4, TileType.AIR);
+        sb.fillLayer(TileType.WOOD, (byte) 0);
 
-        sb.setTile((byte) 1, (byte) 4, TileType.GLASS);
-        sb.setTile((byte) 3, (byte) 4, TileType.GLASS);
+        sb.setTile((byte) 1, (byte) 1, (byte) 0, TileType.AIR);
+        sb.setTile((byte) 3, (byte) 3, (byte) 0, TileType.AIR);
+        sb.setTile((byte) 1, (byte) 3, (byte) 0, TileType.AIR);
 
-        sb.setTile((byte) 0, (byte) 2, TileType.GLASS);
-        sb.setTile((byte) 4, (byte) 2, TileType.GLASS);
+        for(byte level = 1; level <= 2; level++) {
 
-        sb.setTile((byte) 2, (byte) 2, TileType.CAGED_LAMP);
+            sb.setTile((byte) 0, (byte) 0, level, TileType.WOOD);
+            sb.setTile((byte) 4, (byte) 0, level, TileType.WOOD);
+            sb.setTile((byte) 0, (byte) 4, level, TileType.WOOD);
+            sb.setTile((byte) 4, (byte) 4, level, TileType.WOOD);
 
-        sb.setTile((byte) 1, (byte) 1, TileType.AIR);
-        sb.setTile((byte) 3, (byte) 3, TileType.AIR);
-        sb.setTile((byte) 1, (byte) 3, TileType.AIR);
+        }
 
-        sb.setTile((byte) 3, (byte) 1, TileType.COAL);
+        sb.fillLayer(TileType.WOOD, (byte) 3);
+
+        sb.setTile((byte) 2, (byte) 4, (byte) 3, TileType.AIR);
+
+        sb.setTile((byte) 1, (byte) 4, (byte) 3, TileType.GLASS);
+        sb.setTile((byte) 3, (byte) 4, (byte) 3, TileType.GLASS);
+        sb.setTile((byte) 0, (byte) 2, (byte) 3, TileType.GLASS);
+        sb.setTile((byte) 4, (byte) 2, (byte) 3, TileType.GLASS);
+
+        sb.setTile((byte) 2, (byte) 2, (byte) 3, TileType.CAGED_LAMP);
+        sb.setTile((byte) 3, (byte) 1, (byte) 0, TileType.COAL);
 
         WATCHTOWER_RUIN = sb.build();
 
