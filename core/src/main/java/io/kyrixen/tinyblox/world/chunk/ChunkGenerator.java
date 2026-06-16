@@ -78,6 +78,67 @@ public class ChunkGenerator {
 
     }
 
+    // Generate cave
+    public static void generateCave(Chunk chunk) {
+
+        FastNoiseLite caveNoise = new FastNoiseLite();
+        caveNoise.SetSeed((int) chunk.getChunkSeed() ^ 0xCAFE);
+        caveNoise.SetFrequency(0.03f);
+
+        // World size in tiles
+        int worldTilesX = Constants.MAP_WIDTH;
+        int worldTilesY = Constants.MAP_HEIGHT;
+        
+        int caveColumns = 0;
+        for (byte tx = 0; tx < chunk.getChunkSize(); tx++) {
+            for (byte ty = 0; ty < chunk.getChunkSize(); ty++) {
+
+                // Tile position in WORLD TILE coordinates
+                int tileX = chunk.getX() * chunk.getChunkSize() + tx;
+                int tileY = chunk.getY() * chunk.getChunkSize() + ty;
+
+                // Skip tiles outside world tile bounds
+                if (tileX < 0 || tileY < 0 || tileX >= worldTilesX || tileY >= worldTilesY) continue;
+
+                if(caveNoise.GetNoise(tileX, tileY) < 0.85f) continue;
+                caveColumns++;
+                
+                TileStack tileStack = chunk.getTileStack(tx, ty);
+                
+                Tile topTerrain = tileStack.getTopTerrain();
+                if(topTerrain == null) continue;
+
+                byte roofLevel = (byte) (topTerrain.level() - 3);
+                for(byte level = 1; level < roofLevel; level++) {
+
+                    if(tileStack.get(level) == null) continue;
+                    if(tileStack.get(level).type() != TileType.STONE) continue;
+
+                    tileStack.set(new Tile(TileType.AIR, level), level);
+                
+                }
+
+            }
+        }
+
+        if(caveColumns > 0) {
+
+            TileStack stack = chunk.getTileStack((byte) 6, (byte) 6);
+
+            Tile top = stack.getTopTerrain();
+
+            if(top != null) {
+
+                stack.set(new Tile(TileType.AIR, top.level()), top.level());
+                stack.set(new Tile(TileType.AIR, (byte)(top.level() - 1)), (byte)(top.level() - 1));
+
+            }
+        }
+
+        if(caveColumns > 0) Logger.LOGGER.debug("CAVE", "Generated cave at chunk(" + chunk.getX() + "," + chunk.getY() + ") with cave colummns: " + caveColumns);
+    
+    }
+
     // Tries to place trees
     public static void spawnTree(Chunk chunk, int maxAttempts) {
 

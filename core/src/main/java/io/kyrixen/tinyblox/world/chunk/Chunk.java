@@ -1,25 +1,12 @@
 package io.kyrixen.tinyblox.world.chunk;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.mob.Player;
-import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.Camera;
-import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
-import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
 public class Chunk {
 
@@ -50,9 +37,6 @@ public class Chunk {
     // Stores light level for tiles
     private Color[][] lightLevel;
 
-
-    private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
-
     // Construct chunk
     public Chunk(int x, int y, int size, int seed, boolean loaded){
 
@@ -76,193 +60,6 @@ public class Chunk {
         this.loaded = loaded;
         this.rendered = loaded;
         
-    }
-
-    // Render above chunk
-    public void renderAbove(Player player, boolean tileAbovePlayer, TileRenderer tileRenderer, RendererStack rendererStack) {
-
-        // Check if can render chunk
-        if (!loaded || !rendered) return;
-
-        SpriteBatch batch = rendererStack.batch;
-
-        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        
-        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        // Render each tile
-        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
-                
-                TileStack tileStack = this.getTileStack(tx, ty);
-                if(tileStack == null || tileStack.isEmpty()) continue;
-                
-                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
-                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-
-                float tileCenterX = globalX + Constants.GRID_SIZE / 2f;
-                float tileCenterY = globalY + Constants.GRID_SIZE / 2f;
-                float playerCenterX = player.x() + player.width() / 2f;
-                float playerCenterY = player.y() + player.height() / 2f;
-
-                Color light = this.getLight(tx, ty);
-
-                float distX = tileCenterX - playerCenterX;
-                float distY = tileCenterY - playerCenterY;
-                int dist = (int) Vector2.len(distX, distY);
-                
-                float revealRadius = Constants.ROOF_REVEAL_RADIUS * Constants.GRID_SIZE;
-
-                List<Tile> transparentTiles = new ArrayList<>();
-                for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
-
-                    Tile stackedTile = tileStack.get(layer);
-
-                    if(stackedTile == null) continue;
-                    if(stackedTile.level() <= player.level()) continue;
-                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
-
-                    if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
-
-                    // Draw first visible opaque tile
-                    batch.setColor(light.r, light.g, light.b, 1f);
-
-                    int levelDiff = stackedTile.level() - player.level();
-
-                    if(tileAbovePlayer && levelDiff > 0 && dist <= revealRadius) {
-
-                        float alpha = dist / revealRadius;
-
-                        alpha = MathUtils.clamp(alpha, 0f, 1f);
-                        alpha = alpha * alpha * (3f - 2f * alpha);
-                        alpha = MathUtils.clamp(alpha, 0.25f, 0.65f);
-
-                        batch.setColor(light.r, light.g, light.b, alpha);
-
-                    }
-
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
-
-                    // Draw transparent tile on top
-                    for(int i = transparentTiles.size() - 1; i >= 0; i--) {
-                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
-                    }
-
-                    batch.setColor(1f, 1f, 1f, 1f);
-
-                    break;
-                    
-                }
-            
-            }
-
-        }
-        
-    }
-
-
-    // Render lower chunk
-    public void renderLower(Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
-
-        // Check if can render chunk
-        if (!loaded || !rendered) return;
-
-        SpriteBatch batch = rendererStack.batch;
-
-        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        
-        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        // Render each tile
-        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
-                
-                TileStack tileStack = this.getTileStack(tx, ty);
-                if(tileStack == null || tileStack.isEmpty()) continue;
-                
-                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
-                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-
-                Color light = this.getLight(tx, ty);
-
-                List<Tile> transparentTiles = new ArrayList<>();
-                for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
-
-                    Tile stackedTile = tileStack.get(layer);
-
-                    if(stackedTile == null) continue;
-                    if(stackedTile.level() > player.level()) continue;
-                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
-
-                    if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
-
-                    // Draw first visible opaque tile
-                    batch.setColor(light.r, light.g, light.b, 1f);
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
-
-                    // Draw transparent tile on top
-                    for(int i = transparentTiles.size() - 1; i >= 0; i--) {
-                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
-                    }
-                    
-                    batch.setColor(1f, 1f, 1f, 1f);
-
-                    break;
-                    
-                }
-            
-            }
-
-        }
-        
-    }
-
-    // Render depth for the top tile
-    public void renderDepthOverlay(Player player, TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack) {
-
-        // Check if can render overlay for chunk
-        if (!loaded || !rendered) return;
-
-        SpriteBatch batch = rendererStack.batch;
-
-        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
-        
-        if (cX < 0 || cX >= worldChunksX || cY < 0 || cY >= worldChunksY) return;
-
-        float lightBrightness = timeCycle.getBrightness();
-
-        // Render each tile
-        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
-                
-                Tile tile = this.getTileStack(tx, ty).top();
-
-                if(tile == null) continue;
-                
-                int globalX = (cX * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
-                int globalY = (cY * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
-
-                int levelDiff = Math.abs(tile.level() - player.level());
-                float normalized = (float) levelDiff / (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT);
-                
-                float alpha = normalized * 0.65f;
-                alpha = Math.min(alpha, 0.55f);
-
-                if(tile.level() > player.level()) batch.setColor(0.97f, 0.97f, 0.97f, alpha * lightBrightness);
-                else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
-                else batch.setColor(1f, 1f, 1f, 0f);
-                
-                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
-                
-                batch.setColor(1f, 1f, 1f, 1f);
-            
-            }
-        
-        }
-
     }
 
     

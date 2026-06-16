@@ -3,7 +3,6 @@ package io.kyrixen.tinyblox.world;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import fastnoiselite.FastNoiseLite;
@@ -14,6 +13,7 @@ import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
+import io.kyrixen.tinyblox.world.chunk.ChunkRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -32,13 +32,14 @@ public class Terrain {
     private final int seed;
 
     // Renderer
-    private final TileRenderer tileRenderer;
+    private final ChunkRenderer chunkRenderer;
 
     // Noise generator
     private final FastNoiseLite noise;
 
     // For storing chunks
     private final HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
+
 
     // Constructs terrain
     public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
@@ -50,7 +51,7 @@ public class Terrain {
         this.w = w;
         this.h = h;
 
-        this.tileRenderer = tileRenderer;
+        this.chunkRenderer = new ChunkRenderer(tileRenderer);
 
         noise = new FastNoiseLite();
 
@@ -61,19 +62,15 @@ public class Terrain {
     
     }
 
+
     // Pre-generate chunks
     public void init() {
 
         Logger.LOGGER.debug("WORLD", "Seed: " + seed);
-
         chunks.clear();
-        
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
-        
-        for(short x = 0; x < chunkCountX; x++){
 
-            for(short y = 0; y < chunkCountY; y++){
+        for(short x = 0; x < getChunkCountX(); x++){
+            for(short y = 0; y < getChunkCountY(); y++){
 
                 Chunk c = new Chunk(x, y, size, seed, true);
         
@@ -86,6 +83,7 @@ public class Terrain {
                 //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
                 
                 ChunkGenerator.generateChunk(c, noise);
+                ChunkGenerator.generateCave(c);
                 ChunkGenerator.spawnOre(c, TileType.COAL, 2);
                 ChunkGenerator.spawnOre(c, TileType.IRON, 1);
                 ChunkGenerator.spawnTree(c, 10);
@@ -97,29 +95,40 @@ public class Terrain {
                 chunks.put(new ChunkPos(x, y), c);
 
             }
-
         }
 
         Logger.LOGGER.debug("WORLD", "Chunks size: " + chunks.size());
 
     }
 
+    // Update terrain
+    public void update(Camera camera) {
+
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+
+            for(short cy = 0; cy < getChunkCountY(); cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+                if (c == null) continue;
+                c.checkIfOnScreen(camera);
+
+            }
+
+        }        
+
+    }
+
+
     // Render lower visible chunks
     public void renderLower(Player player, RendererStack rendererStack) {
         
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
-        
-        for(short cx = 0; cx < chunkCountX; cx++){
-            for(short cy = 0; cy < chunkCountY; cy++){
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+            for(short cy = 0; cy < getChunkCountY(); cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
 
-                // If not visible dont render
-                if(!c.rendered) continue;
-
-                c.renderLower(player, tileRenderer, rendererStack);
+                chunkRenderer.renderLower(c, player, rendererStack);
 
             }
         }
@@ -128,9 +137,6 @@ public class Terrain {
 
     // Render above visible chunks
     public void renderAbove(Player player, RendererStack rendererStack) {
-        
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
         
         boolean tileAbovePlayer = false;
 
@@ -149,30 +155,60 @@ public class Terrain {
         }
 
 
-        for(short cx = 0; cx < chunkCountX; cx++){
-            for(short cy = 0; cy < chunkCountY; cy++){
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+            for(short cy = 0; cy < getChunkCountY(); cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
 
-                // If not visible dont render
-                if(!c.rendered) continue;
-
-                c.renderAbove(player, tileAbovePlayer, tileRenderer, rendererStack);
+                chunkRenderer.renderAbove(c, player, tileAbovePlayer, rendererStack);
 
             }
         }
 
     }
 
+
+    // Render overlay for visible chunks
+    public void renderDepthOverlay(Player player, TimeCycle timeCycle, RendererStack rendererStack) {
+        
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+
+            for(short cy = 0; cy < getChunkCountY(); cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+                if (c == null) continue;
+
+                chunkRenderer.renderDepthOverlay(c, player, timeCycle, rendererStack);
+    
+            }
+    
+        }
+    
+    }
+
+    // Draw edges on different heights
+    public void drawHeightEdges(RendererStack rendererStack) {  
+
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+            for(short cy = 0; cy < getChunkCountY(); cy++){
+
+                Chunk c = chunks.get(new ChunkPos(cx, cy));
+                if (c == null) continue;
+
+                chunkRenderer.drawHeightEdges(c, this, rendererStack);
+
+            }
+        }
+
+    }
+
+
     // Update chunk light
     public void rebuildLighting(TimeCycle timeCycle) {
         
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
-        
-        for(short cx = 0; cx < chunkCountX; cx++){
-            for(short cy = 0; cy < chunkCountY; cy++){
+        for(short cx = 0; cx < getChunkCountX(); cx++){
+            for(short cy = 0; cy < getChunkCountY(); cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
@@ -240,41 +276,13 @@ public class Terrain {
         }
 
     }
-
-    // Render overlay for visible chunks
-    public void renderDepthOverlay(Player player, TimeCycle timeCycle, TileRenderer tileRenderer, RendererStack rendererStack) {
-        
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
-        
-        for(short cx = 0; cx < chunkCountX; cx++){
-
-            for(short cy = 0; cy < chunkCountY; cy++){
-
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-
-                // If not visible dont render
-                if(!c.rendered) continue;
     
-                c.renderDepthOverlay(player, timeCycle, tileRenderer, rendererStack);
-    
-            }
-    
-        }
-    
+
+    // Find chunk
+    public Chunk getChunk(short cX, short cY) {
+        return chunks.get(new ChunkPos(cX, cY));
     }
-
-    // Get chunk map
-    public HashMap<ChunkPos, Chunk> getChunks() {
-        return this.chunks;
-    }
-
-    // Get seed
-    public int getSeed() {
-        return this.seed;
-    }
-
+    
     // Find chunk if doesnt exist create chunk
     public Chunk getOrCreateChunk(short cX, short cY) {
 
@@ -294,10 +302,6 @@ public class Terrain {
 
     }
 
-    // Find chunk
-    public Chunk getChunk(short cX, short cY) {
-        return chunks.get(new ChunkPos(cX, cY));
-    }
 
     // Global TileStack accessor
     public TileStack getWorldTileStack(int worldX, int worldY) {
@@ -347,77 +351,17 @@ public class Terrain {
 
     }
 
-    // Draw edges on different heights
-    public void drawHeightEdges(RendererStack rendererStack) {
 
-        Camera cam = rendererStack.camera;
-        ShapeRenderer shapeRenderer = rendererStack.shape;
+    // Get seed
+    public int getSeed() { return this.seed; }
+    
+    // Get chunk map
+    public HashMap<ChunkPos, Chunk> getChunks() { return this.chunks; }
 
-        shapeRenderer.setColor(0f, 0f, 0f, 1f);
+    // Chunk count helpers
+    private int getChunkCountX() { return (w + size - 1) / size; }
+    private int getChunkCountY() { return (h + size - 1) / size; }
 
-        int startX = (int) (cam.x / Constants.GRID_SIZE);
-        int startY = (int) (cam.y / Constants.GRID_SIZE);
-        startX = Math.max(0, startX);
-        startY = Math.max(0, startY);
-
-        int endX = (int) (startX + Constants.WINDOW_WIDTH / (Constants.GRID_SIZE * cam.zoom)) + 2;
-        int endY = (int) (startY + Constants.WINDOW_HEIGHT / (Constants.GRID_SIZE * cam.zoom)) + 2;
-        endX = Math.min(this.w, endX);
-        endY = Math.min(this.h, endY);
-
-        float tileSize = Constants.GRID_SIZE * cam.zoom;
-
-        for(int worldX = startX; worldX < endX; worldX++){
-
-            for(int worldY = startY; worldY < endY; worldY++){
-
-                byte current = this.getWorldLevel(worldX, worldY);
-
-                if(current <= 0) continue;
-
-                byte left = this.getWorldLevel(worldX - 1, worldY);
-                byte right = this.getWorldLevel(worldX + 1, worldY);
-                byte top = this.getWorldLevel(worldX, worldY + 1);
-                byte bottom = this.getWorldLevel(worldX, worldY - 1);
-        
-                if(current == left && current == right && current == top && current == bottom) continue;
-
-                int tileX = worldX * Constants.GRID_SIZE;
-                int tileY = worldY * Constants.GRID_SIZE;
-
-                float screenX = (tileX - cam.x) * cam.zoom;
-                float screenY = (tileY - cam.y) * cam.zoom;
- 
-                if(left < current) shapeRenderer.line(screenX, screenY, screenX, screenY + tileSize);
-                if(right < current) shapeRenderer.line(screenX + tileSize, screenY, screenX + tileSize, screenY + tileSize);
-                if(top < current) shapeRenderer.line(screenX, screenY + tileSize, screenX + tileSize, screenY + tileSize);
-                if(bottom < current) shapeRenderer.line(screenX, screenY, screenX + tileSize, screenY);
-            
-            }
-
-        }   
-
-    }
-
-    // Update terrain
-    public void update(Camera camera) {
-
-        int chunkCountX = (w + size - 1) / size;
-        int chunkCountY = (h + size - 1) / size;
-
-        for(short cx = 0; cx < chunkCountX; cx++){
-
-            for(short cy = 0; cy < chunkCountY; cy++){
-
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-                c.checkIfOnScreen(camera);
-
-            }
-
-        }        
-
-    }
 
     // Unload resources
     public void cleanup() {

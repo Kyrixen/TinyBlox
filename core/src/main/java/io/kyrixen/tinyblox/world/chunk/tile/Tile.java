@@ -17,14 +17,14 @@ public class Tile {
         WATER(9999999f, PreferedMiningType.NONE, true, 0.70f, false, false, true, false, 0f),
         STONE(1.0f, PreferedMiningType.STONE, false, 0.9f, true, false, true, false, 0f),
         COAL(1.50f, PreferedMiningType.STONE, false, 0.85f, true, false, false, false, 0.05f),
-        IRON(1.75f, PreferedMiningType.STONE, false, 0.85f, true, false, false, false, 0.15f),
+        IRON(1.75f, PreferedMiningType.STONE, false, 0.85f, true, false, false, false, 0.10f),
         WOOD(0.60f, PreferedMiningType.WOOD, false, 1f, true, false, false, false, 0f),
         LADDER(0.35f, PreferedMiningType.WOOD, true, 1.15f, true, true, false, true, 0f),
         CAGED_LAMP(0.6f, PreferedMiningType.STONE, false, 0.95f, true, false, false, false, 0.75f),
-        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, false, 0.03f),
+        SLIME_TILE(0.30f, PreferedMiningType.NONE, false, 0.55f, true, false, false, false, 0.01f),
         SAND(0.4f, PreferedMiningType.NONE, false, 0.95f, true, false, true, false, 0f),
         GLASS(0.15f, PreferedMiningType.NONE, false, 0.85f, true, false, false, true, 0.02f),
-        CLAY(0.3f, PreferedMiningType.NONE, false, 1.05f, true, false, true, false, 0.02f),
+        CLAY(0.3f, PreferedMiningType.NONE, false, 1.05f, true, false, true, false, 0f),
         BRICK(0.9f, PreferedMiningType.NONE, false, 0.95f, true, false, true, false, 0f);
 
         // Mining category enum

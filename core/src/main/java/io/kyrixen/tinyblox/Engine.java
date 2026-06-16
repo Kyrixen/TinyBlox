@@ -231,7 +231,7 @@ public class Engine implements Screen {
         // Above Terrain and Terrain Depth Overlay
         batch.begin();
         terrain.renderAbove(player, rendererStack);
-        terrain.renderDepthOverlay(player, timeCycle, tileRenderer, rendererStack);
+        terrain.renderDepthOverlay(player, timeCycle, rendererStack);
         batch.end();
 
         shape.begin(ShapeType.Line);
