@@ -14,6 +14,9 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ChunkGenerator {
 
+    // Chunk size
+    private static final byte CHUNK_SIZE = Constants.CHUNK_SIZE;
+
     // Generate the chunk
     public static void generateChunk(Chunk chunk, FastNoiseLite noise) {
 
@@ -22,18 +25,18 @@ public class ChunkGenerator {
         int worldTilesY = Constants.MAP_HEIGHT;
 
         // World size in chunks
-        int worldChunksX = (worldTilesX + chunk.getChunkSize() - 1) / chunk.getChunkSize();
-        int worldChunksY = (worldTilesY + chunk.getChunkSize() - 1) / chunk.getChunkSize();
+        int worldChunksX = (worldTilesX + CHUNK_SIZE - 1) / CHUNK_SIZE;
+        int worldChunksY = (worldTilesY + CHUNK_SIZE - 1) / CHUNK_SIZE;
 
         // Safety: do not generate invalid chunks
-        if (chunk.getX() < 0 || chunk.getY() < 0 || chunk.getX() >= worldChunksX || chunk.getY() >= worldChunksY) { chunk.loaded = false; chunk.rendered = false; return; }
+        if (chunk.getX() < 0 || chunk.getY() < 0 || chunk.getX() >= worldChunksX || chunk.getY() >= worldChunksY) { chunk.rendered = false; return; }
 
-        for (byte tx = 0; tx < chunk.getChunkSize(); tx++) {
-            for (byte ty = 0; ty < chunk.getChunkSize(); ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
 
                 // Tile position in WORLD TILE coordinates
-                int tileX = chunk.getX() * chunk.getChunkSize() + tx;
-                int tileY = chunk.getY() * chunk.getChunkSize() + ty;
+                int tileX = chunk.getX() * CHUNK_SIZE + tx;
+                int tileY = chunk.getY() * CHUNK_SIZE + ty;
 
                 // Skip tiles outside world tile bounds
                 if (tileX < 0 || tileY < 0 || tileX >= worldTilesX || tileY >= worldTilesY) continue;
@@ -73,8 +76,7 @@ public class ChunkGenerator {
 
         }
 
-        chunk.loaded = true;
-        chunk.rendered = chunk.loaded;
+        chunk.rendered = true;
 
     }
 
@@ -90,12 +92,12 @@ public class ChunkGenerator {
         int worldTilesY = Constants.MAP_HEIGHT;
         
         int caveColumns = 0;
-        for (byte tx = 0; tx < chunk.getChunkSize(); tx++) {
-            for (byte ty = 0; ty < chunk.getChunkSize(); ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
 
                 // Tile position in WORLD TILE coordinates
-                int tileX = chunk.getX() * chunk.getChunkSize() + tx;
-                int tileY = chunk.getY() * chunk.getChunkSize() + ty;
+                int tileX = chunk.getX() * CHUNK_SIZE + tx;
+                int tileY = chunk.getY() * CHUNK_SIZE + ty;
 
                 // Skip tiles outside world tile bounds
                 if (tileX < 0 || tileY < 0 || tileX >= worldTilesX || tileY >= worldTilesY) continue;
@@ -150,8 +152,8 @@ public class ChunkGenerator {
 
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = random.seedByte((byte) 3, (byte) (chunk.getChunkSize() - 4)); 
-            byte choosenY = random.seedByte((byte) 3, (byte) (chunk.getChunkSize() - 4));
+            byte choosenX = random.seedByte((byte) 3, (byte) (CHUNK_SIZE - 4)); 
+            byte choosenY = random.seedByte((byte) 3, (byte) (CHUNK_SIZE - 4));
 
             TileStack tileStack = chunk.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
@@ -219,8 +221,8 @@ public class ChunkGenerator {
 
         for(int attempt = 0; attempt < maxAttempts; attempt++) {
 
-            byte choosenX = random.seedByte(oreSize, (byte) (chunk.getChunkSize() - oreSize));
-            byte choosenY = random.seedByte(oreSize, (byte) (chunk.getChunkSize() - oreSize));
+            byte choosenX = random.seedByte(oreSize, (byte) (CHUNK_SIZE - oreSize));
+            byte choosenY = random.seedByte(oreSize, (byte) (CHUNK_SIZE - oreSize));
 
             TileStack tileStack = chunk.getTileStack(choosenX, choosenY);
             if(tileStack == null) continue;
@@ -287,8 +289,8 @@ public class ChunkGenerator {
         int top    = centerY - structure.getHeight() / 2;
         int bottom = centerY + structure.getHeight() / 2;
         
-        if(top < 0 || bottom >= chunk.getChunkSize()) return false;
-        if(left < 0 || right >= chunk.getChunkSize()) return false;
+        if(top < 0 || bottom >= CHUNK_SIZE) return false;
+        if(left < 0 || right >= CHUNK_SIZE) return false;
 
 
         TileStack centerStack = chunk.getTileStack(centerX, centerY);
@@ -333,8 +335,8 @@ public class ChunkGenerator {
 
         for(int attempts = 0; attempts < maxAttempts; attempts++) {
 
-            byte choosenX = random.seedByte((byte) structure.getWidth(), (byte) (chunk.getChunkSize() - structure.getWidth())); 
-            byte choosenY = random.seedByte((byte) structure.getHeight(), (byte) (chunk.getChunkSize() - structure.getHeight()));
+            byte choosenX = random.seedByte((byte) structure.getWidth(), (byte) (CHUNK_SIZE - structure.getWidth())); 
+            byte choosenY = random.seedByte((byte) structure.getHeight(), (byte) (CHUNK_SIZE - structure.getHeight()));
 
             if(!canPlaceStructure(chunk, structure, choosenX, choosenY)) continue;
 

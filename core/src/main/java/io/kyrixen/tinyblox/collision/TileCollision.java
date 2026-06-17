@@ -15,14 +15,14 @@ public class TileCollision {
         int globalTileX = (int) (e.x() + e.width() / 2f) / Constants.GRID_SIZE;
         int globalTileY = (int) (e.y() + e.height() / 2f) / Constants.GRID_SIZE;
 
-        short entityChunkX = (short) (globalTileX / terrain.size);
-        short entityChunkY = (short) (globalTileY / terrain.size);
+        short entityChunkX = (short) (globalTileX / Constants.CHUNK_SIZE);
+        short entityChunkY = (short) (globalTileY / Constants.CHUNK_SIZE);
 
         Chunk entityChunk = terrain.getChunk(entityChunkX, entityChunkY);
         if(entityChunk == null) return null;
 
-        byte localTileX = (byte) (globalTileX % entityChunk.getChunkSize());
-        byte localTileY = (byte) (globalTileY % entityChunk.getChunkSize());
+        byte localTileX = (byte) (globalTileX % Constants.CHUNK_SIZE);
+        byte localTileY = (byte) (globalTileY % Constants.CHUNK_SIZE);
 
         TileStack entityStack = entityChunk.getTileStack(localTileX, localTileY);
         if(entityStack == null) return null;

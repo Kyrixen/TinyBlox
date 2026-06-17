@@ -35,16 +35,16 @@ public class TerrainCollision {
             for (int tileY = topTile; tileY <= bottomTile; tileY++) {
 
                 // Find chunk
-                short chunkX = (short) (tileX / terrain.size);
-                short chunkY = (short) (tileY / terrain.size);
+                short chunkX = (short) (tileX / Constants.CHUNK_SIZE);
+                short chunkY = (short) (tileY / Constants.CHUNK_SIZE);
 
                 Chunk c = terrain.getChunk(chunkX, chunkY);
 
-                if (c == null || !c.loaded) continue;
+                if (c == null) continue;
 
                 // Local tile
-                byte localX = (byte) (tileX % c.getChunkSize());
-                byte localY = (byte) (tileY % c.getChunkSize());
+                byte localX = (byte) (tileX % Constants.CHUNK_SIZE);
+                byte localY = (byte) (tileY % Constants.CHUNK_SIZE);
 
                 TileStack tileStack = c.getTileStack(localX, localY);
 

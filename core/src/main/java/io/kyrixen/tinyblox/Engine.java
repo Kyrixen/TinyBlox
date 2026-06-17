@@ -126,6 +126,9 @@ public class Engine implements Screen {
         enemy1.setLevel((byte) spawn[2]);
 
         Entity.initTextureAll(entities);
+
+        player.getInventory().add(ItemRegister.LADDER, (byte) 12);
+        player.getInventory().add(ItemRegister.STONE, (byte) 12);
     
     }
 
@@ -235,7 +238,7 @@ public class Engine implements Screen {
         batch.end();
 
         shape.begin(ShapeType.Line);
-        terrain.drawHeightEdges(rendererStack);
+        terrain.drawHeightEdges(player, rendererStack);
         player.renderSelector(rendererStack);
         shape.end();
 

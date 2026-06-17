@@ -141,11 +141,11 @@ public class Selector extends Entity {
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
-        byte localTileX = (byte) Math.floorMod(tileX, terrain.size);
-        byte localTileY = (byte) Math.floorMod(tileY, terrain.size);
+        byte localTileX = (byte) Math.floorMod(tileX, Constants.CHUNK_SIZE);
+        byte localTileY = (byte) Math.floorMod(tileY, Constants.CHUNK_SIZE);
 
-        short chunkPosX = (short) Math.floorDiv(tileX, terrain.size);
-        short chunkPosY = (short) Math.floorDiv(tileY, terrain.size);
+        short chunkPosX = (short) Math.floorDiv(tileX, Constants.CHUNK_SIZE);
+        short chunkPosY = (short) Math.floorDiv(tileY, Constants.CHUNK_SIZE);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;
@@ -190,11 +190,11 @@ public class Selector extends Entity {
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
-        byte localTileX = (byte) Math.floorMod(tileX, terrain.size);
-        byte localTileY = (byte) Math.floorMod(tileY, terrain.size);
+        byte localTileX = (byte) Math.floorMod(tileX, Constants.CHUNK_SIZE);
+        byte localTileY = (byte) Math.floorMod(tileY, Constants.CHUNK_SIZE);
 
-        short chunkPosX = (short) Math.floorDiv(tileX, terrain.size);
-        short chunkPosY = (short) Math.floorDiv(tileY, terrain.size);
+        short chunkPosX = (short) Math.floorDiv(tileX, Constants.CHUNK_SIZE);
+        short chunkPosY = (short) Math.floorDiv(tileY, Constants.CHUNK_SIZE);
 
         Chunk chunk = terrain.getChunk(chunkPosX, chunkPosY);
         if(chunk == null) return;

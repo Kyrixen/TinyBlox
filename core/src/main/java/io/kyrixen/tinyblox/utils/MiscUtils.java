@@ -27,8 +27,8 @@ public class MiscUtils {
                 
         // Iterate over all chunks
         for (Chunk c : terrain.getChunks().values()) {
-            for (byte localX = 0; localX < c.getChunkSize(); localX++) {
-                for (byte localY = 0; localY < c.getChunkSize(); localY++) {
+            for (byte localX = 0; localX < Constants.CHUNK_SIZE; localX++) {
+                for (byte localY = 0; localY < Constants.CHUNK_SIZE; localY++) {
 
                     Tile t = c.getTileStack(localX, localY).getTopTerrain();
 
@@ -36,8 +36,8 @@ public class MiscUtils {
                     if(t.level() < Constants.MIN_TERRAIN_HEIGHT) continue;
                     if(t.level() + 1 >= Constants.MAX_TERRAIN_HEIGHT) continue;
                    
-                    int globalX = (c.getX() * c.getChunkSize() + localX) * Constants.GRID_SIZE;
-                    int globalY = (c.getY() * c.getChunkSize() + localY) * Constants.GRID_SIZE;
+                    int globalX = (c.getX() * Constants.CHUNK_SIZE + localX) * Constants.GRID_SIZE;
+                    int globalY = (c.getY() * Constants.CHUNK_SIZE + localY) * Constants.GRID_SIZE;
                    
                     // Distance to center
                     double dx = globalX - centerX;

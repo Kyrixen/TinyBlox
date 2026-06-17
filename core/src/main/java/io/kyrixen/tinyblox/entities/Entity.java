@@ -60,10 +60,6 @@ public class Entity {
     protected int dirX = 0;
     protected int dirY = 0;
     
-    // Last directions
-    protected int lastDirX = 0;
-    protected int lastDirY = 0;
-    
     // Movement
     protected boolean moving = false;
     protected Speed speed = Speed.SLOW;
@@ -219,18 +215,10 @@ public class Entity {
 
     public void setDirX(int dirX) {
         this.dirX = dirX;
-        if (dirX != 0) {
-            this.lastDirX = dirX;
-            this.lastDirY = 0;
-        }
     }
 
     public void setDirY(int dirY) {
         this.dirY = dirY;
-        if (dirY != 0) {
-            this.lastDirY = dirY;
-            this.lastDirX = 0;
-        }
     }
 
 

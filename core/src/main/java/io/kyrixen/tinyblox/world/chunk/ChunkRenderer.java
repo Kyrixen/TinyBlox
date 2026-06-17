@@ -30,7 +30,10 @@ public class ChunkRenderer {
     // Terrain texture ID
     private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
     
-    
+    // Chunk size
+    private static final byte CHUNK_SIZE = Constants.CHUNK_SIZE;
+
+
     public ChunkRenderer(TileRenderer tileRenderer) { this.tileRenderer = tileRenderer; }
 
     // Render above chunk
@@ -43,8 +46,8 @@ public class ChunkRenderer {
 
 
         // Render each tile
-        for (byte tx = 0; tx < c.getChunkSize(); tx++) {
-            for (byte ty = 0; ty < c.getChunkSize(); ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
                 
                 TileStack tileStack = c.getTileStack(tx, ty);
                 if(tileStack == null || tileStack.isEmpty()) continue;
@@ -63,8 +66,6 @@ public class ChunkRenderer {
                 float distY = tileCenterY - playerCenterY;
                 int dist = (int) Vector2.len(distX, distY);
                 
-                float revealRadius = Constants.ROOF_REVEAL_RADIUS * Constants.GRID_SIZE;
-
                 List<Tile> transparentTiles = new ArrayList<>();
                 for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
 
@@ -81,13 +82,25 @@ public class ChunkRenderer {
 
                     int levelDiff = stackedTile.level() - player.level();
 
+                    // Smaller reveal when player is deeper underground
+                    int playerDepth = Constants.MAX_TERRAIN_HEIGHT - player.level();
+
+                    float revealRadius = Constants.ROOF_REVEAL_RADIUS * Constants.GRID_SIZE - playerDepth * 2f;
+                    revealRadius = Math.max(Constants.GRID_SIZE, revealRadius);
+
                     if(tileAbovePlayer && levelDiff > 0 && dist <= revealRadius) {
 
                         float alpha = dist / revealRadius;
-
                         alpha = MathUtils.clamp(alpha, 0f, 1f);
+
+                        // Smoothstep
                         alpha = alpha * alpha * (3f - 2f * alpha);
-                        alpha = MathUtils.clamp(alpha, 0.25f, 0.65f);
+
+                        // Base roof transparency
+                        alpha *= 0.4f;
+
+                        // Thicker roof = more transparent
+                        alpha *= Math.max(0.25f, 1f - levelDiff * 0.15f);
 
                         batch.setColor(light.r, light.g, light.b, alpha);
 
@@ -123,8 +136,8 @@ public class ChunkRenderer {
 
 
         // Render each tile
-        for (byte tx = 0; tx < c.getChunkSize(); tx++) {
-            for (byte ty = 0; ty < c.getChunkSize(); ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
                 
                 TileStack tileStack = c.getTileStack(tx, ty);
                 if(tileStack == null || tileStack.isEmpty()) continue;
@@ -178,8 +191,8 @@ public class ChunkRenderer {
         float lightBrightness = timeCycle.getBrightness();
 
         // Render each tile
-        for (byte tx = 0; tx < c.getChunkSize(); tx++) {
-            for (byte ty = 0; ty < c.getChunkSize(); ty++) {
+        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
+            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
                 
                 Tile tile = c.getTileStack(tx, ty).top();
 
@@ -194,7 +207,7 @@ public class ChunkRenderer {
                 float alpha = normalized * 0.65f;
                 alpha = Math.min(alpha, 0.55f);
 
-                if(tile.level() > player.level()) batch.setColor(0.97f, 0.97f, 0.97f, alpha * lightBrightness);
+                if(tile.level() > player.level()) batch.setColor(0.6f, 0.6f, 0.6f, alpha * lightBrightness);
                 else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
@@ -220,11 +233,11 @@ public class ChunkRenderer {
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
 
 
-        for(byte localX = 0; localX < c.getChunkSize(); localX++) {
-            for(byte localY = 0; localY < c.getChunkSize(); localY++) {
+        for(byte localX = 0; localX < CHUNK_SIZE; localX++) {
+            for(byte localY = 0; localY < CHUNK_SIZE; localY++) {
 
-                int worldX = c.getX() * c.getChunkSize() + localX;
-                int worldY = c.getY() * c.getChunkSize() + localY;
+                int worldX = c.getX() * CHUNK_SIZE + localX;
+                int worldY = c.getY() * CHUNK_SIZE + localY;
                 
                 byte current = terrain.getWorldLevel(worldX, worldY);
                 if(current <= 0) continue;
@@ -253,25 +266,70 @@ public class ChunkRenderer {
 
     }
 
+    // Draw edges on different heights
+    public void drawCurrentHeightEdges(Chunk c, Player player, Terrain terrain, RendererStack rendererStack) {
+
+        if(!canRender(c)) return;
+
+        Camera cam = rendererStack.camera;
+        float tileSize = Constants.GRID_SIZE * cam.zoom;
+
+        ShapeRenderer shapeRenderer = rendererStack.shape;
+        shapeRenderer.setColor(0f, 0f, 0f, 1f);
+
+
+        for(byte localX = 0; localX < CHUNK_SIZE; localX++) {
+            for(byte localY = 0; localY < CHUNK_SIZE; localY++) {
+
+                int worldX = c.getX() * CHUNK_SIZE + localX;
+                int worldY = c.getY() * CHUNK_SIZE + localY;
+                
+                byte current = terrain.getVisibleLevel(worldX, worldY, player.level());
+                if(current <= 0) continue;
+
+
+                byte left = terrain.getVisibleLevel(worldX - 1, worldY, player.level());
+                byte right = terrain.getVisibleLevel(worldX + 1, worldY, player.level());
+                byte top = terrain.getVisibleLevel(worldX, worldY + 1, player.level());
+                byte bottom = terrain.getVisibleLevel(worldX, worldY - 1, player.level());
+                if(current == left && current == right && current == top && current == bottom) continue;
+
+
+                int tileX = worldX * Constants.GRID_SIZE;
+                int tileY = worldY * Constants.GRID_SIZE;
+                float screenX = (tileX - cam.x) * cam.zoom;
+                float screenY = (tileY - cam.y) * cam.zoom;
+ 
+                
+                if(left < current) shapeRenderer.line(screenX, screenY, screenX, screenY + tileSize);
+                if(right < current) shapeRenderer.line(screenX + tileSize, screenY, screenX + tileSize, screenY + tileSize);
+                if(top < current) shapeRenderer.line(screenX, screenY + tileSize, screenX + tileSize, screenY + tileSize);
+                if(bottom < current) shapeRenderer.line(screenX, screenY, screenX + tileSize, screenY);
+        
+            }
+        }
+
+    }
+
 
     // Helpers //
 
     private boolean canRender(Chunk c) {
 
-        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + c.getChunkSize() - 1) / c.getChunkSize());
-        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + c.getChunkSize() - 1) / c.getChunkSize());
+        int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
+        int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
 
-        return c.rendered && c.loaded && !(c.getX() < 0 || c.getX() >= worldChunksX || c.getY() < 0 || c.getY() >= worldChunksY);
+        return c.rendered && !(c.getX() < 0 || c.getX() >= worldChunksX || c.getY() < 0 || c.getY() >= worldChunksY);
 
     }
 
 
     private int getGlobalX(Chunk c, byte tx) {
-        return (c.getX() * c.getChunkSize() + tx) * Constants.GRID_SIZE;
+        return (c.getX() * CHUNK_SIZE + tx) * Constants.GRID_SIZE;
     }
 
     private int getGlobalY(Chunk c, byte ty) {
-        return (c.getY() * c.getChunkSize() + ty) * Constants.GRID_SIZE;
+        return (c.getY() * CHUNK_SIZE + ty) * Constants.GRID_SIZE;
     }
 
 }

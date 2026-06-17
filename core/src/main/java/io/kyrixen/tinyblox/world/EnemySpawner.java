@@ -46,8 +46,8 @@ public class EnemySpawner {
         
         if(pickedChunk == null) return;
 
-        byte pickedLocalX = (byte) RandomUtils.randomInt(0, pickedChunk.getChunkSize() - 1);
-        byte pickedLocalY = (byte) RandomUtils.randomInt(0, pickedChunk.getChunkSize() - 1);
+        byte pickedLocalX = (byte) RandomUtils.randomInt(0, Constants.CHUNK_SIZE - 1);
+        byte pickedLocalY = (byte) RandomUtils.randomInt(0, Constants.CHUNK_SIZE - 1);
         TileStack tileStack = pickedChunk.getTileStack(pickedLocalX, pickedLocalY);
         Tile top = tileStack.getTopTerrain();
 

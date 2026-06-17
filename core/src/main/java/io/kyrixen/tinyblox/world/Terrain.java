@@ -21,9 +21,6 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Terrain {
 
-    // For passing the chunk size
-    public final byte size;
-    
     // Dimensions
     private final int w;
     private final int h;
@@ -43,8 +40,6 @@ public class Terrain {
 
     // Constructs terrain
     public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
-
-        this.size = Constants.CHUNK_SIZE;
 
         this.seed = seed;
         
@@ -72,15 +67,7 @@ public class Terrain {
         for(short x = 0; x < getChunkCountX(); x++){
             for(short y = 0; y < getChunkCountY(); y++){
 
-                Chunk c = new Chunk(x, y, size, seed, true);
-        
-                //ChunkBuilder cb = new ChunkBuilder(x, y, size);
-                
-                //cb.fill(TileType.GRASS, (byte) 0);
-                //cb.setTile((byte) 5, (byte) 9, TileType.AIR, false, (byte) 0);
-                //cb.setTile((byte) 10, (byte) 0, TileType.WATER, true, (byte) 0);
-                //cb.setTile((byte) 7, (byte) 10, TileType.DIRT, false, (byte) 0);
-                //cb.setTile((byte) 5, (byte) 9, TileType.STONE, true, (byte) 0);
+                Chunk c = new Chunk(x, y, seed);
                 
                 ChunkGenerator.generateChunk(c, noise);
                 ChunkGenerator.generateCave(c);
@@ -88,7 +75,6 @@ public class Terrain {
                 ChunkGenerator.spawnOre(c, TileType.IRON, 1);
                 ChunkGenerator.spawnTree(c, 10);
                 ChunkGenerator.spawnStructure(c, 10);
-                //c.set(cb.build());
                 
 
                 // Store chunk
@@ -188,7 +174,7 @@ public class Terrain {
     }
 
     // Draw edges on different heights
-    public void drawHeightEdges(RendererStack rendererStack) {  
+    public void drawHeightEdges(Player player, RendererStack rendererStack) {  
 
         for(short cx = 0; cx < getChunkCountX(); cx++){
             for(short cy = 0; cy < getChunkCountY(); cy++){
@@ -197,6 +183,7 @@ public class Terrain {
                 if (c == null) continue;
 
                 chunkRenderer.drawHeightEdges(c, this, rendererStack);
+                chunkRenderer.drawCurrentHeightEdges(c, player, this, rendererStack);
 
             }
         }
@@ -224,8 +211,8 @@ public class Terrain {
                         Tile current = c.getTileStack(localX, localY).top();
                         if(current == null || current.type().getLightLevel() <= 0f) continue;
 
-                        int worldX = cx * this.size + localX;
-                        int worldY = cy * this.size + localY;
+                        int worldX = cx * Constants.CHUNK_SIZE + localX;
+                        int worldY = cy * Constants.CHUNK_SIZE + localY;
 
                         applyRadialLight(worldX, worldY, current.type().getLightLevel());
 
@@ -245,15 +232,15 @@ public class Terrain {
         
                 int targetWorldX = worldX + tx;
                 int targetWorldY = worldY + ty;
-                short chunkX = (short) Math.floorDiv(targetWorldX, this.size);
-                short chunkY = (short) Math.floorDiv(targetWorldY, this.size);
+                short chunkX = (short) Math.floorDiv(targetWorldX, Constants.CHUNK_SIZE);
+                short chunkY = (short) Math.floorDiv(targetWorldY, Constants.CHUNK_SIZE);
 
                 Chunk c = this.getChunk(chunkX, chunkY);
                 if(c == null) continue;
 
 
-                int localLightX = Math.floorMod(targetWorldX, this.size);
-                int localLightY = Math.floorMod(targetWorldY, this.size);
+                int localLightX = Math.floorMod(targetWorldX, Constants.CHUNK_SIZE);
+                int localLightY = Math.floorMod(targetWorldY, Constants.CHUNK_SIZE);
 
                 float sourceDist = Vector2.len(tx, ty);
                 if(sourceDist > Constants.LIGHT_RADIUS) continue;
@@ -290,7 +277,7 @@ public class Terrain {
 
         if(!chunks.containsKey(cPos)){
 
-            Chunk c = new Chunk(cX, cY, size, seed, true);
+            Chunk c = new Chunk(cX, cY, seed);
             ChunkGenerator.generateChunk(c, noise);
             chunks.put(cPos, c);
 
@@ -306,15 +293,15 @@ public class Terrain {
     // Global TileStack accessor
     public TileStack getWorldTileStack(int worldX, int worldY) {
 
-        short chunkX = (short) Math.floorDiv(worldX, this.size);
-        short chunkY = (short) Math.floorDiv(worldY, this.size);
+        short chunkX = (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE);
 
         Chunk chunk = this.getChunk(chunkX, chunkY);
 
         if(chunk == null) return null;
 
-        byte localX = (byte) Math.floorMod(worldX, chunk.getChunkSize());
-        byte localY = (byte) Math.floorMod(worldY, chunk.getChunkSize());
+        byte localX = (byte) Math.floorMod(worldX, Constants.CHUNK_SIZE);
+        byte localY = (byte) Math.floorMod(worldY, Constants.CHUNK_SIZE);
 
         return chunk.getTileStack(localX, localY);
 
@@ -335,14 +322,35 @@ public class Terrain {
     
     }
 
+    // Get visible level
+    public byte getVisibleLevel(int worldX, int worldY, byte visibleLevel) {
+
+        TileStack stack = getWorldTileStack(worldX, worldY);
+        if(stack == null) return getWorldLevel(worldX, worldY);
+
+        for(byte level = visibleLevel; level >= Constants.MIN_WORLD_HEIGHT; level--) {
+
+            Tile tile = stack.get(level);
+
+            if(tile == null) continue;
+            if(tile.type().isEmpty()) continue;
+
+            return level;
+
+        }
+
+        return getWorldLevel(worldX, worldY);
+    
+    }
+
     // Get world light color at cordinates
     public Color getLightColor(int worldX, int worldY) {
 
-        short chunkX = (short) Math.floorDiv(worldX, this.size);
-        short chunkY = (short) Math.floorDiv(worldY, this.size);
+        short chunkX = (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE);
 
-        byte localX = (byte) Math.floorMod(worldX, this.size);
-        byte localY = (byte) Math.floorMod(worldY, this.size);
+        byte localX = (byte) Math.floorMod(worldX, Constants.CHUNK_SIZE);
+        byte localY = (byte) Math.floorMod(worldY, Constants.CHUNK_SIZE);
 
         Chunk c = getChunk(chunkX, chunkY);
         if(c == null) return Color.WHITE;
@@ -359,8 +367,8 @@ public class Terrain {
     public HashMap<ChunkPos, Chunk> getChunks() { return this.chunks; }
 
     // Chunk count helpers
-    private int getChunkCountX() { return (w + size - 1) / size; }
-    private int getChunkCountY() { return (h + size - 1) / size; }
+    private int getChunkCountX() { return (w + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
+    private int getChunkCountY() { return (h + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
 
 
     // Unload resources
