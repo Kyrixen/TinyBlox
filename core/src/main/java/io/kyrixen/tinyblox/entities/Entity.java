@@ -108,8 +108,20 @@ public class Entity {
 
         TileStack entityStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
         if(entityStack == null) return;
+        
         Tile belowTile = entityStack.get((byte) (level() - 1));
-        if(belowTile == null) return;
+        if(belowTile == null || !belowTile.type().canSupport()) {
+            for(byte nextLevel = this.level(); nextLevel > Constants.MIN_WORLD_HEIGHT; nextLevel--) {
+
+                Tile nextTile = entityStack.get(nextLevel);
+                if(nextTile == null) continue;
+                if(nextTile.type().isEmpty() || !nextTile.type().canSupport()) continue;
+
+                this.setLevel((byte) (nextLevel + 1));
+                break;
+
+            }
+        };
 
         if(System.currentTimeMillis() - lastMove >= speed.getMoveDelay() / belowTile.type().getSlipperyModifier() * 1000) {
         

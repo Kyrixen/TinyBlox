@@ -30,6 +30,10 @@ public class Controller {
                 if(Peripheral.keyJustPressed(Input.Keys.SPACE)) player.tryClimbUp(terrain);
                 if(Peripheral.keyJustPressed(Input.Keys.SHIFT_LEFT)) player.tryClimbDown(terrain);
 
+                // Step movement input
+                if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SPACE)) player.tryStepUp(terrain);
+                if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.tryStepDown(terrain);
+
                 // Selector input logic
                 if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
                 if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(entities); }

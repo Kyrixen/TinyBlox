@@ -155,30 +155,24 @@ cd TinyBloxJava
 
 ## Controls
 
-| Key                  | Action                     |
-| -------------------- | -------------------------- |
-| `W`                  | Move Up                    |
-| `A`                  | Move Left                  |
-| `S`                  | Move Down                  |
-| `D`                  | Move Right                 |
-| `I`                  | Show / Hide Inventory      |
-| `Q`                  | Drop Item                  |
-| `Left Control`       | Sprint                     |
-| `Space`              | Climb Up                   |
-| `Left Shift`         | Climb Down                 |
-| `Left Mouse Button`  | Destroy Block / Hit Entity |
-| `Right Mouse Button` | Place Block                |
-| `Scroll Up`          | Previous Inventory Slot    |
-| `Scroll Down`        | Next Inventory Slot        |
-
----
-
-## Debug Controls
-
-| Key | Action               |
-| --- | -------------------- |
-| `C` | Craft Wooden Pickaxe |
-| `V` | Craft Stone Pickaxe  |
+| Key                   | Action                     |
+| --------------------  | -------------------------- |
+| `W`                   | Move Up                    |
+| `A`                   | Move Left                  |
+| `S`                   | Move Down                  |
+| `D`                   | Move Right                 |
+| `I`                   | Show / Hide Inventory      |
+| `C`                   | Toggle Crafting Menu       |
+| `Q`                   | Drop Item                  |
+| `Left Control`        | Sprint                     |
+| `Space` + `WASD`      | Step Up                    |
+| `Left Shift` + `WASD` | Step Down                  |
+| `Space`               | Climb Up                   |
+| `Left Shift`          | Climb Down                 |
+| `Left Mouse Button`   | Destroy Block / Hit Entity |
+| `Right Mouse Button`  | Place Block                |
+| `Scroll Up`           | Previous Inventory Slot    |
+| `Scroll Down`         | Next Inventory Slot        |
 
 ---
 

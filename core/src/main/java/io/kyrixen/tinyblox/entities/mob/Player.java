@@ -186,42 +186,53 @@ public class Player extends MobEntity {
     
     }
 
-    // Climb up method
-    public void tryClimbUp(Terrain terrain) {
+    // Tries to go one layer above
+    public void tryStepUp(Terrain terrain) {
 
-        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
-        if(tileStack == null) return;
+        if(dirX == 0 && dirY == 0) return;
+        if(level() + 1 > Constants.MAX_WORLD_HEIGHT) return;
 
-        Tile current = tileStack.get(this.level);
-        if(current == null) return;
+        TileStack nextStack = terrain.getWorldTileStack((x() / Constants.GRID_SIZE) + dirX, (y() / Constants.GRID_SIZE) + dirY());
+        if(nextStack == null) return;
 
-        if(this.level + 1 > Constants.MAX_WORLD_HEIGHT) return;
-        if(!current.type().isClimbable()) return;
+        Tile nextTile = nextStack.get((byte) (level() + 1));
+        Tile nextBelowTile = nextStack.get((byte) (level()));
+        if(nextBelowTile == null) return;
 
-        Tile above = tileStack.get((byte)(this.level + 1));
-        if(above != null && !above.type().isPassable() && !above.type().isClimbable()) return;
+        if(!nextBelowTile.type().canSupport()) return;
+        if(nextTile != null && !nextTile.type().isEmpty()) return;
 
-        this.level++;
+        this.setLevel((byte) (level + 1));
+        this.tryMove(terrain);
+
+        this.soundManager.getSound(WALK_SOUND).play(MiscUtils.getFloatSound(20), RandomUtils.randomFloat(1.15f, 1.3f), 0f);
+
+        lastMove = System.currentTimeMillis();
 
     }
+    
+    // Tries to go one layer down
+    public void tryStepDown(Terrain terrain) {
 
-    // Climb down method
-    public void tryClimbDown(Terrain terrain) {
+        if(dirX == 0 && dirY == 0) return;
+        if(level() - 1 < Constants.MIN_WORLD_HEIGHT) return;
 
-        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
-        if(tileStack == null) return;
-        
-        if(this.level - 1 < Constants.MIN_WORLD_HEIGHT) return;
+        TileStack nextStack = terrain.getWorldTileStack((x() / Constants.GRID_SIZE) + dirX, (y() / Constants.GRID_SIZE) + dirY());
+        if(nextStack == null) return;
 
-        Tile current = tileStack.get(this.level);
-        Tile below = tileStack.get((byte)(this.level - 1));
+        Tile nextTile = nextStack.get((byte) (level() - 1));
+        Tile nextBelowTile = nextStack.get((byte) (level() - 2));
+        if(nextBelowTile == null) return;
 
-        boolean canClimb = (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable());
-        if(!canClimb) return;
+        if(!nextBelowTile.type().canSupport()) return;
+        if(nextTile != null && !nextTile.type().isEmpty()) return;
 
-        if(below != null && !below.type().isPassable()) return;
+        this.setLevel((byte) (level - 1));
+        this.tryMove(terrain);
 
-        this.level--;
+        this.soundManager.getSound(WALK_SOUND).play(MiscUtils.getFloatSound(20), RandomUtils.randomFloat(0.75f, 0.85f), 0f);
+
+        lastMove = System.currentTimeMillis();
 
     }
 

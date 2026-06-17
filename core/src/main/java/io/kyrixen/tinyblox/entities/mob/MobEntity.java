@@ -5,6 +5,8 @@ import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
@@ -175,6 +177,45 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
         if(state && System.currentTimeMillis() - lastSprint >= (sprintDelay + 1.5f) * 1000) stamina += 5 * delta;
         if(stamina > maxStamina) stamina = maxStamina;
         if(stamina < 0) stamina = 0;  
+    }
+
+    // Climb up method
+    public void tryClimbUp(Terrain terrain) {
+
+        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        if(tileStack == null) return;
+
+        Tile current = tileStack.get(this.level);
+        if(current == null) return;
+
+        if(this.level + 1 > Constants.MAX_WORLD_HEIGHT) return;
+        if(!current.type().isClimbable()) return;
+
+        Tile above = tileStack.get((byte)(this.level + 1));
+        if(above != null && !above.type().isPassable() && !above.type().isClimbable()) return;
+
+        this.level++;
+
+    }
+
+    // Climb down method
+    public void tryClimbDown(Terrain terrain) {
+
+        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        if(tileStack == null) return;
+        
+        if(this.level - 1 < Constants.MIN_WORLD_HEIGHT) return;
+
+        Tile current = tileStack.get(this.level);
+        Tile below = tileStack.get((byte)(this.level - 1));
+
+        boolean canClimb = (current != null && current.type().isClimbable()) || (below != null && below.type().isClimbable());
+        if(!canClimb) return;
+
+        if(below != null && !below.type().isPassable()) return;
+
+        this.level--;
+
     }
 
 
