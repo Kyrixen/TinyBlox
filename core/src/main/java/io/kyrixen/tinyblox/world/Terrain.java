@@ -70,7 +70,7 @@ public class Terrain {
                 Chunk c = new Chunk(x, y, seed);
                 
                 ChunkGenerator.generateChunk(c, noise);
-                ChunkGenerator.generateCave(c);
+                ChunkGenerator.generateCave(c, 10);
                 ChunkGenerator.spawnOre(c, TileType.COAL, 2);
                 ChunkGenerator.spawnOre(c, TileType.IRON, 1);
                 ChunkGenerator.spawnTree(c, 10);

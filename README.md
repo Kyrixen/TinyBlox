@@ -1,6 +1,6 @@
 # TinyBlox
 
-A lightweight pseudo-3D sandbox/survival game and experimental engine written in Java using the LibGDX framework for rendering, input handling, and audio playback.
+A lightweight pseudo-3D sandbox survival game written in Java using LibGDX framework for rendering, input handling, and audio playback.
 
 TinyBlox focuses on atmospheric exploration, topology-aware terrain, modular architecture, procedural generation, and lightweight sandbox gameplay systems.
 
@@ -24,6 +24,24 @@ TinyBlox is currently focused on:
 * Procedural terrain generation
 * Lightweight gameplay architecture
 * Exploration and progression systems
+
+---
+
+## What Makes TinyBlox Different?
+
+TinyBlox is built around layered terrain instead of voxels.
+
+The world is composed of TileStacks that create pseudo-3D traversal,
+allowing caves, cliffs, ladders, elevation changes, and terrain-driven
+exploration without using a traditional voxel engine.
+
+The focus is on:
+
+- Exploration
+- Traversal
+- Atmosphere
+- Terrain interaction
+- Lightweight architecture
 
 ---
 
@@ -52,6 +70,23 @@ TinyBlox is currently focused on:
 
 ---
 
+## Screenshots
+
+<div align="center">
+
+### Terrain Exploration
+![Terrain Exploration](/screenshots/tinyblox_showcase.png)
+
+### Building and Crafting
+![Building and Crafting](/screenshots/building_showcase.png)
+
+### Combat
+![Combat](/screenshots/combat_showcase.png)
+
+</div>
+
+---
+
 ## Architecture
 
 TinyBlox is structured into modular systems including:
@@ -70,7 +105,7 @@ TinyBlox is structured into modular systems including:
 * `Enemy`
 * `Inventory`
 
-The project is designed for experimentation, learning, and gradual expansion into a larger sandbox/survival game.
+TinyBlox is an actively developed sandbox survival game focused on exploration, traversal, atmosphere, and terrain interaction.
 
 The world uses lightweight layered terrain instead of voxel rendering, focusing on topology, traversal, silhouettes, and atmospheric exploration.
 
@@ -111,12 +146,12 @@ The world uses lightweight layered terrain instead of voxel rendering, focusing 
 * [x] Day/night cycle
 * [x] Ladder (partial)
 * [x] Lighting (simple)
+* [x] Cave generation (Prototype)
 * [ ] RNG improvements
 * [ ] Stats system
 * [ ] Dialogues
 * [ ] Helper NPCs
 * [ ] Biomes
-* [ ] Cave generation
 * [ ] World saving/loading
 * [ ] Boss fights
 
@@ -189,18 +224,14 @@ cd TinyBloxJava
 
 ## Future Improvements
 
-* Biome system
-* Cave generation
-* Shadows
-* Animated textures
-* Improved AI
+* Cave expansion
+* Underground progression
+* More structures
+* More enemies
 * Save/load system
-* World streaming optimization
-* Multiplayer experiments
-* Configurable controls
-* Zoomable camera
+* World persistence
+* Biome expansion
 * Better UI
-* Expanded crafting/progression
 
 ---
 
@@ -289,6 +320,7 @@ Created by Kyrixen
 Built using:
 
 * LibGDX
+* FastNoiseLite
 * Java
 * Gradle
 

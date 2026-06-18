@@ -1,6 +1,10 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
@@ -81,64 +85,87 @@ public class ChunkGenerator {
     }
 
     // Generate cave
-    public static void generateCave(Chunk chunk) {
+    public static void generateCave(Chunk chunk, int maxChambers) {
 
-        FastNoiseLite caveNoise = new FastNoiseLite();
-        caveNoise.SetSeed((int) chunk.getChunkSeed() ^ 0xCAFE);
-        caveNoise.SetFrequency(0.03f);
+        RandomUtils random = new RandomUtils(RandomUtils.mixSeed(chunk.getChunkSeed(), 0xCAFE));
+        int caveChambersMaxCount = random.seedInt(0, maxChambers);
 
-        // World size in tiles
-        int worldTilesX = Constants.MAP_WIDTH;
-        int worldTilesY = Constants.MAP_HEIGHT;
-        
-        int caveColumns = 0;
-        for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
-            for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
 
-                // Tile position in WORLD TILE coordinates
-                int tileX = chunk.getX() * CHUNK_SIZE + tx;
-                int tileY = chunk.getY() * CHUNK_SIZE + ty;
+        List<Vector3> chambers = new ArrayList<>();
+        for(int chamber = 0; chamber < caveChambersMaxCount; chamber++) {
 
-                // Skip tiles outside world tile bounds
-                if (tileX < 0 || tileY < 0 || tileX >= worldTilesX || tileY >= worldTilesY) continue;
+            byte choosenRadius = random.seedByte((byte) 3, (byte) 4);
+            byte choosenCenterX = random.seedByte(choosenRadius, (byte) (CHUNK_SIZE - choosenRadius - 1));
+            byte choosenCenterY = random.seedByte(choosenRadius, (byte) (CHUNK_SIZE - choosenRadius - 1));
 
-                if(caveNoise.GetNoise(tileX, tileY) < 0.85f) continue;
-                caveColumns++;
-                
-                TileStack tileStack = chunk.getTileStack(tx, ty);
-                
-                Tile topTerrain = tileStack.getTopTerrain();
-                if(topTerrain == null) continue;
+            TileStack choosenStack = chunk.getTileStack(choosenCenterX, choosenCenterY);
+            if(choosenStack == null) continue;
+            if(choosenStack.getTopTerrain() == null) continue;
 
-                byte roofLevel = (byte) (topTerrain.level() - 3);
-                for(byte level = 1; level < roofLevel; level++) {
+            byte minLayer = (byte) (Constants.MIN_TERRAIN_HEIGHT + choosenRadius + 1);
+            byte maxLayer = (byte) (choosenStack.getTopTerrain().level() - choosenRadius - 2);
+            if(maxLayer < minLayer) continue;
 
-                    if(tileStack.get(level) == null) continue;
-                    if(tileStack.get(level).type() != TileType.STONE) continue;
+            byte choosenCenterLayer = random.seedByte(minLayer, maxLayer);
 
-                    tileStack.set(new Tile(TileType.AIR, level), level);
-                
+            for(int tx = -choosenRadius; tx <= choosenRadius; tx++) {
+                for(int ty = -choosenRadius; ty <= choosenRadius; ty++) {
+                    for(int tz = -choosenRadius; tz <= choosenRadius; tz++) {
+
+                        float dist = Vector3.len(tx, ty, tz * 2);
+                        if(dist > choosenRadius) continue;
+
+                        byte targetX = (byte) (choosenCenterX + tx);
+                        byte targetY = (byte) (choosenCenterY + ty);
+
+                        byte targetLayer = (byte) (choosenCenterLayer + tz);
+                        if(targetLayer < Constants.MIN_TERRAIN_HEIGHT) continue;
+                        if(targetLayer > Constants.MAX_TERRAIN_HEIGHT) continue;
+
+                        TileStack stack = chunk.getTileStack(targetX, targetY);
+                        if(stack == null) continue;
+
+                        Tile current = stack.get(targetLayer);
+                        if(current == null) continue;
+                        if(current.type() != TileType.STONE) continue;
+
+                        stack.set(new Tile(TileType.AIR, targetLayer), targetLayer);
+
+                    }
                 }
-
             }
+        
+            chambers.add(new Vector3(choosenCenterX, choosenCenterY, choosenCenterLayer));
+
         }
 
-        if(caveColumns > 0) {
+            
+        if(chambers.size() > 0) Logger.LOGGER.debug("CAVE", "Generated cave at chunk(" + chunk.getX() + "," + chunk.getY() + ") with " + chambers.size() + " chambers");
 
-            TileStack stack = chunk.getTileStack((byte) 6, (byte) 6);
+        if(chambers.isEmpty()) return;
 
-            Tile top = stack.getTopTerrain();
+        Vector3 bestChamber = chambers.get(0);
+        byte bestDepth = Byte.MAX_VALUE;
+        for(Vector3 chamber : chambers) {
 
-            if(top != null) {
+            TileStack chamberStack = chunk.getTileStack((byte) chamber.x, (byte) chamber.y);
+            if(chamberStack == null) continue;
+            Tile topTile = chamberStack.getTopTerrain();
+            if(topTile == null) continue;
 
-                stack.set(new Tile(TileType.AIR, top.level()), top.level());
-                stack.set(new Tile(TileType.AIR, (byte)(top.level() - 1)), (byte)(top.level() - 1));
+            byte depth = (byte) (topTile.level() - chamber.z);
 
-            }
+            if(bestDepth > depth) { bestDepth = depth; bestChamber = chamber; }
+
         }
 
-        if(caveColumns > 0) Logger.LOGGER.debug("CAVE", "Generated cave at chunk(" + chunk.getX() + "," + chunk.getY() + ") with cave colummns: " + caveColumns);
-    
+        TileStack tileStack = chunk.getTileStack((byte) bestChamber.x, (byte) bestChamber.y);
+        Tile topTile = tileStack.getTopTerrain();
+
+        for(byte layer = (byte) bestChamber.z; layer <= topTile.level(); layer++) {
+            tileStack.set(new Tile(TileType.LADDER, layer), layer);
+        }
+
     }
 
     // Tries to place trees
