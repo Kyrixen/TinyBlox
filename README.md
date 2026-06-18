@@ -170,7 +170,7 @@ The world uses lightweight layered terrain instead of voxel rendering, focusing 
 ### Clone Repository
 
 ```bash
-git clone https://github.com/Kyrixen/TinyBloxJava.git
+git clone https://github.com/Kyrixen/TinyBlox.git
 cd TinyBloxJava
 ```
 
