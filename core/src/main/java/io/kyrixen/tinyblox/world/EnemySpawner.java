@@ -19,7 +19,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class EnemySpawner {
 
-    private float spawnTimer = 8.5f;
+    private float spawnTimer = 15.5f;
     private long lastSpawn = 0L;
 
     private final SoundManager soundManager;

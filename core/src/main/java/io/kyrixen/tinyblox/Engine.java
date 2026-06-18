@@ -129,7 +129,8 @@ public class Engine implements Screen {
 
         player.getInventory().add(ItemRegister.LADDER, (byte) 12);
         player.getInventory().add(ItemRegister.STONE, (byte) 12);
-    
+        player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 12);
+
     }
 
     // Game loop

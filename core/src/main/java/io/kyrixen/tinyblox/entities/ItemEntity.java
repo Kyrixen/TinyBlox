@@ -85,7 +85,7 @@ public class ItemEntity extends Entity {
 
         SpriteBatch batch = rendererStack.batch;
 
-        Color light = terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        Color light = terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level());
 
         float r = 0.65f + light.r * 0.35f;
         float g = 0.65f + light.g * 0.35f;

@@ -60,8 +60,6 @@ public class ChunkRenderer {
                 float playerCenterX = player.x() + player.width() / 2f;
                 float playerCenterY = player.y() + player.height() / 2f;
 
-                Color light = c.getLight(tx, ty);
-
                 float distX = tileCenterX - playerCenterX;
                 float distY = tileCenterY - playerCenterY;
                 int dist = (int) Vector2.len(distX, distY);
@@ -76,6 +74,8 @@ public class ChunkRenderer {
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
+
+                    Color light = c.getLight(tx, ty, layer);
 
                     // Draw first visible opaque tile
                     batch.setColor(light.r, light.g, light.b, 1f);
@@ -145,8 +145,6 @@ public class ChunkRenderer {
                 int globalX = getGlobalX(c, tx);
                 int globalY = getGlobalY(c, ty);
 
-                Color light = c.getLight(tx, ty);
-
                 List<Tile> transparentTiles = new ArrayList<>();
                 for(byte layer = (byte) (tileStack.stackSize() - 1); layer > Constants.MIN_WORLD_HEIGHT; layer--) {
 
@@ -157,6 +155,8 @@ public class ChunkRenderer {
                     if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
+
+                    Color light = c.getLight(tx, ty, layer);
 
                     // Draw first visible opaque tile
                     batch.setColor(light.r, light.g, light.b, 1f);

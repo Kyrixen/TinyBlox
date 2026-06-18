@@ -148,7 +148,7 @@ public class Entity {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness
-        Color brightnessColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE));
+        Color brightnessColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
 
         brightnessColor.r = 0.5f + brightnessColor.r * 0.5f;
         brightnessColor.g = 0.5f + brightnessColor.g * 0.5f;

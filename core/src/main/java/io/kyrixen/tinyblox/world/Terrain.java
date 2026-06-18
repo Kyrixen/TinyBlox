@@ -3,7 +3,7 @@ package io.kyrixen.tinyblox.world;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
@@ -207,15 +207,21 @@ public class Terrain {
 
                 for(byte localX = 0; localX < c.get().length; localX++) {
                     for(byte localY = 0; localY < c.get().length; localY++) {
-                    
-                        Tile current = c.getTileStack(localX, localY).top();
-                        if(current == null || current.type().getLightLevel() <= 0f) continue;
 
-                        int worldX = cx * Constants.CHUNK_SIZE + localX;
-                        int worldY = cy * Constants.CHUNK_SIZE + localY;
+                        TileStack tileStack = c.getTileStack(localX, localY);
+                        if(tileStack == null) continue;
 
-                        applyRadialLight(worldX, worldY, current.type().getLightLevel());
+                        for(byte level = 0; level < tileStack.height(); level++) {
+                        
+                            Tile current = tileStack.get(level);
+                            if(current == null || current.type().getLightLevel() <= 0f) continue;
 
+                            int worldX = cx * Constants.CHUNK_SIZE + localX;
+                            int worldY = cy * Constants.CHUNK_SIZE + localY;
+
+                            applyRadialLight(worldX, worldY, current.level(), current.type().getLightLevel());
+                            
+                        }
                     }
                 }
         
@@ -225,40 +231,47 @@ public class Terrain {
     }
 
     // Applies lighting
-    private void applyRadialLight(int worldX, int worldY, float lightLevel) {
+    private void applyRadialLight(int worldX, int worldY, byte worldLayer, float lightLevel) {
 
         for(byte tx = -Constants.LIGHT_RADIUS; tx <= Constants.LIGHT_RADIUS; tx++) {
             for(byte ty = -Constants.LIGHT_RADIUS; ty <= Constants.LIGHT_RADIUS; ty++) {
-        
-                int targetWorldX = worldX + tx;
-                int targetWorldY = worldY + ty;
-                short chunkX = (short) Math.floorDiv(targetWorldX, Constants.CHUNK_SIZE);
-                short chunkY = (short) Math.floorDiv(targetWorldY, Constants.CHUNK_SIZE);
+                for(byte tz = -Constants.LIGHT_RADIUS; tz <= Constants.LIGHT_RADIUS; tz++) {
+                
+                    int targetWorldX = worldX + tx;
+                    int targetWorldY = worldY + ty;
+                    byte targetWorldLayer = (byte) (worldLayer + tz);
+                    
+                    if(targetWorldLayer < Constants.MIN_WORLD_HEIGHT) continue;
+                    if(targetWorldLayer > Constants.MAX_WORLD_HEIGHT) continue;
 
-                Chunk c = this.getChunk(chunkX, chunkY);
-                if(c == null) continue;
+                    short chunkX = (short) Math.floorDiv(targetWorldX, Constants.CHUNK_SIZE);
+                    short chunkY = (short) Math.floorDiv(targetWorldY, Constants.CHUNK_SIZE);
 
-
-                int localLightX = Math.floorMod(targetWorldX, Constants.CHUNK_SIZE);
-                int localLightY = Math.floorMod(targetWorldY, Constants.CHUNK_SIZE);
-
-                float sourceDist = Vector2.len(tx, ty);
-                if(sourceDist > Constants.LIGHT_RADIUS) continue;
-
-                float lowerance = 1f - (sourceDist / Constants.LIGHT_RADIUS);
-                lowerance = Math.max(0f, lowerance);
-
-                Color lightColor = c.getLight((byte) localLightX, (byte) localLightY);
+                    Chunk c = this.getChunk(chunkX, chunkY);
+                    if(c == null) continue;
 
 
-                lightColor.r += 1f * lowerance * lightLevel;
-                lightColor.g += 0.8f * lowerance * lightLevel;
-                lightColor.b += 0.5f * lowerance * lightLevel;
+                    int localLightX = Math.floorMod(targetWorldX, Constants.CHUNK_SIZE);
+                    int localLightY = Math.floorMod(targetWorldY, Constants.CHUNK_SIZE);
 
-                lightColor.r = Math.min(lightColor.r, 1.25f);
-                lightColor.g = Math.min(lightColor.g, 1.25f);
-                lightColor.b = Math.min(lightColor.b, 1.25f);
+                    float sourceDist = Vector3.len(tx, ty, tz * 3);
+                    if(sourceDist > Constants.LIGHT_RADIUS) continue;
 
+                    float lowerance = 1f - (sourceDist / Constants.LIGHT_RADIUS);
+                    lowerance = Math.max(0f, lowerance);
+
+                    Color lightColor = c.getLight((byte) localLightX, (byte) localLightY, targetWorldLayer);
+
+
+                    lightColor.r += 1f * lowerance * lightLevel;
+                    lightColor.g += 0.8f * lowerance * lightLevel;
+                    lightColor.b += 0.5f * lowerance * lightLevel;
+
+                    lightColor.r = Math.min(lightColor.r, 1.25f);
+                    lightColor.g = Math.min(lightColor.g, 1.25f);
+                    lightColor.b = Math.min(lightColor.b, 1.25f);
+                
+                }
             }
         }
 
@@ -344,7 +357,7 @@ public class Terrain {
     }
 
     // Get world light color at cordinates
-    public Color getLightColor(int worldX, int worldY) {
+    public Color getLightColor(int worldX, int worldY, byte worldLayer) {
 
         short chunkX = (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE);
         short chunkY = (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE);
@@ -355,7 +368,7 @@ public class Terrain {
         Chunk c = getChunk(chunkX, chunkY);
         if(c == null) return Color.WHITE;
 
-        return c.getLight(localX, localY);
+        return c.getLight(localX, localY, worldLayer);
 
     }
 

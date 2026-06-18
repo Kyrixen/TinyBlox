@@ -24,7 +24,7 @@ public class Chunk {
     private TileStack[][] chunk;
 
     // Stores light level for tiles
-    private Color[][] lightLevel;
+    private Color[][][] lightLevel;
 
     // Construct chunk
     public Chunk(int x, int y, int seed){
@@ -35,12 +35,17 @@ public class Chunk {
         this.cY = y;
 
         this.chunk = new TileStack[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
-        this.lightLevel = new Color[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
+        this.lightLevel = new Color[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE][Constants.MAX_WORLD_HEIGHT + 1];
 
         for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
             for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
+            
                 this.chunk[xPos][yPos] = new TileStack();
-                this.lightLevel[xPos][yPos] = new Color(1f, 1f, 1f, 1f);
+
+                for(byte layer = 0; layer <= Constants.MAX_WORLD_HEIGHT; layer++) {
+                    this.lightLevel[xPos][yPos][layer] = new Color(1f, 1f, 1f, 1f);
+                }
+
             }
         }
 
@@ -61,9 +66,9 @@ public class Chunk {
 
         for(byte xPos = 0; xPos < lightLevel.length; xPos++) {
             for(byte yPos = 0; yPos < lightLevel.length; yPos++) {
-            
-                this.setLight(xPos, yPos, ambient);
-
+                for(byte layer = 0; layer < lightLevel[xPos][yPos].length; layer++) {
+                    this.setLight(xPos, yPos, layer, ambient);
+                }
             }
         }
 
@@ -141,13 +146,13 @@ public class Chunk {
         return this.chunk[localX][localY];
     }
 
-    public Color getLight(byte xPos, byte yPos) {
-        if(xPos < 0 || xPos >= Constants.CHUNK_SIZE || yPos < 0 || yPos >= Constants.CHUNK_SIZE) return null;
-        return this.lightLevel[xPos][yPos];
+    public Color getLight(byte xPos, byte yPos, byte layer) {
+        if(xPos < 0 || xPos >= Constants.CHUNK_SIZE || yPos < 0 || yPos >= Constants.CHUNK_SIZE || layer > Constants.MAX_WORLD_HEIGHT || layer < Constants.MIN_WORLD_HEIGHT) return null;
+        return this.lightLevel[xPos][yPos][layer];
     }
 
-    public void setLight(byte xPos, byte yPos, Color light) {
-        this.lightLevel[xPos][yPos].set(light);
+    public void setLight(byte xPos, byte yPos, byte layer, Color light) {
+        this.lightLevel[xPos][yPos][layer].set(light);
     }
 
     // Unload resources
