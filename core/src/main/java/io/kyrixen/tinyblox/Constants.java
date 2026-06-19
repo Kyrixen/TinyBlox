@@ -38,6 +38,7 @@ public class Constants {
     // Versions
     public static final String VERSION = "dev-1";
     public static final int BLUEPRINT_FORMAT_VERSION = 1;
+    public static final int SAVE_FORMAT_VERSION = 1;
 
     // Dev settings
     public static final boolean DEBUG = true;

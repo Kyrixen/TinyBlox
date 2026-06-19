@@ -10,6 +10,8 @@ public class TileStack  {
 
     private final List<Tile> tiles;
 
+    private boolean modified = true;
+
     public TileStack(List<Tile> tiles) {
         this.tiles = tiles;
     }
@@ -71,12 +73,16 @@ public class TileStack  {
 
         this.tiles.set(level, new Tile(TileType.AIR, level));
 
+        this.modified = true;
+
     }
 
     public void set(Tile tile, byte level) {
 
         while(this.tiles.size() <= level) { this.tiles.add(null); }
         this.tiles.set(level, tile);
+
+        this.modified = true;
 
     }
 
@@ -126,5 +132,9 @@ public class TileStack  {
         return true;
 
     }
+
+    // Get and Set modified state
+    public boolean isModified() { return this.modified; }
+    public void setModified(boolean modified) { this.modified = modified; }
 
 }

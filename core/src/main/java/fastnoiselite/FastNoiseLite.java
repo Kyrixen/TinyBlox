@@ -160,6 +160,7 @@ public class FastNoiseLite
     /// Default: 1337
     /// </remarks>
     public void SetSeed(int seed) { mSeed = seed; }
+    /* Custom Kyrixen one */ public int getSeed() { return mSeed; }
 
     /// <summary>
     /// Sets frequency for all noise types
@@ -168,6 +169,7 @@ public class FastNoiseLite
     /// Default: 0.01
     /// </remarks>
     public void SetFrequency(float frequency) { mFrequency = frequency; }
+    /* Custom Kyrixen one */ public float getFrequency() { return mFrequency; }
 
     /// <summary>
     /// Sets noise algorithm used for GetNoise(...)

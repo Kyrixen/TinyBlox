@@ -319,7 +319,7 @@ public class ChunkRenderer {
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + CHUNK_SIZE - 1) / CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + CHUNK_SIZE - 1) / CHUNK_SIZE);
 
-        return c.rendered && !(c.getX() < 0 || c.getX() >= worldChunksX || c.getY() < 0 || c.getY() >= worldChunksY);
+        return c.isRendered() && !(c.getX() < 0 || c.getX() >= worldChunksX || c.getY() < 0 || c.getY() >= worldChunksY);
 
     }
 

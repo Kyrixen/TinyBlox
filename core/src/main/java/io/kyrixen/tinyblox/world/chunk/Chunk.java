@@ -14,11 +14,12 @@ public class Chunk {
     private final long chunkSeed;
 
     // Chunk cords
-    private final int cX;
-    private final int cY;
+    private final short cX;
+    private final short cY;
 
     // Chunk properties
-    public boolean rendered;
+    private boolean rendered;
+    private boolean modified;
 
     // Stores chunk tiles
     private TileStack[][] chunk;
@@ -27,7 +28,7 @@ public class Chunk {
     private Color[][][] lightLevel;
 
     // Construct chunk
-    public Chunk(int x, int y, int seed){
+    public Chunk(short x, short y, int seed){
 
         this.chunkSeed = RandomUtils.mixSeed(seed, x * 341873128712L ^ y * 132897987541L);
 
@@ -50,13 +51,14 @@ public class Chunk {
         }
 
         this.rendered = false;
+        this.modified = true;
         
     }
 
 
-    public int getX(){ return this.cX; }
+    public short getX(){ return this.cX; }
 
-    public int getY(){ return this.cY; }
+    public short getY(){ return this.cY; }
 
     public long getChunkSeed() { return this.chunkSeed; }
 
@@ -99,6 +101,23 @@ public class Chunk {
 
     }
 
+    public void checkIfModified() {
+
+        this.modified = false;
+
+        for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
+            for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
+
+                TileStack tileStack = this.chunk[xPos][yPos];
+                if(tileStack == null) continue;
+
+                if(tileStack.isModified()) { this.modified = true; return; }
+
+            }
+        }
+
+    }
+
     public TileStack[][] get() {
         return this.chunk;
     }
@@ -138,7 +157,8 @@ public class Chunk {
         }
     
         rendered = true;
-    
+        modified = true;
+
     }
 
     public TileStack getTileStack(byte localX, byte localY) {
@@ -155,6 +175,28 @@ public class Chunk {
         this.lightLevel[xPos][yPos][layer].set(light);
     }
 
+    public boolean isRendered() { return this.rendered; }
+    public void setRendered(boolean rendered) { this.rendered = rendered; }
+
+    public boolean isModified() { return this.modified; }
+    public void setModified(boolean modified) { 
+        
+        this.modified = modified; 
+        
+        for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
+            for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
+
+                TileStack tileStack = this.chunk[xPos][yPos];
+                if(tileStack == null) continue;
+
+                tileStack.setModified(modified);
+
+            }
+        }
+    
+    }
+
+
     // Unload resources
     public void cleanup() {
 
@@ -163,6 +205,7 @@ public class Chunk {
 
         // Mark unloaded and remove references
         rendered = false;
+        modified = true;
         
     }
 

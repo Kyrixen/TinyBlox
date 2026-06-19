@@ -33,7 +33,7 @@ public class ChunkGenerator {
         int worldChunksY = (worldTilesY + CHUNK_SIZE - 1) / CHUNK_SIZE;
 
         // Safety: do not generate invalid chunks
-        if (chunk.getX() < 0 || chunk.getY() < 0 || chunk.getX() >= worldChunksX || chunk.getY() >= worldChunksY) { chunk.rendered = false; return; }
+        if (chunk.getX() < 0 || chunk.getY() < 0 || chunk.getX() >= worldChunksX || chunk.getY() >= worldChunksY) { chunk.setRendered(false); return; }
 
         for (byte tx = 0; tx < CHUNK_SIZE; tx++) {
             for (byte ty = 0; ty < CHUNK_SIZE; ty++) {
@@ -80,7 +80,7 @@ public class ChunkGenerator {
 
         }
 
-        chunk.rendered = true;
+        chunk.setRendered(true);
 
     }
 

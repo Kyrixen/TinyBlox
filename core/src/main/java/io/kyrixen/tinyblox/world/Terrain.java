@@ -9,6 +9,10 @@ import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.saving.ChunkLoader;
+import io.kyrixen.tinyblox.saving.ChunkSaver;
+import io.kyrixen.tinyblox.saving.WorldManager;
+import io.kyrixen.tinyblox.saving.blueprints.WorldBlueprint;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -39,10 +43,16 @@ public class Terrain {
 
 
     // Constructs terrain
-    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
+    public Terrain(String worldName, int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
+
+        WorldBlueprint wb = WorldManager.loadWorld(worldName);
+
+        if(wb != null) {
+            seed = wb.worldSeed;
+            frequency = wb.worldFrequency;
+        }
 
         this.seed = seed;
-        
         this.w = w;
         this.h = h;
 
@@ -54,7 +64,9 @@ public class Terrain {
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.SetSeed(seed);
         noise.SetFrequency(frequency);
-    
+
+        if(wb == null) WorldManager.createWorld(this, worldName);
+
     }
 
 
@@ -67,15 +79,21 @@ public class Terrain {
         for(short x = 0; x < getChunkCountX(); x++){
             for(short y = 0; y < getChunkCountY(); y++){
 
-                Chunk c = new Chunk(x, y, seed);
+                Chunk c = ChunkLoader.load(x, y, noise);
+                if(c == null) {
+
+                    c = new Chunk(x, y, seed);
+                    
+                    ChunkGenerator.generateChunk(c, noise);
+                    ChunkGenerator.generateCave(c, 10);
+                    ChunkGenerator.spawnOre(c, TileType.COAL, 2);
+                    ChunkGenerator.spawnOre(c, TileType.IRON, 1);
+                    ChunkGenerator.spawnTree(c, 10);
+                    ChunkGenerator.spawnStructure(c, 10);
+
+                    c.setModified(false);
                 
-                ChunkGenerator.generateChunk(c, noise);
-                ChunkGenerator.generateCave(c, 10);
-                ChunkGenerator.spawnOre(c, TileType.COAL, 2);
-                ChunkGenerator.spawnOre(c, TileType.IRON, 1);
-                ChunkGenerator.spawnTree(c, 10);
-                ChunkGenerator.spawnStructure(c, 10);
-                
+                }
 
                 // Store chunk
                 chunks.put(new ChunkPos(x, y), c);
@@ -97,6 +115,9 @@ public class Terrain {
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
                 c.checkIfOnScreen(camera);
+                if(c.isRendered()) c.checkIfModified();
+
+                if(c.isModified()) { ChunkSaver.save(c); c.setModified(false); }
 
             }
 
@@ -201,7 +222,7 @@ public class Terrain {
                 if (c == null) continue;
 
                 // If not visible dont render
-                if(!c.rendered) continue;
+                if(!c.isRendered()) continue;
 
                 c.resetAmbientLighting(timeCycle.getBrightnessColor());
 
@@ -375,13 +396,16 @@ public class Terrain {
 
     // Get seed
     public int getSeed() { return this.seed; }
+
+    // Get frequency
+    public float getFrequency() { return this.noise.getFrequency(); }
     
     // Get chunk map
     public HashMap<ChunkPos, Chunk> getChunks() { return this.chunks; }
 
     // Chunk count helpers
-    private int getChunkCountX() { return (w + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
-    private int getChunkCountY() { return (h + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
+    public int getChunkCountX() { return (w + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
+    public int getChunkCountY() { return (h + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE; }
 
 
     // Unload resources

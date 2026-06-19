@@ -15,10 +15,13 @@ import io.kyrixen.tinyblox.world.chunk.structures.Structure.Rarity;
 
 public class StructureLoader {
 
+    // Json parser
     private static final Json json = new Json();
+    // Structure folder
     private static final FileHandle structureFolder = Gdx.files.internal("structures");
 
 
+    // Loads structure from file
     public static Structure load(String path) {
     
         FileHandle structureFile = Gdx.files.internal(path);
@@ -53,6 +56,7 @@ public class StructureLoader {
 
     }
 
+    // Auto load all structures in folder
     public static void loadAll() {
 
         FileHandle[] files = structureFolder.list(".json");
