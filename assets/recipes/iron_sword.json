@@ -1,0 +1,19 @@
+{
+  "formatVersion": 1,
+ 
+  "ingredients": [
+    {
+      "item": "WOOD",
+      "amount": 1
+    },
+    {
+      "item": "IRON",
+      "amount": 1
+    }
+  ],
+ 
+  "result": {
+    "item": "IRON_SWORD",
+    "amount": 1
+  }
+}

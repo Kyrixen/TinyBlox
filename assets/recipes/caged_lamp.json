@@ -1,0 +1,19 @@
+{
+  "formatVersion": 1,
+ 
+  "ingredients": [
+    {
+      "item": "COAL",
+      "amount": 1
+    },
+    {
+      "item": "IRON",
+      "amount": 4
+    }
+  ],
+ 
+  "result": {
+    "item": "CAGED_LAMP",
+    "amount": 4
+  }
+}

@@ -64,6 +64,10 @@ public class ItemRegister {
         ITEMS.add(WOOD);        
         ITEMS.add(LEAVES);
         ITEMS.add(CAGED_LAMP);
+        ITEMS.add(SAND);
+        ITEMS.add(GLASS);
+        ITEMS.add(CLAY);
+        ITEMS.add(BRICK);
 
 
         ITEMS.add(WOODEN_SWORD);

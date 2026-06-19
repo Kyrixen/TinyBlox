@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+ 
+  "ingredients": [
+    {
+      "item": "SAND",
+      "amount": 1
+    }
+  ],
+ 
+  "result": {
+    "item": "GLASS",
+    "amount": 2
+  }
+}

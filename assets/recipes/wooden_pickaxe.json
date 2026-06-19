@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+
+  "ingredients": [
+    {
+      "item": "WOOD",
+      "amount": 3
+    }
+  ],
+  
+  "result": {
+    "item": "WOODEN_PICKAXE",
+    "amount": 1
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+
+  "ingredients": [
+    {
+      "item": "WOOD",
+      "amount": 4
+    }
+  ],
+  
+  "result": {
+    "item": "LADDER",
+    "amount": 12
+  }
+}

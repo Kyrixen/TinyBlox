@@ -1,0 +1,19 @@
+{
+  "formatVersion": 1,
+ 
+  "ingredients": [
+    {
+      "item": "WOOD",
+      "amount": 1
+    },
+    {
+      "item": "STONE",
+      "amount": 2
+    }
+  ],
+ 
+  "result": {
+    "item": "STONE_PICKAXE",
+    "amount": 1
+  }
+}

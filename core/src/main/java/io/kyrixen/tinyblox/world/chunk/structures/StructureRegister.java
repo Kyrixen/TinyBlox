@@ -12,8 +12,12 @@ public class StructureRegister {
     private static final List<Structure> STRUCTURES = new ArrayList<>();
 
     public static void initStructures() {
+        
+        if(!STRUCTURES.isEmpty()) return;
+        
         StructureLoader.loadAll();
         Logger.LOGGER.debug("REGISTER", "Loaded structures count: " + STRUCTURES.size());
+    
     }
 
 
