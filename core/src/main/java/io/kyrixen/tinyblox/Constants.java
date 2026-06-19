@@ -35,8 +35,9 @@ public class Constants {
     public static final byte RENDER_DISTANCE = 2;
     public static final byte ROOF_REVEAL_RADIUS = 3;
 
-    // Version
-    public static final String VERSION = "dev_pre-9";
+    // Versions
+    public static final String VERSION = "dev-1";
+    public static final int BLUEPRINT_FORMAT_VERSION = 1;
 
     // Dev settings
     public static final boolean DEBUG = true;

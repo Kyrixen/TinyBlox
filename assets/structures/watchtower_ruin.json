@@ -1,0 +1,39 @@
+{
+  "formatVersion": 1,
+  "rarity": "RARE",
+  "layers": [
+
+    [
+      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"],
+      ["WOOD", "AIR",  "WOOD", "COAL", "WOOD"],
+      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"],
+      ["WOOD", "AIR",  "WOOD", "AIR",  "WOOD"],
+      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"]
+    ],
+
+    [
+      ["WOOD", "AIR", "AIR", "AIR", "WOOD"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["WOOD", "AIR", "AIR", "AIR", "WOOD"]
+    ],
+
+    [
+      ["WOOD", "AIR", "AIR", "AIR", "WOOD"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
+      ["WOOD", "AIR", "AIR", "AIR", "WOOD"]
+    ],
+
+    [
+      ["WOOD",  "WOOD",       "WOOD",       "WOOD",  "WOOD"],
+      ["WOOD",  "AIR",        "AIR",        "AIR",   "WOOD"],
+      ["GLASS", "AIR",        "CAGED_LAMP", "AIR",   "GLASS"],
+      ["WOOD",  "AIR",        "AIR",        "AIR",   "WOOD"],
+      ["WOOD",  "GLASS",      "AIR",        "GLASS", "WOOD"]
+    ]
+
+  ]
+}

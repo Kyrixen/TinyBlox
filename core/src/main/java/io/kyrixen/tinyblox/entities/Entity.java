@@ -111,17 +111,24 @@ public class Entity {
         
         Tile belowTile = entityStack.get((byte) (level() - 1));
         if(belowTile == null || !belowTile.type().canSupport()) {
+
             for(byte nextLevel = this.level(); nextLevel > Constants.MIN_WORLD_HEIGHT; nextLevel--) {
 
                 Tile nextTile = entityStack.get(nextLevel);
+
                 if(nextTile == null) continue;
-                if(nextTile.type().isEmpty() || !nextTile.type().canSupport()) continue;
+                if(nextTile.type().isEmpty()) continue;
+                if(!nextTile.type().canSupport()) continue;
 
-                this.setLevel((byte) (nextLevel + 1));
+                this.setLevel((byte)(nextLevel + 1));
                 break;
-
+            
             }
-        };
+
+            belowTile = entityStack.get((byte)(level() - 1));
+            if(belowTile == null || !belowTile.type().canSupport()) return;
+
+        }
 
         if(System.currentTimeMillis() - lastMove >= speed.getMoveDelay() / belowTile.type().getSlipperyModifier() * 1000) {
         
