@@ -74,6 +74,40 @@ public class Player extends MobEntity {
     
     }
     
+    public Player(int id, int x, int y, Camera camera, SoundManager soundManager) {
+    
+        super(id, x, y, soundManager);
+
+        this.hotbarSlotCount = 6;
+        this.inventory = new Inventory(this.hotbarSlotCount);
+        this.inventoryRenderer = new InventoryRenderer(inventory);
+
+        this.craftingManager = new Crafting(this.inventory);
+
+        this.sprintDelay = 0.15f;
+        this.damageDelay = 0.50f;
+
+        this.setSpeed(Speed.NORMAL);
+
+        this.health = 100;
+        this.maxHealth = 100;
+
+        this.stamina = 100;
+        this.maxStamina = 100;
+        
+        this.invincible = false;
+        this.tireless = false;
+
+        this.autoRegenerate = true;
+        this.autoRecover = true;
+
+        this.selector = new Selector(this, soundManager);
+        this.camera = camera;
+
+        this.lastMove = System.currentTimeMillis();
+    
+    }
+    
 
     @Override
     public void initTexture() {
@@ -83,8 +117,8 @@ public class Player extends MobEntity {
     @Override
     public void update(float deltaTime, Terrain terrain) {
 
-        autoRecover(true, deltaTime);
-        autoRegenerate(true, deltaTime);
+        autoRecover(deltaTime);
+        autoRegenerate(deltaTime);
 
         super.update(deltaTime, terrain);
 

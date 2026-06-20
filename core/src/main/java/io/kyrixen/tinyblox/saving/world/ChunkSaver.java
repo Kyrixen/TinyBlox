@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.saving;
+package io.kyrixen.tinyblox.saving.world;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.saving.blueprints.ChunkBlueprint;
-import io.kyrixen.tinyblox.saving.blueprints.ChunkBlueprint.ChunkStack;
-import io.kyrixen.tinyblox.saving.blueprints.ChunkBlueprint.ChunkStack.ChunkTile;
+import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
+import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
+import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -35,7 +35,6 @@ public class ChunkSaver {
     public static ChunkBlueprint convertToBlueprint(Chunk chunk) {
 
         ChunkBlueprint bc = new ChunkBlueprint();
-
         bc.formatVersion = Constants.SAVE_FORMAT_VERSION;
 
         List<ChunkStack> cStacks = new ArrayList<>();
@@ -106,7 +105,7 @@ public class ChunkSaver {
             previous = json.fromJson(ChunkBlueprint.class, oldData);
         } catch (IOException e) {}
 
-        // if there is an old save get from it the stacks
+        // If there is an old save get from it the stacks
         if(previous != null && previous.stacks != null) {
             for(ChunkStack chunkStack : previous.stacks) {
                 stacks.put(chunkStack.x + "," + chunkStack.y, chunkStack);

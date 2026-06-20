@@ -175,7 +175,7 @@ public class Engine implements Screen {
         player.stats(camera);
 
         if(player.isDead()) {
-            Logger.LOGGER.debug("ENGINE", "Player is dead! Health: " + player.health() + " | Game Over.");
+            Logger.LOGGER.debug("ENGINE", "Player is dead! Health: " + player.getHealth() + " | Game Over.");
             exit = true;
                 
         }

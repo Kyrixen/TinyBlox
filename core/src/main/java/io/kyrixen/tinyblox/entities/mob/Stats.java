@@ -1,19 +1,23 @@
 package io.kyrixen.tinyblox.entities.mob;
 
 
-// Implementations for Entity.java
+// Implementations for MobEntity.java
 public class Stats {
 
     // Health
     public interface Health {
 
         float getHealth();
-        void setHealth(int health);
+        void setHealth(float health);
         void setMaxHealth(int maxHealth);
         boolean isDead();
 
-        void autoRegenerate(boolean state, float delta);
+        void autoRegenerate(float delta);
+        void setAutoRegenerate(boolean state);
+        boolean getAutoRegenerate();
+
         void setInvincible(boolean invincible);
+        boolean isInvincible();
 
         boolean damage(int damage);
         void heal(int amount);        
@@ -25,12 +29,16 @@ public class Stats {
     public interface Stamina {
 
         float getStamina();
-        void setStamina(int stamina);
+        void setStamina(float stamina);
         void setMaxStamina(int maxStamina);
         boolean isExhausted();
 
-        void autoRecover(boolean state, float delta);
+        void autoRecover(float delta);
+        void setAutoRecover(boolean state);
+        boolean getAutoRecover();
+
         void setTireless(boolean tireless);    
+        boolean isTireless();
 
         void consume(int amount);
         void recover(int amount);

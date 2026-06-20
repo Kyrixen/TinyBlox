@@ -49,6 +49,16 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     
     }
 
+    public MobEntity(int id, int x, int y, SoundManager soundManager) {
+        
+        super(id, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
+
+        this.soundManager = soundManager;
+
+        this.inventory = new Inventory(this.hotbarSlotCount);
+    
+    }
+
 
     @Override
     // Update mob entity
@@ -70,17 +80,26 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     
     @Override
     public boolean isDead() { return health <= 0 && !invincible; }
+
+    @Override
+    public boolean getAutoRegenerate() { return autoRegenerate; }
+
+    @Override
+    public boolean isInvincible() { return invincible; }
     
     // Setters
     
     @Override
-    public void setHealth(int health) { this.health = health; }
+    public void setHealth(float health) { this.health = health; }
 
     @Override
     public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }
 
     @Override
     public void setInvincible(boolean invincible) { this.invincible = invincible; }
+
+    @Override
+    public void setAutoRegenerate(boolean state) { this.autoRegenerate = state; }
 
 
     // Health specific funcs
@@ -117,8 +136,8 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     // Auto regenerates health of entity
     @Override
-    public void autoRegenerate(boolean state, float delta) {
-        if(state && System.currentTimeMillis() - lastDamage >= (damageDelay + 1.5f) * 1000) health += 5 * delta;
+    public void autoRegenerate(float delta) {
+        if(autoRegenerate && System.currentTimeMillis() - lastDamage >= (damageDelay + 1.5f) * 1000) health += 5 * delta;
         if(health > maxHealth) health = maxHealth;  
         if(health < 0) health = 0;
     }
@@ -136,16 +155,25 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     public Speed getSpeed() { return this.speed; }
 
+    @Override
+    public boolean getAutoRecover() { return autoRecover; }
+
+    @Override
+    public boolean isTireless() { return tireless; }
+
     // Setters
 
     @Override
-    public void setStamina(int stamina) { this.stamina = stamina; }
+    public void setStamina(float stamina) { this.stamina = stamina; }
 
     @Override
     public void setMaxStamina(int maxStamina) { this.maxStamina = maxStamina; }
 
     @Override
     public void setTireless(boolean tireless) { this.tireless = tireless; }
+
+    @Override
+    public void setAutoRecover(boolean state) { this.autoRecover = state; }
 
 
     // Stamina funcs specific
@@ -173,8 +201,8 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     // Auto recovers stamina
     @Override
-    public void autoRecover(boolean state, float delta) {
-        if(state && System.currentTimeMillis() - lastSprint >= (sprintDelay + 1.5f) * 1000) stamina += 5 * delta;
+    public void autoRecover(float delta) {
+        if(autoRecover && System.currentTimeMillis() - lastSprint >= (sprintDelay + 1.5f) * 1000) stamina += 5 * delta;
         if(stamina > maxStamina) stamina = maxStamina;
         if(stamina < 0) stamina = 0;  
     }
@@ -218,11 +246,8 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     }
 
-
-    // Getters
-    public float health() { return health; }
-    public float stamina() { return stamina; }
     
+    // Getters
     public Inventory getInventory() { return inventory; }
 
     @Override

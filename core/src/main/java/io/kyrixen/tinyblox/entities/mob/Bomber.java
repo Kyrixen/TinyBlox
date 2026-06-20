@@ -48,6 +48,21 @@ public class Bomber extends Enemy {
 
     }
 
+    public Bomber(int id, int x, int y, SoundManager soundManager) {
+    
+        super(id, x, y, soundManager);
+    
+        this.attackDamage = 65;
+
+        this.maxHealth = 15;
+        this.health = 15;
+
+        this.activationRange = 2;
+
+        this.setSpeed(Speed.SPEEDY);
+
+    }
+
 
     @Override
     public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {

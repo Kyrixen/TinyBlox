@@ -63,6 +63,30 @@ public class Enemy extends MobEntity {
     
     }
 
+    public Enemy(int id, int x, int y, SoundManager soundManager) {
+        
+        super(id, x, y, soundManager);
+
+        this.chasing = false;
+
+        this.attackDamage = 20;
+        this.damageDelay = 0.50f;
+
+        this.health = 50;
+        this.maxHealth = 50;
+
+        this.stamina = 100;
+        this.maxStamina = 100;
+        
+        this.invincible = false;
+        this.tireless = true;
+
+        this.setSpeed(Speed.NORMAL);
+
+        this.lastMove = System.currentTimeMillis();
+    
+    }
+
 
     @Override
     public void initTexture() {
@@ -94,10 +118,21 @@ public class Enemy extends MobEntity {
         this.chasing = chasing;
     }
 
-    // Getter
-    public byte getActivationRange() {
-        return this.activationRange;
+    public void setAttackDamage(int attackDamage) {
+        this.attackDamage = attackDamage;
     }
+
+    public void setActivationRange(byte activationRange) {
+        this.activationRange = activationRange;
+    }
+
+
+    // Getters
+
+    public byte getActivationRange() { return this.activationRange; }
+    public int getAttackDamage() { return this.attackDamage; }
+
+    public boolean isChasing() { return this.chasing; }
 
 
     // Checks collision

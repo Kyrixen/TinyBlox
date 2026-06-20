@@ -9,10 +9,10 @@ import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.saving.ChunkLoader;
-import io.kyrixen.tinyblox.saving.ChunkSaver;
-import io.kyrixen.tinyblox.saving.WorldManager;
-import io.kyrixen.tinyblox.saving.blueprints.WorldBlueprint;
+import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
+import io.kyrixen.tinyblox.saving.world.ChunkLoader;
+import io.kyrixen.tinyblox.saving.world.ChunkSaver;
+import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -79,7 +79,7 @@ public class Terrain {
         for(short x = 0; x < getChunkCountX(); x++){
             for(short y = 0; y < getChunkCountY(); y++){
 
-                Chunk c = ChunkLoader.load(x, y, noise);
+                Chunk c = ChunkLoader.load(new ChunkPos(x, y), noise);
                 if(c == null) {
 
                     c = new Chunk(x, y, seed);

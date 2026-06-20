@@ -13,6 +13,11 @@ public class Inventory {
 
     // Setters //
 
+    public void setCurrentSlot(byte slot) {
+        hotbarSlot = slot;
+        if(slot > slots.length || slot < 0) hotbarSlot = 0;
+    }
+
     public void push(ItemStack itemStack) {
         for(byte i = 0; i < slots.length; i++) {
             if(slots[i].isEmpty()) { slots[i] = itemStack; return; }
@@ -148,6 +153,10 @@ public class Inventory {
             if(itemStack.getItem() == item && !itemStack.isEmpty()) { return true; }
         }
         return false;
+    }
+
+    public void clear() {
+        for(byte i = 0; i < slots.length; i++) { slots[i] = new ItemStack(ItemRegister.NONE, (byte) 0); }
     }
 
 

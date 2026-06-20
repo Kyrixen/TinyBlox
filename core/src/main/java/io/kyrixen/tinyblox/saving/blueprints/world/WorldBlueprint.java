@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.saving.blueprints;
+package io.kyrixen.tinyblox.saving.blueprints.world;
 
 public class WorldBlueprint {
     

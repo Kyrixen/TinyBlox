@@ -85,6 +85,22 @@ public class Entity {
 
     }
 
+    // Constructs entity with id
+    public Entity(int id, int x, int y, int w, int h) {
+
+        this.id = id;
+        
+        this.x = x;
+        this.y = y;
+
+        this.width = w;
+        this.height = h;
+
+        this.setSpeed(Speed.SLOW);
+        this.updateFlip();
+
+    }
+
 
     // Get texture (default entity texture)
     public void initTexture() {
@@ -211,6 +227,8 @@ public class Entity {
 
     // Getters
     public boolean isMoving(){ return moving; }
+
+    public int id() { return id; }
 
     public int x() { return x; }
     public int y() { return y; }

@@ -35,6 +35,21 @@ public class Slime extends Enemy {
         this.setSpeed(Speed.SLOW);
 
     }
+    
+    public Slime(int id, int x, int y, SoundManager soundManager) {
+        
+        super(id, x, y, soundManager);
+
+        this.attackDamage = 10;
+
+        this.maxHealth = 75;
+        this.health = 75;
+
+        this.lastSlimify = System.currentTimeMillis();
+
+        this.setSpeed(Speed.SLOW);
+
+    }
 
 
     @Override

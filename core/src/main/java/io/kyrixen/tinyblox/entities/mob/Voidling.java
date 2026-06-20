@@ -34,6 +34,22 @@ public class Voidling extends Enemy {
         this.setSpeed(Speed.SNAIL);
 
     }
+    
+    public Voidling(int id, int x, int y, SoundManager soundManager) {
+        
+        super(id, x, y, soundManager);
+
+        this.maxHealth = 60;
+        this.health = 60;
+
+        this.attackDamage = 25;
+
+        this.activationRange = 3;
+
+        this.setSpeed(Speed.SNAIL);
+
+    }
+
 
     @Override
     public void update(float deltaTime, Terrain terrain) {

@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.saving;
+package io.kyrixen.tinyblox.saving.world;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.saving.blueprints.WorldBlueprint;
+import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Terrain;
 
@@ -40,6 +40,7 @@ public class WorldManager {
             Files.createDirectories(Paths.get(folder));
             Files.createDirectories(Paths.get(folder + "/chunks"));
             Files.createDirectories(Paths.get(folder + "/entities"));
+            Files.createDirectories(Paths.get(folder + "/inventories"));
             
             WorldBlueprint wb = new WorldBlueprint();
             wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
