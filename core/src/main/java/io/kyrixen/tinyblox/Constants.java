@@ -20,6 +20,8 @@ public class Constants {
     public static final int MAP_HEIGHT = 256;
 
     public static final int AUTOSAVE_INTERVAL = 20;
+    public static final byte LOAD_DISTANCE = 4;
+    public static final byte UNLOAD_DISTANCE = 6;
 
     public static final byte MAX_WORLD_HEIGHT = 20;
     public static final byte MIN_WORLD_HEIGHT = 0;

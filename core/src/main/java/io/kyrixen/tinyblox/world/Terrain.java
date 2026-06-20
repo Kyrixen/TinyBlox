@@ -1,6 +1,8 @@
 package io.kyrixen.tinyblox.world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
@@ -11,6 +13,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.world.ChunkLoader;
+import io.kyrixen.tinyblox.saving.world.ChunkSaver;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
@@ -38,6 +41,10 @@ public class Terrain {
 
     // For storing chunks
     private final HashMap<ChunkPos, Chunk> chunks = new HashMap<>();
+
+    //Chunk update vars
+    private long lastChunkUpdate;
+    private float chunkUpdateDelay = 0.5f;
 
 
     // Constructs terrain
@@ -67,13 +74,13 @@ public class Terrain {
         Logger.LOGGER.debug("WORLD", "Seed: " + seed);
         chunks.clear();
 
-        for(short x = 0; x < getChunkCountX(); x++){
-            for(short y = 0; y < getChunkCountY(); y++){
+        for(short cx = (short) (getChunkCountX() / 2 - 3); cx < (short) (getChunkCountY() / 2 + 3); cx++) {
+            for(short cy = (short) (getChunkCountX() / 2 - 3); cy < (short) (getChunkCountY() / 2 + 3); cy++) {
 
-                Chunk c = ChunkLoader.load(new ChunkPos(x, y), noise);
-
-                // Store chunk
-                chunks.put(new ChunkPos(x, y), c);
+                ChunkPos pos = new ChunkPos(cx, cy);
+                chunks.put(pos, ChunkLoader.load(pos, noise));
+                
+                Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
 
             }
         }
@@ -97,6 +104,56 @@ public class Terrain {
             }
 
         }        
+
+    }
+
+    // Loads / Unloads chunks
+    public void updateLoadedChunks(Player player) {
+
+        if(System.currentTimeMillis() - lastChunkUpdate < chunkUpdateDelay * 1000) return;
+
+        short playerChunkX = (short) Math.floorDiv(player.x() / player.width(), Constants.CHUNK_SIZE);
+        short playerChunkY = (short) Math.floorDiv(player.y() / player.height(), Constants.CHUNK_SIZE);
+
+        // Checks loading
+        for(short cx = (short) (playerChunkX - Constants.LOAD_DISTANCE); cx < playerChunkX + Constants.LOAD_DISTANCE; cx++) {
+            for(short cy = (short) (playerChunkY - Constants.LOAD_DISTANCE); cy < playerChunkY + Constants.LOAD_DISTANCE; cy++) {
+            
+                if(cx < 0 || cx >= getChunkCountX() || cy < 0 || cy >= getChunkCountY()) continue;
+
+                Chunk c = getChunk(cx, cy);
+                if(c != null) continue;
+
+                c = ChunkLoader.load(new ChunkPos(cx, cy), noise);
+                chunks.put(new ChunkPos(cx, cy), c);
+
+                Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
+
+            }   
+        }
+
+        // Check unloading
+        List<ChunkPos> unloadedChunksPos = new ArrayList<>();
+        for(ChunkPos chunkPos : chunks.keySet()) {
+
+            int distX = Math.abs(chunkPos.getChunkX() - playerChunkX);
+            int distY = Math.abs(chunkPos.getChunkY() - playerChunkY);
+
+            if(distX >= Constants.UNLOAD_DISTANCE && distY >= Constants.UNLOAD_DISTANCE) unloadedChunksPos.add(chunkPos);
+
+        }
+
+        for(ChunkPos unloadedChunkPos : unloadedChunksPos) {
+
+            Chunk c = getChunk(unloadedChunkPos.getChunkX(), unloadedChunkPos.getChunkY());
+            if(c != null && c.isModified()) ChunkSaver.save(c);
+
+            chunks.remove(unloadedChunkPos);
+            Logger.LOGGER.debug("WORLD", "Unloaded chunk: " + unloadedChunkPos.getChunkX() + ", " + unloadedChunkPos.getChunkY());
+
+        }
+
+        lastChunkUpdate = System.currentTimeMillis();
 
     }
 

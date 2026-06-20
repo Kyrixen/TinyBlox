@@ -141,6 +141,9 @@ public class Engine implements Screen {
         enemySpawner.update(player, entities);
 
         Entity.updateAll(delta, terrain, entities);
+
+        // Update terrain
+        terrain.updateLoadedChunks(player);
         terrain.update(camera);
 
         // Update camera
