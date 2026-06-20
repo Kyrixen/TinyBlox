@@ -14,7 +14,6 @@ import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
-import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 
 public class PlayerLoader {
     
@@ -47,7 +46,7 @@ public class PlayerLoader {
     }    
     
     // Load Player
-    public static Player load(ChunkPos chunkPos, Camera camera, SoundManager soundManager) {
+    public static Player load(Camera camera, SoundManager soundManager) {
 
         String fileName = getPlayerFolder() + "/player.json";
         Player player = null;
@@ -60,10 +59,10 @@ public class PlayerLoader {
 
         PlayerBlueprint pb = json.fromJson(PlayerBlueprint.class, playerData);
         if(pb.formatVersion != Constants.SAVE_FORMAT_VERSION) {
-            Logger.LOGGER.error("LOADER", "Invalid format version for player save " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY() + ": " + pb.formatVersion);
+            Logger.LOGGER.error("LOADER", "Invalid format version for player save: " + pb.formatVersion);
             return player;
         }
-        Logger.LOGGER.debug("LOADER", "Loaded entities save: " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY());        
+        Logger.LOGGER.debug("LOADER", "Loaded player save");
 
         return convertToPlayer(pb, camera, soundManager);
 

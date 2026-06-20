@@ -53,6 +53,8 @@ public class InventorySaver {
     // Save inventory
     public static void save(MobEntity mobEntity) {
         
+        if(mobEntity.getInventory().isEmpty()) return;
+
         InventoryBlueprint inventoryBlueprint = convertToBlueprint(mobEntity.getInventory());
 
         // File to write

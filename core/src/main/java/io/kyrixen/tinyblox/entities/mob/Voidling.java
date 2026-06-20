@@ -130,6 +130,8 @@ public class Voidling extends Enemy {
     @Override
     public void checkPlayer(Player player) {
 
+        updateTarget(player);
+        
         if(this.player != null) return;
         if(!EntityCollision.checkTileCollision(player, this)) return;
 

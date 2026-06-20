@@ -34,7 +34,7 @@ public class EnemyLoader {
         if(enb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + enb.formatVersion);
 
         Enemy enemy;
-        switch (enb.enemyType) {
+        switch (enb.enemyType.toUpperCase()) {
     
             case "ENEMY":
                 enemy = new Enemy(enb.id, enb.x, enb.y, soundManager);
@@ -114,3 +114,5 @@ public class EnemyLoader {
     }
 
 }
+
+

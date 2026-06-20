@@ -82,8 +82,6 @@ public class EnemySpawner {
 
         newEnemy.initTexture();
 
-        newEnemy.setChasing(false);
-        newEnemy.setTarget(player);
         newEnemy.setLevel((byte) (top.level() + 1));
         
         entities.add(newEnemy);

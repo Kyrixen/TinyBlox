@@ -30,15 +30,7 @@ public class ChunkLoader {
 
         if(bc.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + bc.formatVersion);
 
-        Chunk chunk = new Chunk(chunkPos.getChunkX(), chunkPos.getChunkY(), noise.getSeed());
-
-        ChunkGenerator.generateChunk(chunk, noise);
-        ChunkGenerator.generateCave(chunk, 10);
-        ChunkGenerator.spawnOre(chunk, TileType.COAL, 2);
-        ChunkGenerator.spawnOre(chunk, TileType.IRON, 1);
-        ChunkGenerator.spawnTree(chunk, 10);
-        ChunkGenerator.spawnStructure(chunk, 10);
-
+        Chunk chunk = createChunk(chunkPos, noise);
 
         for(ChunkStack cStack : bc.stacks) {
 
@@ -66,12 +58,31 @@ public class ChunkLoader {
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(fileName));
             chunkData = new String(bytes);
-        } catch (IOException e) { return null; }
+        } catch (IOException e) { return createChunk(chunkPos, noise); }
 
         ChunkBlueprint cb = json.fromJson(ChunkBlueprint.class, chunkData);
         if(cb.formatVersion != Constants.SAVE_FORMAT_VERSION) Logger.LOGGER.error("LOADER", "Invalid format version for chunk save " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY() + ": " + cb.formatVersion);
         Logger.LOGGER.debug("LOADER", "Loaded chunk save: " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY());
         return convertToChunk(chunkPos, cb, noise);
+
+    }
+
+
+    // Generates chunk
+    public static Chunk createChunk(ChunkPos chunkPos, FastNoiseLite noise) {
+
+        Chunk chunk = new Chunk(chunkPos.getChunkX(), chunkPos.getChunkY(), noise.getSeed());
+
+        ChunkGenerator.generateChunk(chunk, noise);
+        ChunkGenerator.generateCave(chunk, 10);
+        ChunkGenerator.spawnOre(chunk, TileType.COAL, 2);
+        ChunkGenerator.spawnOre(chunk, TileType.IRON, 1);
+        ChunkGenerator.spawnTree(chunk, 10);
+        ChunkGenerator.spawnStructure(chunk, 10);
+
+        chunk.setModified(false);
+
+        return chunk;
 
     }
 

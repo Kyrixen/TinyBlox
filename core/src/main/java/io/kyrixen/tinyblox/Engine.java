@@ -20,10 +20,10 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
-import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -104,26 +104,8 @@ public class Engine implements Screen {
         // Time init
         timeCycle.setDayTime(DayTime.DAY);
 
-        // Spawn cords
-        int[] spawn = MiscUtils.spawnNearCenter(terrain);
-
-        // Create player
-        player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager);
-        player.setLevel((byte) spawn[2]);
-
-        // Add to list
-        entities.add(player);
-
-        // Create enemy
-        Enemy enemy1 = new Enemy(spawn[0] + Constants.GRID_SIZE * 2 , spawn[1] + Constants.GRID_SIZE * 2, soundManager);
-
-        // Add to list
-        entities.add(enemy1);
-
-        // Configure enemy
-        enemy1.setTarget(player);
-        enemy1.setChasing(true);
-        enemy1.setLevel((byte) spawn[2]);
+        player = WorldManager.loadEntities(terrain, entities, rendererStack.camera, soundManager);
+        System.out.println("Entity count: " + entities.size());;
 
         Entity.initTextureAll(entities);
 
@@ -201,6 +183,8 @@ public class Engine implements Screen {
         
         });
         entities.addAll(spawnedEntities);
+
+        WorldManager.saveWorld(terrain, entities);
 
     }
 

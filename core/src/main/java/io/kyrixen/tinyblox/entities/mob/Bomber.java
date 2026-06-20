@@ -167,6 +167,7 @@ public class Bomber extends Enemy {
 
     @Override
     public void checkPlayer(Player player) {
+        super.updateTarget(player);
         if(!activated && EntityCollision.checkEntityDistance(player, this) <= 2.0f && level() == player.level()) { activated = true; firstImpulse = System.currentTimeMillis(); player.damage(attackDamage); soundManager.getSound(DETONATE_SOUND).play(MiscUtils.getFloatSound(45), RandomUtils.randomFloat(0.90f, 1.1f), 0f); }
     }
 

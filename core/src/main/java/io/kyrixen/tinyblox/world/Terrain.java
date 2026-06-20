@@ -11,7 +11,6 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.world.ChunkLoader;
-import io.kyrixen.tinyblox.saving.world.ChunkSaver;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
@@ -21,7 +20,6 @@ import io.kyrixen.tinyblox.world.chunk.ChunkRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Terrain {
 
@@ -45,14 +43,9 @@ public class Terrain {
     // Constructs terrain
     public Terrain(String worldName, int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
 
-        WorldBlueprint wb = WorldManager.loadWorld(worldName);
+        WorldBlueprint wb = WorldManager.loadWorld(worldName, seed, frequency);
 
-        if(wb != null) {
-            seed = wb.worldSeed;
-            frequency = wb.worldFrequency;
-        }
-
-        this.seed = seed;
+        this.seed = wb.worldSeed;
         this.w = w;
         this.h = h;
 
@@ -62,10 +55,8 @@ public class Terrain {
 
         // Sets noise generator properties
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        noise.SetSeed(seed);
-        noise.SetFrequency(frequency);
-
-        if(wb == null) WorldManager.createWorld(this, worldName);
+        noise.SetSeed(this.seed);
+        noise.SetFrequency(wb.worldFrequency);
 
     }
 
@@ -80,20 +71,6 @@ public class Terrain {
             for(short y = 0; y < getChunkCountY(); y++){
 
                 Chunk c = ChunkLoader.load(new ChunkPos(x, y), noise);
-                if(c == null) {
-
-                    c = new Chunk(x, y, seed);
-                    
-                    ChunkGenerator.generateChunk(c, noise);
-                    ChunkGenerator.generateCave(c, 10);
-                    ChunkGenerator.spawnOre(c, TileType.COAL, 2);
-                    ChunkGenerator.spawnOre(c, TileType.IRON, 1);
-                    ChunkGenerator.spawnTree(c, 10);
-                    ChunkGenerator.spawnStructure(c, 10);
-
-                    c.setModified(false);
-                
-                }
 
                 // Store chunk
                 chunks.put(new ChunkPos(x, y), c);
@@ -116,8 +93,6 @@ public class Terrain {
                 if (c == null) continue;
                 c.checkIfOnScreen(camera);
                 if(c.isRendered()) c.checkIfModified();
-
-                if(c.isModified()) { ChunkSaver.save(c); c.setModified(false); }
 
             }
 

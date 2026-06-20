@@ -2,6 +2,7 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import java.util.ArrayList;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
@@ -138,6 +139,8 @@ public class Enemy extends MobEntity {
     // Checks collision
     public void checkPlayer(Player player){
 
+        updateTarget(player);
+
         if (EntityCollision.checkTileCollision(player, this)) {
                         
             Logger.LOGGER.debug("ENTITY", "Collision detected between player and enemy!");
@@ -145,6 +148,26 @@ public class Enemy extends MobEntity {
             if(player.damage(attackDamage)) soundManager.getSound(HIT_PLAYER_SOUND).play(MiscUtils.getFloatSound(40), RandomUtils.randomFloat(0.85f, 1.15f), 0f); 
                         
         }
+
+    }
+
+    // Update player target
+    protected void updateTarget(Player player) {
+
+        if(target != null) return;
+        target = player;
+
+        short enemyChunkX = (short) Math.floorDiv(x() / width(), Constants.CHUNK_SIZE);
+        short enemyChunkY = (short) Math.floorDiv(y() / height(), Constants.CHUNK_SIZE);
+
+        short playerChunkX = (short) Math.floorDiv(player.x() / player.width(), Constants.CHUNK_SIZE);
+        short playerChunkY = (short) Math.floorDiv(player.y() / player.height(), Constants.CHUNK_SIZE);
+
+        int diffX = Math.abs(playerChunkX - enemyChunkX);
+        int diffY = Math.abs(playerChunkY - enemyChunkY);
+
+        if(diffX <= activationRange && diffY <= activationRange) chasing = true;
+        else chasing = false;
 
     }
 
