@@ -40,6 +40,9 @@ public class Engine implements Screen {
     // Flag for exiting
     public boolean exit = false;
 
+    // Autosave counter
+    private long lastAutoSave;
+
     // List of entities
     private final ArrayList<Entity> entities = new ArrayList<>();
 
@@ -105,9 +108,10 @@ public class Engine implements Screen {
         timeCycle.setDayTime(DayTime.DAY);
 
         player = WorldManager.loadEntities(terrain, entities, rendererStack.camera, soundManager);
-        System.out.println("Entity count: " + entities.size());;
 
         Entity.initTextureAll(entities);
+
+        lastAutoSave = System.currentTimeMillis();
 
     }
 
@@ -184,7 +188,13 @@ public class Engine implements Screen {
         });
         entities.addAll(spawnedEntities);
 
-        WorldManager.saveWorld(terrain, entities);
+
+        if(System.currentTimeMillis() - lastAutoSave >= Constants.AUTOSAVE_INTERVAL * 1000) {
+            long start = System.currentTimeMillis();
+            WorldManager.saveWorld(terrain, entities);
+            lastAutoSave = System.currentTimeMillis(); 
+            Logger.LOGGER.info("AUTOSAVE", "Save took: " + (System.currentTimeMillis() - start) + "ms");
+        }
 
     }
 
@@ -272,6 +282,8 @@ public class Engine implements Screen {
     public void dispose() {
 
         Logger.LOGGER.info("ENGINE", "On cleanup");
+
+        WorldManager.saveWorld(terrain, entities);
 
         // Clear the list after cleanup
         entities.clear();
