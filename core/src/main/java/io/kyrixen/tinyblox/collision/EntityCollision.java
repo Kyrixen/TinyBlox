@@ -1,6 +1,6 @@
 package io.kyrixen.tinyblox.collision;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -35,7 +35,7 @@ public class EntityCollision {
     }
 
     // Checks mob collision
-    public static MobEntity checkMobEntityCollision(Entity entity, ArrayList<Entity> entities) {
+    public static MobEntity checkMobEntityCollision(Entity entity, List<Entity> entities) {
 
         for (Entity e : entities) {
 
@@ -53,7 +53,7 @@ public class EntityCollision {
     }
 
     // Checks entity collision
-    public static Entity checkEntityCollision(Entity entity, ArrayList<Entity> entities) {
+    public static Entity checkEntityCollision(Entity entity, List<Entity> entities) {
 
         for (Entity e : entities) {
 

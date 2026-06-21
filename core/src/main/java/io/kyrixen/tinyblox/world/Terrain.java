@@ -9,12 +9,16 @@ import com.badlogic.gdx.math.Vector3;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.mob.Enemy;
+import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.world.ChunkLoader;
 import io.kyrixen.tinyblox.saving.world.ChunkSaver;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
+import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
@@ -47,9 +51,9 @@ public class Terrain {
 
 
     // Constructs terrain
-    public Terrain(String worldName, int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
+    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
 
-        WorldBlueprint wb = WorldManager.loadWorld(worldName, seed, frequency);
+        WorldBlueprint wb = WorldManager.loadWorld(Constants.WORLD_NAME, seed, frequency);
 
         this.seed = wb.worldSeed;
         this.w = w;
@@ -78,7 +82,7 @@ public class Terrain {
 
                 ChunkPos pos = new ChunkPos(cx, cy);
                 chunks.put(pos, ChunkLoader.load(pos, noise));
-                
+
                 Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
 
             }
@@ -99,6 +103,7 @@ public class Terrain {
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
+
                 c.checkIfOnScreen(camera);
                 if(c.isRendered()) c.checkIfModified();
                 if(c.isModified()) rebuildLighting = true;
@@ -110,8 +115,29 @@ public class Terrain {
 
     }
 
+    // Updates entities in chunks
+    public void updateEntities(float deltaTime, Player player) {
+
+        for(Chunk c : chunks.values()) {
+
+            Entity.updateAll(deltaTime, this, c.getEntities());
+            for (Entity e : c.getEntities()) {
+
+                if(!(e instanceof Enemy)) continue;
+                Enemy en = (Enemy) e;
+
+                en.checkPlayer(player);
+            
+            }
+
+            checkDeadEntities(c, player);
+
+        }
+
+    }
+
     // Loads / Unloads chunks
-    public void updateLoadedChunks(Player player, TimeCycle timeCycle) {
+    public void updateLoadedChunks(Player player, SoundManager soundManager) {
 
         if(System.currentTimeMillis() - lastChunkUpdate < chunkUpdateDelay * 1000) return;
 
@@ -129,6 +155,9 @@ public class Terrain {
                 if(c != null) continue;
 
                 c = ChunkLoader.load(new ChunkPos(cx, cy), noise);
+                c.getEntities().addAll(WorldManager.loadEntities(new ChunkPos(cx, cy), soundManager));
+                Entity.initTextureAll(c.getEntities());
+
                 chunks.put(new ChunkPos(cx, cy), c);
 
                 rebuildLighting = true;
@@ -138,7 +167,6 @@ public class Terrain {
         }
 
         if(rebuildLighting) rebuildLighting();
-        Logger.LOGGER.debug("RENDERER", "Rebuild light: " + rebuildLighting);
 
 
         // Check unloading
@@ -156,6 +184,7 @@ public class Terrain {
 
             Chunk c = getChunk(unloadedChunkPos.getChunkX(), unloadedChunkPos.getChunkY());
             if(c != null && c.isModified()) ChunkSaver.save(c);
+            WorldManager.saveEntities(c);
 
             chunks.remove(unloadedChunkPos);
             Logger.LOGGER.debug("WORLD", "Unloaded chunk: " + unloadedChunkPos.getChunkX() + ", " + unloadedChunkPos.getChunkY());
@@ -166,6 +195,42 @@ public class Terrain {
 
     }
 
+    // Checks dead entities
+    private void checkDeadEntities(Chunk chunk, Player player) {
+
+        List<Enemy> deadEnemies = new ArrayList<>();
+        for(Entity e : chunk.getEntities()) {
+
+            if(!(e instanceof Enemy)) continue;
+            Enemy enemy = (Enemy) e;
+
+            if(enemy.isDead()) deadEnemies.add(enemy);
+        
+        }
+
+        for(Enemy enemy : deadEnemies) { enemy.throwLoot(player, this); }
+        
+        chunk.getEntities().removeIf(e -> {
+
+            if(!(e instanceof MobEntity) || e instanceof Player) return false;
+            MobEntity mob = (MobEntity) e;
+
+            return mob.isDead();
+
+        });
+
+    }
+
+
+    // Render chunks entities
+    public void renderEntities(Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
+
+        for(Chunk c : chunks.values()) {
+            if(!c.isRendered()) continue;
+            Entity.renderAll(this, player, tileRenderer, c.getEntities(), rendererStack);
+        }
+
+    }
 
     // Render lower visible chunks
     public void renderLower(Player player, RendererStack rendererStack) {
@@ -256,7 +321,7 @@ public class Terrain {
     // Update chunk light
     public void rebuildLighting() {
         
-long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
 
         for(short cx = 0; cx < getChunkCountX(); cx++){
             for(short cy = 0; cy < getChunkCountY(); cy++){
@@ -292,12 +357,7 @@ long start = System.currentTimeMillis();
             }
         }
 
-        Logger.LOGGER.debug(
-    "LIGHT",
-    "Lighting rebuild took: "
-    + (System.currentTimeMillis() - start)
-    + "ms"
-);
+        Logger.LOGGER.debug("LIGHTING", "Lighting rebuild took: " + (System.currentTimeMillis() - start) + "ms");
 
     }
 
@@ -423,12 +483,98 @@ long start = System.currentTimeMillis();
 
     }
 
+    // Get nearby entities
+    public List<Entity> getNearbyEntities(int worldX, int worldY, int tileRadius) {
+
+        List<Entity> nearbyEntities = new ArrayList<>();
+
+        short chunkX = (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE);
+
+        Chunk current = this.getChunk(chunkX, chunkY);
+        if(current != null) nearbyEntities.addAll(current.getEntities());
+
+        byte localX = (byte) Math.floorMod(worldX, Constants.CHUNK_SIZE);
+        byte localY = (byte) Math.floorMod(worldY, Constants.CHUNK_SIZE);
+
+        boolean left   = localX - tileRadius < 0;
+        boolean right  = localX + tileRadius >= Constants.CHUNK_SIZE;
+        boolean top    = localY + tileRadius >= Constants.CHUNK_SIZE;
+        boolean bottom = localY - tileRadius < 0;
+
+        if(left) {
+            Chunk neighbor = this.getChunk((short) (chunkX - 1), chunkY);
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());
+        }
+        if(right) {
+            Chunk neighbor = this.getChunk((short) (chunkX + 1), chunkY);
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());
+        }
+        if(top) {
+            Chunk neighbor = this.getChunk(chunkX, (short) (chunkY - 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());
+        }
+        if(bottom) {
+            Chunk neighbor = this.getChunk(chunkX, (short) (chunkY + 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());
+        }
+
+        if(left && top) {
+            Chunk neighbor = this.getChunk((short) (chunkX - 1), (short) (chunkY - 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());    
+        }
+        if(left && bottom) {
+            Chunk neighbor = this.getChunk((short) (chunkX - 1), (short) (chunkY + 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());    
+        }
+        if(right && top) {
+            Chunk neighbor = this.getChunk((short) (chunkX + 1), (short) (chunkY - 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());    
+        }
+        if(right && bottom) {
+            Chunk neighbor = this.getChunk((short) (chunkX + 1), (short) (chunkY + 1));
+            if(neighbor != null) nearbyEntities.addAll(neighbor.getEntities());    
+        }
+
+        return nearbyEntities;
+
+    }
+
+    // Remove entity
+    public void removeEntity(Entity entity) {
+
+        short chunkX = (short) Math.floorDiv(entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+
+        Chunk entitiesChunk = this.getChunk(chunkX, chunkY);
+        if(entitiesChunk == null) return;
+
+        entitiesChunk.getEntities().remove(entity);
+
+    }
+
+    // Add entity
+    public void addEntity(Entity entity) {
+
+        short chunkX = (short) Math.floorDiv(entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+
+        Chunk entitiesChunk = this.getChunk(chunkX, chunkY);
+        if(entitiesChunk == null) return;
+
+        entitiesChunk.getEntities().add(entity);
+
+    }
+
 
     // Get seed
     public int getSeed() { return this.seed; }
 
     // Get frequency
     public float getFrequency() { return this.noise.getFrequency(); }
+
+    // Get chunk renderer
+    public Color getAmbientColor() { return this.chunkRenderer.getAmbient(); }
     
     // Get chunk map
     public HashMap<ChunkPos, Chunk> getChunks() { return this.chunks; }

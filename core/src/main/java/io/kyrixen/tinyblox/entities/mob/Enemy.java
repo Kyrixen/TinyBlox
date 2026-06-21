@@ -1,10 +1,7 @@
 package io.kyrixen.tinyblox.entities.mob;
 
-import java.util.ArrayList;
-
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
@@ -172,7 +169,7 @@ public class Enemy extends MobEntity {
     }
 
     // Get loot from enemy
-    public void throwLoot(MobEntity mob, ArrayList<Entity> entities) {
+    public void throwLoot(MobEntity mob, Terrain terrain) {
 
         soundManager.getSound(EXPLOSION_SOUND).play(MiscUtils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
         int loopCount = RandomUtils.randomInt(1, 3);
@@ -185,7 +182,7 @@ public class Enemy extends MobEntity {
             int itemCount = RandomUtils.randomInt(1, 3);
 
             for(int j = 0; j < itemCount; j++) {
-                entities.add(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
+                terrain.addEntity(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
             }
 
         }

@@ -2,9 +2,6 @@
 
 package io.kyrixen.tinyblox.entities.mob;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.crafting.Crafting;
@@ -138,30 +135,26 @@ public class Player extends MobEntity {
     }
 
     // Checks if any item drops near
-    public void checkDropPickup(ArrayList<Entity> entities) {
+    public void checkDropPickup(Terrain terrain) {
 
         if(inventory.isFull()) return;
+        
+        for(Entity e : terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, 1)) {
 
-        Iterator<Entity> iterator = entities.iterator();
+            if(e == this) continue;
+            if(!(e instanceof ItemEntity)) continue;
+            
+            if(!EntityCollision.checkTileCollision(this, e)) continue;
 
-        while (iterator.hasNext()) {
-
-            Entity e = iterator.next();
-
-            if (e == this) continue;
-            if (!(e instanceof ItemEntity)) continue;
-            if (!EntityCollision.checkTileCollision(this, e)) continue;
-
-            ItemEntity itemEntity = (ItemEntity) e;
+            ItemEntity itemEntity = (ItemEntity)e;
             Item itemDrop = itemEntity.getItem();
 
-            if(!this.inventory.add(itemDrop, (byte) 1)) continue;
+            if(!inventory.add(itemDrop, (byte)1)) continue;
 
             itemEntity.pickup();
+            terrain.removeEntity(itemEntity);
 
-            iterator.remove();
-    
-            Logger.LOGGER.debug("PLAYER", "Player inventory: " + this.inventory.toString());
+            Logger.LOGGER.debug("PLAYER", "Player inventory: " + inventory.toString());
 
         }
     

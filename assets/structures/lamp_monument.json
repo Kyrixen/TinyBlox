@@ -3,9 +3,9 @@
   "rarity": "UNCOMMON",
   "layers": [
     [
-      ["AIR", "STONE", "AIR"],
+      ["WOOD", "STONE", "WOOD"],
       ["STONE", "CAGED_LAMP", "STONE"],
-      ["AIR", "STONE", "AIR"]
+      ["WOOD", "STONE", "WOOD"]
     ]
   ]
 }

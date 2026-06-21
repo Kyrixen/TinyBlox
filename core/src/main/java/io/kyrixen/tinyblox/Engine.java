@@ -1,7 +1,5 @@
 package io.kyrixen.tinyblox;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,17 +10,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
-import io.kyrixen.tinyblox.entities.mob.Enemy;
-import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.saving.entities.PlayerLoader;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
@@ -42,9 +39,6 @@ public class Engine implements Screen {
 
     // Autosave counter
     private long lastAutoSave;
-
-    // List of entities
-    private final ArrayList<Entity> entities = new ArrayList<>();
 
     // Module components
     private Controller controller;
@@ -71,7 +65,7 @@ public class Engine implements Screen {
         controller = new Controller();
         tileRenderer = new TileRenderer(textures);
         craftingRenderer = new CraftingRenderer(textures);
-        terrain = new Terrain("My awesome world 3000", Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();
@@ -105,16 +99,17 @@ public class Engine implements Screen {
         terrain.init();
 
         // Time init
-        timeCycle.setDayTime(DayTime.NIGHT);
+        timeCycle.setDayTime(DayTime.DAY);
         terrain.rebuildLighting();
 
-        player = WorldManager.loadEntities(terrain, entities, rendererStack.camera, soundManager);
+        // Spawn cords
+        int[] spawn = MiscUtils.spawnNearCenter(terrain);
 
-        Entity.initTextureAll(entities);
+        player = PlayerLoader.load(rendererStack.camera, soundManager);
+        if(player == null || player.isDead()) { player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager); player.setLevel((byte) spawn[2]); }
+        player.initTexture();
 
         lastAutoSave = System.currentTimeMillis();
-
-        player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 4);
 
     }
 
@@ -137,31 +132,21 @@ public class Engine implements Screen {
 
         timeCycle.updateDayTime(delta);
         enemySpawner.updateSpawnRate(timeCycle);
-        controller.update(delta, player, terrain, entities);
+        controller.update(delta, player, terrain);
 
-        enemySpawner.spawn(player, entities, terrain);
-        enemySpawner.update(player, entities);
+        enemySpawner.spawn(player, terrain);
 
-        Entity.updateAll(delta, terrain, entities);
+        player.update(delta, terrain);
+        terrain.updateEntities(delta, player);
 
         // Update terrain
-        terrain.updateLoadedChunks(player, timeCycle);
+        terrain.updateLoadedChunks(player, soundManager);
         terrain.update(camera, timeCycle);
 
         // Update camera
         camera.follow(player);
         player.updateSelector();
-        player.checkDropPickup(entities);
-
-        
-        for (Entity e : entities) {
-
-            if(!(e instanceof Enemy)) continue;
-            Enemy en = (Enemy) e;
-
-            en.checkPlayer(player);
-
-        }
+        player.checkDropPickup(terrain);
 
         player.stats(camera);
 
@@ -171,32 +156,10 @@ public class Engine implements Screen {
                 
         }
 
-        ArrayList<Entity> spawnedEntities = new ArrayList<>();
-        entities.removeIf(e -> {
-
-            if(!(e instanceof MobEntity)) return false;
-            MobEntity mob = (MobEntity) e;
-
-            if(!(mob instanceof Player) && mob.isDead()){
-            
-                if(mob instanceof Enemy) { 
-                    Enemy enemy = (Enemy) mob;
-                    enemy.throwLoot(player, spawnedEntities);
-                }
-                
-                return true;
-            
-            }
-
-            return false;
-        
-        });
-        entities.addAll(spawnedEntities);
-
 
         if(System.currentTimeMillis() - lastAutoSave >= Constants.AUTOSAVE_INTERVAL * 1000) {
             long start = System.currentTimeMillis();
-            WorldManager.saveWorld(terrain, entities);
+            WorldManager.saveWorld(terrain, player);
             lastAutoSave = System.currentTimeMillis(); 
             Logger.LOGGER.info("AUTOSAVE", "Save took: " + (System.currentTimeMillis() - start) + "ms");
         }
@@ -224,7 +187,8 @@ public class Engine implements Screen {
 
         // Entities
         batch.begin();
-        Entity.renderAll(terrain, player, tileRenderer, entities, rendererStack);
+        terrain.renderEntities(player, tileRenderer, rendererStack);
+        player.render(terrain, player, tileRenderer, rendererStack);
         batch.end();
 
         // Above Terrain and Terrain Depth Overlay
@@ -288,10 +252,8 @@ public class Engine implements Screen {
 
         Logger.LOGGER.info("ENGINE", "On cleanup");
 
-        WorldManager.saveWorld(terrain, entities);
-
-        // Clear the list after cleanup
-        entities.clear();
+        // Save world state
+        WorldManager.saveWorld(terrain, player);
 
         // Clean up textures
         if(textures != null) { textures.cleanup(); }

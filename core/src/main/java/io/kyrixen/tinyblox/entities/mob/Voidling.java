@@ -65,12 +65,19 @@ public class Voidling extends Enemy {
 
         SpriteBatch batch = rendererStack.batch;
 
-        // Get brightness
-        Color brightnessColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        // Get brightness and local light
+        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color brightnessColor = new Color(terrain.getAmbientColor());
 
-        brightnessColor.r = 0.5f + brightnessColor.r * 0.5f;
-        brightnessColor.g = 0.5f + brightnessColor.g * 0.5f;
-        brightnessColor.b = 0.5f + brightnessColor.b * 0.5f;
+        localLightColor.add(brightnessColor);
+
+        localLightColor.r = Math.min(1.25f, localLightColor.r);
+        localLightColor.g = Math.min(1.25f, localLightColor.g);
+        localLightColor.b = Math.min(1.25f, localLightColor.b);
+
+        localLightColor.r = 0.5f + localLightColor.r * 0.5f;
+        localLightColor.g = 0.5f + localLightColor.g * 0.5f;
+        localLightColor.b = 0.5f + localLightColor.b * 0.5f;
 
 
         int levelDiff = level() - player.level();

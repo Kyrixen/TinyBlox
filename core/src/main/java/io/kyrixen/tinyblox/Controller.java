@@ -1,10 +1,7 @@
 package io.kyrixen.tinyblox;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Input;
 
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.Entity.Speed;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.utils.Peripheral;
@@ -13,7 +10,7 @@ import io.kyrixen.tinyblox.world.Terrain;
 public class Controller {
 
     // Update controller for entity
-    public void update(float deltaTime, Player player, Terrain terrain, ArrayList<Entity> entities) {
+    public void update(float deltaTime, Player player, Terrain terrain) {
     
             player.setDirX(0);
             player.setDirY(0);
@@ -35,13 +32,13 @@ public class Controller {
                 if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.tryStepDown(terrain);
 
                 // Selector input logic
-                if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain, entities);
-                if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain, entities); player.getSelector().checkHit(entities); }
+                if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain);
+                if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain); player.getSelector().checkHit(terrain); }
 
                 // Inventory input logic
                 player.checkInventoryScrolling(Peripheral.mouseScroll());
                 if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
-                if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(entities);
+                if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(terrain);
 
                 // Checks for sprinting
                 if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);

@@ -85,11 +85,19 @@ public class ItemEntity extends Entity {
 
         SpriteBatch batch = rendererStack.batch;
 
-        Color light = terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level());
+        // Get brightness and local light
+        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color brightnessColor = new Color(terrain.getAmbientColor());
 
-        float r = 0.65f + light.r * 0.35f;
-        float g = 0.65f + light.g * 0.35f;
-        float b = 0.65f + light.b * 0.35f;
+        localLightColor.add(brightnessColor);
+
+        localLightColor.r = Math.min(1.25f, localLightColor.r);
+        localLightColor.g = Math.min(1.25f, localLightColor.g);
+        localLightColor.b = Math.min(1.25f, localLightColor.b);
+
+        float r = 0.65f + localLightColor.r * 0.35f;
+        float g = 0.65f + localLightColor.g * 0.35f;
+        float b = 0.65f + localLightColor.b * 0.35f;
 
         batch.setColor(r, g, b, 1f);
         tileRenderer.draw(this.texture, (int)(x + floatOffsetX), (int) (y + floatOffsetY), Constants.GRID_SIZE / 2f, Constants.GRID_SIZE / 2f, FlipType.NONE, rendererStack);

@@ -72,6 +72,14 @@ public class MiscUtils {
         return LAST_ENTITY_ID++;
     }
 
+    public static void initEntityID(int lastEntityID) {
+        LAST_ENTITY_ID = lastEntityID;
+    }
+
+    public static int getCurrentEntityID() {
+        return LAST_ENTITY_ID;
+    }
+
     public static int generateItemID() {
         return LAST_ITEM_ID++;
     }

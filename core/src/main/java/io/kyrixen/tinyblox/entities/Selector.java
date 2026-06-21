@@ -1,7 +1,5 @@
 package io.kyrixen.tinyblox.entities;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -106,10 +104,10 @@ public class Selector extends Entity {
     // Checkers //
 
     // Check if can hit mob
-    public void checkHit(ArrayList<Entity> entities) {
+    public void checkHit(Terrain terrain) {
 
         // Check for mouse interaction
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
 
         float damage = 20;
 
@@ -125,11 +123,11 @@ public class Selector extends Entity {
     }
 
     // Check if can place tile
-    public void checkPlace(Terrain terrain, ArrayList<Entity> entities) {
+    public void checkPlace(Terrain terrain) {
 
         if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
-        
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
+
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
         if(e != null) return;
 
         if(!mobEntityInventory.currentItem().canPlace()) return;
@@ -178,9 +176,9 @@ public class Selector extends Entity {
     }
 
     // Check if can destroy tile
-    public void checkDestroy(float deltaTime, Terrain terrain, ArrayList<Entity> entities) {
+    public void checkDestroy(float deltaTime, Terrain terrain) {
 
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, entities);
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
         if(e != null) { miningProgress = 0f; return; }
 
         int tileX = this.x / Constants.GRID_SIZE;
@@ -241,7 +239,14 @@ public class Selector extends Entity {
 
         Item dropItem = current.getItem();
         chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(MiscUtils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
-        entities.add(new ItemEntity(this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
+        
+        short chunkX = (short) Math.floorDiv(x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+
+        Chunk entitiesChunk = terrain.getChunk(chunkX, chunkY);
+        if(entitiesChunk == null) return;
+        
+        entitiesChunk.getEntities().add(new ItemEntity(this.x + Constants.GRID_SIZE / 4, this.y + Constants.GRID_SIZE / 4, sfxManager, dropItem, this.mob));
 
         miningProgress = 0f;
         targetTile = null;
@@ -249,14 +254,20 @@ public class Selector extends Entity {
     }
     
     // Drop one item from MobEntity inventory
-    public void dropItem(ArrayList<Entity> entities) {
+    public void dropItem(Terrain terrain) {
+
+        short chunkX = (short) Math.floorDiv(x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv(y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+
+        Chunk entitiesChunk = terrain.getChunk(chunkX, chunkY);
+        if(entitiesChunk == null) return;
 
         ItemStack currenStack = mobEntityInventory.getCurrentStack();
         if(currenStack == null) return;
         if(currenStack.isEmpty()) return;
 
         ItemEntity itemEntity = new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), sfxManager, currenStack.getItem(), mob);
-        entities.add(itemEntity);
+        entitiesChunk.getEntities().add(itemEntity);
 
         currenStack.remove((byte) 1);
 

@@ -1,9 +1,6 @@
 package io.kyrixen.tinyblox.world;
 
-import java.util.ArrayList;
-
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Bomber;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -29,13 +26,9 @@ public class EnemySpawner {
         lastSpawn = System.currentTimeMillis();
     }
 
-    public void spawn(Player player, ArrayList<Entity> entities, Terrain terrain) {
+    public void spawn(Player player, Terrain terrain) {
 
         if(System.currentTimeMillis() - lastSpawn < spawnTimer * 1000) return;
-        
-        long enemiesCount = entities.stream().filter(e -> e instanceof Enemy).count();
-
-        if(enemiesCount >= Constants.MAX_ENTITY_COUNT) return;
 
         short playerChunkX = (short) ((player.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
         short playerChunkY = (short) ((player.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
@@ -45,6 +38,9 @@ public class EnemySpawner {
         Chunk pickedChunk = terrain.getChunk(pickedChunkX, pickedChunkY);
         
         if(pickedChunk == null) return;
+
+        long enemiesChunkCount = pickedChunk.getEntities().stream().filter(e -> e instanceof Enemy).count();
+        if(enemiesChunkCount >= Constants.MAX_ENTITY_CHUNK) return;
 
         byte pickedLocalX = (byte) RandomUtils.randomInt(0, Constants.CHUNK_SIZE - 1);
         byte pickedLocalY = (byte) RandomUtils.randomInt(0, Constants.CHUNK_SIZE - 1);
@@ -84,34 +80,14 @@ public class EnemySpawner {
 
         newEnemy.setLevel((byte) (top.level() + 1));
         
-        entities.add(newEnemy);
+        pickedChunk.getEntities().add(newEnemy);
 
         lastSpawn = System.currentTimeMillis();
 
-        Logger.LOGGER.debug("ENEMY_SPAWNER", entities.toString());
+        Logger.LOGGER.debug("ENEMY_SPAWNER", "Chunk(" + pickedChunkX + "," + pickedChunkY + ") entities: " + pickedChunk.getEntities().toString());
 
     }
 
-    public void update(Player player, ArrayList<Entity> entities) {
-        
-        short playerChunkX = (short) ((player.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
-        short playerChunkY = (short) ((player.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
-
-        for(Entity e : entities) {
-
-            if(!(e instanceof Enemy)) continue;
-            Enemy enemy = (Enemy) e;
-
-            short enemyChunkX = (short) ((enemy.x() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
-            short enemyChunkY = (short) ((enemy.y() / Constants.GRID_SIZE) / Constants.CHUNK_SIZE);
-
-            boolean chase = Math.abs(enemyChunkX - playerChunkX) <= enemy.getActivationRange() && Math.abs(enemyChunkY - playerChunkY) <= enemy.getActivationRange();
-
-            enemy.setChasing(chase);
-
-        }
-
-    }
 
     public void updateSpawnRate(TimeCycle timeCycle) {
         if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(1f);

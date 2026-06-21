@@ -338,6 +338,9 @@ public class ChunkRenderer {
 
     }
 
+    public Color getAmbient() {
+        return this.ambient;
+    }
 
     private int getGlobalX(Chunk c, byte tx) {
         return (c.getX() * CHUNK_SIZE + tx) * Constants.GRID_SIZE;

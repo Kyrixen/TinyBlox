@@ -16,6 +16,8 @@ public class Constants {
     public static boolean VSYNC = true;
 
     // World stuff
+    public static String WORLD_NAME = "New Map";
+
     public static final int MAP_WIDTH = 256;
     public static final int MAP_HEIGHT = 256;
 
@@ -51,6 +53,6 @@ public class Constants {
     public static final float FULL_TIME_CYCLE = 300f;
 
     // Entity settings
-    public static final byte MAX_ENTITY_COUNT = 8;
+    public static final byte MAX_ENTITY_CHUNK = 3;
 
 }

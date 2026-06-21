@@ -1,8 +1,12 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -24,7 +28,10 @@ public class Chunk {
     private TileStack[][] chunk;
 
     // Stores light level for tiles
-    private Color[][][] lightLevel;
+    private final Color[][][] lightLevel;
+
+    // Stores entities in chunk
+    private final List<Entity> entities;
 
     // Construct chunk
     public Chunk(ChunkPos chunkPos, int seed){
@@ -35,6 +42,7 @@ public class Chunk {
 
         this.chunk = new TileStack[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
         this.lightLevel = new Color[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE][Constants.MAX_WORLD_HEIGHT + 1];
+        this.entities = new ArrayList<>();
 
         for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
             for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
@@ -159,6 +167,10 @@ public class Chunk {
         rendered = true;
         modified = true;
 
+    }
+
+    public List<Entity> getEntities() {
+        return this.entities;
     }
 
     public TileStack getTileStack(byte localX, byte localY) {
