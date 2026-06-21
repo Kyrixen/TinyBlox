@@ -106,6 +106,7 @@ public class Engine implements Screen {
 
         // Time init
         timeCycle.setDayTime(DayTime.DAY);
+        terrain.rebuildLighting(timeCycle);
 
         player = WorldManager.loadEntities(terrain, entities, rendererStack.camera, soundManager);
 
@@ -133,7 +134,6 @@ public class Engine implements Screen {
         Camera camera = rendererStack.camera;
 
         timeCycle.updateDayTime(delta);
-        terrain.rebuildLighting(timeCycle);
         enemySpawner.updateSpawnRate(timeCycle);
         controller.update(delta, player, terrain, entities);
 
@@ -143,8 +143,8 @@ public class Engine implements Screen {
         Entity.updateAll(delta, terrain, entities);
 
         // Update terrain
-        terrain.updateLoadedChunks(player);
-        terrain.update(camera);
+        terrain.updateLoadedChunks(player, timeCycle);
+        terrain.update(camera, timeCycle);
 
         // Update camera
         camera.follow(player);

@@ -71,7 +71,7 @@ public class ChunkLoader {
     // Generates chunk
     public static Chunk createChunk(ChunkPos chunkPos, FastNoiseLite noise) {
 
-        Chunk chunk = new Chunk(chunkPos.getChunkX(), chunkPos.getChunkY(), noise.getSeed());
+        Chunk chunk = new Chunk(chunkPos, noise.getSeed());
 
         ChunkGenerator.generateChunk(chunk, noise);
         ChunkGenerator.generateCave(chunk, 10);

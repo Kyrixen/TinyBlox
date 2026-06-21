@@ -14,8 +14,7 @@ public class Chunk {
     private final long chunkSeed;
 
     // Chunk cords
-    private final short cX;
-    private final short cY;
+    private final ChunkPos chunkPos;
 
     // Chunk properties
     private boolean rendered;
@@ -28,12 +27,11 @@ public class Chunk {
     private Color[][][] lightLevel;
 
     // Construct chunk
-    public Chunk(short x, short y, int seed){
+    public Chunk(ChunkPos chunkPos, int seed){
 
-        this.chunkSeed = RandomUtils.mixSeed(seed, x * 341873128712L ^ y * 132897987541L);
+        this.chunkSeed = RandomUtils.mixSeed(seed, chunkPos.getChunkX() * 341873128712L ^ chunkPos.getChunkY() * 132897987541L);
 
-        this.cX = x;
-        this.cY = y;
+        this.chunkPos = chunkPos;
 
         this.chunk = new TileStack[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
         this.lightLevel = new Color[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE][Constants.MAX_WORLD_HEIGHT + 1];
@@ -56,9 +54,9 @@ public class Chunk {
     }
 
 
-    public short getX(){ return this.cX; }
+    public short getX(){ return this.chunkPos.getChunkX(); }
 
-    public short getY(){ return this.cY; }
+    public short getY(){ return this.chunkPos.getChunkY(); }
 
     public long getChunkSeed() { return this.chunkSeed; }
 
@@ -97,7 +95,7 @@ public class Chunk {
         int bottom = Math.min(worldChunksY - 1, camChunkY + cam.RENDER_DISTANCE);
 
         // Keep generated chunk data in RAM; only toggle rendering.
-        rendered = cX >= left && cX <= right && cY >= top && cY <= bottom;
+        rendered = chunkPos.getChunkX() >= left && chunkPos.getChunkX() <= right && chunkPos.getChunkY() >= top && chunkPos.getChunkY() <= bottom;
 
     }
 

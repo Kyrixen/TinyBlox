@@ -17,7 +17,6 @@ import io.kyrixen.tinyblox.saving.world.ChunkSaver;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.ChunkRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -90,25 +89,27 @@ public class Terrain {
     }
 
     // Update terrain
-    public void update(Camera camera) {
+    public void update(Camera camera, TimeCycle timeCycle) {
 
+        boolean rebuildLighting = false;
         for(short cx = 0; cx < getChunkCountX(); cx++){
-
             for(short cy = 0; cy < getChunkCountY(); cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
                 c.checkIfOnScreen(camera);
                 if(c.isRendered()) c.checkIfModified();
+                if(c.isModified()) rebuildLighting = true;
 
             }
-
         }        
+
+        if(rebuildLighting) rebuildLighting(timeCycle);
 
     }
 
     // Loads / Unloads chunks
-    public void updateLoadedChunks(Player player) {
+    public void updateLoadedChunks(Player player, TimeCycle timeCycle) {
 
         if(System.currentTimeMillis() - lastChunkUpdate < chunkUpdateDelay * 1000) return;
 
@@ -116,6 +117,7 @@ public class Terrain {
         short playerChunkY = (short) Math.floorDiv(player.y() / player.height(), Constants.CHUNK_SIZE);
 
         // Checks loading
+        boolean rebuildLighting = false;
         for(short cx = (short) (playerChunkX - Constants.LOAD_DISTANCE); cx < playerChunkX + Constants.LOAD_DISTANCE; cx++) {
             for(short cy = (short) (playerChunkY - Constants.LOAD_DISTANCE); cy < playerChunkY + Constants.LOAD_DISTANCE; cy++) {
             
@@ -127,10 +129,14 @@ public class Terrain {
                 c = ChunkLoader.load(new ChunkPos(cx, cy), noise);
                 chunks.put(new ChunkPos(cx, cy), c);
 
+                rebuildLighting = true;
                 Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
 
             }   
         }
+
+        if(rebuildLighting) rebuildLighting(timeCycle);
+
 
         // Check unloading
         List<ChunkPos> unloadedChunksPos = new ArrayList<>();
@@ -335,26 +341,6 @@ public class Terrain {
     public Chunk getChunk(short cX, short cY) {
         return chunks.get(new ChunkPos(cX, cY));
     }
-    
-    // Find chunk if doesnt exist create chunk
-    public Chunk getOrCreateChunk(short cX, short cY) {
-
-        ChunkPos cPos = new ChunkPos(cX, cY);
-
-        if(!chunks.containsKey(cPos)){
-
-            Chunk c = new Chunk(cX, cY, seed);
-            ChunkGenerator.generateChunk(c, noise);
-            chunks.put(cPos, c);
-
-            Logger.LOGGER.debug("WORLD", "Generated new chunk!");
-
-        }
-
-        return chunks.get(cPos);
-
-    }
-
 
     // Global TileStack accessor
     public TileStack getWorldTileStack(int worldX, int worldY) {
