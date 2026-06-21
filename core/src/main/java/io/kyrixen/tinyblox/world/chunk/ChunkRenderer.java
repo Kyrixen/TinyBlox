@@ -33,6 +33,8 @@ public class ChunkRenderer {
     // Chunk size
     private static final byte CHUNK_SIZE = Constants.CHUNK_SIZE;
 
+    // Ambient light
+    private Color ambient = new Color();
 
     public ChunkRenderer(TileRenderer tileRenderer) { this.tileRenderer = tileRenderer; }
 
@@ -77,8 +79,12 @@ public class ChunkRenderer {
 
                     Color light = c.getLight(tx, ty, layer);
 
+                    float r = Math.min(1.25f, ambient.r + light.r);
+                    float g = Math.min(1.25f, ambient.g + light.g);
+                    float b = Math.min(1.25f, ambient.b + light.b);
+
                     // Draw first visible opaque tile
-                    batch.setColor(light.r, light.g, light.b, 1f);
+                    batch.setColor(r, g, b, 1f);
 
                     int levelDiff = stackedTile.level() - player.level();
 
@@ -158,8 +164,12 @@ public class ChunkRenderer {
 
                     Color light = c.getLight(tx, ty, layer);
 
+                    float r = Math.min(1.25f, ambient.r + light.r);
+                    float g = Math.min(1.25f, ambient.g + light.g);
+                    float b = Math.min(1.25f, ambient.b + light.b);
+
                     // Draw first visible opaque tile
-                    batch.setColor(light.r, light.g, light.b, 1f);
+                    batch.setColor(r, g, b, 1f);
                     tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
 
                     // Draw transparent tile on top
@@ -309,6 +319,11 @@ public class ChunkRenderer {
             }
         }
 
+    }
+
+    // Sets ambient light color
+    public void setAmbient(Color ambient) {
+        this.ambient = ambient;
     }
 
 

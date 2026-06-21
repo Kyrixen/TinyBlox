@@ -105,14 +105,16 @@ public class Engine implements Screen {
         terrain.init();
 
         // Time init
-        timeCycle.setDayTime(DayTime.DAY);
-        terrain.rebuildLighting(timeCycle);
+        timeCycle.setDayTime(DayTime.NIGHT);
+        terrain.rebuildLighting();
 
         player = WorldManager.loadEntities(terrain, entities, rendererStack.camera, soundManager);
 
         Entity.initTextureAll(entities);
 
         lastAutoSave = System.currentTimeMillis();
+
+        player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 4);
 
     }
 

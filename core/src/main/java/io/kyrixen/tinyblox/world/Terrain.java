@@ -91,6 +91,8 @@ public class Terrain {
     // Update terrain
     public void update(Camera camera, TimeCycle timeCycle) {
 
+        chunkRenderer.setAmbient(timeCycle.getBrightnessColor());
+
         boolean rebuildLighting = false;
         for(short cx = 0; cx < getChunkCountX(); cx++){
             for(short cy = 0; cy < getChunkCountY(); cy++){
@@ -102,9 +104,9 @@ public class Terrain {
                 if(c.isModified()) rebuildLighting = true;
 
             }
-        }        
+        }    
 
-        if(rebuildLighting) rebuildLighting(timeCycle);
+        if(rebuildLighting) { rebuildLighting(); for(Chunk c : chunks.values()) { c.setModified(false); } }
 
     }
 
@@ -135,7 +137,8 @@ public class Terrain {
             }   
         }
 
-        if(rebuildLighting) rebuildLighting(timeCycle);
+        if(rebuildLighting) rebuildLighting();
+        Logger.LOGGER.debug("RENDERER", "Rebuild light: " + rebuildLighting);
 
 
         // Check unloading
@@ -251,18 +254,20 @@ public class Terrain {
 
 
     // Update chunk light
-    public void rebuildLighting(TimeCycle timeCycle) {
+    public void rebuildLighting() {
         
+long start = System.currentTimeMillis();
+
         for(short cx = 0; cx < getChunkCountX(); cx++){
             for(short cy = 0; cy < getChunkCountY(); cy++){
 
                 Chunk c = chunks.get(new ChunkPos(cx, cy));
                 if (c == null) continue;
 
+                c.resetLocalLighting();
+                
                 // If not visible dont render
                 if(!c.isRendered()) continue;
-
-                c.resetAmbientLighting(timeCycle.getBrightnessColor());
 
                 for(byte localX = 0; localX < c.get().length; localX++) {
                     for(byte localY = 0; localY < c.get().length; localY++) {
@@ -286,6 +291,13 @@ public class Terrain {
         
             }
         }
+
+        Logger.LOGGER.debug(
+    "LIGHT",
+    "Lighting rebuild took: "
+    + (System.currentTimeMillis() - start)
+    + "ms"
+);
 
     }
 

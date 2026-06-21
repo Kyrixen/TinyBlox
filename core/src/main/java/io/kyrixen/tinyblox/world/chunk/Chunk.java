@@ -62,12 +62,14 @@ public class Chunk {
 
 
     // Reset default lighting
-    public void resetAmbientLighting(Color ambient) {
+    public void resetLocalLighting() {
+
+        Color defaultLight = new Color(0f, 0f, 0f, 1f);
 
         for(byte xPos = 0; xPos < lightLevel.length; xPos++) {
             for(byte yPos = 0; yPos < lightLevel.length; yPos++) {
                 for(byte layer = 0; layer < lightLevel[xPos][yPos].length; layer++) {
-                    this.setLight(xPos, yPos, layer, ambient);
+                    this.setLight(xPos, yPos, layer, defaultLight);
                 }
             }
         }
