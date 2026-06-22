@@ -111,6 +111,8 @@ public class Engine implements Screen {
 
         lastAutoSave = System.currentTimeMillis();
 
+        player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 4);
+
     }
 
     // Game loop

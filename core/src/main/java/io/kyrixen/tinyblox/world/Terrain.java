@@ -98,20 +98,15 @@ public class Terrain {
         chunkRenderer.setAmbient(timeCycle.getBrightnessColor());
 
         boolean rebuildLighting = false;
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-            for(short cy = 0; cy < getChunkCountY(); cy++){
+        for(Chunk c : chunks.values()) {
 
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-
-                c.checkIfOnScreen(camera);
-                if(c.isRendered()) c.checkIfModified();
-                if(c.isModified()) rebuildLighting = true;
-
-            }
+            c.checkIfOnScreen(camera);
+            if(c.isRendered()) c.checkIfModified();
+            if(c.needLightRebuild()) rebuildLighting = true;
+        
         }    
 
-        if(rebuildLighting) { rebuildLighting(); for(Chunk c : chunks.values()) { c.setModified(false); } }
+        if(rebuildLighting) { rebuildLighting(); }
 
     }
 
@@ -160,7 +155,7 @@ public class Terrain {
 
                 chunks.put(new ChunkPos(cx, cy), c);
 
-                rebuildLighting = true;
+                if(c.needLightRebuild()) rebuildLighting = true;
                 Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
 
             }   
@@ -235,15 +230,8 @@ public class Terrain {
     // Render lower visible chunks
     public void renderLower(Player player, RendererStack rendererStack) {
         
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-            for(short cy = 0; cy < getChunkCountY(); cy++){
-
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-
-                chunkRenderer.renderLower(c, player, rendererStack);
-
-            }
+        for(Chunk c : chunks.values()) {
+            chunkRenderer.renderLower(c, player, rendererStack);
         }
 
     }
@@ -268,15 +256,8 @@ public class Terrain {
         }
 
 
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-            for(short cy = 0; cy < getChunkCountY(); cy++){
-
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-
-                chunkRenderer.renderAbove(c, player, tileAbovePlayer, rendererStack);
-
-            }
+        for(Chunk c : chunks.values()) {
+            chunkRenderer.renderAbove(c, player, tileAbovePlayer, rendererStack);
         }
 
     }
@@ -285,17 +266,8 @@ public class Terrain {
     // Render overlay for visible chunks
     public void renderDepthOverlay(Player player, TimeCycle timeCycle, RendererStack rendererStack) {
         
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-
-            for(short cy = 0; cy < getChunkCountY(); cy++){
-
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
-
-                chunkRenderer.renderDepthOverlay(c, player, timeCycle, rendererStack);
-    
-            }
-    
+        for(Chunk c : chunks.values()) {
+            chunkRenderer.renderDepthOverlay(c, player, timeCycle, rendererStack);
         }
     
     }
@@ -303,16 +275,11 @@ public class Terrain {
     // Draw edges on different heights
     public void drawHeightEdges(Player player, RendererStack rendererStack) {  
 
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-            for(short cy = 0; cy < getChunkCountY(); cy++){
+        for(Chunk c : chunks.values()) {
 
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
+            chunkRenderer.drawHeightEdges(c, this, rendererStack);
+            chunkRenderer.drawCurrentHeightEdges(c, player, this, rendererStack);
 
-                chunkRenderer.drawHeightEdges(c, this, rendererStack);
-                chunkRenderer.drawCurrentHeightEdges(c, player, this, rendererStack);
-
-            }
         }
 
     }
@@ -323,38 +290,35 @@ public class Terrain {
         
         long start = System.currentTimeMillis();
 
-        for(short cx = 0; cx < getChunkCountX(); cx++){
-            for(short cy = 0; cy < getChunkCountY(); cy++){
+        for(Chunk c : chunks.values()) {
 
-                Chunk c = chunks.get(new ChunkPos(cx, cy));
-                if (c == null) continue;
+            c.resetLocalLighting();
+            c.setLightRebuild(false);
+            
+            // If not visible dont render
+            if(!c.isRendered()) continue;
 
-                c.resetLocalLighting();
-                
-                // If not visible dont render
-                if(!c.isRendered()) continue;
+            for(byte localX = 0; localX < c.get().length; localX++) {
+                for(byte localY = 0; localY < c.get().length; localY++) {
 
-                for(byte localX = 0; localX < c.get().length; localX++) {
-                    for(byte localY = 0; localY < c.get().length; localY++) {
+                    TileStack tileStack = c.getTileStack(localX, localY);
+                    if(tileStack == null) continue;
 
-                        TileStack tileStack = c.getTileStack(localX, localY);
-                        if(tileStack == null) continue;
+                    for(byte level = 0; level < tileStack.height(); level++) {
+                    
+                        Tile current = tileStack.get(level);
+                        if(current == null || current.type().getLightLevel() <= 0f) continue;
 
-                        for(byte level = 0; level < tileStack.height(); level++) {
+                        int worldX = c.getX() * Constants.CHUNK_SIZE + localX;
+                        int worldY = c.getY() * Constants.CHUNK_SIZE + localY;
+
+                        applyRadialLight(worldX, worldY, current.level(), current.type().getLightLevel());
                         
-                            Tile current = tileStack.get(level);
-                            if(current == null || current.type().getLightLevel() <= 0f) continue;
-
-                            int worldX = cx * Constants.CHUNK_SIZE + localX;
-                            int worldY = cy * Constants.CHUNK_SIZE + localY;
-
-                            applyRadialLight(worldX, worldY, current.level(), current.type().getLightLevel());
-                            
-                        }
                     }
                 }
-        
             }
+    
+            
         }
 
         Logger.LOGGER.debug("LIGHTING", "Lighting rebuild took: " + (System.currentTimeMillis() - start) + "ms");

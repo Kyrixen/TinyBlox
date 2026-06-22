@@ -23,6 +23,7 @@ public class Chunk {
     // Chunk properties
     private boolean rendered;
     private boolean modified;
+    private boolean rebuildLight;
 
     // Stores chunk tiles
     private TileStack[][] chunk;
@@ -58,6 +59,7 @@ public class Chunk {
 
         this.rendered = false;
         this.modified = true;
+        this.rebuildLight = true;
         
     }
 
@@ -111,15 +113,16 @@ public class Chunk {
 
     public void checkIfModified() {
 
-        this.modified = false;
-
         for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
             for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
 
                 TileStack tileStack = this.chunk[xPos][yPos];
                 if(tileStack == null) continue;
 
-                if(tileStack.isModified()) { this.modified = true; return; }
+                if(tileStack.isModified()) this.modified = true;
+                if(tileStack.needLightRebuild()) this.rebuildLight = true;
+
+                if(this.modified && this.rebuildLight) return;
 
             }
         }
@@ -208,6 +211,23 @@ public class Chunk {
     
     }
 
+    public boolean needLightRebuild() { return this.rebuildLight; }
+    public void setLightRebuild(boolean rebuildLight) {
+        
+        this.rebuildLight = rebuildLight;
+
+        for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
+            for(byte yPos = 0; yPos < Constants.CHUNK_SIZE; yPos++) {
+
+                TileStack tileStack = this.chunk[xPos][yPos];
+                if(tileStack == null) continue;
+
+                tileStack.setLightRebuild(rebuildLight);
+
+            }
+        }
+    
+    }
 
     // Unload resources
     public void cleanup() {

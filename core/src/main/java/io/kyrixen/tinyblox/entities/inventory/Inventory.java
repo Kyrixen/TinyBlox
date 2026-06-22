@@ -15,7 +15,7 @@ public class Inventory {
 
     public void setCurrentSlot(byte slot) {
         hotbarSlot = slot;
-        if(slot > slots.length || slot < 0) hotbarSlot = 0;
+        if(slot >= slots.length || slot < 0) hotbarSlot = 0;
     }
 
     public void push(ItemStack itemStack) {

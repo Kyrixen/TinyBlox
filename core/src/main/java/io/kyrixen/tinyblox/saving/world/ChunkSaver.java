@@ -129,6 +129,8 @@ public class ChunkSaver {
             fileWriter.close();            
         } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create chunk save file: " + e); }
 
+        chunk.setModified(false);
+
     }
 
     // Get chunk folder path

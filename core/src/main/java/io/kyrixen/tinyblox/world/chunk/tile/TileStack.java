@@ -11,6 +11,7 @@ public class TileStack  {
     private final List<Tile> tiles;
 
     private boolean modified = true;
+    private boolean rebuildLight = true;
 
     public TileStack(List<Tile> tiles) {
         this.tiles = tiles;
@@ -74,6 +75,7 @@ public class TileStack  {
         this.tiles.set(level, new Tile(TileType.AIR, level));
 
         this.modified = true;
+        this.rebuildLight = true;
 
     }
 
@@ -83,6 +85,7 @@ public class TileStack  {
         this.tiles.set(level, tile);
 
         this.modified = true;
+        this.rebuildLight = true;
 
     }
 
@@ -136,5 +139,10 @@ public class TileStack  {
     // Get and Set modified state
     public boolean isModified() { return this.modified; }
     public void setModified(boolean modified) { this.modified = modified; }
+
+    // Get and Set light rebuild
+    public boolean needLightRebuild() { return this.rebuildLight; }
+    public void setLightRebuild(boolean rebuildLight) { this.rebuildLight = rebuildLight; }
+
 
 }
