@@ -1,12 +1,17 @@
 package io.kyrixen.tinyblox.saving.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.saving.blueprints.entities.EnemyBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
 
 public class EnemySaver {
  
@@ -51,18 +56,25 @@ public class EnemySaver {
     }
 
     // Save Enemy
-    public static void save(Enemy enemy) {
+    public static List<SavedEntity> save(Chunk chunk) {
 
-        // Blueprint
-        SavedEntity nextEntity = new SavedEntity();
-        nextEntity.type = "Enemy";
-        nextEntity.id = enemy.id();
-        nextEntity.data = json.toJson(convertToBlueprint(enemy));
+        List<SavedEntity> convertedEnemies = new ArrayList<>();
+
+        for(Entity e : chunk.getEntities()) {
+
+            if(!(e instanceof Enemy)) continue;
+
+            // Blueprint
+            SavedEntity nextEntity = new SavedEntity();
+            nextEntity.type = "Enemy";
+            nextEntity.id = e.id();
+            nextEntity.data = json.toJson(convertToBlueprint((Enemy) e));
+
+            convertedEnemies.add(nextEntity);
+
+        }
         
-        // File to write
-        String fileName = EntitySaver.getEntityFolder() + "/entities_" + EntitySaver.getChunkX(enemy.x()) + "_" + EntitySaver.getChunkY(enemy.y()) + ".json";
-
-        EntitySaver.saveSavedEntity(nextEntity, fileName);
+        return convertedEnemies;
 
     }
 

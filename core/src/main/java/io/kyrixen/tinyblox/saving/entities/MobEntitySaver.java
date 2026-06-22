@@ -1,12 +1,17 @@
 package io.kyrixen.tinyblox.saving.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.saving.blueprints.entities.MobEntityBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
 
 public class MobEntitySaver {
 
@@ -46,18 +51,25 @@ public class MobEntitySaver {
     }
 
     // Save MobEntity
-    public static void save(MobEntity mobEntity) {
+    public static List<SavedEntity> save(Chunk chunk) {
 
-        // Blueprint
-        SavedEntity nextEntity = new SavedEntity();
-        nextEntity.type = "MobEntity";
-        nextEntity.id = mobEntity.id();
-        nextEntity.data = json.toJson(convertToBlueprint(mobEntity));
+        List<SavedEntity> convertedMobEntities = new ArrayList<>();
+
+        for(Entity e : chunk.getEntities()) {
+
+            if(e.getClass() != MobEntity.class) continue;
+
+            // Blueprint
+            SavedEntity nextEntity = new SavedEntity();
+            nextEntity.type = "MobEntity";
+            nextEntity.id = e.id();
+            nextEntity.data = json.toJson(convertToBlueprint((MobEntity) e));
+
+            convertedMobEntities.add(nextEntity);
+
+        }
         
-        // File to write
-        String fileName = EntitySaver.getEntityFolder() + "/entities_" + EntitySaver.getChunkX(mobEntity.x()) + "_" + EntitySaver.getChunkY(mobEntity.y()) + ".json";
-
-        EntitySaver.saveSavedEntity(nextEntity, fileName);
+        return convertedMobEntities;
 
     }
 

@@ -20,7 +20,7 @@ import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEnt
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.world.chunk.ChunkPos;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
 
 public class EnemyLoader {
     
@@ -79,10 +79,10 @@ public class EnemyLoader {
     }   
 
     // Load Enemy
-    public static List<Enemy> load(ChunkPos chunkPos, SoundManager soundManager) {
+    public static List<Enemy> load(Chunk chunk, SoundManager soundManager) {
 
         List<Enemy> enemies = new ArrayList<>();
-        String fileName = getEntityFolder() + "/entities_" + chunkPos.getChunkX() + "_" + chunkPos.getChunkY() + ".json";
+        String fileName = getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
 
         String entitiesData;
         try {
@@ -92,10 +92,10 @@ public class EnemyLoader {
 
         EntityChunkBlueprint ecb = json.fromJson(EntityChunkBlueprint.class, entitiesData);
         if(ecb.formatVersion != Constants.SAVE_FORMAT_VERSION) {
-            Logger.LOGGER.error("LOADER", "Invalid format version for entities chunk save " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY() + ": " + ecb.formatVersion);
+            Logger.LOGGER.error("LOADER", "Invalid format version for entities chunk save " + chunk.getX() + ", " + chunk.getY() + ": " + ecb.formatVersion);
             return enemies;
         }
-        Logger.LOGGER.debug("LOADER", "Loaded entities save: " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY());        
+        Logger.LOGGER.debug("LOADER", "Loaded entities save: " + chunk.getX() + ", " + chunk.getY());        
         
 
         if(ecb.entities == null) return enemies;

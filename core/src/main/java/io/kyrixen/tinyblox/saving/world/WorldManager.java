@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,12 +14,11 @@ import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
-import io.kyrixen.tinyblox.entities.ItemEntity;
-import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.saving.InventorySaver;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
+import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
 import io.kyrixen.tinyblox.saving.entities.EnemyLoader;
 import io.kyrixen.tinyblox.saving.entities.EnemySaver;
 import io.kyrixen.tinyblox.saving.entities.EntityLoader;
@@ -33,8 +30,7 @@ import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
-import io.kyrixen.tinyblox.world.chunk.Chunk;
-import io.kyrixen.tinyblox.world.chunk.ChunkPos;
+import io.kyrixen.tinyblox.world.chunk.Chunk;   
 
 
 public class WorldManager {
@@ -91,17 +87,16 @@ public class WorldManager {
     }
 
     // Loads chunk entities
-    public static List<Entity> loadEntities(ChunkPos chunkPos, SoundManager soundManager) {
+    public static List<Entity> loadEntities(Chunk chunk, SoundManager soundManager) {
 
         List<Entity> chunkEntities = new ArrayList<>();
 
-        Map<Integer, Entity> loadedEntities = new HashMap<>();
-        for(Entity e : EntityLoader.load(chunkPos)) { loadedEntities.put(e.id(), e); }
-        for(MobEntity e : MobEntityLoader.load(chunkPos, soundManager)) { loadedEntities.put(e.id(), e); }
-        for(Enemy e : EnemyLoader.load(chunkPos, soundManager)) { loadedEntities.put(e.id(), e); }
+        chunkEntities.addAll(EntityLoader.load(chunk));
+        chunkEntities.addAll(MobEntityLoader.load(chunk, soundManager));
+        chunkEntities.addAll(EnemyLoader.load(chunk, soundManager));
 
-        chunkEntities.addAll(loadedEntities.values());
-        
+        if(!chunkEntities.isEmpty()) Logger.LOGGER.debug("LOADER", "Loading entities for chunk " + chunk.getX() + "," + chunk.getY() + ": " + chunkEntities.toString());
+
         return chunkEntities;
 
     }
@@ -109,16 +104,24 @@ public class WorldManager {
     // Save chunk entities
     public static void saveEntities(Chunk chunk) {
 
+        // Saved entities list
+        List<SavedEntity> savedEntities = new ArrayList<>();
+
+        // Merge all entities
+        savedEntities.addAll(EntitySaver.save(chunk));
+        savedEntities.addAll(MobEntitySaver.save(chunk));
+        savedEntities.addAll(EnemySaver.save(chunk));
+        
         for(Entity entity : chunk.getEntities()) {
-            if(entity instanceof Enemy) EnemySaver.save((Enemy) entity);
-            else if(entity instanceof MobEntity) MobEntitySaver.save((MobEntity) entity);
-            else if(entity instanceof ItemEntity) continue;
-            else EntitySaver.save(entity);
-
-            if(!(entity instanceof MobEntity)) continue;
-            InventorySaver.save((MobEntity) entity);
-
+            if(entity instanceof MobEntity) InventorySaver.save((MobEntity) entity);
         }
+
+        // File to write
+        String fileName = EntitySaver.getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
+        try { Files.deleteIfExists(Paths.get(fileName)); } catch(IOException e) {}
+        
+        if(savedEntities.isEmpty()) return;
+        EntitySaver.saveSavedEntities(savedEntities, fileName);
 
     }
 

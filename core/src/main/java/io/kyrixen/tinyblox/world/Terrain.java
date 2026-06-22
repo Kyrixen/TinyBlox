@@ -72,16 +72,21 @@ public class Terrain {
 
 
     // Pre-generate chunks
-    public void init() {
+    public void init(SoundManager soundManager) {
 
         Logger.LOGGER.debug("WORLD", "Seed: " + seed);
         chunks.clear();
 
         for(short cx = (short) (getChunkCountX() / 2 - 3); cx < (short) (getChunkCountY() / 2 + 3); cx++) {
             for(short cy = (short) (getChunkCountX() / 2 - 3); cy < (short) (getChunkCountY() / 2 + 3); cy++) {
-
+                
                 ChunkPos pos = new ChunkPos(cx, cy);
                 chunks.put(pos, ChunkLoader.load(pos, noise));
+                
+                Chunk chunk = this.getChunk(cx, cy);
+                
+                chunk.getEntities().addAll(WorldManager.loadEntities(chunk, soundManager));
+                Entity.initTextureAll(chunk.getEntities());
 
                 Logger.LOGGER.debug("WORLD", "Loaded chunk: " + cx + ", " + cy);
 
@@ -113,6 +118,8 @@ public class Terrain {
     // Updates entities in chunks
     public void updateEntities(float deltaTime, Player player) {
 
+        // Those small imigrants took 3 hours to fix
+        List<EntityMove> entityMigrations = new ArrayList<>();
         for(Chunk c : chunks.values()) {
 
             Entity.updateAll(deltaTime, this, c.getEntities());
@@ -126,6 +133,32 @@ public class Terrain {
             }
 
             checkDeadEntities(c, player);
+
+            for(Entity e : c.getEntities()) {
+
+                short currentChunkX = (short) Math.floorDiv(e.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+                short currentChunkY = (short) Math.floorDiv(e.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+
+                if(currentChunkX == c.getX() && currentChunkY == c.getY()) continue;
+
+                Chunk newChunk = this.getChunk(currentChunkX, currentChunkY);
+                if(newChunk == null) continue;
+
+                entityMigrations.add(new EntityMove(e, c, newChunk));
+
+            }
+
+        }
+
+
+
+        // Check for imigrants
+        for(EntityMove migration : entityMigrations) {
+
+            migration.origin.getEntities().remove(migration.imigrant);
+            
+            if(migration.host.getEntities().contains(migration.imigrant)) continue;
+            migration.host.getEntities().add(migration.imigrant);
 
         }
 
@@ -148,9 +181,9 @@ public class Terrain {
 
                 Chunk c = getChunk(cx, cy);
                 if(c != null) continue;
-
+                
                 c = ChunkLoader.load(new ChunkPos(cx, cy), noise);
-                c.getEntities().addAll(WorldManager.loadEntities(new ChunkPos(cx, cy), soundManager));
+                c.getEntities().addAll(WorldManager.loadEntities(c, soundManager));
                 Entity.initTextureAll(c.getEntities());
 
                 chunks.put(new ChunkPos(cx, cy), c);
@@ -563,5 +596,23 @@ public class Terrain {
         }
         
     }
+
+
+    // Helper class
+    static class EntityMove {
+        
+        public Entity imigrant;
+        public Chunk origin;
+        public Chunk host;
+
+        // Helper constructor
+        public EntityMove(Entity imigrant, Chunk origin, Chunk host) {
+            this.imigrant = imigrant;
+            this.host = host;
+            this.origin = origin;
+        }
+
+    }
+
 
 }

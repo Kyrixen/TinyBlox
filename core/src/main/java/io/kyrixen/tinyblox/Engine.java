@@ -96,7 +96,7 @@ public class Engine implements Screen {
         StructureRegister.initStructures();
 
         // Terrain init
-        terrain.init();
+        terrain.init(soundManager);
 
         // Time init
         timeCycle.setDayTime(DayTime.DAY);

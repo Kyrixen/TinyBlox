@@ -2,10 +2,8 @@ package io.kyrixen.tinyblox.saving.entities;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
@@ -17,6 +15,7 @@ import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.world.chunk.Chunk;
 
 public class EntitySaver {
     
@@ -48,52 +47,38 @@ public class EntitySaver {
     }
 
     // Saves entity
-    public static void save(Entity entity) {
+    public static List<SavedEntity> save(Chunk chunk) {
 
-        // Blueprint
-        SavedEntity nextEntity = new SavedEntity();
-        nextEntity.type = "Entity";
-        nextEntity.id = entity.id();
-        nextEntity.data = json.toJson(convertToBlueprint(entity));
+        List<SavedEntity> convertedEntities = new ArrayList<>();
 
-        // File to write
-        String fileName = getEntityFolder() + "/entities_" + getChunkX(entity.x()) + "_" + getChunkY(entity.y()) + ".json";
+        for(Entity e : chunk.getEntities()) {
 
-        saveSavedEntity(nextEntity, fileName);
+            if(e.getClass() != Entity.class) continue;
+
+            // Blueprint
+            SavedEntity nextEntity = new SavedEntity();
+            nextEntity.type = "Entity";
+            nextEntity.id = e.id();
+            nextEntity.data = json.toJson(convertToBlueprint(e));
+
+            convertedEntities.add(nextEntity);
+
+        }
+
+        return convertedEntities;
 
     }
 
     // Save helper
-    public static void saveSavedEntity(SavedEntity savedEntity, String fileName) {
-        
-        EntityChunkBlueprint previous = null;
-        EntityChunkBlueprint merged = new EntityChunkBlueprint();
-        
-        // Data stack
-        Map<Integer, SavedEntity> entities = new HashMap<>();
-
-        // Read old save
-        try {
-            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-            String oldData = new String(bytes);
-            previous = json.fromJson(EntityChunkBlueprint.class, oldData);
-        } catch (IOException e) {}
-
-        // If there is an old save get from it the stacks
-        if(previous != null && previous.entities != null) {
-            for(SavedEntity se : previous.entities) {
-                entities.put(se.id, se);
-            }
-        }
-
-        // Add new entity
-        entities.put(savedEntity.id, savedEntity);
-
-        merged.formatVersion = Constants.SAVE_FORMAT_VERSION;
-        merged.entities = entities.values().toArray(new SavedEntity[entities.size()]);
+    public static void saveSavedEntities(List<SavedEntity> savedEntities, String fileName) {
+            
+        // Create blueprint
+        EntityChunkBlueprint ecb = new EntityChunkBlueprint();
+        ecb.formatVersion = Constants.SAVE_FORMAT_VERSION;
+        ecb.entities = savedEntities.toArray(new SavedEntity[savedEntities.size()]);
 
         // Collected data
-        String entityData = json.prettyPrint(merged);
+        String entityData = json.prettyPrint(ecb);
         try {
             FileWriter fileWriter = new FileWriter(fileName);
             fileWriter.write(entityData);
@@ -106,16 +91,6 @@ public class EntitySaver {
     // Get entity folder path
     public static String getEntityFolder() {
         return WorldManager.worldFolder + "/entities";
-    }
-
-    // Get entity chunk x
-    public static short getChunkX(int worldX) {
-        return (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE * Constants.GRID_SIZE);
-    }
-
-    // Get entity chunk y
-    public static short getChunkY(int worldY) {
-        return (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE * Constants.GRID_SIZE);
     }
 
 }
