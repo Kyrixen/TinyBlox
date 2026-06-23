@@ -17,8 +17,9 @@ public class StructureLoader {
 
     // Json parser
     private static final Json json = new Json();
+
     // Structure folder
-    private static final FileHandle structureFolder = Gdx.files.internal("structures");
+    private static final FileHandle assetsManifest = Gdx.files.internal("assets.txt");
 
 
     // Loads structure from file
@@ -59,10 +60,10 @@ public class StructureLoader {
     // Auto load all structures in folder
     public static void loadAll() {
 
-        FileHandle[] files = structureFolder.list(".json");
-
-        for(FileHandle structureFile : files) {
-            StructureRegister.add(load(structureFile.path()));
+        String[] entries = assetsManifest.readString().split("\n");
+        for(String entry : entries) {
+            entry = entry.trim();
+            if(entry.startsWith("structures/") && entry.endsWith(".json")) StructureRegister.add(load(entry));
         }
 
     }

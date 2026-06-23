@@ -37,7 +37,7 @@ public class PlayerLoader {
         player.setTireless(pb.tireless);
         player.setAutoRecover(pb.autoRecover);
 
-        if(player.isInMenu() != pb.inMenu) player.toggleMenuStat();
+        //if(player.isInMenu() != pb.inMenu) player.toggleMenuStat();
         
         InventoryLoader.load(player);
 

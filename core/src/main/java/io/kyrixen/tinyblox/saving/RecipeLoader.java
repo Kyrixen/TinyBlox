@@ -18,7 +18,7 @@ import io.kyrixen.tinyblox.utils.Logger;
 public class RecipeLoader {
 
     private static final Json json = new Json();
-    private static final FileHandle recipeFolder = Gdx.files.internal("recipes");
+    private static final FileHandle assetsManifest = Gdx.files.internal("assets.txt");
 
 
     public static Recipe load(String path) {
@@ -66,10 +66,10 @@ public class RecipeLoader {
 
     public static void loadAll() {
 
-        FileHandle[] files = recipeFolder.list(".json");
-
-        for(FileHandle recipeFile : files) {
-            RecipeRegister.add(load(recipeFile.path()));
+        String[] entries = assetsManifest.readString().split("\n");
+        for(String entry : entries) {
+            entry = entry.trim();
+            if(entry.startsWith("recipes/") && entry.endsWith(".json")) RecipeRegister.add(load(entry));
         }
 
     }
