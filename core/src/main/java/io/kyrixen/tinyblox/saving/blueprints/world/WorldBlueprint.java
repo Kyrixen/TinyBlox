@@ -6,8 +6,13 @@ public class WorldBlueprint {
     
     public String worldName;
     public int worldSeed;
-    public float worldFrequency;
+    public String worldFrequency;
 
     public int lastEntityID;
+
+    @Override
+    public String toString() {
+        return "WorldBlueprint {version=" + formatVersion + ", name=" + worldName + ", seed=" + worldSeed + ", frequency=" + worldFrequency + ", last_id=" + lastEntityID + "}";
+    }
     
 }

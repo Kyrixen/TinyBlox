@@ -103,7 +103,8 @@ public class TextureManager {
     // Load functions //
 
     // Load backgrounds
-    public void loadBackgrounds(){
+    public void loadBackgrounds() {
+        this.load(new TextureID("tinyblox", TextureType.BACKGROUND, "selection_background"), "textures/background/selection_background.png");
         this.load(new TextureID("tinyblox", TextureType.BACKGROUND, "settings_background"), "textures/background/settings_background.png");
         this.load(new TextureID("tinyblox", TextureType.BACKGROUND, "menu_background"), "textures/background/menu_background.png");
     }
@@ -169,13 +170,16 @@ public class TextureManager {
 
     public void loadUI() {
 
+        this.load(new TextureID("tinyblox", TextureType.UI, "world_slot"), "textures/ui/misc/world_slot.png");
+        
         this.load(new TextureID("tinyblox", TextureType.UI, "dialog_corner"), "textures/ui/dialog/dialog_corner.png");
         this.load(new TextureID("tinyblox", TextureType.UI,"dialog_side"), "textures/ui/dialog/dialog_side.png");
         this.load(new TextureID("tinyblox", TextureType.UI,"dialog_center"), "textures/ui/dialog/dialog_center.png");
 
         this.load(new TextureID("tinyblox", TextureType.UI,"brown_button"), "textures/ui/button/brown_button.png");
         this.load(new TextureID("tinyblox", TextureType.UI,"gray_button"), "textures/ui/button/gray_button.png");
-        
+        this.load(new TextureID("tinyblox", TextureType.UI,"red_button"), "textures/ui/button/red_button.png");
+
         this.load(new TextureID("tinyblox", TextureType.UI,"white_toggle_button"), "textures/ui/button/white_toggle_button.png");
         
         this.load(new TextureID("tinyblox", TextureType.UI,"white_slider"), "textures/ui/slider/white_slider.png");

@@ -23,6 +23,7 @@ import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
+import io.kyrixen.tinyblox.world.FrequencyType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
@@ -65,7 +66,7 @@ public class Engine implements Screen {
         controller = new Controller();
         tileRenderer = new TileRenderer(textures);
         craftingRenderer = new CraftingRenderer(textures);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), 0.007f);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), FrequencyType.NORMAL);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();

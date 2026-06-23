@@ -51,9 +51,9 @@ public class Terrain {
 
 
     // Constructs terrain
-    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, float frequency) {
+    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, FrequencyType frequency) {
 
-        WorldBlueprint wb = WorldManager.loadWorld(Constants.WORLD_NAME, seed, frequency);
+        WorldBlueprint wb = WorldManager.loadWorld(Constants.CURRENT_WORLD, seed, frequency);
 
         this.seed = wb.worldSeed;
         this.w = w;
@@ -66,7 +66,7 @@ public class Terrain {
         // Sets noise generator properties
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.SetSeed(this.seed);
-        noise.SetFrequency(wb.worldFrequency);
+        noise.SetFrequency(FrequencyType.valueOf(wb.worldFrequency).getFrequency());
 
     }
 

@@ -16,7 +16,7 @@ public class Constants {
     public static boolean VSYNC = true;
 
     // World stuff
-    public static String WORLD_NAME = "New Map";
+    public static String CURRENT_WORLD = "NEW MAP";
 
     public static final int MAP_WIDTH = 256;
     public static final int MAP_HEIGHT = 256;

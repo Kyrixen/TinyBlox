@@ -29,6 +29,7 @@ import io.kyrixen.tinyblox.saving.entities.PlayerSaver;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.world.FrequencyType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;   
 
@@ -43,12 +44,12 @@ public class WorldManager {
     }
 
     // Folders
-    private static final FileHandle worldsFolder = Gdx.files.local("worlds");
+    public static final FileHandle worldsFolder = Gdx.files.local("worlds");
     public static FileHandle worldFolder;
 
 
-    // Saves world
-    public static void createWorld(String worldName, int seed, float frequency) {
+    // Creates world
+    public static void createWorld(String worldName, int seed, FrequencyType frequency) {
 
         String folder = worldsFolder + "/" + worldName.toLowerCase().replace(" ", "_");
         worldFolder = Gdx.files.local(folder);
@@ -63,7 +64,7 @@ public class WorldManager {
             wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
             wb.worldName = worldName;
             wb.worldSeed = seed;
-            wb.worldFrequency = frequency;
+            wb.worldFrequency = frequency.name();
             wb.lastEntityID = 0;
             String worldData = json.prettyPrint(wb);
             
@@ -75,8 +76,30 @@ public class WorldManager {
 
     }
 
+    // Creates world via blueprint
+    public static void createWorld(WorldBlueprint worldBlueprint) {
+
+        String folder = worldsFolder + "/" + worldBlueprint.worldName.toLowerCase().replace(" ", "_");
+        worldFolder = Gdx.files.local(folder);
+        try { 
+
+            Files.createDirectories(Paths.get(folder));
+            Files.createDirectories(Paths.get(folder + "/chunks"));
+            Files.createDirectories(Paths.get(folder + "/entities"));
+            Files.createDirectories(Paths.get(folder + "/inventories"));
+            
+            String worldData = json.prettyPrint(worldBlueprint);
+            
+            FileWriter fileWriter = new FileWriter(folder + "/world.json");
+            fileWriter.write(worldData);
+            fileWriter.close();
+
+        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create world dir: " + e); }
+
+    }
+
     // Loads world
-    public static WorldBlueprint loadWorld(String worldName, int seed, float frequency) {
+    public static WorldBlueprint loadWorld(String worldName, int seed, FrequencyType frequency) {
 
         WorldBlueprint wb = loadWorldInfo(worldName);
         if(wb == null) { createWorld(worldName, seed, frequency); wb = loadWorldInfo(worldName); }
@@ -143,7 +166,7 @@ public class WorldManager {
         PlayerSaver.save(player);
         InventorySaver.save(player);
 
-        saveWorldInfo(Constants.WORLD_NAME);
+        saveWorldInfo(Constants.CURRENT_WORLD);
         
     }
 

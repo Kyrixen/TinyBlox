@@ -1,56 +1,62 @@
-package io.kyrixen.tinyblox.menu;
+package io.kyrixen.tinyblox.menu.creator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.selection.Selection;
-import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
+import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.utils.Peripheral;
 
-public class Menu implements Screen {
-
+public class Creator implements Screen {
+    
     public boolean exit = false;
     
     private final Main main;
 
-    private SoundManager uiSoundManager;
+    private Button cancelButton;
+    private Button doneButton;
 
-    private Button playButton;
-    private Button settingsButton;
+    private SoundManager uiSoundManager;
 
     private final RendererStack rendererStack;
 
     private final TextureManager tex;
     private final UIRenderer uiRenderer;
+    private final CreatorHelper creatorHelper;
 
-    private static final TextureID brownButton = new TextureID("tinyblox", TextureType.UI,"brown_button");
+    private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
+    private static final TextureID redButton = new TextureID("tinyblox", TextureType.UI,"red_button");
 
-    public Menu(Main main, RendererStack rendererStack, TextureManager tex) {
+
+    public Creator(Main main, RendererStack rendererStack, TextureManager tex, UIRenderer uiRenderer) {
         this.main = main;
         this.rendererStack = rendererStack;
         this.tex = tex;
-        this.uiRenderer = new UIRenderer(tex);
+        this.uiRenderer = uiRenderer;
+        this.creatorHelper = new CreatorHelper();
     }
 
     @Override
     public void show() {
-        
-        this.uiSoundManager = new SoundManager();
 
-        this.playButton = new Button(uiSoundManager);
-        this.settingsButton = new Button(uiSoundManager);
+        Gdx.input.setInputProcessor(creatorHelper);
+
+        this.uiSoundManager = new SoundManager();
+    
+        this.cancelButton = new Button(uiSoundManager);
+        this.doneButton = new Button(uiSoundManager);
 
         init();
     
@@ -58,18 +64,15 @@ public class Menu implements Screen {
 
 
     private void init() {
-        
-        tex.loadBackgrounds();
-        tex.loadUI();
-        
+
         uiSoundManager.loadUI();
 
-        playButton.init(Constants.GRID_SIZE * 17, 128, 48 * 5, 16 * 5, "PLAY", 1.5f);
-        playButton.initTexture(tex.getTexture(brownButton));
-    
-        settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 1.5f);
-        settingsButton.initTexture(tex.getTexture(brownButton));
-    
+        cancelButton.init(20, 8, 48 * 5, 16 * 5, "CANCEL", 1.5f);
+        cancelButton.initTexture(tex.getTexture(redButton));
+
+        doneButton.init(540, 8, 48 * 5, 16 * 5, "DONE", 1.5f);
+        doneButton.initTexture(tex.getTexture(grayButton));
+
     }
 
     // Game loop
@@ -85,23 +88,27 @@ public class Menu implements Screen {
 
     private void update(float delta) {
 
-        playButton.updateState();
-        settingsButton.updateState();
+        creatorHelper.update(Peripheral.getMouseX(), Constants.WINDOW_HEIGHT - Peripheral.getMouseY(), Gdx.input.justTouched());
 
-        if(playButton.pressed()) main.setScreen(new Selection(main, rendererStack, tex, uiRenderer));
-        if(settingsButton.pressed()) main.setScreen(new Settings(this.main, this.rendererStack, this.tex, this.uiRenderer));
+        cancelButton.updateState();
+        doneButton.updateState();
+
+        if(doneButton.pressed()) { WorldManager.createWorld(creatorHelper.getWorldInfo()); Gdx.input.setInputProcessor(null); main.setScreen(new Selection(main, rendererStack, tex, uiRenderer));}
+        if(cancelButton.pressed()) { Gdx.input.setInputProcessor(null); main.setScreen(new Selection(main, rendererStack, tex, uiRenderer)); }
 
     }
 
     private void draw() {
 
-        ScreenUtils.clear(Color.CYAN);
-        
-        uiRenderer.showMenuBackground(rendererStack);
+        ScreenUtils.clear(0.15f, 0.40f, 0.65f, 1f);
+
+        uiRenderer.showSelectionBackground(rendererStack);
 
         rendererStack.batch.begin();
-        playButton.render(rendererStack);
-        settingsButton.render(rendererStack);
+        creatorHelper.renderText(rendererStack);
+        creatorHelper.renderInput(rendererStack);
+        cancelButton.render(rendererStack);
+        doneButton.render(rendererStack);
         rendererStack.batch.end();
 
     }
@@ -143,5 +150,3 @@ public class Menu implements Screen {
     }
 
 }
-    
-
