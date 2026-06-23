@@ -18,6 +18,8 @@ import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.creator.Creator;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
+import io.kyrixen.tinyblox.saving.ExportWorld;
+import io.kyrixen.tinyblox.saving.ImportWorld;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -32,6 +34,9 @@ public class Selection implements Screen {
     private Button loadButton;
     private Button createButton;
     private Button deleteButton;
+
+    private Button exportButton;
+    private Button importButton;
 
     private SoundManager uiSoundManager;
 
@@ -63,6 +68,9 @@ public class Selection implements Screen {
         this.createButton = new Button(uiSoundManager);
         this.deleteButton = new Button(uiSoundManager);
 
+        this.exportButton = new Button(uiSoundManager);
+        this.importButton = new Button(uiSoundManager);
+
         init();
     
     }
@@ -72,14 +80,23 @@ public class Selection implements Screen {
         
         uiSoundManager.loadUI();
 
-        loadButton.init(280, 8, 240, 80, "LOAD", 1.5f);
-        loadButton.initTexture(tex.getTexture(grayButton));
 
         createButton.init(20, 8, 48 * 5, 16 * 5, "CREATE", 1.5f);
         createButton.initTexture(tex.getTexture(grayButton));
 
+        loadButton.init(280, 8, 240, 80, "LOAD", 1.5f);
+        loadButton.initTexture(tex.getTexture(grayButton));
+
         deleteButton.init(540, 8, 48 * 5, 16 * 5, "DELETE", 1.5f);
         deleteButton.initTexture(tex.getTexture(redButton));
+
+
+        exportButton.init(588, Constants.WINDOW_HEIGHT - 8 - 16 * 4, 48 * 4, 16 * 4, "EXPORT", 1.5f);
+        exportButton.initTexture(tex.getTexture(grayButton));
+        
+        importButton.init(20, Constants.WINDOW_HEIGHT - 8 - 16 * 4, 48 * 4, 16 * 4, "IMPORT", 1.5f);
+        importButton.initTexture(tex.getTexture(grayButton));
+
 
         List<WorldBlueprint> worlds = new ArrayList<>(WorldListScanner.getWorlds());
         worldList.updateWorldSlots(worlds);
@@ -105,9 +122,15 @@ public class Selection implements Screen {
         createButton.updateState();
         deleteButton.updateState();
 
+        exportButton.updateState();
+        importButton.updateState();
+
         if(createButton.pressed()) main.setScreen(new Creator(main, rendererStack, tex, uiRenderer));
         if(loadButton.pressed() && worldList.canLoad()) { Constants.CURRENT_WORLD = worldList.getWorld().worldName; main.setScreen(new Engine(rendererStack, tex)); }
         if(deleteButton.pressed()) { worldList.deleteWorld(); }
+
+        if(exportButton.pressed()) ExportWorld.openExplorer(worldList.getWorld().worldName);
+        if(importButton.pressed()) { ImportWorld.openExplorer(); worldList.updateWorldSlots(WorldListScanner.getWorlds()); }
     
     }
 
@@ -118,10 +141,16 @@ public class Selection implements Screen {
         uiRenderer.showSelectionBackground(rendererStack);
 
         rendererStack.batch.begin();
+
         worldList.render(rendererStack);
+        
         loadButton.render(rendererStack);
         createButton.render(rendererStack);
         deleteButton.render(rendererStack);
+        
+        exportButton.render(rendererStack);
+        importButton.render(rendererStack);
+        
         rendererStack.batch.end();
 
     }

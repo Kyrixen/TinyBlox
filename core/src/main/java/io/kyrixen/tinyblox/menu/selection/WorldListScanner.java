@@ -29,10 +29,11 @@ public class WorldListScanner {
         
         List<Path> worldPaths = new ArrayList<>();
         try {
+
             try(Stream<Path> stream = Files.list(Paths.get(WorldManager.worldsFolder.path()))) {
                 worldPaths.addAll(stream.collect(Collectors.toList()));
             }
-
+        
         } catch (IOException e) { Logger.LOGGER.error("SCANNER", "Failed to scan worlds: " + e); }
 
 

@@ -162,7 +162,7 @@ public class CreatorHelper extends InputAdapter {
 
         if(selected == SelectedPrompt.NAME) {
             if((Character.isLetterOrDigit(character) || character == ' ') && worldName.length() < 20) worldName += Character.toUpperCase(character);
-        } else if(selected == SelectedPrompt.SEED && seed.length() < 10) {
+        } else if(selected == SelectedPrompt.SEED && seed.length() < 9) {
             if(Character.isDigit(character)) seed += character;
         }
 

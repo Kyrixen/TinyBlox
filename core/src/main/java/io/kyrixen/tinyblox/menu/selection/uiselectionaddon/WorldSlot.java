@@ -70,7 +70,7 @@ public class WorldSlot {
 
         String worldName = "MAP: " + world.worldName.toUpperCase();
         String worldSeed = "SEED: " + world.worldSeed;
-        String worldFrequency = "FREQ: " + FrequencyType.valueOf(world.worldFrequency);
+        String worldFrequency = "FREQ: " + FrequencyType.valueOf(world.worldFrequency).name().replace("_", " ");
         String worldVersion = "VER: " + world.formatVersion;
 
         font.getData().setScale(0.75f);
