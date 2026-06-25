@@ -16,9 +16,9 @@ A lightweight pseudo-3D sandbox survival game written in Java using LibGDX frame
 
 TinyBlox is built around layered terrain instead of voxels.
 
-The world is composed of layers of tiles which creates pseudo-3D traversal,
+The world is composed of layers of tiles which create pseudo-3D traversal,
 allowing caves, cliffs, ladders, elevation changes, and terrain-driven
-exploration without using 3d graphics.
+exploration without using 3D graphics.
 
 The focus is on:
 
@@ -61,9 +61,9 @@ The focus is on:
 - [x] Day/night cycle
 - [x] Lighting (simple)
 - [x] Cave generation (Prototype)
+- [x] World saving/loading
 - [ ] HUD
 - [ ] Biomes
-- [ ] World saving/loading
 - [ ] Boss fights
 - [ ] Dungeons
 
@@ -109,9 +109,12 @@ Download the latest TinyBlox release and start playing immediately.
 
 - The world uses layered TileStacks for pseudo-3D topology rendering.
 - Textures use a 16x16 pixel-art style.
+- Some systems currently use temporary or debug implementations.
 - Systems are still experimental and may evolve significantly.
 - Performance optimization is ongoing.
-- Some systems currently use temporary or debug implementations.
+- HTML build every release
+- Android maybe
+- iOS port? That would be cool, but I don't own a Mac series 3000.
 
 > [!IMPORTANT]
 >
@@ -146,10 +149,11 @@ By contributing, you agree your contributions may be used, modified, and distrib
 
 ---
 
-## Credits
-
-Created by Kyrixen
+## Built With
 
 Built using LibGDX, FastNoiseLite, Java, Gradle
 
+---
+
+Created by Kyrixen\
 Copyright (c) 2026 Kyrixen
