@@ -1,6 +1,5 @@
 package io.kyrixen.tinyblox.saving.world;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -15,12 +14,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.saving.InventorySaver;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
-import io.kyrixen.tinyblox.saving.entities.EnemyLoader;
-import io.kyrixen.tinyblox.saving.entities.EnemySaver;
-import io.kyrixen.tinyblox.saving.entities.EntityLoader;
-import io.kyrixen.tinyblox.saving.entities.EntitySaver;
-import io.kyrixen.tinyblox.saving.entities.MobEntityLoader;
-import io.kyrixen.tinyblox.saving.entities.MobEntitySaver;
+import io.kyrixen.tinyblox.saving.entities.EntityHandler;
 import io.kyrixen.tinyblox.saving.entities.PlayerSaver;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.FileManager;
@@ -54,7 +48,7 @@ public class WorldManager {
         FileManager.createDir(folder);
         FileManager.createDir(folder + "/chunks");
         FileManager.createDir(folder + "/entities");
-        FileManager.createDir(folder + "inventories");
+        FileManager.createDir(folder + "/inventories");
         
         WorldBlueprint wb = new WorldBlueprint();
         wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
@@ -98,11 +92,7 @@ public class WorldManager {
     // Loads chunk entities
     public static List<Entity> loadEntities(Chunk chunk, SoundManager soundManager) {
 
-        List<Entity> chunkEntities = new ArrayList<>();
-
-        chunkEntities.addAll(EntityLoader.load(chunk));
-        chunkEntities.addAll(MobEntityLoader.load(chunk, soundManager));
-        chunkEntities.addAll(EnemyLoader.load(chunk, soundManager));
+        List<Entity> chunkEntities = EntityHandler.load(chunk, soundManager);
 
         if(!chunkEntities.isEmpty()) Logger.LOGGER.debug("LOADER", "Loading entities for chunk " + chunk.getX() + "," + chunk.getY() + ": " + chunkEntities.toString());
 
@@ -114,23 +104,18 @@ public class WorldManager {
     public static void saveEntities(Chunk chunk) {
 
         // Saved entities list
-        List<SavedEntity> savedEntities = new ArrayList<>();
-
-        // Merge all entities
-        savedEntities.addAll(EntitySaver.save(chunk));
-        savedEntities.addAll(MobEntitySaver.save(chunk));
-        savedEntities.addAll(EnemySaver.save(chunk));
+        List<SavedEntity> savedEntities = EntityHandler.save(chunk);
         
         for(Entity entity : chunk.getEntities()) {
             if(entity instanceof MobEntity) InventorySaver.save((MobEntity) entity);
         }
 
         // File to write
-        String fileName = EntitySaver.getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
+        String fileName = EntityHandler.getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
         FileManager.deleteFile(fileName);
         
         if(savedEntities.isEmpty()) return;
-        EntitySaver.saveSavedEntities(savedEntities, fileName);
+        EntityHandler.saveSavedEntities(savedEntities, fileName);
 
     }
 

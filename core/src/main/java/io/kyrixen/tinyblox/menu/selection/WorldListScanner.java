@@ -24,8 +24,14 @@ public class WorldListScanner {
         List<String> worldPaths = FileManager.listDir(WorldManager.worldsFolder.path());
 
         for(String worldPath : worldPaths) {
+        
             if(!FileManager.isDir(worldPath)) continue;
-            foundWorlds.add(readConvert(FileManager.getEndpoint(worldPath)));
+            
+            WorldBlueprint worldBlueprint = readConvert(FileManager.getEndpoint(worldPath));
+            if(worldBlueprint == null) continue;
+            
+            foundWorlds.add(worldBlueprint);
+        
         }
         
         if(foundWorlds.isEmpty()) Logger.LOGGER.info("SCANNER", "No worlds found");
@@ -39,7 +45,8 @@ public class WorldListScanner {
 
         String filePath = WorldManager.worldsFolder + "/" + worldName + "/world.json";
         String worldData = FileManager.readFile(filePath);
-    
+        if(worldData == null) return null;
+
         WorldBlueprint worldBlueprint = json.fromJson(WorldBlueprint.class, worldData);
 
         return worldBlueprint;

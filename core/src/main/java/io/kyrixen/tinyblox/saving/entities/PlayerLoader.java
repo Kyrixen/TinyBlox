@@ -1,9 +1,5 @@
 package io.kyrixen.tinyblox.saving.entities;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import com.badlogic.gdx.utils.Json;
 
 import io.kyrixen.tinyblox.Constants;
@@ -12,6 +8,7 @@ import io.kyrixen.tinyblox.saving.InventoryLoader;
 import io.kyrixen.tinyblox.saving.blueprints.entities.PlayerBlueprint;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 
@@ -21,7 +18,7 @@ public class PlayerLoader {
     private static final Json json = new Json();  
     
 
-    // Convertor helper
+    // Converts to Player
     public static Player convertToPlayer(PlayerBlueprint pb, Camera camera, SoundManager soundManager) {
 
         if(pb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + pb.formatVersion);
@@ -51,11 +48,8 @@ public class PlayerLoader {
         String fileName = getPlayerFolder() + "/player.json";
         Player player = null;
 
-        String playerData;
-        try {
-            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-            playerData = new String(bytes);
-        } catch (IOException e) { return player; }
+        String playerData = FileManager.readFile(fileName);
+        if(playerData == null) return player;
 
         PlayerBlueprint pb = json.fromJson(PlayerBlueprint.class, playerData);
         if(pb.formatVersion != Constants.SAVE_FORMAT_VERSION) {

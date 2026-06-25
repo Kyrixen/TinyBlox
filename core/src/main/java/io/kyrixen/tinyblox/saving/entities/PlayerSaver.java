@@ -1,8 +1,5 @@
 package io.kyrixen.tinyblox.saving.entities;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
@@ -10,7 +7,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.saving.blueprints.entities.PlayerBlueprint;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.FileManager;
 
 public class PlayerSaver {
 
@@ -22,7 +19,7 @@ public class PlayerSaver {
     }
 
 
-    // Helper for converting
+    // Converts to blueprint
     public static PlayerBlueprint convertToBlueprint(Player player) {
 
         PlayerBlueprint pb = new PlayerBlueprint();
@@ -62,11 +59,7 @@ public class PlayerSaver {
 
         // Collected data
         String playerData = json.prettyPrint(pb);
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write(playerData);
-            fileWriter.close();            
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create player save file: " + e); }
+        FileManager.writeFile(fileName, playerData);
 
     }
 
