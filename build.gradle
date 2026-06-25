@@ -57,7 +57,7 @@ configure(subprojects) {
 
 subprojects {
   version = "$projectVersion"
-  ext.appName = 'TinyBloxJava'
+  ext.appName = 'TinyBlox'
   repositories {
     mavenCentral()
     // You may want to remove the following line if you have errors downloading dependencies.

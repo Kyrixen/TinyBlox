@@ -1,9 +1,5 @@
 package io.kyrixen.tinyblox.saving.world;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import com.badlogic.gdx.utils.Json;
 
 import fastnoiselite.FastNoiseLite;
@@ -11,6 +7,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
+import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -49,20 +46,19 @@ public class ChunkLoader {
 
     }
 
-    // Loades chunk
+    // Loads chunk
     public static Chunk load(ChunkPos chunkPos, FastNoiseLite noise) {
 
         String fileName = getChunkFolder() + "/chunk_" + chunkPos.getChunkX() + "_" + chunkPos.getChunkY() + ".json";
 
-        String chunkData;
-        try {
-            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-            chunkData = new String(bytes);
-        } catch (IOException e) { return createChunk(chunkPos, noise); }
-
+        String chunkData = FileManager.readFile(fileName);
+        if (chunkData == null) return createChunk(chunkPos, noise);
+        
         ChunkBlueprint cb = json.fromJson(ChunkBlueprint.class, chunkData);
         if(cb.formatVersion != Constants.SAVE_FORMAT_VERSION) Logger.LOGGER.error("LOADER", "Invalid format version for chunk save " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY() + ": " + cb.formatVersion);
+        
         Logger.LOGGER.debug("LOADER", "Loaded chunk save: " + chunkPos.getChunkX() + ", " + chunkPos.getChunkY());
+        
         return convertToChunk(chunkPos, cb, noise);
 
     }
@@ -88,7 +84,7 @@ public class ChunkLoader {
 
     // Get chunk folder path
     private static String getChunkFolder() {
-        return WorldManager.worldFolder + "/chunks";
+        return WorldManager.worldFolder.path() + "/chunks";
     }
     
 }

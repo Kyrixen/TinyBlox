@@ -1,9 +1,5 @@
 package io.kyrixen.tinyblox.saving.world;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +23,7 @@ import io.kyrixen.tinyblox.saving.entities.MobEntityLoader;
 import io.kyrixen.tinyblox.saving.entities.MobEntitySaver;
 import io.kyrixen.tinyblox.saving.entities.PlayerSaver;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.FrequencyType;
@@ -53,26 +50,21 @@ public class WorldManager {
 
         String folder = worldsFolder + "/" + worldName.toLowerCase().replace(" ", "_");
         worldFolder = Gdx.files.local(folder);
-        try { 
 
-            Files.createDirectories(Paths.get(folder));
-            Files.createDirectories(Paths.get(folder + "/chunks"));
-            Files.createDirectories(Paths.get(folder + "/entities"));
-            Files.createDirectories(Paths.get(folder + "/inventories"));
-            
-            WorldBlueprint wb = new WorldBlueprint();
-            wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
-            wb.worldName = worldName;
-            wb.worldSeed = seed;
-            wb.worldFrequency = frequency.name();
-            wb.lastEntityID = 0;
-            String worldData = json.prettyPrint(wb);
-            
-            FileWriter fileWriter = new FileWriter(folder + "/world.json");
-            fileWriter.write(worldData);
-            fileWriter.close();
+        FileManager.createDir(folder);
+        FileManager.createDir(folder + "/chunks");
+        FileManager.createDir(folder + "/entities");
+        FileManager.createDir(folder + "inventories");
+        
+        WorldBlueprint wb = new WorldBlueprint();
+        wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
+        wb.worldName = worldName;
+        wb.worldSeed = seed;
+        wb.worldFrequency = frequency.name();
+        wb.lastEntityID = 0;
 
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create world dir: " + e); }
+        String worldData = json.prettyPrint(wb);
+        FileManager.writeFile(folder + "/world.json", worldData);
 
     }
 
@@ -81,20 +73,14 @@ public class WorldManager {
 
         String folder = worldsFolder + "/" + worldBlueprint.worldName.toLowerCase().replace(" ", "_");
         worldFolder = Gdx.files.local(folder);
-        try { 
 
-            Files.createDirectories(Paths.get(folder));
-            Files.createDirectories(Paths.get(folder + "/chunks"));
-            Files.createDirectories(Paths.get(folder + "/entities"));
-            Files.createDirectories(Paths.get(folder + "/inventories"));
-            
-            String worldData = json.prettyPrint(worldBlueprint);
-            
-            FileWriter fileWriter = new FileWriter(folder + "/world.json");
-            fileWriter.write(worldData);
-            fileWriter.close();
+        FileManager.createDir(folder);
+        FileManager.createDir(folder + "/chunks");
+        FileManager.createDir(folder + "/entities");
+        FileManager.createDir(folder + "/inventories");
 
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create world dir: " + e); }
+        String worldData = json.prettyPrint(worldBlueprint);  
+        FileManager.writeFile(folder + "/world.json", worldData);
 
     }
 
@@ -141,7 +127,7 @@ public class WorldManager {
 
         // File to write
         String fileName = EntitySaver.getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
-        try { Files.deleteIfExists(Paths.get(fileName)); } catch(IOException e) {}
+        FileManager.deleteFile(fileName);
         
         if(savedEntities.isEmpty()) return;
         EntitySaver.saveSavedEntities(savedEntities, fileName);
@@ -186,22 +172,16 @@ public class WorldManager {
 
     // Saves world info
     public static void saveWorldInfo(String worldName) {
+    
+        String folder = worldsFolder + "/" + worldName.toLowerCase().replace(" ", "_");
+
+        WorldBlueprint wb = loadWorldInfo(worldName);
+        if(wb == null) { Logger.LOGGER.error("SAVER", "Failed to save world info"); return; }
+        wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
+        wb.lastEntityID = MiscUtils.getCurrentEntityID();
+        String worldData = json.prettyPrint(wb);
         
-        try { 
-
-            String folder = worldsFolder + "/" + worldName.toLowerCase().replace(" ", "_");
-
-            WorldBlueprint wb = loadWorldInfo(worldName);
-            if(wb == null) { Logger.LOGGER.error("SAVER", "Failed to save world info"); return; }
-            wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
-            wb.lastEntityID = MiscUtils.getCurrentEntityID();
-            String worldData = json.prettyPrint(wb);
-            
-            FileWriter fileWriter = new FileWriter(folder + "/world.json");
-            fileWriter.write(worldData);
-            fileWriter.close();
-
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Failed to save world info: " + e); }  
+        FileManager.writeFile(folder + "/world.json", worldData);
 
     }
 

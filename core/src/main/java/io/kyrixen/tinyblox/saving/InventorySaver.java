@@ -1,8 +1,5 @@
 package io.kyrixen.tinyblox.saving;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
@@ -13,7 +10,7 @@ import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.FileManager;
 
 public class InventorySaver {
 
@@ -62,19 +59,14 @@ public class InventorySaver {
 
         // Collected data
         String inventoryData = json.prettyPrint(inventoryBlueprint);
-
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write(inventoryData);
-            fileWriter.close();            
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create inventory save file: " + e); }
+        FileManager.writeFile(fileName, inventoryData);
 
     }
 
 
     // Get inventory folder path
     private static String getInventoryFolder() {
-        return WorldManager.worldFolder + "/inventories";
+        return WorldManager.worldFolder.path() + "/inventories";
     }
 
 }

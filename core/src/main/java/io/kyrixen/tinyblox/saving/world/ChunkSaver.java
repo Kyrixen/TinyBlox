@@ -1,9 +1,5 @@
 package io.kyrixen.tinyblox.saving.world;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +12,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
-import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -99,12 +95,9 @@ public class ChunkSaver {
         String fileName = getChunkFolder() + "/chunk_" + chunk.getX() + "_" + chunk.getY() + ".json";
 
         // Read old save
-        try {
-            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-            String oldData = new String(bytes);
-            previous = json.fromJson(ChunkBlueprint.class, oldData);
-        } catch (IOException e) {}
-
+        String oldData = FileManager.readFile(fileName);
+        if(oldData != null) previous = json.fromJson(ChunkBlueprint.class, oldData);
+        
         // If there is an old save get from it the stacks
         if(previous != null && previous.stacks != null) {
             for(ChunkStack chunkStack : previous.stacks) {
@@ -122,12 +115,7 @@ public class ChunkSaver {
 
         // Collected data
         String chunkData = json.prettyPrint(merged);
-
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write(chunkData);
-            fileWriter.close();            
-        } catch (IOException e) { Logger.LOGGER.error("SAVER", "Cannot create chunk save file: " + e); }
+        FileManager.writeFile(fileName, chunkData);
 
         chunk.setModified(false);
 
@@ -135,7 +123,7 @@ public class ChunkSaver {
 
     // Get chunk folder path
     private static String getChunkFolder() {
-        return WorldManager.worldFolder + "/chunks";
+        return WorldManager.worldFolder.path() + "/chunks";
     }
 
 }

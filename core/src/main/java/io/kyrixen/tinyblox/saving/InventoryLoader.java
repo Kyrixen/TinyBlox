@@ -1,9 +1,5 @@
 package io.kyrixen.tinyblox.saving;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
@@ -14,6 +10,7 @@ import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
+import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 
 public class InventoryLoader {
@@ -47,12 +44,8 @@ public class InventoryLoader {
 
         // File to write
         String fileName = getInventoryFolder() + "/inventory_" + mobEntity.id() + ".json";
-        
-        String inventoryData;
-        try {
-            byte[] bytes = Files.readAllBytes(Paths.get(fileName));
-            inventoryData = new String(bytes);
-        } catch (IOException e) { return; }
+        String inventoryData = FileManager.readFile(fileName);
+        if(inventoryData == null) return;
 
         InventoryBlueprint inventoryBlueprint = json.fromJson(InventoryBlueprint.class, inventoryData);
         if(inventoryBlueprint.formatVersion != Constants.SAVE_FORMAT_VERSION) Logger.LOGGER.error("LOADER", "Invalid format version to load: "  + inventoryBlueprint.formatVersion);
@@ -64,7 +57,7 @@ public class InventoryLoader {
     
     // Get inventory folder path
     private static String getInventoryFolder() {
-        return WorldManager.worldFolder + "/inventories";
+        return WorldManager.worldFolder.path() + "/inventories";
     }
 
 }
