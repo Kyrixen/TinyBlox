@@ -20,6 +20,7 @@ import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.EnemySpawner;
@@ -79,6 +80,9 @@ public class Engine implements Screen {
 
     private void init() {
 
+        // Sets input processor
+        Gdx.input.setInputProcessor(new Peripheral());
+
         // Initialize sprites
         textures.loadHUD();
         textures.loadGame();
@@ -111,8 +115,6 @@ public class Engine implements Screen {
         player.initTexture();
 
         lastAutoSave = System.currentTimeMillis();
-
-        player.getInventory().add(ItemRegister.CAGED_LAMP, (byte) 4);
 
     }
 

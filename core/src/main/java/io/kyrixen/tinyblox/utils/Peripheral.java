@@ -4,30 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
-public class Peripheral {
+public class Peripheral extends InputAdapter {
 
     // Scroll var
     private static int scrollType = 0;
 
-    // Register scroll event
-    static {
+    // Scrolling
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        if (amountY > 0) scrollType = 1;
+        else if (amountY < 0) scrollType = -1;
+        else scrollType = 0;
 
-            @Override
-            public boolean scrolled(float amountX, float amountY) {
+        return true;
 
-                if (amountY > 0)
-                    scrollType = 1;
-                else if (amountY < 0)
-                    scrollType = -1;
-                else
-                    scrollType = 0;
-
-                return true;
-            }
-        });
     }
+
+    
     // Key Handling //
 
     public static boolean keyReleased(int k) {

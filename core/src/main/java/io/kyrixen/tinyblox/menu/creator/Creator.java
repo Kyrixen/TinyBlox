@@ -94,7 +94,7 @@ public class Creator implements Screen {
         doneButton.updateState();
 
         if(doneButton.pressed()) { WorldManager.createWorld(creatorHelper.getWorldInfo()); Gdx.input.setInputProcessor(null); main.setScreen(new Selection(main, rendererStack, tex, uiRenderer));}
-        if(cancelButton.pressed()) { Gdx.input.setInputProcessor(null); main.setScreen(new Selection(main, rendererStack, tex, uiRenderer)); }
+        if(cancelButton.pressed()) { Gdx.input.setInputProcessor(new Peripheral()); main.setScreen(new Selection(main, rendererStack, tex, uiRenderer)); }
 
     }
 

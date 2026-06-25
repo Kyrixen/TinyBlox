@@ -114,6 +114,8 @@ public class Crafting {
 
     public void updateScroll(int scrollDir) {
 
+        if (!activated) return;
+
         if(scrollDir < 0) scrollOffset--;
         else if(scrollDir > 0) scrollOffset++;
 

@@ -42,8 +42,6 @@ public class PlayerSaver {
         pb.tireless = player.isTireless();
         pb.autoRecover = player.getAutoRecover();
 
-        pb.inMenu = player.isInMenu();
-
         return pb;
 
     }
