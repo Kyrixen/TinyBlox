@@ -94,10 +94,10 @@ The focus is on:
 
 ## Download TinyBlox
 
-### Latest Release
+Download the latest release or play on itch.io.
 
-Download the latest TinyBlox release and start playing immediately.
-***[Releases](https://github.com/Kyrixen/TinyBlox/releases/latest)***
+- **GitHub Releases:** [Github](https://github.com/Kyrixen/TinyBlox/releases/latest)
+- **itch.io:** [Itch.io](https://kyrixen.itch.io/tinyblox)
 
 > Requires Java 17+.
 
