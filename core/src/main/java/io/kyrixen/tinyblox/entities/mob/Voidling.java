@@ -20,14 +20,14 @@ public class Voidling extends Enemy {
     
     private Player player = null;
 
-    public Voidling(int x, int y, SoundManager soundManager) {
+    public Voidling(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
 
-        this.maxHealth = 60;
-        this.health = 60;
+        this.maxHealth = (int) (40 * Constants.DIFFICULTY.getDiffMult());
+        this.health = 40 * Constants.DIFFICULTY.getDiffMult();
 
-        this.attackDamage = 25;
+        this.attackDamage = (int) (20 * Constants.DIFFICULTY.getDiffMult());
 
         this.activationRange = 3;
 
@@ -35,14 +35,14 @@ public class Voidling extends Enemy {
 
     }
     
-    public Voidling(int id, int x, int y, SoundManager soundManager) {
+    public Voidling(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
 
-        this.maxHealth = 60;
-        this.health = 60;
+        this.maxHealth = (int) (40 * Constants.DIFFICULTY.getDiffMult());
+        this.health = 40 * Constants.DIFFICULTY.getDiffMult();
 
-        this.attackDamage = 25;
+        this.attackDamage = (int) (20 * Constants.DIFFICULTY.getDiffMult());
 
         this.activationRange = 3;
 
@@ -66,7 +66,7 @@ public class Voidling extends Enemy {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);
@@ -102,8 +102,8 @@ public class Voidling extends Enemy {
 
         for(int attempt = 0; attempt < 100; attempt++) {
 
-            int choosenX = RandomUtils.randomInt(player.x() - 100 * Constants.GRID_SIZE, player.x() + 100 * Constants.GRID_SIZE);
-            int choosenY = RandomUtils.randomInt(player.y() - 100 * Constants.GRID_SIZE, player.y() + 100 * Constants.GRID_SIZE);
+            int choosenX = RandomUtils.randomInt((int) player.x() - 100 * Constants.GRID_SIZE, (int) player.x() + 100 * Constants.GRID_SIZE);
+            int choosenY = RandomUtils.randomInt((int) player.y() - 100 * Constants.GRID_SIZE, (int) player.y() + 100 * Constants.GRID_SIZE);
             choosenX -= choosenX % Constants.GRID_SIZE;
             choosenY -= choosenY % Constants.GRID_SIZE;
 

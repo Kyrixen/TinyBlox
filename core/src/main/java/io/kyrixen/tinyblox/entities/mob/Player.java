@@ -40,7 +40,7 @@ public class Player extends MobEntity {
     private final SoundID WALK_SOUND = new SoundID("tinyblox", SoundType.HUD, "walk");
 
 
-    public Player(int x, int y, Camera camera, SoundManager soundManager) {
+    public Player(float x, float y, Camera camera, SoundManager soundManager) {
     
         super(x, y, soundManager);
 
@@ -51,15 +51,15 @@ public class Player extends MobEntity {
         this.craftingManager = new Crafting(this.inventory);
 
         this.sprintDelay = 0.15f;
-        this.damageDelay = 0.50f;
+        this.damageDelay = 0.40f * Constants.DIFFICULTY.getDiffMult();
 
         this.setSpeed(Speed.NORMAL);
 
-        this.health = 100;
-        this.maxHealth = 100;
+        this.health = 150 / Constants.DIFFICULTY.getDiffMult();
+        this.maxHealth = (int) (150 / Constants.DIFFICULTY.getDiffMult());
 
-        this.stamina = 100;
-        this.maxStamina = 100;
+        this.stamina = 125 / Constants.DIFFICULTY.getDiffMult();
+        this.maxStamina = (int) (125 / Constants.DIFFICULTY.getDiffMult());
         
         this.invincible = false;
         this.tireless = false;
@@ -71,7 +71,7 @@ public class Player extends MobEntity {
     
     }
     
-    public Player(int id, int x, int y, Camera camera, SoundManager soundManager) {
+    public Player(int id, float x, float y, Camera camera, SoundManager soundManager) {
     
         super(id, x, y, soundManager);
 
@@ -82,15 +82,15 @@ public class Player extends MobEntity {
         this.craftingManager = new Crafting(this.inventory);
 
         this.sprintDelay = 0.15f;
-        this.damageDelay = 0.50f;
+        this.damageDelay = 0.40f * Constants.DIFFICULTY.getDiffMult();
 
         this.setSpeed(Speed.NORMAL);
 
-        this.health = 100;
-        this.maxHealth = 100;
+        this.health = 150 / Constants.DIFFICULTY.getDiffMult();
+        this.maxHealth = (int) (150 / Constants.DIFFICULTY.getDiffMult());
 
-        this.stamina = 100;
-        this.maxStamina = 100;
+        this.stamina = 125 / Constants.DIFFICULTY.getDiffMult();
+        this.maxStamina = (int) (125 / Constants.DIFFICULTY.getDiffMult());
         
         this.invincible = false;
         this.tireless = false;
@@ -139,7 +139,7 @@ public class Player extends MobEntity {
 
         if(inventory.isFull()) return;
         
-        for(Entity e : terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, 1)) {
+        for(Entity e : terrain.getNearbyEntities((int) x() / Constants.GRID_SIZE, (int) y() / Constants.GRID_SIZE, 1)) {
 
             if(e == this) continue;
             if(!(e instanceof ItemEntity)) continue;
@@ -219,7 +219,7 @@ public class Player extends MobEntity {
         if(dirX == 0 && dirY == 0) return;
         if(level() + 1 > Constants.MAX_WORLD_HEIGHT) return;
 
-        TileStack nextStack = terrain.getWorldTileStack((x() / Constants.GRID_SIZE) + dirX, (y() / Constants.GRID_SIZE) + dirY());
+        TileStack nextStack = terrain.getWorldTileStack((int) (x() / Constants.GRID_SIZE) + dirX, (int) (y() / Constants.GRID_SIZE) + dirY());
         if(nextStack == null) return;
 
         Tile nextTile = nextStack.get((byte) (level() + 1));
@@ -244,7 +244,7 @@ public class Player extends MobEntity {
         if(dirX == 0 && dirY == 0) return;
         if(level() - 1 < Constants.MIN_WORLD_HEIGHT) return;
 
-        TileStack nextStack = terrain.getWorldTileStack((x() / Constants.GRID_SIZE) + dirX, (y() / Constants.GRID_SIZE) + dirY());
+        TileStack nextStack = terrain.getWorldTileStack((int) (x() / Constants.GRID_SIZE) + dirX, (int) (y() / Constants.GRID_SIZE) + dirY());
         if(nextStack == null) return;
 
         Tile nextTile = nextStack.get((byte) (level() - 1));

@@ -24,11 +24,11 @@ public class EntityCollision {
     // Check Tile collision between entities
     public static boolean checkTileCollision(Entity e1, Entity e2) {
 
-        int e1TileX = (e1.x() + e1.width() / 2) / Constants.GRID_SIZE;
-        int e2TileX = (e2.x() + e2.width() / 2) / Constants.GRID_SIZE;
+        int e1TileX = (int) (e1.x() + e1.width() / 2) / Constants.GRID_SIZE;
+        int e2TileX = (int) (e2.x() + e2.width() / 2) / Constants.GRID_SIZE;
 
-        int e1TileY = (e1.y() + e1.height() / 2) / Constants.GRID_SIZE;
-        int e2TileY = (e2.y() + e2.height() / 2) / Constants.GRID_SIZE;
+        int e1TileY = (int) (e1.y() + e1.height() / 2) / Constants.GRID_SIZE;
+        int e2TileY = (int) (e2.y() + e2.height() / 2) / Constants.GRID_SIZE;
 
         return e1TileX == e2TileX && e1TileY == e2TileY && e1.level() == e2.level();
 

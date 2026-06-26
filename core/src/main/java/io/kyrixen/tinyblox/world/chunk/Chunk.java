@@ -93,12 +93,12 @@ public class Chunk {
         int worldChunksX = Math.max(1, (Constants.MAP_WIDTH + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE);
         int worldChunksY = Math.max(1, (Constants.MAP_HEIGHT + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE);
 
-        int camCenterX = cam.x + (int) (Constants.WINDOW_WIDTH / (2f * cam.zoom));
-        int camCenterY = cam.y + (int) (Constants.WINDOW_HEIGHT / (2f * cam.zoom));
+        float camCenterX = cam.x + (int) (Constants.WINDOW_WIDTH / (2f * cam.zoom));
+        float camCenterY = cam.y + (int) (Constants.WINDOW_HEIGHT / (2f * cam.zoom));
 
         // Camera chunk coordinates (top-left of screen)
-        int camChunkX = camCenterX / chunkWorldSize;
-        int camChunkY = camCenterY / chunkWorldSize;
+        int camChunkX = (int) camCenterX / chunkWorldSize;
+        int camChunkY = (int) camCenterY / chunkWorldSize;
 
         // Determine rendered chunk range
         int left   = Math.max(0, camChunkX - cam.RENDER_DISTANCE);

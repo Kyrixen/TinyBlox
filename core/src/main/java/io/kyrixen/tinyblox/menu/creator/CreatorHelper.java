@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.world.Difficulty;
 import io.kyrixen.tinyblox.world.FrequencyType;
 
 public class CreatorHelper extends InputAdapter {
@@ -19,7 +20,8 @@ public class CreatorHelper extends InputAdapter {
     
         NAME,
         SEED,
-        FREQUENCY
+        FREQUENCY,
+        DIFFICULTY
     
     }
 
@@ -31,6 +33,7 @@ public class CreatorHelper extends InputAdapter {
     private String worldName = "";
     private String seed = String.valueOf(RandomUtils.randomInt(Integer.MAX_VALUE - 1));
     private FrequencyType frequency = FrequencyType.NORMAL;
+    private Difficulty difficulty = Difficulty.EASY;
 
     // Text layout helper
     private GlyphLayout layout = new GlyphLayout();
@@ -42,12 +45,18 @@ public class CreatorHelper extends InputAdapter {
         if(pressed && insideName(mouseX, mouseY)) selected = SelectedPrompt.NAME;
         if(pressed && insideSeed(mouseX, mouseY)) selected = SelectedPrompt.SEED;
         if(pressed && insideFrequency(mouseX, mouseY)) selected = SelectedPrompt.FREQUENCY;
+        if(pressed && insideDifficulty(mouseX, mouseY)) selected = SelectedPrompt.DIFFICULTY;
         
 
         // That diabolical calculation did AI
         if(selected == SelectedPrompt.FREQUENCY && pressed && insideFrequency(mouseX, mouseY)) {
             FrequencyType[] values = FrequencyType.values();
             frequency = values[(frequency.ordinal() + 1) % values.length];
+        }
+
+        if(selected == SelectedPrompt.DIFFICULTY && pressed && insideDifficulty(mouseX, mouseY)) {
+            Difficulty[] values = Difficulty.values();
+            difficulty = values[(difficulty.ordinal() + 1) % values.length];
         }
 
     }
@@ -65,26 +74,31 @@ public class CreatorHelper extends InputAdapter {
         layout.setText(font, line);
         float centerLine = (Constants.WINDOW_WIDTH - layout.width) / 2f;
 
-        font.draw(batch, line, centerLine, 460);
-        font.draw(batch, line, centerLine, 340);
-        font.draw(batch, line, centerLine, 220);
-
+        font.draw(batch, line, centerLine, 490);
+        font.draw(batch, line, centerLine, 370);
+        font.draw(batch, line, centerLine, 250);
+        font.draw(batch, line, centerLine, 130);
 
         String nameLabel = "MAP NAME:";
         String seedLabel = "SEED:";
         String frequencyLabel = "FREQUENCY:";
+        String difficultyLabel = "DIFFICULTY:";
 
         layout.setText(font, nameLabel);
         float nameX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, nameLabel, nameX, 500);
+        font.draw(batch, nameLabel, nameX, 530);
 
         layout.setText(font, seedLabel);
         float seedX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, seedLabel, seedX, 380);
+        font.draw(batch, seedLabel, seedX, 410);
 
         layout.setText(font, frequencyLabel);
         float frequencyX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, frequencyLabel, frequencyX, 260);
+        font.draw(batch, frequencyLabel, frequencyX, 290);
+
+        layout.setText(font, frequencyLabel);
+        float difficultyX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
+        font.draw(batch, difficultyLabel, difficultyX, 170);
 
         font.getData().setScale(1f);
 
@@ -100,17 +114,22 @@ public class CreatorHelper extends InputAdapter {
 
         if(selected == SelectedPrompt.NAME) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, worldName);
-        font.draw(batch, worldName, (Constants.WINDOW_WIDTH - layout.width) / 2f, 470);
+        font.draw(batch, worldName, (Constants.WINDOW_WIDTH - layout.width) / 2f, 500);
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.SEED) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, seed);
-        font.draw(batch, seed, (Constants.WINDOW_WIDTH - layout.width) / 2f, 350);
+        font.draw(batch, seed, (Constants.WINDOW_WIDTH - layout.width) / 2f, 380);
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.FREQUENCY) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, frequency.name().replace("_", " "));
-        font.draw(batch, frequency.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, 230);
+        font.draw(batch, frequency.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, 260);
+        font.setColor(1f, 1f, 1f ,1f);
+
+        if(selected == SelectedPrompt.DIFFICULTY) font.setColor(1f, 1f, 0f, 1f);
+        layout.setText(font, difficulty.name().replace("_", " "));
+        font.draw(batch, difficulty.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, 140);
         font.setColor(1f, 1f, 1f ,1f);
 
         font.getData().setScale(1f);
@@ -131,6 +150,8 @@ public class CreatorHelper extends InputAdapter {
         else worldInfo.worldSeed = Integer.parseInt(seed);
 
         worldInfo.worldFrequency = frequency.name();
+        worldInfo.worldDifficulty = difficulty.name();
+
         worldInfo.lastEntityID = 0;
 
         return worldInfo;
@@ -141,17 +162,20 @@ public class CreatorHelper extends InputAdapter {
     // Helpers //
 
     private boolean insideName(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 440 && mouseY <= 490;
+        return mouseX >= 250 && mouseX <= 550 && mouseY >= 470 && mouseY <= 520;
     }
 
     private boolean insideSeed(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 320 && mouseY <= 370;
+        return mouseX >= 250 && mouseX <= 550 && mouseY >= 350 && mouseY <= 400;
     }
 
     private boolean insideFrequency(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 200 && mouseY <= 250;
+        return mouseX >= 250 && mouseX <= 550 && mouseY >= 230 && mouseY <= 280;
     }
 
+    private boolean insideDifficulty(int mouseX, int mouseY) {
+        return mouseX >= 250 && mouseX <= 550 && mouseY >= 110 && mouseY <= 160;
+    }
 
 
     // Input processor handling //

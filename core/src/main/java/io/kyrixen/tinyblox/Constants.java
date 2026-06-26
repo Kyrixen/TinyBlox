@@ -1,5 +1,7 @@
 package io.kyrixen.tinyblox;
 
+import io.kyrixen.tinyblox.world.Difficulty;
+
 // Global vars
 public class Constants {
 
@@ -32,6 +34,8 @@ public class Constants {
     public static final byte MIN_TERRAIN_HEIGHT = 6;
 
     public static final byte LIGHT_RADIUS = 4;
+
+    public static Difficulty DIFFICULTY = Difficulty.NORMAL;
 
     // Tile stuff
     public static final int GRID_SIZE = 16;

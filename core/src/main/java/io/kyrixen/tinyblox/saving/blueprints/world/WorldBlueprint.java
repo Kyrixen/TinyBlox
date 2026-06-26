@@ -7,12 +7,13 @@ public class WorldBlueprint {
     public String worldName;
     public int worldSeed;
     public String worldFrequency;
+    public String worldDifficulty;
 
     public int lastEntityID;
 
     @Override
     public String toString() {
-        return "WorldBlueprint {version=" + formatVersion + ", name=" + worldName + ", seed=" + worldSeed + ", frequency=" + worldFrequency + ", last_id=" + lastEntityID + "}";
+        return "WorldBlueprint {version=" + formatVersion + ", name=" + worldName + ", seed=" + worldSeed + ", frequency=" + worldFrequency + ", difficulty=" + worldDifficulty + ", last_id=" + lastEntityID + "}";
     }
     
 }

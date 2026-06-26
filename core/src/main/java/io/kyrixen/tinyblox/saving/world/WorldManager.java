@@ -20,6 +20,7 @@ import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.world.Difficulty;
 import io.kyrixen.tinyblox.world.FrequencyType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;   
@@ -55,6 +56,7 @@ public class WorldManager {
         wb.worldName = worldName;
         wb.worldSeed = seed;
         wb.worldFrequency = frequency.name();
+        wb.worldDifficulty = Constants.DIFFICULTY.name();
         wb.lastEntityID = 0;
 
         String worldData = json.prettyPrint(wb);
@@ -84,6 +86,7 @@ public class WorldManager {
         WorldBlueprint wb = loadWorldInfo(worldName);
         if(wb == null) { createWorld(worldName, seed, frequency); wb = loadWorldInfo(worldName); }
         MiscUtils.initEntityID(wb.lastEntityID);
+        Constants.DIFFICULTY = Difficulty.valueOf(wb.worldDifficulty);
 
         return wb;
 
@@ -163,6 +166,7 @@ public class WorldManager {
         WorldBlueprint wb = loadWorldInfo(worldName);
         if(wb == null) { Logger.LOGGER.error("SAVER", "Failed to save world info"); return; }
         wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
+        wb.worldDifficulty = Constants.DIFFICULTY.name();
         wb.lastEntityID = MiscUtils.getCurrentEntityID();
         String worldData = json.prettyPrint(wb);
         

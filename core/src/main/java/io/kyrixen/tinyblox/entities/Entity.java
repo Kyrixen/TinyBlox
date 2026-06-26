@@ -43,8 +43,8 @@ public class Entity {
 
 
     // Cords
-    protected int x;
-    protected int y;
+    protected float x;
+    protected float y;
 
     // Dimensions
     protected final int width;
@@ -70,7 +70,7 @@ public class Entity {
     protected TextureID texture = null;
 
     // Constructs entity
-    public Entity(int x, int y, int w, int h) {
+    public Entity(float x, float y, int w, int h) {
 
         this.id = MiscUtils.generateEntityID();
         
@@ -86,7 +86,7 @@ public class Entity {
     }
 
     // Constructs entity with id
-    public Entity(int id, int x, int y, int w, int h) {
+    public Entity(int id, float x, float y, int w, int h) {
 
         this.id = id;
         
@@ -122,7 +122,7 @@ public class Entity {
     // Update entity
     public void update(float deltaTime, Terrain terrain) {
 
-        TileStack entityStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        TileStack entityStack = terrain.getWorldTileStack((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE);
         if(entityStack == null) return;
         
         Tile belowTile = entityStack.get((byte) (level() - 1));
@@ -171,7 +171,7 @@ public class Entity {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);
@@ -238,8 +238,8 @@ public class Entity {
 
     public int id() { return id; }
 
-    public int x() { return x; }
-    public int y() { return y; }
+    public float x() { return x; }
+    public float y() { return y; }
     public byte level() { return level; }
 
     public int dirX() { return dirX; }

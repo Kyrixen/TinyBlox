@@ -16,8 +16,8 @@ public class TerrainCollision {
 
         int tileSize = Constants.GRID_SIZE;
 
-        int nextX = e.x() + e.dirX() * tileSize;
-        int nextY = e.y() + e.dirY() * tileSize;
+        int nextX = (int) (e.x() + e.dirX() * tileSize);
+        int nextY = (int) (e.y() + e.dirY() * tileSize);
 
         // World bounds
         int worldPixelWidth = Constants.MAP_WIDTH * tileSize;

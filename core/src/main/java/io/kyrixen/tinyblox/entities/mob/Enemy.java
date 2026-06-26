@@ -37,44 +37,44 @@ public class Enemy extends MobEntity {
     protected final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
 
 
-    public Enemy(int x, int y, SoundManager soundManager) {
+    public Enemy(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
 
         this.chasing = false;
 
-        this.attackDamage = 20;
-        this.damageDelay = 0.50f;
+        this.attackDamage = (int) (15 * Constants.DIFFICULTY.getDiffMult());
+        this.damageDelay = 0.50f / Constants.DIFFICULTY.getDiffMult();
 
-        this.health = 50;
-        this.maxHealth = 50;
+        this.health = 35 * Constants.DIFFICULTY.getDiffMult();
+        this.maxHealth = (int) (35 * Constants.DIFFICULTY.getDiffMult());
 
-        this.stamina = 100;
-        this.maxStamina = 100;
+        this.stamina = 75 * Constants.DIFFICULTY.getDiffMult();
+        this.maxStamina = (int) (75 * Constants.DIFFICULTY.getDiffMult());
         
         this.invincible = false;
         this.tireless = true;
 
-        this.setSpeed(Speed.NORMAL);
+        this.setSpeed(Speed.SLOW);
 
         this.lastMove = System.currentTimeMillis();
     
     }
 
-    public Enemy(int id, int x, int y, SoundManager soundManager) {
+    public Enemy(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
 
         this.chasing = false;
 
-        this.attackDamage = 20;
-        this.damageDelay = 0.50f;
+        this.attackDamage = (int) (15 * Constants.DIFFICULTY.getDiffMult());
+        this.damageDelay = 0.50f / Constants.DIFFICULTY.getDiffMult();
 
-        this.health = 50;
-        this.maxHealth = 50;
+        this.health = 35 * Constants.DIFFICULTY.getDiffMult();
+        this.maxHealth = (int) (35 * Constants.DIFFICULTY.getDiffMult());
 
-        this.stamina = 100;
-        this.maxStamina = 100;
+        this.stamina = 75 * Constants.DIFFICULTY.getDiffMult();
+        this.maxStamina = (int) (75 * Constants.DIFFICULTY.getDiffMult());
         
         this.invincible = false;
         this.tireless = true;
@@ -154,11 +154,11 @@ public class Enemy extends MobEntity {
         if(target != null) return;
         target = player;
 
-        short enemyChunkX = (short) Math.floorDiv(x() / width(), Constants.CHUNK_SIZE);
-        short enemyChunkY = (short) Math.floorDiv(y() / height(), Constants.CHUNK_SIZE);
+        short enemyChunkX = (short) Math.floorDiv((int) x() / width(), Constants.CHUNK_SIZE);
+        short enemyChunkY = (short) Math.floorDiv((int) y() / height(), Constants.CHUNK_SIZE);
 
-        short playerChunkX = (short) Math.floorDiv(player.x() / player.width(), Constants.CHUNK_SIZE);
-        short playerChunkY = (short) Math.floorDiv(player.y() / player.height(), Constants.CHUNK_SIZE);
+        short playerChunkX = (short) Math.floorDiv((int) player.x() / player.width(), Constants.CHUNK_SIZE);
+        short playerChunkY = (short) Math.floorDiv((int) player.y() / player.height(), Constants.CHUNK_SIZE);
 
         int diffX = Math.abs(playerChunkX - enemyChunkX);
         int diffY = Math.abs(playerChunkY - enemyChunkY);
@@ -231,8 +231,8 @@ public class Enemy extends MobEntity {
         // Safety check
         if (target == null) return;
 
-        int dx = target.x() - this.x();
-        int dy = target.y() - this.y();
+        int dx = (int) (target.x() - this.x());
+        int dy = (int) (target.y() - this.y());
 
         // Calculate distance
         int distX = Math.abs(dx);
@@ -266,8 +266,8 @@ public class Enemy extends MobEntity {
     // Movement helper
     protected boolean canMoveDirection(Terrain terrain) {
             
-        int enemyCenterX = x() / width();
-        int enemyCenterY = y() / height();
+        int enemyCenterX = (int) x() / width();
+        int enemyCenterY = (int) y() / height();
 
         TileStack enemyStack = terrain.getWorldTileStack(enemyCenterX + dirX, enemyCenterY + dirY);
         if(enemyStack == null) return false;

@@ -41,7 +41,7 @@ public class TileRenderer {
     }
 
     // Draw a single tile / texture with camera offset
-    public void draw(TextureID tile, int x, int y, FlipType flip, RendererStack rendererStack) {
+    public void draw(TextureID tile, float x, float y, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
 
@@ -60,7 +60,7 @@ public class TileRenderer {
     }
 
     // Draw a single tile / texture with camera offset and custom width / height
-    public void draw(TextureID tile, int x, int y, float w, float h, FlipType flip, RendererStack rendererStack) {
+    public void draw(TextureID tile, float x, float y, float w, float h, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
 
@@ -79,7 +79,7 @@ public class TileRenderer {
     }
 
     // Draw a single tile / texture overlay with camera offset
-    public void drawOutline(TextureID tile, int x, int y, FlipType flip, RendererStack rendererStack) {
+    public void drawOutline(TextureID tile, float x, float y, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
 
@@ -98,7 +98,7 @@ public class TileRenderer {
     }
 
     // Draw a single tile / texture overlay with camera offset and with custom width and height
-    public void drawOutline(TextureID tile, int x, int y, float w, float h, FlipType flip, RendererStack rendererStack) {
+    public void drawOutline(TextureID tile, float x, float y, float w, float h, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
 
@@ -118,7 +118,7 @@ public class TileRenderer {
 
 
     // Draw one tile from a tileset
-    public void drawTileset(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
+    public void drawTileset(TextureID tileset, float x, float y, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
         
@@ -137,7 +137,7 @@ public class TileRenderer {
     }
 
     // Draw one tile from a tileset and with custom width and height
-    public void drawTileset(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
+    public void drawTileset(TextureID tileset, float x, float y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
         
@@ -156,7 +156,7 @@ public class TileRenderer {
     }
 
     // Draw one overlay from a tileset
-    public void drawTilesetOutline(TextureID tileset, int x, int y, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
+    public void drawTilesetOutline(TextureID tileset, float x, float y, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
         
@@ -175,7 +175,7 @@ public class TileRenderer {
     }
 
     // Draw one overlay from a tileset with custom width and height
-    public void drawTilesetOutline(TextureID tileset, int x, int y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
+    public void drawTilesetOutline(TextureID tileset, float x, float y, float w, float h, int tileX, int tileY, int tileSize, FlipType flip, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
         

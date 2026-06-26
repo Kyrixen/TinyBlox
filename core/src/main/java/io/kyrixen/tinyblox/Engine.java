@@ -157,8 +157,14 @@ public class Engine implements Screen {
 
         if(player.isDead()) {
             Logger.LOGGER.debug("ENGINE", "Player is dead! Health: " + player.getHealth() + " | Game Over.");
-            exit = true;
-                
+
+            player.getInventory().clear();
+            
+            int[] spawn = MiscUtils.spawnNearCenter(terrain);            
+            player = new Player(spawn[0], spawn[1], camera, soundManager);
+            player.initTexture();
+            player.setLevel((byte) spawn[2]);
+            
         }
 
 

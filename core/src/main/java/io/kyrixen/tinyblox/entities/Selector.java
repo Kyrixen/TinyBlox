@@ -79,8 +79,8 @@ public class Selector extends Entity {
             distance.scl(REACH);
         }
 
-        tileX = mob.x / Constants.GRID_SIZE + Math.round(distance.x);
-        tileY = mob.y / Constants.GRID_SIZE + Math.round(distance.y);
+        tileX = (int) mob.x / Constants.GRID_SIZE + Math.round(distance.x);
+        tileY = (int) mob.y / Constants.GRID_SIZE + Math.round(distance.y);
 
         this.x = tileX * Constants.GRID_SIZE;
         this.y = tileY * Constants.GRID_SIZE;
@@ -107,7 +107,7 @@ public class Selector extends Entity {
     public void checkHit(Terrain terrain) {
 
         // Check for mouse interaction
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities((int) x() / Constants.GRID_SIZE, (int) y() / Constants.GRID_SIZE, REACH));
 
         float damage = 20;
 
@@ -127,15 +127,15 @@ public class Selector extends Entity {
 
         if(System.currentTimeMillis() - lastPlace < placeDelay * 1000) return;
 
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities((int) x() / Constants.GRID_SIZE, (int) y() / Constants.GRID_SIZE, REACH));
         if(e != null) return;
 
         if(!mobEntityInventory.currentItem().canPlace()) return;
 
-        int tileX = this.x / Constants.GRID_SIZE;
-        int tileY = this.y / Constants.GRID_SIZE;
-        int playerTileX = mob.x() / Constants.GRID_SIZE;
-        int playerTileY = mob.y() / Constants.GRID_SIZE;
+        int tileX = (int) this.x / Constants.GRID_SIZE;
+        int tileY = (int) this.y / Constants.GRID_SIZE;
+        int playerTileX = (int) mob.x() / Constants.GRID_SIZE;
+        int playerTileY = (int) mob.y() / Constants.GRID_SIZE;
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
@@ -178,13 +178,13 @@ public class Selector extends Entity {
     // Check if can destroy tile
     public void checkDestroy(float deltaTime, Terrain terrain) {
 
-        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities(x() / Constants.GRID_SIZE, y() / Constants.GRID_SIZE, REACH));
+        MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities((int) x() / Constants.GRID_SIZE, (int) y() / Constants.GRID_SIZE, REACH));
         if(e != null) { miningProgress = 0f; return; }
 
-        int tileX = this.x / Constants.GRID_SIZE;
-        int tileY = this.y / Constants.GRID_SIZE;
-        int playerTileX = mob.x() / Constants.GRID_SIZE;
-        int playerTileY = mob.y() / Constants.GRID_SIZE;
+        int tileX = (int) this.x / Constants.GRID_SIZE;
+        int tileY = (int) this.y / Constants.GRID_SIZE;
+        int playerTileX = (int) mob.x() / Constants.GRID_SIZE;
+        int playerTileY = (int) mob.y() / Constants.GRID_SIZE;
 
         if(tileX == playerTileX && tileY == playerTileY) return;
 
@@ -240,8 +240,8 @@ public class Selector extends Entity {
         Item dropItem = current.getItem();
         chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(MiscUtils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
         
-        short chunkX = (short) Math.floorDiv(x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
-        short chunkY = (short) Math.floorDiv(y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkX = (short) Math.floorDiv((int) x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv((int) y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
 
         Chunk entitiesChunk = terrain.getChunk(chunkX, chunkY);
         if(entitiesChunk == null) return;
@@ -256,8 +256,8 @@ public class Selector extends Entity {
     // Drop one item from MobEntity inventory
     public void dropItem(Terrain terrain) {
 
-        short chunkX = (short) Math.floorDiv(x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
-        short chunkY = (short) Math.floorDiv(y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkX = (short) Math.floorDiv((int) x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv((int) y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
 
         Chunk entitiesChunk = terrain.getChunk(chunkX, chunkY);
         if(entitiesChunk == null) return;

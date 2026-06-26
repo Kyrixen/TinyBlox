@@ -16,7 +16,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class EnemySpawner {
 
-    private float spawnTimer = 15.5f;
+    private float spawnTimer = 8f / Constants.DIFFICULTY.getDiffMult();
     private long lastSpawn = 0L;
 
     private final SoundManager soundManager;
@@ -90,8 +90,9 @@ public class EnemySpawner {
 
 
     public void updateSpawnRate(TimeCycle timeCycle) {
-        if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(1f);
-        else this.setSpawnTimer(3.5f);
+        if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(5f / Constants.DIFFICULTY.getDiffMult());
+        else this.setSpawnTimer(8f / Constants.DIFFICULTY.getDiffMult());
+        if(timeCycle.getDayTime() != DayTime.NIGHT && Constants.DIFFICULTY == Difficulty.EASY) this.setSpawnTimer(99999999f);
     }
 
     public void setSpawnTimer(float spawnTimer) {

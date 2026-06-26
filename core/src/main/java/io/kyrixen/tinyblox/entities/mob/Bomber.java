@@ -29,33 +29,33 @@ public class Bomber extends Enemy {
 
     private final static SoundID DETONATE_SOUND = new SoundID("tinyblox", SoundType.SFX, "bomber_detonate");
 
-    private final float detonate_time = 1.2f;
+    private final float detonate_time = 1.5f / Constants.DIFFICULTY.getDiffMult();
     private long firstImpulse = 0L;
 
 
-    public Bomber(int x, int y, SoundManager soundManager) {
+    public Bomber(float x, float y, SoundManager soundManager) {
     
         super(x, y, soundManager);
     
-        this.attackDamage = 65;
+        this.attackDamage = 45 * (int) Constants.DIFFICULTY.getDiffMult();
 
-        this.maxHealth = 15;
-        this.health = 15;
+        this.maxHealth = (int) (15 / Constants.DIFFICULTY.getDiffMult());
+        this.health = 15 / Constants.DIFFICULTY.getDiffMult();
 
         this.activationRange = 2;
 
-        this.setSpeed(Speed.SPEEDY);
+        this.setSpeed(Speed.NORMAL);
 
     }
 
-    public Bomber(int id, int x, int y, SoundManager soundManager) {
+    public Bomber(int id, float x, float y, SoundManager soundManager) {
     
         super(id, x, y, soundManager);
     
-        this.attackDamage = 65;
+        this.attackDamage = 45 * (int) Constants.DIFFICULTY.getDiffMult();
 
-        this.maxHealth = 15;
-        this.health = 15;
+        this.maxHealth = (int) (15 / Constants.DIFFICULTY.getDiffMult());
+        this.health = 15 / Constants.DIFFICULTY.getDiffMult();
 
         this.activationRange = 2;
 
@@ -72,7 +72,7 @@ public class Bomber extends Enemy {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);
@@ -137,7 +137,7 @@ public class Bomber extends Enemy {
     // Bomber explode func
     private void explode(Terrain terrain) {
 
-        TileStack bomberStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        TileStack bomberStack = terrain.getWorldTileStack((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE);
         if(bomberStack == null) return;
         Tile belowBomberTile = bomberStack.get((byte) (level - 1));
         if(belowBomberTile == null) return;
@@ -146,16 +146,16 @@ public class Bomber extends Enemy {
 
         int radius = EXPLOSION_RADIUS * Constants.GRID_SIZE;
 
-        for(int nextWorldX = x - radius; nextWorldX <= x + radius; nextWorldX += Constants.GRID_SIZE) {
-            for(int nextWorldY = y - radius; nextWorldY <= y + radius; nextWorldY += Constants.GRID_SIZE) {
+        for(int nextWorldX = (int) x - radius; nextWorldX <= x + radius; nextWorldX += Constants.GRID_SIZE) {
+            for(int nextWorldY = (int) y - radius; nextWorldY <= y + radius; nextWorldY += Constants.GRID_SIZE) {
 
                 TileStack currentStack = terrain.getWorldTileStack(nextWorldX / Constants.GRID_SIZE, nextWorldY / Constants.GRID_SIZE);
                 if(currentStack == null) continue;
 
                 for(byte layer = (byte) (level() - EXPLOSION_RADIUS); layer < level() + EXPLOSION_RADIUS; layer++) {
 
-                    int dx = nextWorldX - x;
-                    int dy = nextWorldY - y;
+                    int dx = (int) (nextWorldX - x);
+                    int dy = (int) (nextWorldY - y);
                     int dz = (layer - level()) * Constants.GRID_SIZE;
 
                     if(dx * dx + dy * dy + dz * dz > radius * radius) continue;

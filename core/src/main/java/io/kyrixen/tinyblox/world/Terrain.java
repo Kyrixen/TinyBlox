@@ -136,8 +136,8 @@ public class Terrain {
 
             for(Entity e : c.getEntities()) {
 
-                short currentChunkX = (short) Math.floorDiv(e.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
-                short currentChunkY = (short) Math.floorDiv(e.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+                short currentChunkX = (short) Math.floorDiv((int) e.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+                short currentChunkY = (short) Math.floorDiv((int) e.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
 
                 if(currentChunkX == c.getX() && currentChunkY == c.getY()) continue;
 
@@ -169,8 +169,8 @@ public class Terrain {
 
         if(System.currentTimeMillis() - lastChunkUpdate < chunkUpdateDelay * 1000) return;
 
-        short playerChunkX = (short) Math.floorDiv(player.x() / player.width(), Constants.CHUNK_SIZE);
-        short playerChunkY = (short) Math.floorDiv(player.y() / player.height(), Constants.CHUNK_SIZE);
+        short playerChunkX = (short) Math.floorDiv((int) player.x() / player.width(), Constants.CHUNK_SIZE);
+        short playerChunkY = (short) Math.floorDiv((int) player.y() / player.height(), Constants.CHUNK_SIZE);
 
         // Checks loading
         boolean rebuildLighting = false;
@@ -274,7 +274,7 @@ public class Terrain {
         
         boolean tileAbovePlayer = false;
 
-        TileStack playerTileStack = this.getWorldTileStack(player.x() / Constants.GRID_SIZE, player.y() / Constants.GRID_SIZE);
+        TileStack playerTileStack = this.getWorldTileStack((int) player.x() / Constants.GRID_SIZE, (int) player.y() / Constants.GRID_SIZE);
         if(playerTileStack != null) {
         
             for(byte level = 0; level < playerTileStack.stackSize(); level++) {
@@ -540,8 +540,8 @@ public class Terrain {
     // Remove entity
     public void removeEntity(Entity entity) {
 
-        short chunkX = (short) Math.floorDiv(entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
-        short chunkY = (short) Math.floorDiv(entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkX = (short) Math.floorDiv((int) entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv((int) entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
 
         Chunk entitiesChunk = this.getChunk(chunkX, chunkY);
         if(entitiesChunk == null) return;
@@ -553,8 +553,8 @@ public class Terrain {
     // Add entity
     public void addEntity(Entity entity) {
 
-        short chunkX = (short) Math.floorDiv(entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
-        short chunkY = (short) Math.floorDiv(entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkX = (short) Math.floorDiv((int) entity.x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
+        short chunkY = (short) Math.floorDiv((int) entity.y() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);
 
         Chunk entitiesChunk = this.getChunk(chunkX, chunkY);
         if(entitiesChunk == null) return;

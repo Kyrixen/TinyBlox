@@ -6,8 +6,8 @@ import io.kyrixen.tinyblox.entities.Entity;
 public class Camera {
 
     // Camera position
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
     // Window size
     public final int viewWidth;
@@ -38,8 +38,8 @@ public class Camera {
         int worldViewHeight = (int) (viewHeight / zoom);
 
         // Center camera on entity center using world-space view size.
-        int targetCenterX = target.x() + target.width() / 2;
-        int targetCenterY = target.y() + target.height() / 2;
+        float targetCenterX = target.x() + target.width() / 2;
+        float targetCenterY = target.y() + target.height() / 2;
         x += (targetCenterX - x - worldViewWidth / 2);
         y += (targetCenterY - y - worldViewHeight / 2);
 

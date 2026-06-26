@@ -39,7 +39,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Sound manager
     protected final SoundManager soundManager;
 
-    public MobEntity(int x, int y, SoundManager soundManager) {
+    public MobEntity(float x, float y, SoundManager soundManager) {
         
         super(x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
 
@@ -49,7 +49,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     
     }
 
-    public MobEntity(int id, int x, int y, SoundManager soundManager) {
+    public MobEntity(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
 
@@ -210,7 +210,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Climb up method
     public void tryClimbUp(Terrain terrain) {
 
-        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        TileStack tileStack = terrain.getWorldTileStack((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE);
         if(tileStack == null) return;
 
         Tile current = tileStack.get(this.level);
@@ -229,7 +229,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Climb down method
     public void tryClimbDown(Terrain terrain) {
 
-        TileStack tileStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        TileStack tileStack = terrain.getWorldTileStack((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE);
         if(tileStack == null) return;
         
         if(this.level - 1 < Constants.MIN_WORLD_HEIGHT) return;

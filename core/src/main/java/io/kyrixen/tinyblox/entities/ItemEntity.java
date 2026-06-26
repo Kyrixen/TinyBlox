@@ -33,7 +33,7 @@ public class ItemEntity extends Entity {
 
     private final SoundID PICKUP_ITEM_SOUND = new SoundID("tinyblox", SoundType.SFX, "pickup_item");
 
-    public ItemEntity(int x, int y, SoundManager soundManager, Item item, MobEntity mob) {
+    public ItemEntity(float x, float y, SoundManager soundManager, Item item, MobEntity mob) {
 
         super(x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
 
@@ -56,7 +56,7 @@ public class ItemEntity extends Entity {
     // Update item entity
     public void update(float deltaTime, Terrain terrain) {
 
-        floatOffsetY += dirY * 10f * deltaTime;
+        floatOffsetY += dirY * 15f * deltaTime;
         floatOffsetX += dirX * 1f * deltaTime;
         if(Math.abs(floatOffsetY) > 3f) dirY = dirY  * -1;
         if(Math.abs(floatOffsetX) > 2f) dirX = dirX  * -1;
@@ -70,10 +70,10 @@ public class ItemEntity extends Entity {
         float dy = mobCenterY - itemCenterY;
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        if(distance <= 1f || distance > 64f) return;
+        if(distance <= 1f || distance > 48f) return;
 
-        x += dx / distance * 20f * deltaTime;
-        y += dy / distance * 20f * deltaTime;
+        x += dx / distance * 15f * deltaTime;
+        y += dy / distance * 15f * deltaTime;
         level = mob.level();
 
     }
@@ -86,7 +86,7 @@ public class ItemEntity extends Entity {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);

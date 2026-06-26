@@ -18,14 +18,14 @@ public class Slime extends Enemy {
     protected float slimify_delay = 2.30f;
     protected long lastSlimify = 0L;
 
-    public Slime(int x, int y, SoundManager soundManager) {
+    public Slime(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
 
-        this.attackDamage = 10;
+        this.attackDamage = (int) (7 * Constants.DIFFICULTY.getDiffMult());
 
-        this.maxHealth = 75;
-        this.health = 75;
+        this.maxHealth = (int) (65 * Constants.DIFFICULTY.getDiffMult());
+        this.health = 65 * Constants.DIFFICULTY.getDiffMult();
 
         this.lastSlimify = System.currentTimeMillis();
 
@@ -33,14 +33,14 @@ public class Slime extends Enemy {
 
     }
     
-    public Slime(int id, int x, int y, SoundManager soundManager) {
+    public Slime(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
 
-        this.attackDamage = 10;
+        this.attackDamage = (int) (7 * Constants.DIFFICULTY.getDiffMult());
 
-        this.maxHealth = 75;
-        this.health = 75;
+        this.maxHealth = (int) (65 * Constants.DIFFICULTY.getDiffMult());
+        this.health = 65 * Constants.DIFFICULTY.getDiffMult();
 
         this.lastSlimify = System.currentTimeMillis();
 
@@ -59,7 +59,7 @@ public class Slime extends Enemy {
 
         if(System.currentTimeMillis() - lastSlimify < slimify_delay * 1000) return;
 
-        TileStack slimeStack = terrain.getWorldTileStack(x / Constants.GRID_SIZE, y / Constants.GRID_SIZE);
+        TileStack slimeStack = terrain.getWorldTileStack((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE);
         if(slimeStack == null) return;
 
         byte belowLevel = (byte) (level() - 1);
