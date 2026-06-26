@@ -2,9 +2,6 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.entities.ItemEntity;
-import io.kyrixen.tinyblox.entities.inventory.Item;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.SoundID;
@@ -151,8 +148,7 @@ public class Enemy extends MobEntity {
     // Update player target
     protected void updateTarget(Player player) {
 
-        if(target != null) return;
-        target = player;
+        if (target == null) target = player;
 
         short enemyChunkX = (short) Math.floorDiv((int) x() / width(), Constants.CHUNK_SIZE);
         short enemyChunkY = (short) Math.floorDiv((int) y() / height(), Constants.CHUNK_SIZE);
@@ -172,20 +168,7 @@ public class Enemy extends MobEntity {
     public void throwLoot(MobEntity mob, Terrain terrain) {
 
         soundManager.getSound(EXPLOSION_SOUND).play(MiscUtils.getFloatSound(35), RandomUtils.randomFloat(0.85f, 1.25f), 0f);
-        int loopCount = RandomUtils.randomInt(1, 3);
-
-        for(int i = 0; i < loopCount; i++) {
-
-            Item itemType = ItemRegister.getItemList().get(RandomUtils.randomInt(0, ItemRegister.getItemList().size() - 1));
-            if(!itemType.canRoll()) continue;
-            
-            int itemCount = RandomUtils.randomInt(1, 3);
-
-            for(int j = 0; j < itemCount; j++) {
-                terrain.addEntity(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
-            }
-
-        }
+        super.throwLoot(mob, terrain);
 
     }
 

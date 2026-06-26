@@ -2,8 +2,12 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
+import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
+import io.kyrixen.tinyblox.entities.inventory.Item;
+import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -206,6 +210,28 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
         if(stamina > maxStamina) stamina = maxStamina;
         if(stamina < 0) stamina = 0;  
     }
+
+
+    // Get loot from mob
+    public void throwLoot(MobEntity mob, Terrain terrain) {
+
+        int loopCount = RandomUtils.randomInt(1, 3);
+
+        for(int i = 0; i < loopCount; i++) {
+
+            Item itemType = ItemRegister.getItemList().get(RandomUtils.randomInt(0, ItemRegister.getItemList().size() - 1));
+            if(!itemType.canRoll()) continue;
+            
+            int itemCount = RandomUtils.randomInt(1, 3);
+
+            for(int j = 0; j < itemCount; j++) {
+                terrain.addEntity(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
+            }
+
+        }
+
+    }
+
 
     // Climb up method
     public void tryClimbUp(Terrain terrain) {

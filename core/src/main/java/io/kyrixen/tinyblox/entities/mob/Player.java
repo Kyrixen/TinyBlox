@@ -213,6 +213,25 @@ public class Player extends MobEntity {
     
     }
 
+    // Throws player inv
+    @Override
+    public void throwLoot(MobEntity mob, Terrain terrain) {
+
+        for(byte i = 0; i < getInventory().getMaxStorage(); i++) {
+
+            if(getInventory().getSlot((i)).isEmpty()) continue;
+
+            Item itemType = getInventory().getSlot(i).getItem();
+            int itemCount = getInventory().getSlot(i).getCount();
+
+            for(int j = 0; j < itemCount; j++) {
+                terrain.addEntity(new ItemEntity(this.x() + RandomUtils.randomInt(-3, 3), this.y() + RandomUtils.randomInt(-3, 3), soundManager, itemType, mob));
+            }
+
+        }
+
+    }
+
     // Tries to go one layer above
     public void tryStepUp(Terrain terrain) {
 
