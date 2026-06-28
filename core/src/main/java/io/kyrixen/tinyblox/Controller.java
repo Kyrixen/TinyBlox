@@ -1,6 +1,8 @@
 package io.kyrixen.tinyblox;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Application.ApplicationType;
 
 import io.kyrixen.tinyblox.entities.Entity.Speed;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -41,7 +43,13 @@ public class Controller {
                 if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(terrain);
 
                 // Checks for sprinting
-                if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint(); else player.setSpeed(Speed.NORMAL);
+                if(Gdx.app.getType() == ApplicationType.WebGL) {
+                    if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.SHIFT_LEFT)) player.sprint();
+                    else player.setSpeed(Speed.NORMAL);
+                } else {
+                    if(Peripheral.anyWASDPressed() && Peripheral.keyPressed(Input.Keys.CONTROL_LEFT)) player.sprint();
+                    else player.setSpeed(Speed.NORMAL);
+                }
 
             }
 
