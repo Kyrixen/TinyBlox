@@ -1,61 +1,75 @@
 package io.kyrixen.tinyblox.utils;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import io.kyrixen.tinyblox.platform.Platform;
+
 public class Zipper {
 
     // Zips folder
-    public static void zipFolder(String sourceFolder, String zipFile) {
+    public static byte[] zipFolder(String sourceFolder) {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
+        
+            ZipOutputStream zos = new ZipOutputStream(out);
 
-            try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(Paths.get(zipFile).toFile()))) {
-                Files.walk(Paths.get(sourceFolder)).skip(1).filter(path -> !Files.isDirectory(path)).forEach(path -> {
-                    
-                    ZipEntry zipper = new ZipEntry(Paths.get(sourceFolder).relativize(path).toString());
-                    try {
-                        
-                        zos.putNextEntry(zipper);
-                        Files.copy(path, zos);
-                        zos.closeEntry();
+            for (String path : Platform.fileManager.listDirRecursive(sourceFolder)) {
 
-                    } catch (IOException e) { Logger.LOGGER.error("ZIPPER", "Error while zipping file " + path.getFileName().toString() + ": " + e); }
+                if (Platform.fileManager.isDir(path)) continue;
 
-                });
+                String relative = path.substring(sourceFolder.length() + 1);
+
+                zos.putNextEntry(new ZipEntry(relative));
+                zos.write(Platform.fileManager.readBytes(path));
+                zos.closeEntry();
+
             }
 
-        } catch(IOException e) { Logger.LOGGER.error("ZIPPER", "Error while zipping folder " + sourceFolder.toString() + ": " + e); }
-    
+            zos.close();
+            
+        } catch(IOException e) { Logger.LOGGER.error("ZIPPER", "Couldnt zip " + sourceFolder + ": " + e); }
+
+        return out.toByteArray();
+
     }
 
     // Unzips file
-    public static void unzipFile(String zipFile, String targetFolder) {
+    public static void unzipFile(byte[] zip, String targetFolder) {
 
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(Paths.get(zipFile).toFile()))) {
+        try (ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zip))) {
 
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
+            ZipEntry entry = zis.getNextEntry();
+            while (entry != null) {
 
-                Path output = Paths.get(targetFolder).resolve(entry.getName()).normalize();
-                if (!output.startsWith(targetFolder)) throw new IOException("Invalid zip entry");
+                String output = targetFolder + "/" + entry.getName();
 
-                Files.createDirectories(output.getParent());
-                Files.copy(zis, output, StandardCopyOption.REPLACE_EXISTING);
+                if (entry.isDirectory()) Platform.fileManager.createDir(output);
+                else {
+
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                    byte[] buffer = new byte[8192];
+                    int len;
+                    while ((len = zis.read(buffer)) != -1) { bos.write(buffer, 0, len); }
+
+                    byte[] bytes = bos.toByteArray();
+                    Platform.fileManager.writeBytes(output, bytes);
+                
+                }
 
                 zis.closeEntry();
+                entry = zis.getNextEntry();
 
             }
 
-        } catch(IOException e) { Logger.LOGGER.error("ZIPPER", "Failed to unzip " + zipFile.toString() + ": " + e); }
+        } catch(IOException e) { Logger.LOGGER.error("ZIPPER", "Failed to unzip to " + targetFolder + ": " + e); }
     
     }
 

@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.entities.EnemyBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.entities.EntityBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.entities.MobEntityBlueprint;
@@ -20,7 +21,6 @@ import io.kyrixen.tinyblox.saving.entities.convertors.EntityConvertor;
 import io.kyrixen.tinyblox.saving.entities.convertors.MobEntityConvertor;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 
@@ -40,7 +40,7 @@ public class EntityHandler {
         List<Entity> entities = new ArrayList<>();
         String fileName = getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
 
-        String entitiesData = FileManager.readFile(fileName);
+        String entitiesData = Platform.fileManager.readFile(fileName);
         if(entitiesData == null) return entities;
 
         EntityChunkBlueprint ecb = json.fromJson(EntityChunkBlueprint.class, entitiesData);
@@ -106,7 +106,7 @@ public class EntityHandler {
 
         // Collected data
         String entityData = json.prettyPrint(ecb);
-        FileManager.writeFile(fileName, entityData);
+        Platform.fileManager.writeFile(fileName, entityData);
 
     }
 

@@ -6,7 +6,6 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -29,13 +28,18 @@ public class TextureManager {
     
         try {
 
-            Texture asset = new Texture(Gdx.files.internal(path));
-            Texture assetOutline = this.generateDepthOverlay(asset.getTextureData());
+            Pixmap pixmap = new Pixmap(Gdx.files.internal(path));
 
-            if(loadedTextures.containsKey(identifier)) { Logger.LOGGER.error("TEXTURES", "ID already registered!: " + identifier.toString()); return; }
-
+            Texture asset = new Texture(pixmap);
+            asset.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
             loadedTextures.put(identifier, asset);
-            loadedTextureOutlines.put(identifier, assetOutline);
+
+            if(identifier.getType() == TextureType.ENTITY || identifier.getType() == TextureType.TERRAIN) {
+                Texture assetOutline = generateDepthOverlay(pixmap);
+                loadedTextureOutlines.put(identifier, assetOutline);
+            }
+    
+            pixmap.dispose();
 
         } catch(GdxRuntimeException e) {
             Logger.LOGGER.error("TEXTURES", "File not found: " + path);
@@ -44,21 +48,17 @@ public class TextureManager {
     }
 
     // Generates overlay for all tiles
-    public Texture generateDepthOverlay(TextureData data) {
+    public Texture generateDepthOverlay(Pixmap source) {
 
-        if(!data.isPrepared()) data.prepare();
-
-        Pixmap original = data.consumePixmap();
-        Pixmap overlay = new Pixmap(original.getWidth(), original.getHeight(), Pixmap.Format.RGBA8888);
+        Pixmap overlay = new Pixmap(source.getWidth(), source.getHeight(), Pixmap.Format.RGBA8888);
         
         overlay.setColor(0f, 0f, 0f, 0f);
         overlay.fill();
 
-        for(int x = 0; x < original.getWidth(); x++) {
+        for(int x = 0; x < source.getWidth(); x++) {
+            for(int y = 0; y < source.getHeight(); y++) {
 
-            for(int y = 0; y < original.getHeight(); y++) {
-
-                int pixel = original.getPixel(x, y);
+                int pixel = source.getPixel(x, y);
 
                 if((pixel & 0x000000ff) == 0) continue;
 
@@ -66,12 +66,11 @@ public class TextureManager {
                 overlay.drawPixel(x, y);
 
             }
-
         }
         
         Texture result = new Texture(overlay);
- 
         result.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        
         overlay.dispose();
 
         return result;

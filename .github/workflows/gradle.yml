@@ -38,9 +38,16 @@ jobs:
         run: ./gradlew build
 
       # Upload runnable artifact jar
-      - name: Upload artifact
+      - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: tinyblox-jar
           path: lwjgl3/build/libs/*.jar
+      
+      # Upload runnable artifact web
+      - name: Upload HTML artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tinyblox-web
+          path: teavm/build/dist/webapp/
           

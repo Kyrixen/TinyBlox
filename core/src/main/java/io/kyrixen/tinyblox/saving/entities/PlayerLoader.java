@@ -4,11 +4,11 @@ import com.badlogic.gdx.utils.Json;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.InventoryLoader;
 import io.kyrixen.tinyblox.saving.blueprints.entities.PlayerBlueprint;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.Camera;
 
@@ -46,7 +46,7 @@ public class PlayerLoader {
         String fileName = getPlayerFolder() + "/player.json";
         Player player = null;
 
-        String playerData = FileManager.readFile(fileName);
+        String playerData = Platform.fileManager.readFile(fileName);
         if(playerData == null) return player;
 
         PlayerBlueprint pb = json.fromJson(PlayerBlueprint.class, playerData);

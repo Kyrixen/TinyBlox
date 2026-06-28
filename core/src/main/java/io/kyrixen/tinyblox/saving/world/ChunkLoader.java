@@ -4,10 +4,10 @@ import com.badlogic.gdx.utils.Json;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
@@ -51,7 +51,7 @@ public class ChunkLoader {
 
         String fileName = getChunkFolder() + "/chunk_" + chunkPos.getChunkX() + "_" + chunkPos.getChunkY() + ".json";
 
-        String chunkData = FileManager.readFile(fileName);
+        String chunkData = Platform.fileManager.readFile(fileName);
         if (chunkData == null) return createChunk(chunkPos, noise);
         
         ChunkBlueprint cb = json.fromJson(ChunkBlueprint.class, chunkData);

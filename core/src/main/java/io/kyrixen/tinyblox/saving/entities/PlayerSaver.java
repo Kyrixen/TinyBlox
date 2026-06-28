@@ -5,9 +5,9 @@ import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.entities.PlayerBlueprint;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 
 public class PlayerSaver {
 
@@ -57,7 +57,7 @@ public class PlayerSaver {
 
         // Collected data
         String playerData = json.prettyPrint(pb);
-        FileManager.writeFile(fileName, playerData);
+        Platform.fileManager.writeFile(fileName, playerData);
 
     }
 

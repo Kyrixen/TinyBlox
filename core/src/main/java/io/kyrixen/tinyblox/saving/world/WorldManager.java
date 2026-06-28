@@ -11,13 +11,13 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.InventorySaver;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.EntityChunkBlueprint.SavedEntity;
 import io.kyrixen.tinyblox.saving.entities.EntityHandler;
 import io.kyrixen.tinyblox.saving.entities.PlayerSaver;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Difficulty;
@@ -46,10 +46,10 @@ public class WorldManager {
         String folder = worldsFolder + "/" + worldName.toLowerCase().replace(" ", "_");
         worldFolder = Gdx.files.local(folder);
 
-        FileManager.createDir(folder);
-        FileManager.createDir(folder + "/chunks");
-        FileManager.createDir(folder + "/entities");
-        FileManager.createDir(folder + "/inventories");
+        Platform.fileManager.createDir(folder);
+        Platform.fileManager.createDir(folder + "/chunks");
+        Platform.fileManager.createDir(folder + "/entities");
+        Platform.fileManager.createDir(folder + "/inventories");
         
         WorldBlueprint wb = new WorldBlueprint();
         wb.formatVersion = Constants.SAVE_FORMAT_VERSION;
@@ -60,7 +60,7 @@ public class WorldManager {
         wb.lastEntityID = 0;
 
         String worldData = json.prettyPrint(wb);
-        FileManager.writeFile(folder + "/world.json", worldData);
+        Platform.fileManager.writeFile(folder + "/world.json", worldData);
 
     }
 
@@ -70,13 +70,13 @@ public class WorldManager {
         String folder = worldsFolder + "/" + worldBlueprint.worldName.toLowerCase().replace(" ", "_");
         worldFolder = Gdx.files.local(folder);
 
-        FileManager.createDir(folder);
-        FileManager.createDir(folder + "/chunks");
-        FileManager.createDir(folder + "/entities");
-        FileManager.createDir(folder + "/inventories");
+        Platform.fileManager.createDir(folder);
+        Platform.fileManager.createDir(folder + "/chunks");
+        Platform.fileManager.createDir(folder + "/entities");
+        Platform.fileManager.createDir(folder + "/inventories");
 
         String worldData = json.prettyPrint(worldBlueprint);  
-        FileManager.writeFile(folder + "/world.json", worldData);
+        Platform.fileManager.writeFile(folder + "/world.json", worldData);
 
     }
 
@@ -115,7 +115,7 @@ public class WorldManager {
 
         // File to write
         String fileName = EntityHandler.getEntityFolder() + "/entities_" + chunk.getX() + "_" + chunk.getY() + ".json";
-        FileManager.deleteFile(fileName);
+        Platform.fileManager.deleteFile(fileName);
         
         if(savedEntities.isEmpty()) return;
         EntityHandler.saveSavedEntities(savedEntities, fileName);
@@ -170,7 +170,7 @@ public class WorldManager {
         wb.lastEntityID = MiscUtils.getCurrentEntityID();
         String worldData = json.prettyPrint(wb);
         
-        FileManager.writeFile(folder + "/world.json", worldData);
+        Platform.fileManager.writeFile(folder + "/world.json", worldData);
 
     }
 

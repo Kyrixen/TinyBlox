@@ -18,8 +18,7 @@ import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.creator.Creator;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
-import io.kyrixen.tinyblox.saving.ExportWorld;
-import io.kyrixen.tinyblox.saving.ImportWorld;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -129,8 +128,8 @@ public class Selection implements Screen {
         if(loadButton.pressed() && worldList.canLoad()) { Constants.CURRENT_WORLD = worldList.getWorld().worldName; main.setScreen(new Engine(rendererStack, tex)); }
         if(deleteButton.pressed()) { worldList.deleteWorld(); }
 
-        if(exportButton.pressed()) ExportWorld.openExplorer(worldList.getWorld().worldName);
-        if(importButton.pressed()) { ImportWorld.openExplorer(); worldList.updateWorldSlots(WorldListScanner.getWorlds()); }
+        if(exportButton.pressed()) Platform.worldIE.exportWorld(worldList.getWorld().worldName);
+        if(importButton.pressed()) Platform.worldIE.importWorld(worldList);
     
     }
 

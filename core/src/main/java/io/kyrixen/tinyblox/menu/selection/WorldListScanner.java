@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.utils.Json;
 
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 
 public class WorldListScanner {
@@ -21,13 +21,13 @@ public class WorldListScanner {
 
         List<WorldBlueprint> foundWorlds = new ArrayList<>();
         
-        List<String> worldPaths = FileManager.listDir(WorldManager.worldsFolder.path());
+        List<String> worldPaths = Platform.fileManager.listDir(WorldManager.worldsFolder.path());
 
         for(String worldPath : worldPaths) {
-        
-            if(!FileManager.isDir(worldPath)) continue;
+
+            if(!Platform.fileManager.isDir(worldPath)) continue;
             
-            WorldBlueprint worldBlueprint = readConvert(FileManager.getEndpoint(worldPath));
+            WorldBlueprint worldBlueprint = readConvert(Platform.fileManager.getEndpoint(worldPath));
             if(worldBlueprint == null) continue;
             
             foundWorlds.add(worldBlueprint);
@@ -44,10 +44,13 @@ public class WorldListScanner {
     private static WorldBlueprint readConvert(String worldName) {
 
         String filePath = WorldManager.worldsFolder + "/" + worldName + "/world.json";
-        String worldData = FileManager.readFile(filePath);
-        if(worldData == null) return null;
 
+        String worldData = Platform.fileManager.readFile(filePath);
+        if(worldData == null) return null;
+        
+        Logger.LOGGER.info("SCANNER", "Reading: " + filePath);
         WorldBlueprint worldBlueprint = json.fromJson(WorldBlueprint.class, worldData);
+
 
         return worldBlueprint;
 
@@ -56,7 +59,7 @@ public class WorldListScanner {
     public static void deleteWorld(String worldName) {
 
         String filePath = WorldManager.worldsFolder + "/" + worldName;
-        FileManager.deleteDir(filePath);
+        Platform.fileManager.deleteDir(filePath);
     
     }
 

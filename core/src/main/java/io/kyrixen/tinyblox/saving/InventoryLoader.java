@@ -7,10 +7,10 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.utils.Logger;
 
 public class InventoryLoader {
@@ -44,7 +44,7 @@ public class InventoryLoader {
 
         // File to write
         String fileName = getInventoryFolder() + "/inventory_" + mobEntity.id() + ".json";
-        String inventoryData = FileManager.readFile(fileName);
+        String inventoryData = Platform.fileManager.readFile(fileName);
         if(inventoryData == null) return;
 
         InventoryBlueprint inventoryBlueprint = json.fromJson(InventoryBlueprint.class, inventoryData);

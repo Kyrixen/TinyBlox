@@ -7,10 +7,10 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.inventory.Inventory;
 import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
-import io.kyrixen.tinyblox.utils.FileManager;
 
 public class InventorySaver {
 
@@ -59,7 +59,7 @@ public class InventorySaver {
 
         // Collected data
         String inventoryData = json.prettyPrint(inventoryBlueprint);
-        FileManager.writeFile(fileName, inventoryData);
+        Platform.fileManager.writeFile(fileName, inventoryData);
 
     }
 

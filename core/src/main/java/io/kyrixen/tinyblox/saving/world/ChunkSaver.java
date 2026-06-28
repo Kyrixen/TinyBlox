@@ -9,10 +9,10 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
-import io.kyrixen.tinyblox.utils.FileManager;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -95,7 +95,7 @@ public class ChunkSaver {
         String fileName = getChunkFolder() + "/chunk_" + chunk.getX() + "_" + chunk.getY() + ".json";
 
         // Read old save
-        String oldData = FileManager.readFile(fileName);
+        String oldData = Platform.fileManager.readFile(fileName);
         if(oldData != null) previous = json.fromJson(ChunkBlueprint.class, oldData);
         
         // If there is an old save get from it the stacks
@@ -115,7 +115,7 @@ public class ChunkSaver {
 
         // Collected data
         String chunkData = json.prettyPrint(merged);
-        FileManager.writeFile(fileName, chunkData);
+        Platform.fileManager.writeFile(fileName, chunkData);
 
         chunk.setModified(false);
 
