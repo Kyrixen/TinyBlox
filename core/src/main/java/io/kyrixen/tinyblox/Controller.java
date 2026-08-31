@@ -20,10 +20,10 @@ public class Controller {
             if(!player.isInMenu()) {
 
                 // Checks for movement input
-                if (Peripheral.keyPressed(Input.Keys.W)) player.setDirY(1);
-                if (Peripheral.keyPressed(Input.Keys.S)) player.setDirY(-1);
-                if (Peripheral.keyPressed(Input.Keys.A)) player.setDirX(-1);
-                if (Peripheral.keyPressed(Input.Keys.D)) player.setDirX(1);
+                if(Peripheral.keyPressed(Input.Keys.W)) player.setDirY(1);
+                if(Peripheral.keyPressed(Input.Keys.S)) player.setDirY(-1);
+                if(Peripheral.keyPressed(Input.Keys.A)) player.setDirX(-1);
+                if(Peripheral.keyPressed(Input.Keys.D)) player.setDirX(1);
 
                 // Climb movement input
                 if(Peripheral.keyJustPressed(Input.Keys.SPACE)) player.tryClimbUp(terrain);
@@ -35,11 +35,19 @@ public class Controller {
 
                 // Selector input logic
                 if(Peripheral.mousePressed(Input.Buttons.RIGHT)) player.getSelector().checkPlace(terrain);
+                else if(Peripheral.keyPressed(Input.Keys.U)) player.getSelector().checkPlace(terrain);
                 if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain); player.getSelector().checkHit(terrain); }
-
+                else if(Peripheral.keyPressed(Input.Keys.H)) { player.getSelector().checkDestroy(deltaTime, terrain); player.getSelector().checkHit(terrain); }
+                if(Peripheral.keyJustPressed(Input.Keys.I)) player.getSelector().move(0, 1);
+                if(Peripheral.keyJustPressed(Input.Keys.K)) player.getSelector().move(0, -1);
+                if(Peripheral.keyJustPressed(Input.Keys.J)) player.getSelector().move(-1, 0);
+                if(Peripheral.keyJustPressed(Input.Keys.L)) player.getSelector().move(1, 0);
+                
                 // Inventory input logic
                 player.checkInventoryScrolling(Peripheral.mouseScroll());
-                if(Peripheral.keyJustPressed(Input.Keys.I)) player.getInventoryRenderer().toggleRendering();
+                if(Peripheral.keyJustPressed(Input.Keys.O)) player.getInventory().previousSlot();
+                if(Peripheral.keyJustPressed(Input.Keys.P)) player.getInventory().nextSlot();
+                if(Peripheral.keyJustPressed(Input.Keys.E)) player.getInventoryRenderer().toggleRendering();
                 if(Peripheral.keyJustPressed(Input.Keys.Q)) player.getSelector().dropItem(terrain);
 
                 // Checks for sprinting
@@ -57,7 +65,9 @@ public class Controller {
             if(Peripheral.keyJustPressed(Input.Keys.C)) { player.getCraftingManager().toggle(); player.toggleMenuStat(); }
             player.getCraftingManager().update(Peripheral.getMouseX(), Constants.WINDOW_HEIGHT - Peripheral.getMouseY(), Peripheral.mouseJustPressed(Input.Buttons.LEFT));
             player.getCraftingManager().updateScroll(Peripheral.mouseScroll());
-
+			if(Peripheral.keyJustPressed(Input.Keys.O)) player.getCraftingManager().previousRecipe();
+			if(Peripheral.keyJustPressed(Input.Keys.P)) player.getCraftingManager().nextRecipe();
+			
     }
 
 }

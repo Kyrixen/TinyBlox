@@ -157,8 +157,9 @@ Thumbs.db
 .codex
 /.vscode/
 tinyblox-notes/
+worlds/
 tags
-TinyBloxJava.geany
+TinyBlox.geany
 assets/worlds/*
 assets/exports/*
 

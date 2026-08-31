@@ -83,6 +83,10 @@ The focus is on:
 | `A` | Move Left |
 | `S` | Move Down |
 | `D` | Move Right |
+| `I` | Selector Up |
+| `J` | Selector Left |
+| `K` | Selector Down |
+| `L` | Selector Right |
 | `I` | Show / Hide Inventory |
 | `C` | Toggle Crafting Menu |
 | `Q` | Drop Item |
@@ -91,10 +95,12 @@ The focus is on:
 | `Left Shift` + `WASD` | Step Down |
 | `Space` | Climb Up |
 | `Left Shift` | Climb Down |
-| `Left Mouse Button` | Destroy Block / Hit Entity |
-| `Right Mouse Button` | Place Block |
-| `Scroll Up` | Previous Inventory Slot |
-| `Scroll Down` | Next Inventory Slot |
+| `Left Mouse Button /  H` | Destroy Block / Hit Entity |
+| `Right Mouse Button / U` | Place Block |
+| `Scroll Up / O` | Previous Inventory Slot |
+| `Scroll Down / P` | Next Inventory Slot |
+| `Scroll Up / O` | Previous Crafting Recipe |
+| `Scroll Down / P` | Next Crafting Recipe |
 
 ---
 

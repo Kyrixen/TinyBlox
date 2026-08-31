@@ -43,6 +43,10 @@ public class Selector extends Entity {
     private float miningProgress;
     private Tile targetTile;
 
+	// Mouse vars
+	private float lastMouseX = 0f;
+	private float lastMouseY = 0f;
+	
     // Max distance that cursor can be from mob
     private final byte REACH = 2;
 
@@ -69,6 +73,8 @@ public class Selector extends Entity {
         float mouseWorldX = Peripheral.getMouseX() / camera.zoom + camera.x;
         float mouseWorldY = (Constants.WINDOW_HEIGHT - Peripheral.getMouseY()) / camera.zoom + camera.y;
 
+		if(mouseWorldX == lastMouseX && mouseWorldY == lastMouseY) return;
+
         int tileX = (int) (mouseWorldX / Constants.GRID_SIZE);
         int tileY = (int) (mouseWorldY / Constants.GRID_SIZE);
 
@@ -86,9 +92,35 @@ public class Selector extends Entity {
         this.y = tileY * Constants.GRID_SIZE;
         this.setLevel(mob.level());
         
-        if(this.x == mob.x && this.y == mob.y) return;
+        lastMouseX = mouseWorldX;
+        lastMouseY = mouseWorldY;        
+    
+    }
+
+    public void move(int dirX, int dirY) {
+        
+        float newWorldX = this.x + Constants.GRID_SIZE * dirX;
+        float newWorldY = this.y + Constants.GRID_SIZE * dirY;
+        
+        int tileX = (int) (newWorldX / Constants.GRID_SIZE);
+        int tileY = (int) (newWorldY / Constants.GRID_SIZE);
+
+        Vector2 distance = new Vector2(tileX - mob.x / Constants.GRID_SIZE, tileY - mob.y / Constants.GRID_SIZE);
+
+        if(distance.len() > REACH) {
+            distance.nor();
+            distance.scl(REACH);
+        }
+
+        tileX = (int) mob.x / Constants.GRID_SIZE + Math.round(distance.x);
+        tileY = (int) mob.y / Constants.GRID_SIZE + Math.round(distance.y);
+
+        this.x = tileX * Constants.GRID_SIZE;
+        this.y = tileY * Constants.GRID_SIZE;
+        this.setLevel(mob.level());
         
     }
+
 
     public void render(RendererStack rendererStack) {
     

@@ -125,6 +125,15 @@ public class Crafting {
         for(int i = 0; i < recipeButtons.length; i++) { recipeButtons[i].setRecipe(RecipeRegister.getRecipes().get(scrollOffset + i)); }
 
     }
+    
+	public void previousRecipe() {
+		this.updateScroll(-1);
+	}
+
+	public void nextRecipe() {
+		this.updateScroll(1);
+	}
+
 
     public void render(CraftingRenderer craftingRenderer, RendererStack rendererStack) {
 
