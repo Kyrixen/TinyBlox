@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.crafting.recipe.Recipe;
-import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.inventory.ItemStack;
 
 
 public class CraftingRenderer {

@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.selection.Selection;
 import io.kyrixen.tinyblox.menu.ui.Button;
@@ -18,6 +16,8 @@ import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 public class Creator implements Screen {
     
@@ -36,8 +36,8 @@ public class Creator implements Screen {
     private final UIRenderer uiRenderer;
     private final CreatorHelper creatorHelper;
 
-    private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
-    private static final TextureID redButton = new TextureID("tinyblox", TextureType.UI,"red_button");
+    private static final TinyIdentifier grayButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button");
+    private static final TinyIdentifier redButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button");
 
 
     public Creator(Main main, RendererStack rendererStack, TextureManager tex, UIRenderer uiRenderer) {

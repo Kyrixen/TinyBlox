@@ -6,12 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.entities.inventory.Equipment;
-import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.entities.inventory.Item;
-import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.inventory.Equipment;
+import io.kyrixen.tinyblox.inventory.Inventory;
+import io.kyrixen.tinyblox.inventory.Item;
+import io.kyrixen.tinyblox.inventory.ItemStack;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;

@@ -1,41 +1,43 @@
-package io.kyrixen.tinyblox.graphics.texture;
+package io.kyrixen.tinyblox.utils;
 
 import java.util.Objects;
 
-@Deprecated
-public final class TextureID {
+public final class TinyIdentifier {
+
+    // Identifier type enum helper
+    public enum IdentifierType {
     
-    @Deprecated
-    // Texture type enum helper
-    public enum TextureType {
-    
-        UI,
-        HUD,
-        ENTITY,
-        TERRAIN,
-        BACKGROUND,
+        TEXTURE,
+        ITEM,
+        TILE,
+        SOUND,
+        MUSIC,
         MISC
     
     }
 
+    
     // ID vars //
 
     private final String namespace;
-    private final TextureType type;
+    private final IdentifierType type;
     private final String id;
 
-    // TextureID constructor
-    public TextureID(String namespace, TextureType type, String id) {
+
+    // Identifier constructor
+    public TinyIdentifier(String namespace, IdentifierType type, String id) {
         this.namespace = namespace;
         this.type = type;
         this.id = id;
     }
 
+
     // Getters //
 
     public String getNamespace() { return this.namespace; }
     public String getID() { return this.id; }
-    public TextureType getType() { return this.type; }
+    public IdentifierType getType() { return this.type; }
+
 
     // Overiddes //
 
@@ -43,9 +45,9 @@ public final class TextureID {
     public boolean equals(Object o) {
         
         if(o == null) return false;
-        if(!(o instanceof TextureID)) return false;
+        if(!(o instanceof TinyIdentifier)) return false;
 
-        TextureID other = (TextureID) o;
+        TinyIdentifier other = (TinyIdentifier) o;
 
         return this.namespace.equals(other.getNamespace()) && this.type.equals(other.getType()) && this.id.equals(other.getID());
 

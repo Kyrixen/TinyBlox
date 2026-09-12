@@ -21,6 +21,7 @@ import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
+import io.kyrixen.tinyblox.world.chunk.ChunkLight;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.ChunkRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -388,16 +389,23 @@ public class Terrain {
                     float lowerance = 1f - (sourceDist / Constants.LIGHT_RADIUS);
                     lowerance = Math.max(0f, lowerance);
 
-                    Color lightColor = c.getLight((byte) localLightX, (byte) localLightY, targetWorldLayer);
+                    ChunkLight lightColor = c.getLight((byte) localLightX, (byte) localLightY, targetWorldLayer);
 
+                    float r = (lightColor.r & 0xFF) / 255f;
+                    float g = (lightColor.g & 0xFF) / 255f;
+                    float b = (lightColor.b & 0xFF) / 255f;
 
-                    lightColor.r += 1f * lowerance * lightLevel;
-                    lightColor.g += 0.8f * lowerance * lightLevel;
-                    lightColor.b += 0.5f * lowerance * lightLevel;
+                    r += 1f   * lowerance * lightLevel;
+                    g += 0.8f * lowerance * lightLevel;
+                    b += 0.5f * lowerance * lightLevel;
 
-                    lightColor.r = Math.min(lightColor.r, 1.25f);
-                    lightColor.g = Math.min(lightColor.g, 1.25f);
-                    lightColor.b = Math.min(lightColor.b, 1.25f);
+                    r = Math.min(r, 1f);
+                    g = Math.min(g, 1f);
+                    b = Math.min(b, 1f);
+
+                    lightColor.r = (byte) (r * 255f);
+                    lightColor.g = (byte) (g * 255f);
+                    lightColor.b = (byte) (b * 255f);
                 
                 }
             }
@@ -465,7 +473,7 @@ public class Terrain {
     }
 
     // Get world light color at cordinates
-    public Color getLightColor(int worldX, int worldY, byte worldLayer) {
+    public ChunkLight getLightColor(int worldX, int worldY, byte worldLayer) {
 
         short chunkX = (short) Math.floorDiv(worldX, Constants.CHUNK_SIZE);
         short chunkY = (short) Math.floorDiv(worldY, Constants.CHUNK_SIZE);
@@ -474,7 +482,7 @@ public class Terrain {
         byte localY = (byte) Math.floorMod(worldY, Constants.CHUNK_SIZE);
 
         Chunk c = getChunk(chunkX, chunkY);
-        if(c == null) return Color.WHITE;
+        if(c == null) return new ChunkLight((byte) 255, (byte) 255, (byte) 255);
 
         return c.getLight(localX, localY, worldLayer);
 

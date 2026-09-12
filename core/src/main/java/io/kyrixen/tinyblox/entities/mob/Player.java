@@ -9,18 +9,18 @@ import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.Selector;
-import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.entities.inventory.InventoryRenderer;
-import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.inventory.Inventory;
+import io.kyrixen.tinyblox.inventory.InventoryRenderer;
+import io.kyrixen.tinyblox.inventory.Item;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -108,7 +108,7 @@ public class Player extends MobEntity {
 
     @Override
     public void initTexture() {
-       this.texture = new TextureID("tinyblox", TextureType.ENTITY, "player");
+       this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "player");
     }
 
     @Override

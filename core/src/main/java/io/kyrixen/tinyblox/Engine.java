@@ -10,11 +10,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.saving.entities.PlayerLoader;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.sound.SoundManager;

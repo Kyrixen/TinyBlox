@@ -1,6 +1,6 @@
 package io.kyrixen.tinyblox.crafting.rendering;
 
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 
 public class RecipeContainer {
 
@@ -11,11 +11,11 @@ public class RecipeContainer {
     private final int w, h;
 
     // Container for the textures
-    private final TextureID textureID;
+    private final TinyIdentifier textureID;
 
 
     // Constructor of the crafting menu
-    public RecipeContainer(int x, int y, int w, int h, TextureID textureID) {
+    public RecipeContainer(int x, int y, int w, int h, TinyIdentifier textureID) {
 
         this.x = x;
         this.y = y;
@@ -35,7 +35,7 @@ public class RecipeContainer {
     public int getWidth() { return this.w; }
     public int getHeight() { return this.h; }
 
-    public TextureID getTextureID() { return this.textureID; }
+    public TinyIdentifier getTextureID() { return this.textureID; }
 
     public boolean contains(int mouseX, int mouseY) {
         return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;

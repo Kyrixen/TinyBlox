@@ -1,6 +1,6 @@
 package io.kyrixen.tinyblox.crafting.rendering;
 
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 
 public class CraftingButton {
 
@@ -22,12 +22,12 @@ public class CraftingButton {
     private final int w, h;
 
     // Container for the textures
-    private final TextureID idleTexture;
-    private final TextureID hoverTexture;
-    private final TextureID selectedTexture;
+    private final TinyIdentifier idleTexture;
+    private final TinyIdentifier hoverTexture;
+    private final TinyIdentifier selectedTexture;
 
     // Constructor of the recipe button
-    public CraftingButton(int x, int y, int w, int h, TextureID hover, TextureID idle, TextureID selected) {
+    public CraftingButton(int x, int y, int w, int h, TinyIdentifier hover, TinyIdentifier idle, TinyIdentifier selected) {
 
         this.x = x;
         this.y = y;
@@ -53,7 +53,7 @@ public class CraftingButton {
 
     public CraftingButtonState getState() { return this.state; }
 
-    public TextureID getTexture() { 
+    public TinyIdentifier getTexture() { 
         
         switch (state) {
 

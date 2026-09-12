@@ -10,10 +10,11 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.TerrainCollision;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.ChunkLight;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -67,7 +68,7 @@ public class Entity {
     protected FlipType flip = FlipType.NONE;
 
     // Texture and type of entity
-    protected TextureID texture = null;
+    protected TinyIdentifier texture = null;
 
     // Constructs entity
     public Entity(float x, float y, int w, int h) {
@@ -104,7 +105,7 @@ public class Entity {
 
     // Get texture (default entity texture)
     public void initTexture() {
-        this.texture = new TextureID("tinyblox", TextureType.ENTITY, "entity");
+        this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "entity");
     }
 
     // Tries to move
@@ -171,14 +172,14 @@ public class Entity {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
-        Color brightnessColor = new Color(terrain.getAmbientColor());
+        Color localLightColor = new ChunkLight(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level())).toColor();
+        Color brightnessColor = new ChunkLight(terrain.getAmbientColor()).toColor();
 
         localLightColor.add(brightnessColor);
 
-        localLightColor.r = Math.min(1.25f, localLightColor.r);
-        localLightColor.g = Math.min(1.25f, localLightColor.g);
-        localLightColor.b = Math.min(1.25f, localLightColor.b);
+        localLightColor.r = Math.min(1f, localLightColor.r);
+        localLightColor.g = Math.min(1f, localLightColor.g);
+        localLightColor.b = Math.min(1f, localLightColor.b);
 
         localLightColor.r = 0.5f + localLightColor.r * 0.5f;
         localLightColor.g = 0.5f + localLightColor.g * 0.5f;

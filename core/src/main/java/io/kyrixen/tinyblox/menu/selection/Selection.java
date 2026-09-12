@@ -12,8 +12,6 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Engine;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.creator.Creator;
 import io.kyrixen.tinyblox.menu.ui.Button;
@@ -23,6 +21,8 @@ import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 public class Selection implements Screen {
     
@@ -45,9 +45,9 @@ public class Selection implements Screen {
     private final UIRenderer uiRenderer;
     private final WorldList worldList;
 
-    private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
-    private static final TextureID redButton = new TextureID("tinyblox", TextureType.UI,"red_button");
-    private static final TextureID worldSlot = new TextureID("tinyblox", TextureType.UI, "world_slot");
+    private static final TinyIdentifier grayButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button");
+    private static final TinyIdentifier redButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button");
+    private static final TinyIdentifier worldSlot = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "world_slot");
 
 
     public Selection(Main main, RendererStack rendererStack, TextureManager tex, UIRenderer uiRenderer) {

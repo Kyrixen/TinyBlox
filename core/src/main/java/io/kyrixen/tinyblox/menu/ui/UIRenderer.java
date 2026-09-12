@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class UIRenderer {
@@ -18,9 +18,9 @@ public class UIRenderer {
     private final TextureManager tex;
 
     // Background textures
-    private static final TextureID menuBackgroundImage = new TextureID("tinyblox", TextureType.BACKGROUND, "menu_background");
-    private static final TextureID settingsBackgroundImage = new TextureID("tinyblox", TextureType.BACKGROUND, "settings_background");
-    private static final TextureID selectionBackgroundImage = new TextureID("tinyblox", TextureType.BACKGROUND, "selection_background");
+    private static final TinyIdentifier menuBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background");
+    private static final TinyIdentifier settingsBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "settings_background");
+    private static final TinyIdentifier selectionBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "selection_background");
 
 
     public UIRenderer(TextureManager tex) {

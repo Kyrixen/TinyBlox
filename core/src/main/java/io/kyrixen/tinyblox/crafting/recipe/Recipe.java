@@ -1,6 +1,6 @@
 package io.kyrixen.tinyblox.crafting.recipe;
 
-import io.kyrixen.tinyblox.entities.inventory.ItemStack;
+import io.kyrixen.tinyblox.inventory.ItemStack;
 
 public class Recipe {
 

@@ -1,7 +1,7 @@
 package io.kyrixen.tinyblox.world.chunk.tile;
 
-import io.kyrixen.tinyblox.entities.inventory.Item;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
+import io.kyrixen.tinyblox.inventory.Item;
+import io.kyrixen.tinyblox.inventory.ItemRegister;
 
 // Tile class
 public class Tile {

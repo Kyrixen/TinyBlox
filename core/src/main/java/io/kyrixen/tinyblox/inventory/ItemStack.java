@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.entities.inventory;
+package io.kyrixen.tinyblox.inventory;
 
 public class ItemStack {
     

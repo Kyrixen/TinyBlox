@@ -1,5 +1,5 @@
 >[!IMPORTANT]
->TinyBlox is an archived project.
+>TinyBlox is back!.
 It was developed as a sandbox game and served as a platform for learning Java and LibGDX. While it's no longer in active development, the source code and releases remain available as a reference.
 > 
 

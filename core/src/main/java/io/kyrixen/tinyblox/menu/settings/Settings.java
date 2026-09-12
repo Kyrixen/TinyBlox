@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.Menu;
 import io.kyrixen.tinyblox.menu.settings.uisettingsaddon.ToggleButton;
@@ -20,6 +18,8 @@ import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RendererUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Settings implements Screen {
@@ -42,8 +42,8 @@ public class Settings implements Screen {
     private final TextureManager tex;
     private final UIRenderer uiRenderer;
 
-    private static final TextureID grayButton = new TextureID("tinyblox", TextureType.UI,"gray_button");
-    private static final TextureID whiteSlider = new TextureID("tinyblox", TextureType.UI,"white_slider");
+    private static final TinyIdentifier grayButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button");
+    private static final TinyIdentifier whiteSlider = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_slider");
 
     public Settings(Main main, RendererStack rendererStack, TextureManager textureManager, UIRenderer uiRenderer) {
         this.main = main;

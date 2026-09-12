@@ -4,9 +4,9 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
+import io.kyrixen.tinyblox.inventory.Inventory;
+import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;

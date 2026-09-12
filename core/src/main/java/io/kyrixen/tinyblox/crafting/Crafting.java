@@ -9,11 +9,11 @@ import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.crafting.rendering.RecipeButton;
 import io.kyrixen.tinyblox.crafting.rendering.RecipeContainer;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingButton.CraftingButtonState;
-import io.kyrixen.tinyblox.entities.inventory.Inventory;
-import io.kyrixen.tinyblox.entities.inventory.ItemStack;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
+import io.kyrixen.tinyblox.inventory.Inventory;
+import io.kyrixen.tinyblox.inventory.ItemStack;
 
 public class Crafting {
 
@@ -35,9 +35,9 @@ public class Crafting {
 
     // Helpers //
     
-    private final static TextureID BUTTON_HOVER_TEXTURE = new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_hover");
-    private final static TextureID BUTTON_IDLE_TEXTURE = new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_idle");
-    private final static TextureID BUTTON_SELECTED_TEXTURE = new TextureID("tinyblox", TextureType.HUD, "crafting_menu_button_selected");
+    private final static TinyIdentifier BUTTON_HOVER_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_hover");
+    private final static TinyIdentifier BUTTON_IDLE_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_idle");
+    private final static TinyIdentifier BUTTON_SELECTED_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_selected");
         
     private final int scaleMult = 3;
 
@@ -53,7 +53,7 @@ public class Crafting {
         int containerY = (Constants.WINDOW_HEIGHT - containerH) / 2;
 
         // Container
-        this.container = new RecipeContainer(containerX, containerY, containerW, containerH, new TextureID("tinyblox", TextureType.HUD, "crafting_menu_container"));
+        this.container = new RecipeContainer(containerX, containerY, containerW, containerH, new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"));
 
         // x: 20 y: 120 w: 96 h: 160
 

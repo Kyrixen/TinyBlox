@@ -3,8 +3,6 @@ package io.kyrixen.tinyblox.world.chunk;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.Color;
-
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.utils.RandomUtils;
@@ -29,7 +27,7 @@ public class Chunk {
     private TileStack[][] chunk;
 
     // Stores light level for tiles
-    private final Color[][][] lightLevel;
+    private ChunkLight[][][] lightLevel;
 
     // Stores entities in chunk
     private final List<Entity> entities;
@@ -42,7 +40,7 @@ public class Chunk {
         this.chunkPos = chunkPos;
 
         this.chunk = new TileStack[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
-        this.lightLevel = new Color[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE][Constants.MAX_WORLD_HEIGHT + 1];
+        this.lightLevel = new ChunkLight[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE][Constants.MAX_WORLD_HEIGHT + 1];
         this.entities = new ArrayList<>();
 
         for(byte xPos = 0; xPos < Constants.CHUNK_SIZE; xPos++) {
@@ -51,7 +49,7 @@ public class Chunk {
                 this.chunk[xPos][yPos] = new TileStack();
 
                 for(byte layer = 0; layer <= Constants.MAX_WORLD_HEIGHT; layer++) {
-                    this.lightLevel[xPos][yPos][layer] = new Color(1f, 1f, 1f, 1f);
+                    this.lightLevel[xPos][yPos][layer] = new ChunkLight((byte) 255, (byte) 255, (byte) 255);
                 }
 
             }
@@ -74,7 +72,7 @@ public class Chunk {
     // Reset default lighting
     public void resetLocalLighting() {
 
-        Color defaultLight = new Color(0f, 0f, 0f, 1f);
+        ChunkLight defaultLight = new ChunkLight((byte) 0, (byte) 0, (byte) 0);
 
         for(byte xPos = 0; xPos < lightLevel.length; xPos++) {
             for(byte yPos = 0; yPos < lightLevel.length; yPos++) {
@@ -181,13 +179,13 @@ public class Chunk {
         return this.chunk[localX][localY];
     }
 
-    public Color getLight(byte xPos, byte yPos, byte layer) {
+    public ChunkLight getLight(byte xPos, byte yPos, byte layer) {
         if(xPos < 0 || xPos >= Constants.CHUNK_SIZE || yPos < 0 || yPos >= Constants.CHUNK_SIZE || layer > Constants.MAX_WORLD_HEIGHT || layer < Constants.MIN_WORLD_HEIGHT) return null;
         return this.lightLevel[xPos][yPos][layer];
     }
 
-    public void setLight(byte xPos, byte yPos, byte layer, Color light) {
-        this.lightLevel[xPos][yPos][layer].set(light);
+    public void setLight(byte xPos, byte yPos, byte layer, ChunkLight light) {
+        this.lightLevel[xPos][yPos][layer].copyLight(light);
     }
 
     public boolean isRendered() { return this.rendered; }

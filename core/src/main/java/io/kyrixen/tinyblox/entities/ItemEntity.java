@@ -4,16 +4,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.inventory.Item;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.inventory.Item;
 import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.ChunkLight;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 
@@ -86,7 +87,7 @@ public class ItemEntity extends Entity {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new ChunkLight(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level())).toColor();
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);

@@ -1,4 +1,4 @@
-package io.kyrixen.tinyblox.entities.inventory;
+package io.kyrixen.tinyblox.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 public class InventoryRenderer {
     
@@ -25,7 +25,7 @@ public class InventoryRenderer {
     private boolean visible = true;
 
     // Slot texture
-    private static final TextureID hotbarSlot = new TextureID("tinyblox", TextureType.HUD, "hotbar_slot");
+    private static final TinyIdentifier hotbarSlot = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "hotbar_slot");
 
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;

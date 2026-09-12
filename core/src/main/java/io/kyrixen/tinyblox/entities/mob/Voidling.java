@@ -7,11 +7,12 @@ import com.badlogic.gdx.math.MathUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Terrain;
+import io.kyrixen.tinyblox.world.chunk.ChunkLight;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -66,7 +67,7 @@ public class Voidling extends Enemy {
         SpriteBatch batch = rendererStack.batch;
 
         // Get brightness and local light
-        Color localLightColor = new Color(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level()));
+        Color localLightColor = new ChunkLight(terrain.getLightColor((int) x / Constants.GRID_SIZE, (int) y / Constants.GRID_SIZE, level())).toColor();
         Color brightnessColor = new Color(terrain.getAmbientColor());
 
         localLightColor.add(brightnessColor);
@@ -131,7 +132,7 @@ public class Voidling extends Enemy {
 
     @Override
     public void initTexture() {
-        this.texture = new TextureID("tinyblox", TextureType.ENTITY, "voidling");
+        this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "voidling");
     }
 
     @Override

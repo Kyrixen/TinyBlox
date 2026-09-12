@@ -12,8 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
@@ -28,7 +28,7 @@ public class ChunkRenderer {
     private final TileRenderer tileRenderer;
 
     // Terrain texture ID
-    private final TextureID terrainTileset = new TextureID("tinyblox", TextureType.TERRAIN, "terrain_tiles");
+    private final TinyIdentifier terrainTileset = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles");
     
     // Chunk size
     private static final byte CHUNK_SIZE = Constants.CHUNK_SIZE;
@@ -77,7 +77,7 @@ public class ChunkRenderer {
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
 
-                    Color light = c.getLight(tx, ty, layer);
+                    Color light = c.getLight(tx, ty, layer).toColor();
 
                     float r = Math.min(1.25f, ambient.r + light.r);
                     float g = Math.min(1.25f, ambient.g + light.g);
@@ -162,7 +162,7 @@ public class ChunkRenderer {
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
 
-                    Color light = c.getLight(tx, ty, layer);
+                    Color light = c.getLight(tx, ty, layer).toColor();
 
                     float r = Math.min(1.25f, ambient.r + light.r);
                     float g = Math.min(1.25f, ambient.g + light.g);

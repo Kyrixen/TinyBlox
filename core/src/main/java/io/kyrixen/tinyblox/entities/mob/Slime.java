@@ -2,11 +2,11 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.ItemEntity;
-import io.kyrixen.tinyblox.entities.inventory.ItemRegister;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
+import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
@@ -77,7 +77,7 @@ public class Slime extends Enemy {
 
     @Override
     public void initTexture() {
-        this.texture = new TextureID("tinyblox", TextureType.ENTITY, "slime");
+        this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime");
     }
 
 

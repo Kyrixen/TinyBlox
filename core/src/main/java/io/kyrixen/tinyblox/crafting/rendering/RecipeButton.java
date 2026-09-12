@@ -1,7 +1,7 @@
 package io.kyrixen.tinyblox.crafting.rendering;
 
 import io.kyrixen.tinyblox.crafting.recipe.Recipe;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 
 public class RecipeButton extends CraftingButton {
 
@@ -9,7 +9,7 @@ public class RecipeButton extends CraftingButton {
     private Recipe recipe;
 
     // Constructs button
-    public RecipeButton(Recipe recipe, int x, int y, int w, int h, TextureID hover, TextureID idle, TextureID selected) {
+    public RecipeButton(Recipe recipe, int x, int y, int w, int h, TinyIdentifier hover, TinyIdentifier idle, TinyIdentifier selected) {
 
         super(x, y, w, h, hover, idle, selected);
 

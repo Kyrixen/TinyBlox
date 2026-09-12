@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
-import io.kyrixen.tinyblox.graphics.texture.TextureID;
-import io.kyrixen.tinyblox.graphics.texture.TextureID.TextureType;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.selection.Selection;
 import io.kyrixen.tinyblox.menu.settings.Settings;
@@ -17,6 +15,8 @@ import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Menu implements Screen {
@@ -35,7 +35,7 @@ public class Menu implements Screen {
     private final TextureManager tex;
     private final UIRenderer uiRenderer;
 
-    private static final TextureID brownButton = new TextureID("tinyblox", TextureType.UI,"brown_button");
+    private static final TinyIdentifier brownButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"brown_button");
 
     public Menu(Main main, RendererStack rendererStack, TextureManager tex) {
         this.main = main;
