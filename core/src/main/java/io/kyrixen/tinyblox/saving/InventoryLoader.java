@@ -12,6 +12,7 @@ import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.InventoryBlueprint.InventoryStack;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 
 public class InventoryLoader {
     
@@ -31,8 +32,8 @@ public class InventoryLoader {
 
         if(ib.stacks == null) return;
         for(InventoryStack inventoryStack : ib.stacks) {
-            if(ItemRegister.getItemByName(inventoryStack.item) == null) continue;
-            inventory.set(ItemRegister.getItemByName(inventoryStack.item), (byte) inventoryStack.amount);
+            if(ItemRegister.getItemByID(TinyIdentifier.fromString(inventoryStack.item)) == null) continue;
+            inventory.set(ItemRegister.getItemByID(TinyIdentifier.fromString(inventoryStack.item)), (byte) inventoryStack.amount);
         }
 
         inventory.setCurrentSlot(ib.hotbarSlot);

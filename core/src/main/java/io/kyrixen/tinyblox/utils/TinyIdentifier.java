@@ -12,6 +12,8 @@ public final class TinyIdentifier {
         TILE,
         SOUND,
         MUSIC,
+        STRUCTURE,
+        RECIPE,
         MISC
     
     }
@@ -61,6 +63,15 @@ public final class TinyIdentifier {
     @Override
     public String toString() {
         return this.namespace + ":" + this.type.name().toLowerCase() + ":" + this.id;
+    }
+
+
+    // Helpers //
+
+    public static TinyIdentifier fromString(String identifier) {
+        String[] parts = identifier.split(":");
+        if(parts.length > 3) return null;
+        return new TinyIdentifier(parts[0], IdentifierType.valueOf(parts[1].toUpperCase()), parts[2]);
     }
 
 }

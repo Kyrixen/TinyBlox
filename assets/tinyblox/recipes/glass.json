@@ -1,0 +1,13 @@
+{
+  "formatVersion": 2,
+  "ingredients": [
+    {
+      "item": "tinyblox:item:sand",
+      "amount": 1
+    }
+  ],
+  "result": {
+    "item": "tinyblox:item:glass",
+    "amount": 2
+  }
+}

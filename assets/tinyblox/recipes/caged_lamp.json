@@ -1,0 +1,17 @@
+{
+  "formatVersion": 2,
+  "ingredients": [
+    {
+      "item": "tinyblox:item:coal",
+      "amount": 1
+    },
+    {
+      "item": "tinyblox:item:iron",
+      "amount": 4
+    }
+  ],
+  "result": {
+    "item": "tinyblox:item:caged_lamp",
+    "amount": 4
+  }
+}

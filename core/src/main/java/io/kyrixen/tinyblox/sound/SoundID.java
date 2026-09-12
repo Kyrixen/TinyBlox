@@ -2,8 +2,10 @@ package io.kyrixen.tinyblox.sound;
 
 import java.util.Objects;
 
+@Deprecated
 public class SoundID {
     
+    @Deprecated
     // Sound type enum helper
     public enum SoundType {
         UI,

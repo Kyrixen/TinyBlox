@@ -7,25 +7,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 public class SoundManager {
 
     // List of loaded sounds
-    private final Map<SoundID, Sound> loadedSounds = new HashMap<>();
+    private final Map<TinyIdentifier, Sound> loadedSounds = new HashMap<>();
 
     // Sound for missing sound
-    private static final SoundID MISSING_SOUND = new SoundID("tinyblox", SoundType.MISC, "missing_sound");
+    private static final TinyIdentifier MISSING_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "missing_sound");
 
     // Load missing sound sound
     public SoundManager() {
-        this.load(MISSING_SOUND, "sounds/misc/missing_sound.wav");
+        this.load(MISSING_SOUND, "misc/missing_sound.wav");
     }
 
     // Load sound
-    public void load(SoundID identifier, String path) {
+    public void load(TinyIdentifier identifier, String file) {
     
+        String path = identifier.getNamespace() + "/sounds/" + file;
+
         Logger.LOGGER.debug("SOUND", "Loading: " + path);
     
         try {
@@ -43,7 +46,7 @@ public class SoundManager {
     }
 
     // Get sound
-    public Sound getSound(SoundID identifier) {
+    public Sound getSound(TinyIdentifier identifier) {
     
         Sound asset = loadedSounds.get(identifier);
 
@@ -58,31 +61,31 @@ public class SoundManager {
     // Load UI sounds
     public void loadUI() {
 
-        this.load(new SoundID("tinyblox", SoundType.UI, "hollow"), "sounds/ui/hollow.wav");
-        this.load(new SoundID("tinyblox", SoundType.UI, "slider"), "sounds/ui/slider.wav");
-        this.load(new SoundID("tinyblox", SoundType.UI, "click"), "sounds/ui/click.wav");
-        this.load(new SoundID("tinyblox", SoundType.UI, "options"), "sounds/ui/options.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hollow"), "ui/hollow.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "slider"), "ui/slider.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click"), "ui/click.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options"), "ui/options.wav");
     
     }
 
     // Load HUD sounds
     public void loadHUD() {
 
-        this.load(new SoundID("tinyblox", SoundType.HUD, "walk"), "sounds/hud/walk.wav");
-        this.load(new SoundID("tinyblox", SoundType.HUD, "place"), "sounds/hud/place.wav");
-        this.load(new SoundID("tinyblox", SoundType.HUD, "destroy"), "sounds/hud/destroy.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "walk"), "hud/walk.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "place"), "hud/place.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "destroy"), "hud/destroy.wav");
 
     }
 
     // Load SFX sounds
     public void loadSFX() {
 
-        this.load(new SoundID("tinyblox", SoundType.SFX, "explosion"), "sounds/sfx/explosion.wav");
-        this.load(new SoundID("tinyblox", SoundType.SFX, "bomber_detonate"), "sounds/sfx/bomberDetonate.wav");
-        this.load(new SoundID("tinyblox", SoundType.SFX, "hit_player"), "sounds/sfx/hitPlayer.wav");
-        this.load(new SoundID("tinyblox", SoundType.SFX, "hit_enemy"), "sounds/sfx/hitEnemy.wav");
-        this.load(new SoundID("tinyblox", SoundType.SFX, "pickup_item"), "sounds/sfx/pickupItem.wav");
-        this.load(new SoundID("tinyblox", SoundType.SFX, "powerup"), "sounds/sfx/powerup.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "explosion"), "sfx/explosion.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "bomber_detonate"), "sfx/bomberDetonate.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_player"), "sfx/hitPlayer.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_enemy"), "sfx/hitEnemy.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pickup_item"), "sfx/pickupItem.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "powerup"), "sfx/powerup.wav");
 
     }
 

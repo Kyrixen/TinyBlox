@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.world.chunk.structures;
 
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure.Rarity;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -8,7 +9,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 public class StructureBuilder {
 
     // Build name
-    private final String structureName;
+    private final TinyIdentifier structureID;
 
     // Build dimensions
     private final byte w, h, layers;
@@ -21,9 +22,9 @@ public class StructureBuilder {
 
 
     // Construct new structure build
-    public StructureBuilder(String structureName, byte width, byte height, byte layers, Rarity structureRarity) {
+    public StructureBuilder(TinyIdentifier structureID, byte width, byte height, byte layers, Rarity structureRarity) {
 
-        this.structureName = structureName;
+        this.structureID = structureID;
 
         this.w = width;
         this.h = height;
@@ -81,6 +82,6 @@ public class StructureBuilder {
 
     
     // Build structure
-    public Structure build() { return new Structure(structureName, w, h, layers, structureRarity, buildedStructure); }
+    public Structure build() { return new Structure(structureID, w, h, layers, structureRarity, buildedStructure); }
 
 }

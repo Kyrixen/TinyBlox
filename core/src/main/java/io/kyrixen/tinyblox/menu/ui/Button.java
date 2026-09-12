@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Button
@@ -48,8 +48,8 @@ public class Button {
             
     protected GlyphLayout layout = new GlyphLayout();
 
-    protected final SoundID HOLLOW_SOUND = new SoundID("tinyblox", SoundType.UI, "hollow");
-    protected final SoundID CLICK_SOUND = new SoundID("tinyblox", SoundType.UI, "click");
+    protected final TinyIdentifier HOLLOW_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hollow");
+    protected final TinyIdentifier CLICK_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click");
 
     public Button(SoundManager uiSoundManager) {
         this.uiSoundManager = uiSoundManager;

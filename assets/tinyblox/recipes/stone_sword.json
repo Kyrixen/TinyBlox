@@ -1,0 +1,17 @@
+{
+  "formatVersion": 2,
+  "ingredients": [
+    {
+      "item": "tinyblox:item:wood",
+      "amount": 1
+    },
+    {
+      "item": "tinyblox:item:stone",
+      "amount": 1
+    }
+  ],
+  "result": {
+    "item": "tinyblox:item:stone_sword",
+    "amount": 1
+  }
+}

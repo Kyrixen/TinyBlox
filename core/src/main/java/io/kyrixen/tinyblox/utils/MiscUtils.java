@@ -80,6 +80,7 @@ public class MiscUtils {
         return LAST_ENTITY_ID;
     }
 
+    @Deprecated
     public static int generateItemID() {
         return LAST_ITEM_ID++;
     }

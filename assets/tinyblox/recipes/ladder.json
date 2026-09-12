@@ -1,0 +1,13 @@
+{
+  "formatVersion": 2,
+  "ingredients": [
+    {
+      "item": "tinyblox:item:wood",
+      "amount": 4
+    }
+  ],
+  "result": {
+    "item": "tinyblox:item:ladder",
+    "amount": 12
+  }
+}

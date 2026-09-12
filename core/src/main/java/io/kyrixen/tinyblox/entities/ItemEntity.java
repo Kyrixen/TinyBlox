@@ -8,10 +8,10 @@ import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.inventory.Item;
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.ChunkLight;
@@ -32,7 +32,7 @@ public class ItemEntity extends Entity {
 
     private final SoundManager soundManager;
 
-    private final SoundID PICKUP_ITEM_SOUND = new SoundID("tinyblox", SoundType.SFX, "pickup_item");
+    private final TinyIdentifier PICKUP_ITEM_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pickup_item");
 
     public ItemEntity(float x, float y, SoundManager soundManager, Item item, MobEntity mob) {
 

@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.world.chunk.structures;
 
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 // Structure class
@@ -31,7 +32,7 @@ public class Structure {
 
 
     // Structure name
-    private final String name;
+    private final TinyIdentifier structureID;
 
     // Structure dimensions
     private final byte w, h, layers;
@@ -44,9 +45,9 @@ public class Structure {
 
 
     // Creates structure
-    public Structure(String name, byte w, byte h, byte layers, Rarity rarity, TileStack[][] structureMap) {
+    public Structure(TinyIdentifier structureID, byte w, byte h, byte layers, Rarity rarity, TileStack[][] structureMap) {
 
-        this.name = name;
+        this.structureID = structureID;
         
         this.w = w;
         this.h = h;
@@ -61,7 +62,8 @@ public class Structure {
 
     // Getters //
 
-    public String getName() { return this.name; }
+    public String getName() { return this.structureID.getID().toUpperCase(); }
+    public TinyIdentifier getID() { return this.structureID; }
 
     public byte getWidth() { return this.w; }
     public byte getHeight() { return this.h; }

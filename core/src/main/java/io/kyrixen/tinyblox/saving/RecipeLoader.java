@@ -13,6 +13,8 @@ import io.kyrixen.tinyblox.inventory.ItemStack;
 import io.kyrixen.tinyblox.saving.blueprints.RecipeBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.RecipeBlueprint.RecipeStack;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 
 public class RecipeLoader {
@@ -33,6 +35,13 @@ public class RecipeLoader {
 
         Logger.LOGGER.debug("LOADER", "Loaded recipe: " + recipeFile.name());
 
+        
+        String[] pathParts = path.split("/");
+        if(pathParts.length < 3 || !pathParts[pathParts.length - 2].equals("recipes")) Logger.LOGGER.error("LOADER", "Invalid structure: " + path);
+        String namespace = pathParts[pathParts.length - 3];
+        String structureName = recipeFile.nameWithoutExtension();
+
+
         ItemStack[] ingredients = new ItemStack[rp.ingredients.length];
         ItemStack output;
 
@@ -40,7 +49,7 @@ public class RecipeLoader {
 
             RecipeStack ingredient = rp.ingredients[i];
 
-            Item item = ItemRegister.getItemByName(ingredient.item);
+            Item item = ItemRegister.getItemByID(TinyIdentifier.fromString(ingredient.item));
             if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
             
             byte count = (byte) ingredient.amount;
@@ -52,7 +61,7 @@ public class RecipeLoader {
 
         RecipeStack result = rp.result;
 
-        Item item = ItemRegister.getItemByName(result.item);
+        Item item = ItemRegister.getItemByID(TinyIdentifier.fromString(result.item));
         if(item == null) throw new RuntimeException("Unknown item: " + result.item);
 
         byte count = (byte) result.amount;
@@ -60,7 +69,7 @@ public class RecipeLoader {
         output = new ItemStack(item, count);
 
 
-        return new Recipe(ingredients, output);
+        return new Recipe(new TinyIdentifier(namespace, IdentifierType.RECIPE, structureName), ingredients, output);
 
     }
 
@@ -69,7 +78,7 @@ public class RecipeLoader {
         String[] entries = assetsManifest.readString().split("\n");
         for(String entry : entries) {
             entry = entry.trim();
-            if(entry.startsWith("recipes/") && entry.endsWith(".json")) RecipeRegister.add(load(entry));
+            if(entry.contains("/recipes/") && entry.endsWith(".json")) RecipeRegister.add(load(entry));
         }
 
     }

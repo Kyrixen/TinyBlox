@@ -1,6 +1,5 @@
 package io.kyrixen.tinyblox.inventory;
 
-import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
 
 public class Equipment extends Item {
@@ -66,8 +65,8 @@ public class Equipment extends Item {
 
 
     // Constructor
-    public Equipment(String name, TinyIdentifier textureID, boolean obtainable, ToolTier toolTier, EquipmentType equipmentType) {
-        super(name, MiscUtils.generateItemID(), textureID, obtainable, (byte) 1);
+    public Equipment(TinyIdentifier equipmentID, TinyIdentifier textureID, boolean obtainable, ToolTier toolTier, EquipmentType equipmentType) {
+        super(equipmentID, textureID, obtainable, (byte) 1);
         this.toolTier = toolTier;
         this.equipmentType = equipmentType;
     }

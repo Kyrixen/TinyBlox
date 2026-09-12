@@ -8,17 +8,15 @@ public class Item {
     
     // Item vars //
 
-    private final String name;
     private final byte maxSize;
     private final TinyIdentifier textureID;
-    private final int itemID;
+    private final TinyIdentifier itemID;
     private final boolean obtainable;
     private final TileType tileVariant;
 
     
     // Constructor for Item
-    public Item(String name, int itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize) {
-        this.name = name;
+    public Item(TinyIdentifier itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize) {
         this.maxSize = maxSize;
         this.obtainable = obtainable;
         this.textureID = textureID;
@@ -27,8 +25,7 @@ public class Item {
     }
     
     // Constructor for Item / Tile
-    public Item(String name, int itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize, TileType tile) {
-        this.name = name;
+    public Item(TinyIdentifier itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize, TileType tile) {
         this.maxSize = maxSize;
         this.obtainable = obtainable;
         this.textureID = textureID;
@@ -39,11 +36,11 @@ public class Item {
 
     // Getters //
 
-    public String getItemName() { return this.name; }
+    public String getItemName() { return this.itemID.getID(); }
     public byte getMaxSize() { return this.maxSize; }
 
     public TinyIdentifier textureID() { return this.textureID; }
-    public int getItemID() { return this.itemID; }
+    public TinyIdentifier getItemID() { return this.itemID; }
 
     public boolean canPlace() { return this.tileVariant != null; }
     public boolean canRoll() { return this.obtainable; }
@@ -54,7 +51,7 @@ public class Item {
     // Override
     @Override
     public String toString() {
-        return "Item { " + this.name.toUpperCase() + " }";
+        return "Item { " + this.itemID.toString().toUpperCase() + " }";
     }
 
 }

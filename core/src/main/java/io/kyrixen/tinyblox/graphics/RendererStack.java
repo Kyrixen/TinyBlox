@@ -20,7 +20,7 @@ public class RendererStack {
 		
 		batch = new SpriteBatch();
 		shape = new ShapeRenderer();
-		font = new BitmapFont(Gdx.files.internal("fonts/tinyblox_font.fnt"));
+		font = new BitmapFont(Gdx.files.internal("tinyblox/fonts/tinyblox_font.fnt"));
 		camera = new Camera(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.RENDER_DISTANCE, 3f);
 		
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);

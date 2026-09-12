@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Peripheral;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
@@ -52,8 +52,8 @@ public class Slider {
 
     protected GlyphLayout layout = new GlyphLayout();
 
-    protected final SoundID OPTIONS_SOUND = new SoundID("tinyblox", SoundType.UI, "options");
-    protected final SoundID SLIDER_SOUND = new SoundID("tinyblox", SoundType.UI, "slider");
+    protected final TinyIdentifier OPTIONS_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options");
+    protected final TinyIdentifier SLIDER_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "slider");
 
     public Slider(SoundManager uiSoundManager) {
         this.uiSoundManager = uiSoundManager;

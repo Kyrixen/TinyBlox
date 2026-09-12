@@ -34,7 +34,7 @@ public class InventorySaver {
             ItemStack itemStack = inventory.getSlot(i);
             
             InventoryStack inventoryStack = new InventoryStack();
-            inventoryStack.item = itemStack.getItem().getItemName();
+            inventoryStack.item = itemStack.getItem().getItemID().toString();
             inventoryStack.amount = itemStack.getCount();
 
             bi.stacks[i] = inventoryStack;

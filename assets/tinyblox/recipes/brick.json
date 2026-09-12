@@ -1,15 +1,15 @@
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
  
   "ingredients": [
     {
-      "item": "CLAY",
+      "item": "tinyblox:item:clay",
       "amount": 4
     }
   ],
  
   "result": {
-    "item": "BRICK",
+    "item": "tinyblox:item:brick",
     "amount": 2
   }
 }

@@ -7,9 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.sound.SoundID;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
@@ -28,7 +26,7 @@ public class Bomber extends Enemy {
     
     private boolean activated = false;
 
-    private final static SoundID DETONATE_SOUND = new SoundID("tinyblox", SoundType.SFX, "bomber_detonate");
+    private final static TinyIdentifier DETONATE_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "bomber_detonate");
 
     private final float detonate_time = 1.5f / Constants.DIFFICULTY.getDiffMult();
     private long firstImpulse = 0L;

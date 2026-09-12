@@ -1,0 +1,17 @@
+{
+  "formatVersion": 2,
+  "ingredients": [
+    {
+      "item": "tinyblox:item:wood",
+      "amount": 1
+    },
+    {
+      "item": "tinyblox:item:iron",
+      "amount": 2
+    }
+  ],
+  "result": {
+    "item": "tinyblox:item:iron_pickaxe",
+    "amount": 1
+  }
+}

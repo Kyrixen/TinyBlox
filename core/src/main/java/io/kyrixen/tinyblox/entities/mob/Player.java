@@ -13,8 +13,6 @@ import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.inventory.Item;
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -37,7 +35,7 @@ public class Player extends MobEntity {
     private final InventoryRenderer inventoryRenderer;
     private final Crafting craftingManager;
 
-    private final SoundID WALK_SOUND = new SoundID("tinyblox", SoundType.HUD, "walk");
+    private final TinyIdentifier WALK_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "walk");
 
 
     public Player(float x, float y, Camera camera, SoundManager soundManager) {

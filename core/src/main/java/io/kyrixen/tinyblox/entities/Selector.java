@@ -12,12 +12,12 @@ import io.kyrixen.tinyblox.inventory.Equipment;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.Item;
 import io.kyrixen.tinyblox.inventory.ItemStack;
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
@@ -50,9 +50,9 @@ public class Selector extends Entity {
     // Max distance that cursor can be from mob
     private final byte REACH = 2;
 
-    private final SoundID HIT_ENEMY_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_enemy");
-    private final SoundID PLACE_SOUND = new SoundID("tinyblox", SoundType.HUD, "place");
-    private final SoundID DESTROY_SOUND = new SoundID("tinyblox", SoundType.HUD, "destroy");
+    private final TinyIdentifier HIT_ENEMY_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_enemy");
+    private final TinyIdentifier PLACE_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "place");
+    private final TinyIdentifier DESTROY_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "destroy");
 
 
     public Selector(MobEntity mob, SoundManager sfxManager) {

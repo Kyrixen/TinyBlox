@@ -2,8 +2,6 @@ package io.kyrixen.tinyblox.entities.mob;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
-import io.kyrixen.tinyblox.sound.SoundID;
-import io.kyrixen.tinyblox.sound.SoundID.SoundType;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
@@ -30,8 +28,8 @@ public class Enemy extends MobEntity {
     // Count the stuck count
     protected int stuckCounter = 0;
 
-    protected final SoundID HIT_PLAYER_SOUND = new SoundID("tinyblox", SoundType.SFX, "hit_player");
-    protected final SoundID EXPLOSION_SOUND = new SoundID("tinyblox", SoundType.SFX, "explosion");
+    protected final TinyIdentifier HIT_PLAYER_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_player");
+    protected final TinyIdentifier EXPLOSION_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "explosion");
 
 
     public Enemy(float x, float y, SoundManager soundManager) {
