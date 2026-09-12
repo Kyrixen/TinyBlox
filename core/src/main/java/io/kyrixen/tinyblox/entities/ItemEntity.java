@@ -37,6 +37,7 @@ public class ItemEntity extends Entity {
     public ItemEntity(float x, float y, SoundManager soundManager, Item item, MobEntity mob) {
 
         super(x, y, Constants.GRID_SIZE / 3, Constants.GRID_SIZE / 3);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "item_entity");
 
         this.soundManager = soundManager;
 
@@ -119,7 +120,7 @@ public class ItemEntity extends Entity {
 
     @Override
     public String toString() {
-        return "ItemEntity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + " }";
+        return "ItemEntity(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + " }";
     }
 
 

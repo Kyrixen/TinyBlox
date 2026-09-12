@@ -71,7 +71,7 @@ public class EntityHandler {
 
             // Blueprint
             SavedEntity nextEntity = new SavedEntity();
-            nextEntity.id = e.id();
+            nextEntity.id = e.currentID();
 
             if(e.getClass() == Entity.class) {
                 nextEntity.type = "Entity";

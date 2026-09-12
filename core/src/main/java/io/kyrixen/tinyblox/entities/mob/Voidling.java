@@ -24,6 +24,7 @@ public class Voidling extends Enemy {
     public Voidling(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "voidling");
 
         this.maxHealth = (int) (40 * Constants.DIFFICULTY.getDiffMult());
         this.health = 40 * Constants.DIFFICULTY.getDiffMult();
@@ -39,6 +40,7 @@ public class Voidling extends Enemy {
     public Voidling(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "voidling");
 
         this.maxHealth = (int) (40 * Constants.DIFFICULTY.getDiffMult());
         this.health = 40 * Constants.DIFFICULTY.getDiffMult();
@@ -150,7 +152,7 @@ public class Voidling extends Enemy {
 
     @Override
     public String toString() {
-        return "Voidling(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Voidling(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }

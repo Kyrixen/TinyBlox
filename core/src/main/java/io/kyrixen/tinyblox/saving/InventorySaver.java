@@ -55,7 +55,7 @@ public class InventorySaver {
         InventoryBlueprint inventoryBlueprint = convertToBlueprint(mobEntity.getInventory());
 
         // File to write
-        String fileName = getInventoryFolder() + "/inventory_" + mobEntity.id() + ".json";
+        String fileName = getInventoryFolder() + "/inventory_" + mobEntity.currentID() + ".json";
 
         // Collected data
         String inventoryData = json.prettyPrint(inventoryBlueprint);

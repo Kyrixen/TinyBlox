@@ -21,7 +21,8 @@ public class Slime extends Enemy {
     public Slime(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
-
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "slime");
+        
         this.attackDamage = (int) (7 * Constants.DIFFICULTY.getDiffMult());
 
         this.maxHealth = (int) (65 * Constants.DIFFICULTY.getDiffMult());
@@ -36,6 +37,7 @@ public class Slime extends Enemy {
     public Slime(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "slime");
 
         this.attackDamage = (int) (7 * Constants.DIFFICULTY.getDiffMult());
 
@@ -97,7 +99,7 @@ public class Slime extends Enemy {
 
     @Override
     public String toString() {
-        return "Slime(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Slime(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }

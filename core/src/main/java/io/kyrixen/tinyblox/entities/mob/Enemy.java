@@ -35,6 +35,7 @@ public class Enemy extends MobEntity {
     public Enemy(float x, float y, SoundManager soundManager) {
         
         super(x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "enemy");
 
         this.chasing = false;
 
@@ -59,6 +60,7 @@ public class Enemy extends MobEntity {
     public Enemy(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "enemy");
 
         this.chasing = false;
 
@@ -267,7 +269,7 @@ public class Enemy extends MobEntity {
 
     @Override
     public String toString() {
-        return "Enemy(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Enemy(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }

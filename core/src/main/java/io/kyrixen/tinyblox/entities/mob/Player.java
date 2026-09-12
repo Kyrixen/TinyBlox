@@ -41,6 +41,7 @@ public class Player extends MobEntity {
     public Player(float x, float y, Camera camera, SoundManager soundManager) {
     
         super(x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "bplayer");
 
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);
@@ -72,6 +73,7 @@ public class Player extends MobEntity {
     public Player(int id, float x, float y, Camera camera, SoundManager soundManager) {
     
         super(id, x, y, soundManager);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "player");
 
         this.hotbarSlotCount = 6;
         this.inventory = new Inventory(this.hotbarSlotCount);
@@ -313,7 +315,7 @@ public class Player extends MobEntity {
     
     @Override
     public String toString() {
-        return "Player(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", stamina: " + this.stamina + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Player(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", stamina: " + this.stamina + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 

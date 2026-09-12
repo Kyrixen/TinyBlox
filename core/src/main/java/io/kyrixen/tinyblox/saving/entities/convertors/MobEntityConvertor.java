@@ -13,7 +13,7 @@ public class MobEntityConvertor {
 
         if(meb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + meb.formatVersion);
 
-        MobEntity mobEntity = new MobEntity(meb.id, meb.x, meb.y, soundManager);
+        MobEntity mobEntity = new MobEntity(meb.currentID, meb.x, meb.y, soundManager);
         mobEntity.setLevel(meb.level);
         
         mobEntity.setHealth(meb.health);
@@ -36,7 +36,7 @@ public class MobEntityConvertor {
         MobEntityBlueprint meb = new MobEntityBlueprint();
         meb.formatVersion = Constants.SAVE_FORMAT_VERSION;
         
-        meb.id = mobEntity.id();
+        meb.currentID = mobEntity.currentID();
 
         meb.x = mobEntity.x();
         meb.y = mobEntity.y();

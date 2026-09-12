@@ -4,7 +4,7 @@ public class EntityBlueprint {
     
     public int formatVersion;
     
-    public int id;
+    public int currentID;
 
     public float x;
     public float y;

@@ -20,23 +20,23 @@ public class EnemyConvertor {
         switch (enb.enemyType.toUpperCase()) {
     
             case "ENEMY":
-                enemy = new Enemy(enb.id, enb.x, enb.y, soundManager);
+                enemy = new Enemy(enb.currentID, enb.x, enb.y, soundManager);
                 break;
     
             case "SLIME":
-                enemy = new Slime(enb.id, enb.x, enb.y, soundManager);
+                enemy = new Slime(enb.currentID, enb.x, enb.y, soundManager);
                 break;
         
             case "BOMBER":
-                enemy = new Bomber(enb.id, enb.x, enb.y, soundManager);
+                enemy = new Bomber(enb.currentID, enb.x, enb.y, soundManager);
                 break;
 
             case "VOIDLING":
-                enemy = new Voidling(enb.id, enb.x, enb.y, soundManager);
+                enemy = new Voidling(enb.currentID, enb.x, enb.y, soundManager);
                 break;
     
             default:
-                enemy = new Enemy(enb.id, enb.x, enb.y, soundManager);
+                enemy = new Enemy(enb.currentID, enb.x, enb.y, soundManager);
                 break;
         
         }
@@ -67,7 +67,7 @@ public class EnemyConvertor {
         EnemyBlueprint enb = new EnemyBlueprint();
         enb.formatVersion = Constants.SAVE_FORMAT_VERSION;
         
-        enb.id = enemy.id();
+        enb.currentID = enemy.currentID();
 
         enb.x = enemy.x();
         enb.y = enemy.y();

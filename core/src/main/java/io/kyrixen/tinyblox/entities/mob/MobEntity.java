@@ -8,6 +8,8 @@ import io.kyrixen.tinyblox.inventory.Item;
 import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.RandomUtils;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
+import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -46,6 +48,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     public MobEntity(float x, float y, SoundManager soundManager) {
         
         super(x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "mob_entity");
 
         this.soundManager = soundManager;
 
@@ -56,6 +59,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     public MobEntity(int id, float x, float y, SoundManager soundManager) {
         
         super(id, x, y, Constants.GRID_SIZE, Constants.GRID_SIZE);
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "mob_entity");
 
         this.soundManager = soundManager;
 
@@ -278,7 +282,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     @Override
     public String toString() {
-        return "MobEntity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "MobEntity(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", health: " + this.health + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }

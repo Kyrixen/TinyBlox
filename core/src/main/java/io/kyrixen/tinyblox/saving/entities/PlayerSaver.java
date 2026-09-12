@@ -25,7 +25,7 @@ public class PlayerSaver {
         PlayerBlueprint pb = new PlayerBlueprint();
         pb.formatVersion = Constants.SAVE_FORMAT_VERSION;
         
-        pb.id = player.id();
+        pb.currentID = player.currentID();
 
         pb.x = player.x();
         pb.y = player.y();

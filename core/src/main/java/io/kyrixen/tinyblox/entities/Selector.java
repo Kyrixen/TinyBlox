@@ -58,6 +58,7 @@ public class Selector extends Entity {
     public Selector(MobEntity mob, SoundManager sfxManager) {
 
         super(mob.x(), mob.y(), mob.width(), mob.height());
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "selector");
 
         // Initialize the selector with the given mob
         this.mob = mob;

@@ -10,7 +10,7 @@ public class EntityConvertor {
     public static Entity convertToEntity(EntityBlueprint eb) {
 
         if(eb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + eb.formatVersion);
-        Entity entity = new Entity(eb.id, eb.x, eb.y, eb.width, eb.height);
+        Entity entity = new Entity(eb.currentID, eb.x, eb.y, eb.width, eb.height);
         entity.setLevel(eb.level);
 
         return entity;
@@ -23,7 +23,7 @@ public class EntityConvertor {
         EntityBlueprint eb = new EntityBlueprint();
         eb.formatVersion = Constants.SAVE_FORMAT_VERSION;
         
-        eb.id = entity.id();
+        eb.currentID = entity.currentID();
 
         eb.x = entity.x();
         eb.y = entity.y();

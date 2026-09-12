@@ -44,7 +44,7 @@ public class InventoryLoader {
     public static void load(MobEntity mobEntity) {
 
         // File to write
-        String fileName = getInventoryFolder() + "/inventory_" + mobEntity.id() + ".json";
+        String fileName = getInventoryFolder() + "/inventory_" + mobEntity.currentID() + ".json";
         String inventoryData = Platform.fileManager.readFile(fileName);
         if(inventoryData == null) return;
 

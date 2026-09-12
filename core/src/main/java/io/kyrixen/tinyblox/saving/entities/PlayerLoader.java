@@ -23,7 +23,7 @@ public class PlayerLoader {
 
         if(pb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + pb.formatVersion);
 
-        Player player = new Player(pb.id, pb.x, pb.y,  camera, soundManager);
+        Player player = new Player(pb.currentID, pb.x, pb.y,  camera, soundManager);
         player.setLevel(pb.level);
         
         player.setHealth(pb.health);

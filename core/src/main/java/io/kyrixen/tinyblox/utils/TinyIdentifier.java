@@ -12,6 +12,7 @@ public final class TinyIdentifier {
         TILE,
         SOUND,
         MUSIC,
+        ENTITY,
         STRUCTURE,
         RECIPE,
         MISC

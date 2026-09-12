@@ -35,7 +35,8 @@ public class Bomber extends Enemy {
     public Bomber(float x, float y, SoundManager soundManager) {
     
         super(x, y, soundManager);
-    
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "bomber");
+
         this.attackDamage = 45 * (int) Constants.DIFFICULTY.getDiffMult();
 
         this.maxHealth = (int) (15 / Constants.DIFFICULTY.getDiffMult());
@@ -50,7 +51,8 @@ public class Bomber extends Enemy {
     public Bomber(int id, float x, float y, SoundManager soundManager) {
     
         super(id, x, y, soundManager);
-    
+        this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "bomber");
+
         this.attackDamage = 45 * (int) Constants.DIFFICULTY.getDiffMult();
 
         this.maxHealth = (int) (15 / Constants.DIFFICULTY.getDiffMult());
@@ -186,7 +188,7 @@ public class Bomber extends Enemy {
 
     @Override
     public String toString() {
-        return "Bomber(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Bomber(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", chasing:" + Boolean.toString(this.chasing) + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }

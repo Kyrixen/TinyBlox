@@ -55,7 +55,7 @@ public class Entity {
     protected byte level = 1;
 
     // Identifier
-    protected final int id;
+    protected final int currentID;
     
     // Directions
     protected int dirX = 0;
@@ -69,11 +69,12 @@ public class Entity {
 
     // Texture and type of entity
     protected TinyIdentifier texture = null;
+    protected TinyIdentifier entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "entitys");
 
     // Constructs entity
     public Entity(float x, float y, int w, int h) {
 
-        this.id = MiscUtils.generateEntityID();
+        this.currentID = MiscUtils.generateEntityID();
         
         this.x = x;
         this.y = y;
@@ -87,9 +88,9 @@ public class Entity {
     }
 
     // Constructs entity with id
-    public Entity(int id, float x, float y, int w, int h) {
+    public Entity(int currentID, float x, float y, int w, int h) {
 
-        this.id = id;
+        this.currentID = currentID;
         
         this.x = x;
         this.y = y;
@@ -235,9 +236,10 @@ public class Entity {
 
 
     // Getters
-    public boolean isMoving(){ return moving; }
+    public boolean isMoving() { return moving; }
 
-    public int id() { return id; }
+    public int currentID() { return currentID; }
+    public TinyIdentifier getID() { return entityID; }
 
     public float x() { return x; }
     public float y() { return y; }
@@ -273,7 +275,7 @@ public class Entity {
 
     @Override
     public String toString() {
-        return "Entity(" + this.id + ") { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", moving: " + Boolean.toString(this.moving) + " }";
+        return "Entity(" + this.currentID + ")[" + this.entityID + "] { " + "x: " + this.x + ", y: " + this.y  + ", level: " + this.level + ", moving: " + Boolean.toString(this.moving) + " }";
     }
 
 }
