@@ -1,6 +1,6 @@
 >[!IMPORTANT]
->TinyBlox is back!.
-It was developed as a sandbox game and served as a platform for learning Java and LibGDX. While it's no longer in active development, the source code and releases remain available as a reference.
+>TinyBlox is back!
+Development has resumed, and the source code and releases remain available as a reference and playable project.
 > 
 
 
@@ -8,7 +8,7 @@ It was developed as a sandbox game and served as a platform for learning Java an
 
 <div align="center">
 
-![Showcase](https://raw.githubusercontent.com/Kyrixen/TinyBlox/main/assets/textures/background/menu_background.png)
+![Showcase](https://raw.githubusercontent.com/Kyrixen/TinyBlox/main/assets/tinyblox/textures/background/menu_background.png)
 
 </div>
 
@@ -139,33 +139,42 @@ Download the latest release or play on itch.io.
 
 ## License
 
-The source code is licensed under the **TinyBlox Source License** (non-commercial, source-available).
+TinyBlox is source-available. You're free to explore the code, learn from it, modify it, and create non-commercial forks.
 
-You are allowed to:
+***The source code and game assets are licensed separately.***
 
-- View and study the source code
-- Modify the project
-- Create forks and derivative works
-- Redistribute modified or unmodified versions
 
-You are NOT allowed to:
+### Source Code
 
-- Use the project commercially
-- Sell the project or derivative works
-- Monetize forks or distributions
-- Use TinyBlox code inside commercial products or services
+The source code is licensed under the **TinyBlox Source License**.
 
-All assets in the `assets/` directory are proprietary. See `LICENSE` and `ASSET_LICENSE.md` for full terms.
+The source license allows you to:
 
-By contributing, you agree your contributions may be used, modified, and distributed under the project's licensing terms.
+* View and study the source code
+* Modify the project
+* Create forks and derivative works
+* Redistribute original or modified versions for non-commercial purposes
+
+Commercial use, sale, monetization, and inclusion in commercial products or services are not permitted.
+
+See [`LICENSE`](LICENSE) for the complete terms.
+
+
+### Assets
+
+The contents of the `assets/` directory are **proprietary** and are licensed separately under the **TinyBlox Asset License**.
+
+The assets may be used for developing, testing, contributing to, or running TinyBlox, but may not be redistributed or used in other projects.
+
+See [`ASSET_LICENSE.md`](ASSET_LICENSE.md) for the complete terms.
+
+The source code license does not grant rights to the assets, and the asset license does not grant rights to the source code.
 
 ---
 
-## Built With
-
+\
+\
 Built using LibGDX, FastNoiseLite, Java, Gradle
-
----
 
 Created by Kyrixen\
 Copyright (c) 2026 Kyrixen

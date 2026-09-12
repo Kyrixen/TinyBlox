@@ -83,10 +83,13 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
    This Asset License applies ONLY to files located within
    the `assets/` directory and related proprietary content.
 
-   The source code of the Project may be licensed separately
-   under an open-source software license.
+   The source code of the Project is licensed separately under the
+   TinyBlox Source License.
 
-   The open-source software license does NOT apply to the Assets.
+   The TinyBlox Source License does NOT apply to the Assets.
+
+   This Asset License does not grant any rights to the Project's
+   source code.
 
 7. Disclaimer of Warranty.
 
