@@ -12,12 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.utils.TinyIdentifier;
-import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer.FlipType;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -27,9 +26,6 @@ public class ChunkRenderer {
     // Tile renderer
     private final TileRenderer tileRenderer;
 
-    // Terrain texture ID
-    private final TinyIdentifier terrainTileset = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles");
-    
     // Chunk size
     private static final byte CHUNK_SIZE = Constants.CHUNK_SIZE;
 
@@ -73,7 +69,7 @@ public class ChunkRenderer {
 
                     if(stackedTile == null) continue;
                     if(stackedTile.level() <= player.level()) continue;
-                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
+                    if(stackedTile.type() == TileRegister.AIR) continue;
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
 
@@ -112,11 +108,11 @@ public class ChunkRenderer {
 
                     }
 
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                    tileRenderer.drawTileset(stackedTile.type().getAtlasID(), globalX, globalY, stackedTile.type().getTileX(), stackedTile.type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
 
                     // Draw transparent tile on top
                     for(int i = transparentTiles.size() - 1; i >= 0; i--) {
-                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                        tileRenderer.drawTileset(transparentTiles.get(i).type().getAtlasID(), globalX, globalY, transparentTiles.get(i).type().getTileX(), transparentTiles.get(i).type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                     }
 
                     batch.setColor(1f, 1f, 1f, 1f);
@@ -158,7 +154,7 @@ public class ChunkRenderer {
 
                     if(stackedTile == null) continue;
                     if(stackedTile.level() > player.level()) continue;
-                    if(stackedTile.tileX() == -1 || stackedTile.tileY() == -1) continue;
+                    if(stackedTile.type().getTileX() == -1 || stackedTile.type().getTileY() == -1) continue;
 
                     if(stackedTile.type().isTransparent()) { transparentTiles.add(stackedTile); continue; }
 
@@ -170,11 +166,11 @@ public class ChunkRenderer {
 
                     // Draw first visible opaque tile
                     batch.setColor(r, g, b, 1f);
-                    tileRenderer.drawTileset(terrainTileset, globalX, globalY, stackedTile.tileX(), stackedTile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                    tileRenderer.drawTileset(stackedTile.type().getAtlasID(), globalX, globalY, stackedTile.type().getTileX(), stackedTile.type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
 
                     // Draw transparent tile on top
                     for(int i = transparentTiles.size() - 1; i >= 0; i--) {
-                        tileRenderer.drawTileset(terrainTileset, globalX, globalY, transparentTiles.get(i).tileX(), transparentTiles.get(i).tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                        tileRenderer.drawTileset(transparentTiles.get(i).type().getAtlasID(), globalX, globalY, transparentTiles.get(i).type().getTileX(), transparentTiles.get(i).type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                     }
                     
                     batch.setColor(1f, 1f, 1f, 1f);
@@ -221,7 +217,7 @@ public class ChunkRenderer {
                 else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
                 else batch.setColor(1f, 1f, 1f, 0f);
                 
-                tileRenderer.drawTilesetOutline(terrainTileset, globalX, globalY, tile.tileX(), tile.tileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
+                tileRenderer.drawTilesetOutline(tile.type().getAtlasID(), globalX, globalY, tile.type().getTileX(), tile.type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                 
                 batch.setColor(1f, 1f, 1f, 1f);
             

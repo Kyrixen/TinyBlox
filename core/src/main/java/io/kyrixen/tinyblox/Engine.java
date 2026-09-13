@@ -29,6 +29,7 @@ import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.structures.StructureRegister;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 
 public class Engine implements Screen {
@@ -90,6 +91,9 @@ public class Engine implements Screen {
         // Sound init
         soundManager.loadSFX();
         soundManager.loadHUD();
+
+        // Load tiles
+        TileRegister.initTiles();
 
         // Load items
         ItemRegister.initItems();

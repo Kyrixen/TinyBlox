@@ -12,7 +12,8 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure;
 import io.kyrixen.tinyblox.world.chunk.structures.StructureBuilder;
 import io.kyrixen.tinyblox.world.chunk.structures.StructureRegister;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
+import io.kyrixen.tinyblox.world.chunk.tile.TileType;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure.Rarity;
 
 public class StructureLoader {
@@ -50,9 +51,9 @@ public class StructureLoader {
                 for(byte x = 0; x < bp.layers[layer][y].length; x++) {
 
                     String tileName = bp.layers[layer][y][x];
-                    TileType type = TileType.valueOf(tileName);
+                    TileType type = TileRegister.getTileByID(TinyIdentifier.fromString(tileName));
 
-                    if(type == TileType.AIR) continue;
+                    if(type == TileRegister.AIR) continue;
                     sb.setTile(x, y, layer, type);
 
                 }

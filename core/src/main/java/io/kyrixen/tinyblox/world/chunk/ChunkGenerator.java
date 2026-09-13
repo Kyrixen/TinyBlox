@@ -13,8 +13,9 @@ import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure;
 import io.kyrixen.tinyblox.world.chunk.structures.StructureRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileType;
 
 public class ChunkGenerator {
 
@@ -58,19 +59,19 @@ public class ChunkGenerator {
                     int levelDiff = level - currentLevel;
                     
                     if(currentLevel == 0) {
-                        type = TileType.WATER;
+                        type = TileRegister.WATER;
                     } else if(levelDiff == 0) {
 
-                        if(currentLevel >= 13) type = TileType.STONE;
+                        if(currentLevel >= 13) type = TileRegister.STONE;
                         else if(currentLevel <= 7) { 
-                            if(materialNoise < 0.75f) type = TileType.SAND;
-                            else type = TileType.CLAY; 
+                            if(materialNoise < 0.75f) type = TileRegister.SAND;
+                            else type = TileRegister.CLAY; 
                         }
-                        else type = TileType.GRASS;
+                        else type = TileRegister.GRASS;
                         
                     } else if(levelDiff <= 1) {
-                        type = TileType.DIRT;
-                    } else type = TileType.STONE;
+                        type = TileRegister.DIRT;
+                    } else type = TileRegister.STONE;
 
                     chunk.getTileStack(tx, ty).set(new Tile(type, currentLevel), currentLevel);
 
@@ -127,9 +128,9 @@ public class ChunkGenerator {
 
                         Tile current = stack.get(targetLayer);
                         if(current == null) continue;
-                        if(current.type() != TileType.STONE) continue;
+                        if(current.type() != TileRegister.STONE) continue;
 
-                        stack.set(new Tile(TileType.AIR, targetLayer), targetLayer);
+                        stack.set(new Tile(TileRegister.AIR, targetLayer), targetLayer);
 
                     }
                 }
@@ -163,7 +164,7 @@ public class ChunkGenerator {
         Tile topTile = tileStack.getTopTerrain();
 
         for(byte layer = (byte) bestChamber.z; layer <= topTile.level(); layer++) {
-            tileStack.set(new Tile(TileType.LADDER, layer), layer);
+            tileStack.set(new Tile(TileRegister.LADDER, layer), layer);
         }
 
     }
@@ -191,7 +192,7 @@ public class ChunkGenerator {
             if(topTile.level() < Constants.MIN_TERRAIN_HEIGHT) continue;
             if(topTile.level() + 2 > Constants.MAX_TERRAIN_HEIGHT) continue;
            
-            if(topTile.type() != TileType.GRASS) continue;
+            if(topTile.type() != TileRegister.GRASS) continue;
 
             byte baseLevel = topTile.level();
             if(tileStack.top().level() > baseLevel) continue;
@@ -218,8 +219,8 @@ public class ChunkGenerator {
 
             if(!canSpawn) continue;
 
-            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileType.WOOD, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
-            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 2)), (byte) (baseLevel + 2));
+            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileRegister.WOOD, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
+            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileRegister.LEAVES, (byte) (baseLevel + 2)), (byte) (baseLevel + 2));
 
             for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
 
@@ -228,7 +229,7 @@ public class ChunkGenerator {
                     if(neighborX == 0 && neighborY == 0) continue;
                     if(chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
 
-                    chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).set(new Tile(TileType.LEAVES, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
+                    chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).set(new Tile(TileRegister.LEAVES, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
 
                 }
 
@@ -262,7 +263,7 @@ public class ChunkGenerator {
                 Tile currentTile = tileStack.get(level);
 
                 if(currentTile == null) continue;
-                if(currentTile.type().isEmpty() || currentTile.type() != TileType.STONE) continue;
+                if(currentTile.type().isEmpty() || currentTile.type() != TileRegister.STONE) continue;
 
                 choosenLevel = level;
 
@@ -280,7 +281,7 @@ public class ChunkGenerator {
                     Tile neighborTile = neighborStack.get(choosenLevel);
                     if(neighborTile == null) continue;
 
-                    if(neighborTile.type() != TileType.STONE) continue;
+                    if(neighborTile.type() != TileRegister.STONE) continue;
 
                     neighborStack.set(new Tile(tileType, choosenLevel), choosenLevel);
 

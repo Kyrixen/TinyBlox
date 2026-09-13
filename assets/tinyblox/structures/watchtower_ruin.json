@@ -2,38 +2,33 @@
   "formatVersion": 2,
   "rarity": "RARE",
   "layers": [
-
     [
-      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"],
-      ["WOOD", "AIR",  "WOOD", "COAL", "WOOD"],
-      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"],
-      ["WOOD", "AIR",  "WOOD", "AIR",  "WOOD"],
-      ["WOOD", "WOOD", "WOOD", "WOOD", "WOOD"]
+      ["tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:wood", "tinyblox:tile:coal", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood"]
     ],
-
     [
-      ["WOOD", "AIR", "AIR", "AIR", "WOOD"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["WOOD", "AIR", "AIR", "AIR", "WOOD"]
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"]
     ],
-
     [
-      ["WOOD", "AIR", "AIR", "AIR", "WOOD"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["AIR",  "AIR", "AIR", "AIR", "AIR"],
-      ["WOOD", "AIR", "AIR", "AIR", "WOOD"]
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"]
     ],
-
     [
-      ["WOOD",  "WOOD",       "WOOD",       "WOOD",  "WOOD"],
-      ["WOOD",  "AIR",        "AIR",        "AIR",   "WOOD"],
-      ["GLASS", "AIR",        "CAGED_LAMP", "AIR",   "GLASS"],
-      ["WOOD",  "AIR",        "AIR",        "AIR",   "WOOD"],
-      ["WOOD",  "GLASS",      "AIR",        "GLASS", "WOOD"]
+      ["tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"],
+      ["tinyblox:tile:glass", "tinyblox:tile:air", "tinyblox:tile:caged_lamp", "tinyblox:tile:air", "tinyblox:tile:glass"],
+      ["tinyblox:tile:wood", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:air", "tinyblox:tile:wood"],
+      ["tinyblox:tile:wood", "tinyblox:tile:glass", "tinyblox:tile:air", "tinyblox:tile:glass", "tinyblox:tile:wood"]
     ]
-
   ]
 }

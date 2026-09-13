@@ -3,8 +3,9 @@ package io.kyrixen.tinyblox.world.chunk.structures;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.world.chunk.structures.Structure.Rarity;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileType;
 
 public class StructureBuilder {
 
@@ -39,7 +40,7 @@ public class StructureBuilder {
             }
         }
 
-        this.fill(TileType.AIR);
+        this.fill(TileRegister.AIR);
 
     }
 

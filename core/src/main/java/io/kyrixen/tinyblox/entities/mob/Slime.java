@@ -10,8 +10,8 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Slime extends Enemy {
     
@@ -68,9 +68,9 @@ public class Slime extends Enemy {
 
         Tile belowTile = slimeStack.get(belowLevel);
         if(belowTile == null || !belowTile.type().isTerrain()) return;
-        if(belowTile.type() == TileType.SLIME_TILE) return;
+        if(belowTile.type() == TileRegister.SLIME_TILE) return;
         
-        slimeStack.set(new Tile(TileType.SLIME_TILE, belowLevel), belowLevel);
+        slimeStack.set(new Tile(TileRegister.SLIME_TILE, belowLevel), belowLevel);
 
         this.lastSlimify = System.currentTimeMillis();
 

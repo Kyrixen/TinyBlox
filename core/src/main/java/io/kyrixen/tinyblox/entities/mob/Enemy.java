@@ -10,8 +10,8 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Enemy extends MobEntity {
 
@@ -259,7 +259,7 @@ public class Enemy extends MobEntity {
         Tile nextTile = enemyStack.get(level());
         if(nextBelowTile == null) return false;
 
-        if(nextBelowTile.type().isEmpty() || nextBelowTile.type() == TileType.VOID) return false;
+        if(nextBelowTile.type().isEmpty() || nextBelowTile.type() == TileRegister.VOID) return false;
         if(nextTile != null && !nextTile.type().isEmpty()) return false;
 
         return true;

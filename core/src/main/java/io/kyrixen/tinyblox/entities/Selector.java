@@ -11,6 +11,7 @@ import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.inventory.Equipment;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.Item;
+import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.inventory.ItemStack;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -23,6 +24,7 @@ import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 
 public class Selector extends Entity {
 
@@ -198,7 +200,7 @@ public class Selector extends Entity {
         if(currentStack.isEmpty()) return;
         if(!currentStack.getItem().canPlace()) return;
 
-        chunk.getTileStack(localTileX, localTileY).set(new Tile(this.mobEntityInventory.getCurrentStack().getItem().getTileVariant(), placeLevel), placeLevel);
+        chunk.getTileStack(localTileX, localTileY).set(new Tile(TileRegister.getTileByID(this.mobEntityInventory.getCurrentStack().getItem().getTileVariantID()), placeLevel), placeLevel);
         sfxManager.getSound(PLACE_SOUND).play(MiscUtils.getFloatSound(15), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
 
         mobEntityInventory.getCurrentStack().remove((byte) 1);
@@ -270,7 +272,7 @@ public class Selector extends Entity {
 
         if(current.level() <= 0) return;
 
-        Item dropItem = current.getItem();
+        Item dropItem = ItemRegister.getItemByID(current.type().getItemDropID());
         chunk.getTileStack(localTileX, localTileY).removeAtLayer(current.level()); sfxManager.getSound(DESTROY_SOUND).play(MiscUtils.getFloatSound(25), RandomUtils.randomFloat(0.95f, 1.05f), 0f);
         
         short chunkX = (short) Math.floorDiv((int) x() / Constants.GRID_SIZE, Constants.CHUNK_SIZE);

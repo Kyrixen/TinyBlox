@@ -15,9 +15,9 @@ import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.ChunkLight;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class Bomber extends Enemy {
     
@@ -143,7 +143,7 @@ public class Bomber extends Enemy {
         Tile belowBomberTile = bomberStack.get((byte) (level - 1));
         if(belowBomberTile == null) return;
 
-        if(belowBomberTile.type() == TileType.WATER) return;
+        if(belowBomberTile.type() == TileRegister.WATER) return;
 
         int radius = EXPLOSION_RADIUS * Constants.GRID_SIZE;
 
@@ -162,7 +162,7 @@ public class Bomber extends Enemy {
                     if(dx * dx + dy * dy + dz * dz > radius * radius) continue;
 
                     Tile currentTile = currentStack.get(layer);
-                    if(currentTile == null || currentTile.type() == TileType.WATER || currentTile.level() < 2) continue;
+                    if(currentTile == null || currentTile.type() == TileRegister.WATER || currentTile.level() < 2) continue;
 
                     currentStack.removeAtLayer(layer);
 

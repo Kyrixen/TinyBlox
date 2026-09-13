@@ -7,7 +7,7 @@ import io.kyrixen.tinyblox.inventory.Equipment.EquipmentType;
 import io.kyrixen.tinyblox.inventory.Equipment.ToolTier;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 
 public class ItemRegister {
     
@@ -17,21 +17,21 @@ public class ItemRegister {
     // Helper items holders //
 
     public final static Item NONE = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "none"), null, false, (byte) 0);
-    public final static Item GRASS = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "grass"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "grass"), true, (byte) 24, TileType.GRASS);
-    public final static Item DIRT = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "dirt"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dirt"), true, (byte) 24, TileType.DIRT);
-    public final static Item STONE = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "stone"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone"), true, (byte) 24, TileType.STONE);
-    public final static Item WATER = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "water"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "water"), false, (byte) 24, TileType.WATER);
-    public final static Item COAL = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "coal"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "coal_ore"), false, (byte) 12, TileType.COAL);
-    public final static Item IRON = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "iron"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_ore"), false, (byte) 12, TileType.IRON);
-    public final static Item WOOD = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "wood"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wood"), true, (byte) 24, TileType.WOOD);
-    public final static Item LEAVES = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "leaves"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "leaves"), false, (byte) 24, TileType.LEAVES);
-    public final static Item LADDER = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "ladder"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "ladder"), true, (byte) 36, TileType.LADDER);
-    public final static Item CAGED_LAMP = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "caged_lamp"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "caged_lamp"), true, (byte) 12, TileType.CAGED_LAMP);
-    public final static Item SLIME = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "slime"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime_tile"), false, (byte) 6, TileType.SLIME_TILE);
-    public final static Item SAND = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "sand"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "sand"), true, (byte) 36, TileType.SAND);
-    public final static Item GLASS = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "glass"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "glass"), true, (byte) 36, TileType.GLASS);
-    public final static Item CLAY = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "clay"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "clay"), true, (byte) 12, TileType.CLAY);
-    public final static Item BRICK = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "brick"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "brick"), true, (byte) 24, TileType.BRICK);
+    public final static Item GRASS = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "grass"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "grass"), true, (byte) 24, TileRegister.GRASS.getTileID());
+    public final static Item DIRT = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "dirt"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dirt"), true, (byte) 24, TileRegister.DIRT.getTileID());
+    public final static Item STONE = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "stone"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone"), true, (byte) 24, TileRegister.STONE.getTileID());
+    public final static Item WATER = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "water"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "water"), false, (byte) 24, TileRegister.WATER.getTileID());
+    public final static Item COAL = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "coal"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "coal_ore"), false, (byte) 12, TileRegister.COAL.getTileID());
+    public final static Item IRON = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "iron"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_ore"), false, (byte) 12, TileRegister.IRON.getTileID());
+    public final static Item WOOD = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "wood"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wood"), true, (byte) 24, TileRegister.WOOD.getTileID());
+    public final static Item LEAVES = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "leaves"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "leaves"), false, (byte) 24, TileRegister.LEAVES.getTileID());
+    public final static Item LADDER = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "ladder"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "ladder"), true, (byte) 36, TileRegister.LADDER.getTileID());
+    public final static Item CAGED_LAMP = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "caged_lamp"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "caged_lamp"), true, (byte) 12, TileRegister.CAGED_LAMP.getTileID());
+    public final static Item SLIME = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "slime"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime_tile"), false, (byte) 6, TileRegister.SLIME_TILE.getTileID());
+    public final static Item SAND = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "sand"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "sand"), true, (byte) 36, TileRegister.SAND.getTileID());
+    public final static Item GLASS = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "glass"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "glass"), true, (byte) 36, TileRegister.GLASS.getTileID());
+    public final static Item CLAY = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "clay"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "clay"), true, (byte) 12, TileRegister.CLAY.getTileID());
+    public final static Item BRICK = new Item(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "brick"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "brick"), true, (byte) 24, TileRegister.BRICK.getTileID());
 
 
     public final static Item WOODEN_SWORD = new Equipment(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "wooden_sword"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_sword"), true, ToolTier.WOOD, EquipmentType.WEAPON);

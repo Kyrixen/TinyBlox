@@ -3,8 +3,8 @@
   "rarity": "COMMON",
   "layers": [
     [
-      ["IRON", "STONE"],
-      ["STONE", "COAL"]
+      ["tinyblox:tile:iron", "tinyblox:tile:stone"],
+      ["tinyblox:tile:stone", "tinyblox:tile:coal"]
     ]
   ]
 }

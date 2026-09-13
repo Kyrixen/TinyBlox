@@ -173,7 +173,6 @@ The source code license does not grant rights to the assets, and the asset licen
 ---
 
 \
-\
 Built using LibGDX, FastNoiseLite, Java, Gradle
 
 Created by Kyrixen\

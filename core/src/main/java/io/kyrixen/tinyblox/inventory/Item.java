@@ -1,7 +1,6 @@
 package io.kyrixen.tinyblox.inventory;
 
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 // Item object used for inventory
 public class Item {
@@ -12,7 +11,7 @@ public class Item {
     private final TinyIdentifier textureID;
     private final TinyIdentifier itemID;
     private final boolean obtainable;
-    private final TileType tileVariant;
+    private final TinyIdentifier tileVariantID;
 
     
     // Constructor for Item
@@ -21,16 +20,16 @@ public class Item {
         this.obtainable = obtainable;
         this.textureID = textureID;
         this.itemID = itemID;
-        this.tileVariant = null;
+        this.tileVariantID = null;
     }
     
     // Constructor for Item / Tile
-    public Item(TinyIdentifier itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize, TileType tile) {
+    public Item(TinyIdentifier itemID, TinyIdentifier textureID, boolean obtainable, byte maxSize, TinyIdentifier tileID) {
         this.maxSize = maxSize;
         this.obtainable = obtainable;
         this.textureID = textureID;
         this.itemID = itemID;
-        this.tileVariant = tile;
+        this.tileVariantID = tileID;
     }
     
 
@@ -42,10 +41,10 @@ public class Item {
     public TinyIdentifier textureID() { return this.textureID; }
     public TinyIdentifier getItemID() { return this.itemID; }
 
-    public boolean canPlace() { return this.tileVariant != null; }
+    public boolean canPlace() { return this.tileVariantID != null; }
     public boolean canRoll() { return this.obtainable; }
 
-    public TileType getTileVariant() { return this.tileVariant; }
+    public TinyIdentifier getTileVariantID() { return this.tileVariantID; }
 
 
     // Override

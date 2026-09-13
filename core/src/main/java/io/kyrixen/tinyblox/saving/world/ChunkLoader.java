@@ -9,12 +9,13 @@ import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.ChunkBlueprint.ChunkStack.ChunkTile;
 import io.kyrixen.tinyblox.utils.Logger;
+import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
 import io.kyrixen.tinyblox.world.chunk.ChunkPos;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
 
 public class ChunkLoader {
     
@@ -33,7 +34,7 @@ public class ChunkLoader {
 
             TileStack stack = chunk.getTileStack(cStack.x, cStack.y);
             for(ChunkTile cTile : cStack.tiles) {
-                stack.set(new Tile(TileType.valueOf(cTile.tile), cTile.level), cTile.level);
+                stack.set(new Tile(TileRegister.getTileByID(TinyIdentifier.fromString(cTile.tile)), cTile.level), cTile.level);
             }
 
             stack.setModified(false);
@@ -71,8 +72,8 @@ public class ChunkLoader {
 
         ChunkGenerator.generateChunk(chunk, noise);
         ChunkGenerator.generateCave(chunk, 10);
-        ChunkGenerator.spawnOre(chunk, TileType.COAL, 2);
-        ChunkGenerator.spawnOre(chunk, TileType.IRON, 1);
+        ChunkGenerator.spawnOre(chunk, TileRegister.COAL, 2);
+        ChunkGenerator.spawnOre(chunk, TileRegister.IRON, 1);
         ChunkGenerator.spawnTree(chunk, 10);
         ChunkGenerator.spawnStructure(chunk, 10);
 

@@ -59,7 +59,7 @@ public class ChunkSaver {
 
                     ChunkTile cTile = new ChunkTile();
 
-                    cTile.tile = currentTile.type().name();
+                    cTile.tile = currentTile.type().getTileID().toString();
                     cTile.level = currentTile.level();
 
                     cTiles.add(cTile);

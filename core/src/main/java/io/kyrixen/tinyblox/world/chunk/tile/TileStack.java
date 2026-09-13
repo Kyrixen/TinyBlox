@@ -3,8 +3,6 @@ package io.kyrixen.tinyblox.world.chunk.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.kyrixen.tinyblox.world.chunk.tile.Tile.TileType;
-
 // Tile stack (used for storing)
 public class TileStack  {
 
@@ -19,7 +17,7 @@ public class TileStack  {
 
     public TileStack() {
         this.tiles = new ArrayList<>();
-        set(new Tile(TileType.VOID, (byte) 0), (byte) 0);
+        set(new Tile(TileRegister.VOID, (byte) 0), (byte) 0);
     }
 
     public byte stackSize() {
@@ -72,7 +70,7 @@ public class TileStack  {
         Tile tile = this.tiles.get(level);
         if(tile == null) return;
 
-        this.tiles.set(level, new Tile(TileType.AIR, level));
+        this.tiles.set(level, new Tile(TileRegister.AIR, level));
 
         this.modified = true;
         this.rebuildLight = true;
@@ -129,7 +127,7 @@ public class TileStack  {
     private boolean isTerrain(Tile tile) {
 
         if(tile == null) return false;
-        if(tile.type() == TileType.VOID) return false;
+        if(tile.type() == TileRegister.VOID) return false;
         if(tile.type().isEmpty()) return false;
 
         return true;

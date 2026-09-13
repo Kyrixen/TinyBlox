@@ -3,9 +3,9 @@
   "rarity": "UNCOMMON",
   "layers": [
     [
-      ["WOOD", "STONE", "WOOD"],
-      ["STONE", "CAGED_LAMP", "STONE"],
-      ["WOOD", "STONE", "WOOD"]
+      ["tinyblox:tile:wood", "tinyblox:tile:stone", "tinyblox:tile:wood"],
+      ["tinyblox:tile:stone", "tinyblox:tile:caged_lamp", "tinyblox:tile:stone"],
+      ["tinyblox:tile:wood", "tinyblox:tile:stone", "tinyblox:tile:wood"]
     ]
   ]
 }
