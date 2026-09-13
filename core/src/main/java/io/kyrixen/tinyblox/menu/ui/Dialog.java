@@ -33,6 +33,8 @@ public class Dialog {
 
     private boolean muteSound = false;
 
+    private boolean active = false;
+
     // Sound Manager
     protected final SoundManager uiSoundManager;
 
@@ -67,7 +69,7 @@ public class Dialog {
 
     public void render(RendererStack rendererStack) {
 
-        if(lines.length == 0 || dialogueEnd) return;
+        if(!active || dialogueEnd || lines.length == 0) return;
 
         rendererStack.batch.draw(dialogTex, x, y, w, h);
 
@@ -79,7 +81,7 @@ public class Dialog {
 
     public void updateState(float delta) {
 
-        if(dialogueEnd || lines.length == 0) return;
+        if(!active || dialogueEnd || lines.length == 0) return;
 
         String line = lines[currentLine];
 
@@ -92,8 +94,8 @@ public class Dialog {
                 
                 char currentChar = line.charAt(currentSymbol);
 
-                if(currentChar == '(') muteSound = true;
-                if(currentChar == ')') muteSound = false;
+                if(currentChar == '(') { muteSound = true; symbolDelay = 0.03f; }
+                if(currentChar == ')') { muteSound = false; symbolDelay = 0.06f; }
                 
                 if(currentChar != ' ' && currentChar != ')' && !muteSound) uiSoundManager.getSound(KEY_TYPE_SOUND).play(MiscUtils.getFloatSound(50), RandomUtils.randomFloat(0.95f, 1.05f), 0f); 
 
@@ -106,7 +108,7 @@ public class Dialog {
         if(Peripheral.keyJustPressed(Input.Keys.SPACE)) {
 
             if(currentSymbol < line.length()) { currentSymbol = line.length(); return; }
-            if(currentLine + 1 >= lines.length) { dialogueEnd = true; return; }
+            if(currentLine + 1 >= lines.length) { dialogueEnd = true; active = false; return; }
 
             currentLine++;
             currentSymbol = 0;
@@ -121,6 +123,16 @@ public class Dialog {
         this.lines = lines;
     }
 
+    public void activate() {
+        this.active = true;
+        this.dialogueEnd = false;
+        this.currentLine = 0;
+        this.currentSymbol = 0;
+        this.symbolTimer = 0f;
+        this.muteSound = false;
+    }
+
+    public void deactivate() { this.active = false; }
 
     public boolean hasEnded() { return this.dialogueEnd; }
 

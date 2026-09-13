@@ -1,6 +1,8 @@
 package io.kyrixen.tinyblox.world.chunk.tile;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
@@ -190,6 +192,51 @@ public class TileRenderer {
         Texture tilesetTex = tex.getOutlineTexture(tileset);
 
         rendererStack.batch.draw(tilesetTex, screenX, screenY, renderW, renderH, srcX, srcY, tileSize, tileSize, flip.getFlipX(), flip.getFlipY());
+    
+    }
+
+
+    public void drawNameTag(float x, float y, String name, RendererStack rendererStack) {
+
+        Camera camera = rendererStack.camera;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;       
+        float renderW = ((Constants.GRID_SIZE / 4) * 3) * camera.zoom;
+        float renderH = (Constants.GRID_SIZE / 2) * camera.zoom;
+
+        float maxWidth = Constants.GRID_SIZE * 4 * camera.zoom;
+
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(rendererStack.font, name, 0, name.length(), rendererStack.font.getColor(), maxWidth, Align.center, true, null);
+
+        float nameX = screenX + (renderW - maxWidth) / 2f + 4f;
+        float nameY = screenY + renderH + 20f * camera.zoom;
+
+        rendererStack.font.draw(rendererStack.batch, name, nameX, nameY, 0, name.length(), maxWidth, Align.center, true);
+
+    }
+    
+    public void drawNameTag(float x, float y, float w, float h, String name, RendererStack rendererStack) {
+
+        Camera camera = rendererStack.camera;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;       
+        float renderW = w * camera.zoom;
+        float renderH = h * camera.zoom;
+
+        float maxWidth = Constants.GRID_SIZE * 4 * camera.zoom;
+
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(rendererStack.font, name, 0, name.length(), rendererStack.font.getColor(), maxWidth, Align.center, true, null);
+
+        float nameX = screenX + (renderW - layout.width) / 2f + 4f;
+        float nameY = screenY + renderH + 20f * camera.zoom;
+
+        if(nameX + layout.width < 0 || nameX > Constants.WINDOW_WIDTH || nameY < 0 || nameY - layout.height > Constants.WINDOW_HEIGHT) return;
+
+        rendererStack.font.draw(rendererStack.batch, name, nameX, nameY, 0, name.length(), maxWidth, Align.center, true);
     
     }
 
