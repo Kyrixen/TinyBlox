@@ -45,3 +45,5 @@ char id=63 x=126 y=88 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 
 char id=32 x=126 y=110 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 chnl=0
 char id=95 x=0 y=110 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 chnl=0
 char id=45 x=18 y=110 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 chnl=0
+char id=40 x=36 y=110 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 chnl=0
+char id=41 x=54 y=110 width=16 height=20 xoffset=0 yoffset=0 xadvance=18 page=0 chnl=0

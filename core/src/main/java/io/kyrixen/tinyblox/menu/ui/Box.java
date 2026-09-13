@@ -3,7 +3,8 @@ package io.kyrixen.tinyblox.menu.ui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-// Box (Dialogue window)
+@Deprecated
+// Box (Dialogue window) (Old)
 public class Box {
 
     // Position

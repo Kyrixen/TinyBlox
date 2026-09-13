@@ -65,6 +65,7 @@ public class SoundManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "slider"), "ui/slider.wav");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click"), "ui/click.wav");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options"), "ui/options.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "key_type"), "ui/typeKey.wav");
     
     }
 
