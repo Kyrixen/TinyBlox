@@ -96,8 +96,11 @@ public class Dialog {
 
                 if(currentChar == '(') { muteSound = true; symbolDelay = 0.03f; }
                 if(currentChar == ')') { muteSound = false; symbolDelay = 0.06f; }
+                if(currentChar == '.') symbolDelay = 0.24f;
                 
                 if(currentChar != ' ' && currentChar != ')' && !muteSound) uiSoundManager.getSound(KEY_TYPE_SOUND).play(MiscUtils.getFloatSound(50), RandomUtils.randomFloat(0.95f, 1.05f), 0f); 
+
+                if(symbolDelay == 0.24f && currentChar != '.') symbolDelay = 0.06f;
 
                 currentSymbol++;
 
@@ -105,7 +108,7 @@ public class Dialog {
 
         }
 
-        if(Peripheral.keyJustPressed(Input.Keys.SPACE)) {
+        if(Peripheral.mouseJustPressed(Input.Buttons.LEFT) || Peripheral.keyJustPressed(Input.Keys.ENTER)) {
 
             if(currentSymbol < line.length()) { currentSymbol = line.length(); return; }
             if(currentLine + 1 >= lines.length) { dialogueEnd = true; active = false; return; }
@@ -133,6 +136,10 @@ public class Dialog {
     }
 
     public void deactivate() { this.active = false; }
+
+    public void setCurrentLine(byte line) { if(line > lines.length) currentLine = (byte) (lines.length - 1); currentLine = line; }
+
+    public int getCurrentLine() { return this.currentLine; }
 
     public boolean hasEnded() { return this.dialogueEnd; }
 

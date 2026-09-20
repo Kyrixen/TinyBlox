@@ -69,7 +69,7 @@ public class Entity {
 
     // Texture and type of entity
     protected TinyIdentifier texture = null;
-    protected TinyIdentifier entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "entitys");
+    protected TinyIdentifier entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "entity");
 
     // Constructs entity
     public Entity(float x, float y, int w, int h) {

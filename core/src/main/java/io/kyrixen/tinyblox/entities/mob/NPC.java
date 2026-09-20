@@ -22,8 +22,9 @@ public class NPC extends MobEntity {
     // The most useful feature of an NPC
     private final Dialog dialogue;
 
-    // NPC needs camera
+    // NPC needs camera and player (ugly but functional)
     private Camera camera = null;
+    private Player player = null;
 
     // Dialog texture
     private static final TinyIdentifier DIALOG_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_dialog");
@@ -64,8 +65,10 @@ public class NPC extends MobEntity {
         super.update(deltaTime, terrain);
         this.dialogue.updateState(deltaTime);
 
-        if(camera == null) return;
-        if(!Peripheral.mouseJustPressed(Input.Buttons.RIGHT)) return;
+        if(dialogue.hasEnded()) { if(player.isInMenu()) player.toggleMenuStat(); }
+
+        if(camera == null || player == null) return;
+        if(!Peripheral.mouseJustPressed(Input.Buttons.LEFT)) return;
 
         int mouseX = Peripheral.getMouseX();
         int mouseY = Peripheral.getMouseY();
@@ -73,9 +76,11 @@ public class NPC extends MobEntity {
         float worldMouseX = mouseX / camera.zoom + camera.x;
         float worldMouseY = (Constants.WINDOW_HEIGHT - mouseY) / camera.zoom + camera.y;
 
+        if(Math.abs(this.x() - player.x()) > Constants.GRID_SIZE * 2 || Math.abs(this.y() - player.y()) > Constants.GRID_SIZE * 2) return;
         if(worldMouseX < x() || worldMouseX > x() + width() || worldMouseY < y() || worldMouseY > y() + height()) return;
 
         dialogue.activate();
+        if(!player.isInMenu()) player.toggleMenuStat();
 
     }
 
@@ -83,6 +88,7 @@ public class NPC extends MobEntity {
     public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
         
         if(this.camera == null) this.camera = rendererStack.camera;
+        if(this.player == null) this.player = player;
 
         if(player.x() < this.x()) this.flip = FlipType.X_AXIS;
         else this.flip = FlipType.NONE;
@@ -102,6 +108,9 @@ public class NPC extends MobEntity {
     @Override 
     // Prevents normal flipping behavior
     protected void updateFlip() {}
+
+    // Gets the NPC dialogue
+    public Dialog getDialogue() { return this.dialogue; }
 
 
     @Override

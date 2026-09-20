@@ -1,39 +1,47 @@
 package io.kyrixen.tinyblox.world.chunk;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 import io.kyrixen.tinyblox.world.chunk.tile.TileType;
 
 public class ChunkBuilder {
 
-    private final byte size;
+    private TileStack[][] buildedChunk;
 
-    private Tile[][] buildedChunk;
+    
+    public ChunkBuilder() {
 
-    public ChunkBuilder(byte size) {
-        this.size = size;
-        buildedChunk = new Tile[size][size];
+        buildedChunk = new TileStack[Constants.CHUNK_SIZE][Constants.CHUNK_SIZE];
+
+        for(int x = 0; x < Constants.CHUNK_SIZE; x++) {
+            for(int y = 0; y < Constants.CHUNK_SIZE; y++) {
+                buildedChunk[x][y] = new TileStack();
+            }
+        }
+
     }
 
     public void setTile(byte tX, byte tY, TileType type, byte height) {
 
         Tile t = new Tile(type, height);
-        buildedChunk[tX][tY] = t;
+        buildedChunk[tX][tY].set(t, height);
 
     }
 
     public void fill(TileType type, byte height) {
 
-        for (int tx = 0; tx < this.size; tx++) {
-            for (int ty = 0; ty < this.size; ty++) {
+        for(int tx = 0; tx < Constants.CHUNK_SIZE; tx++) {
+            for(int ty = 0; ty < Constants.CHUNK_SIZE; ty++) {
         
                 Tile tile = new Tile(type, height);
-                buildedChunk[tx][ty] = tile;
+                buildedChunk[tx][ty].set(tile, height);
         
             }
         }
     
     }
 
-    public Tile[][] build() { return buildedChunk; }
+    public TileStack[][] build() { return buildedChunk; }
 
 }

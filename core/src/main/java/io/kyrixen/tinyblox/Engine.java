@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
-import io.kyrixen.tinyblox.entities.mob.NPC;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.RendererStack;
@@ -34,9 +33,6 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 
 public class Engine implements Screen {
-
-    // Test NPC
-    private NPC npc;
 
     // Player
     private Player player;
@@ -125,11 +121,6 @@ public class Engine implements Screen {
 
         lastAutoSave = System.currentTimeMillis();
 
-        npc = new NPC(spawn[0] + Constants.GRID_SIZE, spawn[1] + Constants.GRID_SIZE, soundManager);
-        npc.setLevel((byte) spawn[2]);
-        npc.initTexture();
-        npc.initDialogue(textures);
-
     }
 
     // Game loop
@@ -151,12 +142,11 @@ public class Engine implements Screen {
 
         timeCycle.updateDayTime(delta);
         enemySpawner.updateSpawnRate(timeCycle);
-        controller.update(delta, player, terrain);
+        controller.update(delta, player, Peripheral.mouseScroll(), terrain);
 
         enemySpawner.spawn(player, terrain);
 
         player.update(delta, terrain);
-        npc.update(delta, terrain);
         terrain.updateEntities(delta, player);
 
         // Update terrain
@@ -217,7 +207,6 @@ public class Engine implements Screen {
         // Entities
         batch.begin();
         terrain.renderEntities(player, tileRenderer, rendererStack);
-        npc.render(terrain, player, tileRenderer, rendererStack);
         player.render(terrain, player, tileRenderer, rendererStack);
         batch.end();
 
@@ -238,7 +227,6 @@ public class Engine implements Screen {
         batch.begin();
         player.renderInvetory(textures, rendererStack);
         player.renderCraftingMenu(craftingRenderer, rendererStack);
-        npc.renderDialog(rendererStack);
         fpsCounter.printFPS(rendererStack);
         batch.end();
 

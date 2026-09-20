@@ -87,7 +87,7 @@ The focus is on:
 | `J` | Selector Left |
 | `K` | Selector Down |
 | `L` | Selector Right |
-| `I` | Show / Hide Inventory |
+| `E` | Show / Hide Inventory |
 | `C` | Toggle Crafting Menu |
 | `Q` | Drop Item |
 | `Left Control` | Sprint |

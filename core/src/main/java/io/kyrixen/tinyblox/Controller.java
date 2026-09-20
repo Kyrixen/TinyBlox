@@ -12,7 +12,7 @@ import io.kyrixen.tinyblox.world.Terrain;
 public class Controller {
 
     // Update controller for entity
-    public void update(float deltaTime, Player player, Terrain terrain) {
+    public void update(float deltaTime, Player player, int scroll,  Terrain terrain) {
     
             player.setDirX(0);
             player.setDirY(0);
@@ -44,7 +44,7 @@ public class Controller {
                 if(Peripheral.keyJustPressed(Input.Keys.L)) player.getSelector().move(1, 0);
                 
                 // Inventory input logic
-                player.checkInventoryScrolling(Peripheral.mouseScroll());
+                player.checkInventoryScrolling(scroll);
                 if(Peripheral.keyJustPressed(Input.Keys.O)) player.getInventory().previousSlot();
                 if(Peripheral.keyJustPressed(Input.Keys.P)) player.getInventory().nextSlot();
                 if(Peripheral.keyJustPressed(Input.Keys.E)) player.getInventoryRenderer().toggleRendering();
@@ -64,7 +64,7 @@ public class Controller {
             // Crafting controls
             if(Peripheral.keyJustPressed(Input.Keys.C)) { player.getCraftingManager().toggle(); player.toggleMenuStat(); }
             player.getCraftingManager().update(Peripheral.getMouseX(), Constants.WINDOW_HEIGHT - Peripheral.getMouseY(), Peripheral.mouseJustPressed(Input.Buttons.LEFT));
-            player.getCraftingManager().updateScroll(Peripheral.mouseScroll());
+            player.getCraftingManager().updateScroll(scroll);
 			if(Peripheral.keyJustPressed(Input.Keys.O)) player.getCraftingManager().previousRecipe();
 			if(Peripheral.keyJustPressed(Input.Keys.P)) player.getCraftingManager().nextRecipe();
 			
