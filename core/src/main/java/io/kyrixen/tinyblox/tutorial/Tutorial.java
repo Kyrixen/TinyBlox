@@ -16,6 +16,7 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Controller;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
+import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.NPC;
 import io.kyrixen.tinyblox.entities.mob.Player;
@@ -25,7 +26,6 @@ import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.menu.Menu;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
-import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.RendererUtils;
 import io.kyrixen.tinyblox.world.Camera;
@@ -33,6 +33,7 @@ import io.kyrixen.tinyblox.world.TimeCycle;
 import io.kyrixen.tinyblox.world.TimeCycle.DayTime;
 import io.kyrixen.tinyblox.world.chunk.Chunk;
 import io.kyrixen.tinyblox.world.chunk.ChunkGenerator;
+import io.kyrixen.tinyblox.world.chunk.tile.Tile;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRegister;
 import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
@@ -43,12 +44,13 @@ public class Tutorial implements Screen {
 
     private Player player;
     private NPC npc;
-    private Enemy enemy;
+    private Enemy enemy = null;
 
     private final RendererStack rendererStack;
     private final TextureManager textureManager;
 
     private TileRenderer tileRenderer;
+    private CraftingRenderer craftingRenderer;
     private SoundManager soundManager;
     private TutorialTerrain tutorialTerrain;
 
@@ -57,14 +59,20 @@ public class Tutorial implements Screen {
 
     private boolean controlsDone = false;
     private boolean sprintDone = false;
+
     private boolean blockDestroyed = false;
     private boolean inventoryOpened = false;
     private boolean blockPlaced = false;
-    private boolean terrainTransforming = false;
+    
+    private boolean cutTree = false;
+    private boolean openCrafting = false;
+    private boolean craftSword = false;
+
     private boolean terrainPlaced = false;
     private boolean terrainIntroduced = false;
     private boolean walkUp = false;
     private boolean walkDown = false;
+    
     private boolean terrainArena = false;
     private boolean terrainArenaPlaced = false;
     private boolean fightEnemy = false;
@@ -81,7 +89,9 @@ public class Tutorial implements Screen {
     public void show() {
 
         this.soundManager = new SoundManager();
+
         this.tileRenderer = new TileRenderer(textureManager);
+        this.craftingRenderer = new CraftingRenderer(textureManager);
 
         this.tutorialTerrain = new TutorialTerrain(tileRenderer);
 
@@ -198,12 +208,50 @@ public class Tutorial implements Screen {
             npc.getDialogue().setLines(new String[]{"NOW... TRY TO SELECT SOME TILE AND PLACE IT!", "PRESS RIGHT MOUSE BUTTON OR U TO PLACE A TILE!"});
         }
 
-        if(blockPlaced && !terrainTransforming && (Peripheral.mouseJustPressed(Buttons.RIGHT) || Peripheral.keyJustPressed(Keys.U))) {
-            terrainTransforming = true;
-            npc.getDialogue().setLines(new String[]{"LOOK AT THAT PIECE OF TILE!", "ITS AMAZING!", "NOW... GIMME A SEC... ILL MAKE THIS WORLD A BIT BETTER!"});
+        if(blockPlaced && !cutTree && (Peripheral.mouseJustPressed(Buttons.RIGHT) || Peripheral.keyJustPressed(Keys.U))) {
+            
+            cutTree = true;
+            npc.getDialogue().setLines(new String[]{"LOOK AT THAT PIECE OF TILE!", "ITS AMAZING!", "NOW.. LETS CUT DOWN A TREE!", "USE YOUR KNOWLEDGE TO FIGURE IT OUT AND THEN COME BACK TO ME WHEN YOU HAVE THE WOOD!"});        
+        
+            Chunk chunk = tutorialTerrain.getChunk((short) 0, (short) 0);
+
+            byte choosenX = 6;
+            byte choosenY = 6;
+
+            byte baseLevel = 4;
+            byte TREE_RADIUS = 1;
+
+            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileRegister.WOOD, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
+            chunk.getTileStack(choosenX, choosenY).set(new Tile(TileRegister.LEAVES, (byte) (baseLevel + 2)), (byte) (baseLevel + 2));
+
+            for(byte neighborX = (byte) -TREE_RADIUS; neighborX <= TREE_RADIUS; neighborX++) {
+
+                for(byte neighborY = (byte) -TREE_RADIUS; neighborY <= TREE_RADIUS; neighborY++) {
+
+                    if(neighborX == 0 && neighborY == 0) continue;
+                    if(chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)) == null) continue;
+
+                    chunk.getTileStack((byte) (choosenX + neighborX), (byte) (choosenY + neighborY)).set(new Tile(TileRegister.LEAVES, (byte) (baseLevel + 1)), (byte) (baseLevel + 1));
+
+                }
+
+            }
+        
         }
 
-        if(terrainTransforming && !terrainPlaced && npc.getDialogue().hasEnded() && npc.getDialogue().getCurrentLine() == 2) {
+        if(cutTree && !openCrafting && npc.getDialogue().hasEnded() && player.getInventory().contains(ItemRegister.WOOD)) {
+            openCrafting = true;
+            player.getInventory().add(ItemRegister.WOOD, (byte) 1);
+            npc.getDialogue().setLines(new String[]{"NICE! NOW WE HAVE WOOD!", "USE THE WOOD TO CRAFT A WOODEN SWORD!", "TO OPEN CRAFTING MENU PRESS C! TO CLOSE IT USE C AGAIN!", "YOU CAN SCROLL THROUGH RECIPES BY SCROLLING WITH MOUSE OR BY PRESSING KEYS O AND P!"});
+        }
+
+        if(openCrafting && !craftSword && npc.getDialogue().hasEnded() && player.getInventory().contains(ItemRegister.WOODEN_SWORD)) {
+            craftSword = true;
+            npc.getDialogue().setLines(new String[]{"LOOK AT THAT SHARP EDGE!", "NOW YOU CAN DEFEND YOURSELF!", "NOW... GIMME A SEC... ILL MAKE THIS WORLD A BIT BETTER!"});
+        
+        }
+
+        if(craftSword && !terrainPlaced && npc.getDialogue().hasEnded() && npc.getDialogue().getCurrentLine() == 2) {
 
             terrainPlaced = true;
 
@@ -271,15 +319,24 @@ public class Tutorial implements Screen {
             
             fightEnemy = true;
 
-            npc.getDialogue().setLines(new String[]{"NOW... YOU CAN TRY TO DEFEAT ENEMY!", "ITS QUITE EASY! YOU CAN USE TERRAIN HEIGHT AS ADVANTAGE!", "PRESS LEFT MOUSE BUTTON OR H TO HIT AN ENTITY!", "JUST... DONT HIT ME PLEASE!"});
+            npc.getDialogue().setLines(new String[]{"NOW... YOU CAN TRY TO DEFEAT ENEMY!", "YOU CAN USE WOODEN SWORD YOU HAVE CRAFTED!", "ITS QUITE EASY! YOU CAN USE TERRAIN HEIGHT AS ADVANTAGE!", "PRESS LEFT MOUSE BUTTON OR H TO HIT AN ENTITY!", "JUST... DONT HIT ME PLEASE!"});
             npc.getDialogue().activate();
 
             enemy = new Enemy(player.x() + Constants.GRID_SIZE * 2, player.y() + Constants.GRID_SIZE * 2, soundManager);
             enemy.setLevel((byte) (tutorialTerrain.getWorldLevel((int) (enemy.x() / Constants.GRID_SIZE), (int) (enemy.y() / Constants.GRID_SIZE)) + 1));
             enemy.initTexture();
+
+            tutorialTerrain.addEntity(enemy);
             
         }
 
+        if(fightEnemy && !tutorialEnd && npc.getDialogue().hasEnded() && enemy.isDead()) {
+            tutorialEnd = true;
+            npc.getDialogue().setLines(new String[]{"VERY WELL!", "YOU HAVE SUCCESSFULY COMPLETED THIS TUTORIAL!", "THERES MUCH MORE TO TINYBLOX THAT THIS TUTORIAL CANNOT (SOME WORD)!", "NOW... GO! FAREWELL TRAVELER!"});
+            npc.getDialogue().activate();
+        }
+
+        if(tutorialEnd && npc.getDialogue().hasEnded()) main.setScreen(new Menu(main, rendererStack, textureManager));
 
 
         // Update tutorialTerrain
@@ -299,11 +356,10 @@ public class Tutorial implements Screen {
             player.throwLoot(player, tutorialTerrain);
 
             player.getInventory().clear();
-            
-            int[] spawn = MiscUtils.spawnNearCenter(tutorialTerrain);            
-            player.setX(spawn[0]);
-            player.setY(spawn[1]);
-            player.setLevel((byte) spawn[2]);
+                       
+            player.setX(64);
+            player.setY(16);
+            player.setLevel((byte) (tutorialTerrain.getWorldLevel((int) (player.x() / Constants.GRID_SIZE), (int) (player.y() / Constants.GRID_SIZE)) + 1));
             player.setHealth(100);
             
         }
@@ -352,7 +408,7 @@ public class Tutorial implements Screen {
         // UI
         batch.begin();
         player.renderInvetory(textureManager, rendererStack);
-        //player.renderCraftingMenu(craftingRenderer, rendererStack);
+        player.renderCraftingMenu(craftingRenderer, rendererStack);
         npc.renderDialog(rendererStack);
         batch.end();
 
