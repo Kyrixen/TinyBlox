@@ -1,8 +1,8 @@
 package io.kyrixen.tinyblox.crafting;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
-import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.crafting.recipe.RecipeRegister;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingButton;
 import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
@@ -50,7 +50,7 @@ public class Crafting {
         int containerW = 96 * scaleMult;
         int containerH = 160 * scaleMult;
         int containerX = 20;
-        int containerY = (Constants.WINDOW_HEIGHT - containerH) / 2;
+        int containerY = (600 - containerH) / 2;
 
         // Container
         this.container = new RecipeContainer(containerX, containerY, containerW, containerH, new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"));
@@ -142,6 +142,8 @@ public class Crafting {
         // Container
         craftingRenderer.renderRecipeContainer(container, rendererStack);
 
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
+
         // Recipe buttons
         for(RecipeButton button : recipeButtons) {
             if(button == null) continue;
@@ -150,9 +152,18 @@ public class Crafting {
 
         // Craft button
         craftingRenderer.renderCraftingButton(craftingButton, rendererStack);
-        rendererStack.font.getData().setScale(1.5f);
+        rendererStack.font.getData().setScale(1.5f * uiScale);
         rendererStack.font.draw(rendererStack.batch, "CRAFT", craftingButton.getX() + craftingButton.getWidth() / 4.2f, craftingButton.getY() + craftingButton.getHeight() / 1.36f);
 
+        rendererStack.font.getData().setScale(1f);
+
+    }
+
+
+    public void resize(int width, int height) {
+        container.resize(width, height);
+        craftingButton.resize(width, height);
+        for(RecipeButton recipeButton : recipeButtons) { if(recipeButton != null) recipeButton.resize(width, height); }   
     }
 
 

@@ -27,6 +27,9 @@ public class InventoryRenderer {
     // Slot texture
     private static final TinyIdentifier hotbarSlot = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "hotbar_slot");
 
+    // UI size var
+    private float uiScale = 1f;
+
     public InventoryRenderer(Inventory inventory) {
         this.inventoryRender = inventory;
     }
@@ -48,7 +51,7 @@ public class InventoryRenderer {
     private void renderSlots(TextureManager tex, SpriteBatch batch) {
         
         for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
-            batch.draw(tex.getTexture(hotbarSlot), this.getSlotX(), this.getSlotY() - (i * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
+            batch.draw(tex.getTexture(hotbarSlot), this.getSlotX(), this.getSlotY() - (i * SLOT_SPACING * uiScale), SLOT_SIZE * uiScale, SLOT_SIZE * uiScale);
         }
         
     }
@@ -60,12 +63,12 @@ public class InventoryRenderer {
         
             if(inventoryRender.getSlot(i).isEmpty()) continue;
 
-            float itemX = this.getSlotX() + (SLOT_SIZE - ITEM_SIZE) / 2f;
-            float itemY = (this.getSlotY() - (i * SLOT_SPACING)) + (SLOT_SIZE - ITEM_SIZE) / 2f;
+            float itemX = this.getSlotX() + (SLOT_SIZE - ITEM_SIZE) * uiScale / 2f;
+            float itemY = (this.getSlotY() - (i * SLOT_SPACING * uiScale)) + (SLOT_SIZE * uiScale - ITEM_SIZE * uiScale) / 2f;
             
             Texture itemTexture = tex.getTexture(inventoryRender.getSlot(i).getItem().textureID());
 
-            batch.draw(itemTexture, itemX, itemY, ITEM_SIZE, ITEM_SIZE);
+            batch.draw(itemTexture, itemX, itemY, ITEM_SIZE * uiScale, ITEM_SIZE * uiScale);
         
         }
         
@@ -74,13 +77,15 @@ public class InventoryRenderer {
     // Renders item counts
     private void renderCounts(RendererStack rendererStack) {
 
-        rendererStack.font.getData().setScale(0.75f);
+        rendererStack.font.getData().setScale(0.75f * uiScale);
 
         for(byte i = 0; i < inventoryRender.getMaxStorage(); i++) {
             if(inventoryRender.getSlot(i).isEmpty()) continue;
-            rendererStack.font.draw(rendererStack.batch, String.valueOf(inventoryRender.getSlot(i).getCount()), this.getSlotX() + 6, this.getSlotY() - (i * SLOT_SPACING) + 18);
+            rendererStack.font.draw(rendererStack.batch, String.valueOf(inventoryRender.getSlot(i).getCount()), this.getSlotX() + 6 * uiScale, this.getSlotY() - (i * SLOT_SPACING * uiScale) + 18 * uiScale);
         }
         
+        rendererStack.font.getData().setScale(1f);
+
     }
 
     // Draws current hotbar
@@ -91,18 +96,25 @@ public class InventoryRenderer {
         ShapeRenderer shapeRenderer = rendererStack.shape;
 
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
-        shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING), SLOT_SIZE, SLOT_SIZE);
+        shapeRenderer.rect(this.getSlotX(), this.getSlotY() - (inventoryRender.getCurrentSlot() * SLOT_SPACING  * uiScale), SLOT_SIZE * uiScale, SLOT_SIZE * uiScale);
 
     }
+
+
+    // Reconfigure slider size on resize
+    public void resize(int width, int height) {
+        uiScale = Math.min(width / 800f, height / 600f);
+    }
+
 
     // Helper getters //
 
     private float getSlotX() {
-        return Gdx.graphics.getWidth() - SLOT_SPACING;
+        return Gdx.graphics.getWidth() - SLOT_SPACING * uiScale;
     }
 
     private float getSlotY() {
-        return Gdx.graphics.getHeight() - SLOT_SPACING;
+        return Gdx.graphics.getHeight() - SLOT_SPACING * uiScale;
     }
 
     // Setters //

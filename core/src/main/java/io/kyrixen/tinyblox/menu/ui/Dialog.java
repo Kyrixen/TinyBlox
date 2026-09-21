@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.MiscUtils;
@@ -16,9 +17,14 @@ public class Dialog {
     
     // Position
     private int x, y;
+    private int baseX, baseY;
 
     // Size
     private int w, h;
+    private int baseW, baseH;
+
+    private float offsetX = 0f;
+    private float offsetY = 0f;
 
     // Dialogue vars
     private String[] lines;
@@ -59,6 +65,12 @@ public class Dialog {
         this.w = w;
         this.h = h;
 
+        this.baseX = x;
+        this.baseY = y;
+
+        this.baseW = w;
+        this.baseH = h;
+
     }
 
     // Init texture
@@ -73,9 +85,13 @@ public class Dialog {
 
         rendererStack.batch.draw(dialogTex, x, y, w, h);
 
-        rendererStack.font.getData().setScale(0.80f);
+        float uiScale = Math.min(Constants.WINDOW_WIDTH / 800f, Constants.WINDOW_HEIGHT / 600f);
+        rendererStack.font.getData().setScale(0.80f * uiScale);
+        
         String visibleLine = lines[currentLine].substring(0, currentSymbol);
-        rendererStack.font.draw(rendererStack.batch, visibleLine, x + 30, y + h - 30, w - 45, Align.left, true);
+        rendererStack.font.draw(rendererStack.batch, visibleLine, x + 30 * uiScale, y + h - 30 * uiScale, w - 45 * uiScale, Align.left, true);
+        
+        rendererStack.font.getData().setScale(1f);
     
     }
 
@@ -119,7 +135,24 @@ public class Dialog {
     
         }
     
-    }            
+    }    
+    
+
+    // Reconfigure slider size on resize
+    public void resize(int width, int height) {
+
+        float uiScale = Math.min(width / 800f, height / 600f);
+
+        offsetX = (width - 800f * uiScale) / 2f;
+        offsetY = (height - 600f * uiScale) / 2f;
+
+        x = Math.round(offsetX + baseX * uiScale);
+        y = Math.round(offsetY + baseY * uiScale);
+
+        w = Math.round(baseW * uiScale);
+        h = Math.round(baseH * uiScale);
+    
+    }
 
 
     public void setLines(String[] lines) {

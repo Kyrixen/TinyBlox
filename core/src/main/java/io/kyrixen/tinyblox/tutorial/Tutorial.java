@@ -429,6 +429,13 @@ public class Tutorial implements Screen {
         Constants.WINDOW_HEIGHT = height;
         Constants.WINDOW_WIDTH = width;
 
+        player.getInventoryRenderer().resize(width, height);
+        player.getCraftingManager().resize(width, height);
+
+        npc.getDialogue().resize(width, height);
+
+        rendererStack.resize(width, height);
+
         Logger.LOGGER.info("TUTORIAL", "Resizing window!");
     
     }

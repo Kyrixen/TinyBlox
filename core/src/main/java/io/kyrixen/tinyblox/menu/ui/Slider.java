@@ -15,6 +15,7 @@ import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.utils.MiscUtils;
+import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 // Slider
@@ -22,9 +23,11 @@ public class Slider {
 
     // Position
     protected int x, y;
+    protected int baseX, baseY;
     
     // Dimensions
     protected int w, h;
+    protected int baseW, baseH;
 
     // Value
     protected float minValue = 0f;
@@ -66,6 +69,12 @@ public class Slider {
         
         this.w = w;
         this.h = h;
+
+        this.baseX = x;
+        this.baseY = y;
+
+        this.baseW = w;
+        this.baseH = h;
 
         this.percent = percent;
         this.maxValue = maxValue;
@@ -109,7 +118,8 @@ public class Slider {
 		ShapeRenderer shapeRenderer = rendererStack.shape;
         BitmapFont font = rendererStack.font;
 
-        font.getData().setScale(1.75f);
+        float uiScale = Math.min(Constants.WINDOW_WIDTH / 800f, Constants.WINDOW_HEIGHT / 600f);
+        font.getData().setScale(1.75f * uiScale);
 
         // Draw outline/background
         batch.begin();
@@ -145,6 +155,24 @@ public class Slider {
         batch.end();
     
     }
+
+
+    // Reconfigure slider size on resize
+    public void resize(int width, int height) {
+
+        float uiScale = Math.min(width / 800f, height / 600f);
+
+        float offsetX = (width - 800f * uiScale) / 2f;
+        float offsetY = (height - 600f * uiScale) / 2f;
+
+        this.x = Math.round(offsetX + baseX * uiScale);
+        this.y = Math.round(offsetY + baseY * uiScale);
+
+        this.w = Math.round(baseW * uiScale);
+        this.h = Math.round(baseH * uiScale);
+    
+    }
+
 
     // Getters
     public int getValue() { return (int)(minValue + percent * (maxValue - minValue)); }

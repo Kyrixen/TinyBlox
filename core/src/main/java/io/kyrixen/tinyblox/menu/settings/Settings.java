@@ -29,6 +29,7 @@ public class Settings implements Screen {
     private final Main main;
 
     private Button exitButton;
+    
     private ToggleButton fpsButton;
     private ToggleButton vsyncButton;
 
@@ -142,6 +143,19 @@ public class Settings implements Screen {
         // If the window is minimized on a desktop (LWJGL3) platform, width and height are 0, which causes problems.
         // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
+
+        Constants.WINDOW_WIDTH = width;
+        Constants.WINDOW_HEIGHT = height;
+
+        exitButton.resize(width, height);
+        
+        fpsButton.resize(width, height);
+        vsyncButton.resize(width, height);
+
+        fpsSlider.resize(width, height);
+        musicSlider.resize(width, height);
+
+        rendererStack.resize(width, height);
 
         Logger.LOGGER.info("SETTINGS", "Resizing window!");
 

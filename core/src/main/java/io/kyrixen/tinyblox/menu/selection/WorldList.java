@@ -71,6 +71,10 @@ public class WorldList {
         }
     }
 
+    public void resize(int width, int height) {
+        for(WorldSlot worldSlot : worldSlots) { worldSlot.resize(width, height); }
+    }
+
     public void deleteWorld() {
 
         System.out.println("Deleting world " + worldSlots[selectedSlot].getWorld().worldName);

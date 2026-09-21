@@ -112,6 +112,14 @@ public class Menu implements Screen {
         // In that case, we don't resize anything, and wait for the window to be a normal size before updating.
         if(width <= 0 || height <= 0) return;
 
+        Constants.WINDOW_WIDTH = width;
+        Constants.WINDOW_HEIGHT = height;
+
+        playButton.resize(width, height);
+        settingsButton.resize(width, height);
+
+        rendererStack.resize(width, height);
+
         Logger.LOGGER.info("MENU", "Resizing window!");
 
     }

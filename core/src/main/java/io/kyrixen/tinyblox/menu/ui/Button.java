@@ -26,10 +26,14 @@ public class Button {
 
     // Position
     protected int x, y;
+    protected int baseX, baseY;
 
     // Size
     protected int w, h;
+    protected  int baseW, baseH;
+
     protected float scale;
+    protected float baseScale;
 
     // Textures
     protected Texture buttonTexture;
@@ -62,7 +66,16 @@ public class Button {
         
         this.w = w;
         this.h = h;
+
+        this.baseX = x;
+        this.baseY = y;
+        
+        this.baseW = w;
+        this.baseH = h;
+
         this.scale = scale;
+
+        this.baseScale = scale;
         
         this.text = text;
         
@@ -126,6 +139,26 @@ public class Button {
         } else { state = ButtonState.NOACTION; wasHovering = false; wasPressed = false; }
     
     }
+
+
+    // Reconfigure button size on resize
+    public void resize(int width, int height) {
+    
+        float uiScale = Math.min(width / 800f, height / 600f);
+
+        float offsetX = (width - 800f * uiScale) / 2f;
+        float offsetY = (height - 600f * uiScale) / 2f;
+
+        this.x = Math.round(offsetX + baseX * uiScale);
+        this.y = Math.round(offsetY + baseY * uiScale);
+    
+        this.w = Math.round(baseW * uiScale);
+        this.h = Math.round(baseH * uiScale);
+
+        this.scale = baseScale * uiScale;
+    
+    }
+
 
     // Get methods
     public ButtonState getState() { return this.state; }

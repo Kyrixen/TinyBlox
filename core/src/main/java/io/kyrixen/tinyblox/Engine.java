@@ -247,6 +247,11 @@ public class Engine implements Screen {
         Constants.WINDOW_HEIGHT = height;
         Constants.WINDOW_WIDTH = width;
 
+        player.getInventoryRenderer().resize(width, height);
+        player.getCraftingManager().resize(width, height);
+
+        rendererStack.resize(width, height);
+
         Logger.LOGGER.info("ENGINE", "Resizing window!");
 
     }

@@ -5,10 +5,12 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier;
 public class RecipeContainer {
 
     // Position
-    private final int x, y;
+    private int x, y;
+    private int baseX, baseY;
 
     // Dimension
-    private final int w, h;
+    private int w, h;
+    private int baseW, baseH;
 
     // Container for the textures
     private final TinyIdentifier textureID;
@@ -19,10 +21,31 @@ public class RecipeContainer {
 
         this.x = x;
         this.y = y;
+
         this.w = w;
         this.h = h;
 
+        this.baseX = x;
+        this.baseY = y;
+        
+        this.baseW = w;
+        this.baseH = h;
+
         this.textureID = textureID;
+        
+    }
+
+
+    // Reconfigure container size on resize
+    public void resize(int width, int height) {
+
+        float uiScale = Math.min(width / 800f, height / 600f);
+
+        x = Math.round(baseX * uiScale);
+        y = Math.round(baseY * uiScale);
+
+        w = Math.round(baseW * uiScale);
+        h = Math.round(baseH * uiScale);
         
     }
 

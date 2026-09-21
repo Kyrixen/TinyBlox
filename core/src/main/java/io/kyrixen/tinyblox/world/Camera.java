@@ -10,8 +10,8 @@ public class Camera {
     public float y;
 
     // Window size
-    public final int viewWidth;
-    public final int viewHeight;
+    public int viewWidth;
+    public int viewHeight;
     public float zoom;
 
     // Like Minecraft
@@ -26,6 +26,20 @@ public class Camera {
         this.zoom = zoom;
 
         this.RENDER_DISTANCE = RENDER_DISTANCE;
+    
+    }
+
+    // Resize viewport
+    public void resize(int width, int height) {
+    
+        this.viewWidth = width;
+        this.viewHeight = height;
+
+        float widthScale = width / 800f;
+        float heightScale = height / 600f;
+
+        this.zoom = 3f * Math.min(widthScale, heightScale);
+        this.zoom = Math.max(this.zoom, 0.75f);
     
     }
 

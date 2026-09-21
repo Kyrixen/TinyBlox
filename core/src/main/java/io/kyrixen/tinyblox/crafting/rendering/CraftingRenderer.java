@@ -1,5 +1,6 @@
 package io.kyrixen.tinyblox.crafting.rendering;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,20 +37,21 @@ public class CraftingRenderer {
 
         Recipe recipe = button.getRecipe();
 
-        int padding = 4 * scaleMult;
-        int freeSpace = button.getWidth() - (20 * scaleMult) - padding;
-        float maxScale = 2f;
-        String recipeName = recipe.getName();
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
 
+        int padding = Math.round(4 * scaleMult * uiScale);
+        int freeSpace = button.getWidth() - Math.round(20 * scaleMult * uiScale) - padding;
+        float maxScale = 2f * uiScale;
+        String recipeName = recipe.getName();
 
         // Background
         batch.draw(tex.getTexture(button.getTexture()), button.getX(), button.getY(), button.getWidth(), button.getHeight());
 
         // Output icon
-        int outputX = button.getX() + 2 * scaleMult;
-        int outputY = button.getY() + 2 * scaleMult;
+        int outputX = (int) (button.getX() + 2 * scaleMult * uiScale);
+        int outputY = (int) (button.getY() + 2 * scaleMult * uiScale);
 
-        batch.draw(tex.getTexture(recipe.getOutput().getItem().textureID()), outputX, outputY, 16 * scaleMult, 16 * scaleMult);
+        batch.draw(tex.getTexture(recipe.getOutput().getItem().textureID()), outputX, outputY, 16 * scaleMult * uiScale, 16 * scaleMult * uiScale);
 
         // Recipe name
         font.getData().setScale(1f);
@@ -58,19 +60,19 @@ public class CraftingRenderer {
         font.getData().setScale(scale);
         layout.setText(font, recipeName);
         
-        font.draw(batch, recipeName, button.getX() + 20 * scaleMult, button.getY() + 16 * scaleMult);
+        font.draw(batch, recipeName, button.getX() + 20 * scaleMult * uiScale, button.getY() + 16 * scaleMult * uiScale);
 
         // Ingredients row
         ItemStack[] ingredients = recipe.getIngredients();
 
-        int iconSize = 8 * scaleMult;
-        int slotWidth = iconSize + 20;
+        int iconSize = (int) (8 * scaleMult * uiScale);
+        int slotWidth = (int) (iconSize + 20 * uiScale);
         int totalWidth = ingredients.length * slotWidth;
 
-        int startX = button.getX() + 20 * scaleMult + ((button.getWidth() - 22 * scaleMult) - totalWidth) / 2;
-        int ingredientY = button.getY() + 2 * scaleMult;
+        int startX = (int) (button.getX() + 20 * scaleMult * uiScale + ((button.getWidth() - 22 * scaleMult * uiScale) - totalWidth) / 2f);
+        int ingredientY = (int) (button.getY() + 2 * scaleMult * uiScale);
 
-        font.getData().setScale(0.5f);
+        font.getData().setScale(0.5f * uiScale);
 
         for(int i = 0; i < ingredients.length; i++) {
 
@@ -78,17 +80,21 @@ public class CraftingRenderer {
             int ingredientX = startX + i * slotWidth;
 
             batch.draw(tex.getTexture(ingredient.getItem().textureID()), ingredientX, ingredientY, iconSize, iconSize);
-            font.draw(batch, Byte.toString(ingredient.getCount()), ingredientX + iconSize + 2, ingredientY + iconSize - 8);
+            font.draw(batch, Byte.toString(ingredient.getCount()), ingredientX + iconSize + 2 * uiScale, ingredientY + iconSize - 8 * uiScale);
 
         }
+
+        font.getData().setScale(1f);
 
     }
 
     // Renders container
     public void renderRecipeContainer(RecipeContainer container, RendererStack rendererStack) {
         rendererStack.batch.draw(tex.getTexture(container.getTextureID()), container.getX(), container.getY(), container.getWidth(), container.getHeight());
-        rendererStack.font.getData().scale(0.75f);
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
+        rendererStack.font.getData().scale(0.75f * uiScale);
         rendererStack.font.draw(rendererStack.batch, "CRAFTING", container.getX() + container.getWidth() / 7.2f, container.getY() + container.getHeight() - container.getHeight() / 12f);
+        rendererStack.font.getData().setScale(1f);
     }
 
 }

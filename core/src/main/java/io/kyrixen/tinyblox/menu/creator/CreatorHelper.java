@@ -38,6 +38,10 @@ public class CreatorHelper extends InputAdapter {
     // Text layout helper
     private GlyphLayout layout = new GlyphLayout();
 
+    private float uiScale = 1f;
+    private float offsetX = 0f;
+    private float offsetY = 0f;
+
 
     // Update creator helper
     public void update(int mouseX, int mouseY, boolean pressed) {
@@ -67,17 +71,17 @@ public class CreatorHelper extends InputAdapter {
         SpriteBatch batch = rendererStack.batch;
         BitmapFont font = rendererStack.font;
 
-        font.getData().setScale(1f);
+        font.getData().setScale(1f * uiScale);
 
         String line = "_____________________";
 
         layout.setText(font, line);
         float centerLine = (Constants.WINDOW_WIDTH - layout.width) / 2f;
 
-        font.draw(batch, line, centerLine, 490);
-        font.draw(batch, line, centerLine, 370);
-        font.draw(batch, line, centerLine, 250);
-        font.draw(batch, line, centerLine, 130);
+        font.draw(batch, line, centerLine, uiScaleY(490));
+        font.draw(batch, line, centerLine, uiScaleY(370));
+        font.draw(batch, line, centerLine, uiScaleY(250));
+        font.draw(batch, line, centerLine, uiScaleY(130));
 
         String nameLabel = "MAP NAME:";
         String seedLabel = "SEED:";
@@ -86,19 +90,19 @@ public class CreatorHelper extends InputAdapter {
 
         layout.setText(font, nameLabel);
         float nameX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, nameLabel, nameX, 530);
+        font.draw(batch, nameLabel, nameX, uiScaleY(530));
 
         layout.setText(font, seedLabel);
         float seedX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, seedLabel, seedX, 410);
+        font.draw(batch, seedLabel, seedX, uiScaleY(410));
 
         layout.setText(font, frequencyLabel);
         float frequencyX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, frequencyLabel, frequencyX, 290);
+        font.draw(batch, frequencyLabel, frequencyX, uiScaleY(290));
 
         layout.setText(font, frequencyLabel);
         float difficultyX = (Constants.WINDOW_WIDTH - layout.width) / 2f;
-        font.draw(batch, difficultyLabel, difficultyX, 170);
+        font.draw(batch, difficultyLabel, difficultyX, uiScaleY(170));
 
         font.getData().setScale(1f);
 
@@ -110,31 +114,43 @@ public class CreatorHelper extends InputAdapter {
         SpriteBatch batch = rendererStack.batch;
         BitmapFont font = rendererStack.font;
 
-        font.getData().setScale(0.85f);
+        font.getData().setScale(0.85f * uiScale);
 
         if(selected == SelectedPrompt.NAME) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, worldName);
-        font.draw(batch, worldName, (Constants.WINDOW_WIDTH - layout.width) / 2f, 500);
-        font.setColor(1f, 1f, 1f ,1f);
+        font.draw(batch, worldName, (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(500));
+        font.setColor(1f, 1f, 1f, 1f);
 
         if(selected == SelectedPrompt.SEED) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, seed);
-        font.draw(batch, seed, (Constants.WINDOW_WIDTH - layout.width) / 2f, 380);
+        font.draw(batch, seed, (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(380));
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.FREQUENCY) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, frequency.name().replace("_", " "));
-        font.draw(batch, frequency.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, 260);
+        font.draw(batch, frequency.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(260));
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.DIFFICULTY) font.setColor(1f, 1f, 0f, 1f);
         layout.setText(font, difficulty.name().replace("_", " "));
-        font.draw(batch, difficulty.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, 140);
+        font.draw(batch, difficulty.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(140));
         font.setColor(1f, 1f, 1f ,1f);
 
         font.getData().setScale(1f);
 
     }
+
+
+    // Reconfigure helper size on resize
+    public void resize(int width, int height) {
+
+        uiScale = Math.min(width / 800f, height / 600f);
+
+        offsetX = (width - 800f * uiScale) / 2f;
+        offsetY = (height - 600f * uiScale) / 2f;
+
+    }
+
 
     // Gets the info of the created world
     public WorldBlueprint getWorldInfo() {
@@ -162,19 +178,27 @@ public class CreatorHelper extends InputAdapter {
     // Helpers //
 
     private boolean insideName(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 470 && mouseY <= 520;
+        return mouseX >= uiScaleX(250) && mouseX <= uiScaleX(550) && mouseY >= uiScaleY(470) && mouseY <= uiScaleY(520);
     }
 
     private boolean insideSeed(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 350 && mouseY <= 400;
+        return mouseX >= uiScaleX(250) && mouseX <= uiScaleX(550) && mouseY >= uiScaleY(350) && mouseY <= uiScaleY(400);
     }
 
     private boolean insideFrequency(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 230 && mouseY <= 280;
+        return mouseX >= uiScaleX(250) && mouseX <= uiScaleX(550) && mouseY >= uiScaleY(230) && mouseY <= uiScaleY(280);
     }
 
     private boolean insideDifficulty(int mouseX, int mouseY) {
-        return mouseX >= 250 && mouseX <= 550 && mouseY >= 110 && mouseY <= 160;
+        return mouseX >= uiScaleX(250) && mouseX <= uiScaleX(550) && mouseY >= uiScaleY(110) && mouseY <= uiScaleY(160);
+    }
+
+    private float uiScaleX(float x) {
+        return offsetX + x * uiScale;
+    }
+
+    private float uiScaleY(float y) {
+        return offsetY + y * uiScale;
     }
 
 
