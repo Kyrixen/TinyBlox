@@ -20,7 +20,7 @@ public class Recipe {
 
     // Getters //
 
-    public String getName() { return this.recipeID.getID(); }
+    public String getName() { return this.recipeID.getID().replace("_", " ").toUpperCase(); }
     public TinyIdentifier getID() { return this.recipeID; }
     public ItemStack[] getIngredients() { return this.ingredients.clone(); }
     public ItemStack getOutput() { return new ItemStack(output.getItem(), output.getCount()); }

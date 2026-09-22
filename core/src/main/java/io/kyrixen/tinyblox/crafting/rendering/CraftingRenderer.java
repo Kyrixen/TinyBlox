@@ -90,11 +90,18 @@ public class CraftingRenderer {
 
     // Renders container
     public void renderRecipeContainer(RecipeContainer container, RendererStack rendererStack) {
+        
         rendererStack.batch.draw(tex.getTexture(container.getTextureID()), container.getX(), container.getY(), container.getWidth(), container.getHeight());
+        
         float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
-        rendererStack.font.getData().scale(0.75f * uiScale);
-        rendererStack.font.draw(rendererStack.batch, "CRAFTING", container.getX() + container.getWidth() / 7.2f, container.getY() + container.getHeight() - container.getHeight() / 12f);
+        
+        rendererStack.font.getData().setScale(1.5f * uiScale);
+        layout.setText(rendererStack.font, "CRAFTING");
+        
+        rendererStack.font.draw(rendererStack.batch, "CRAFTING", container.getX() + (container.getWidth() - layout.width) / 2f, container.getY() + container.getHeight() - container.getHeight() / 12f);
+        
         rendererStack.font.getData().setScale(1f);
+    
     }
 
 }

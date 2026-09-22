@@ -37,9 +37,9 @@ public class RecipeLoader {
 
         
         String[] pathParts = path.split("/");
-        if(pathParts.length < 3 || !pathParts[pathParts.length - 2].equals("recipes")) Logger.LOGGER.error("LOADER", "Invalid structure: " + path);
+        if(pathParts.length < 3 || !pathParts[pathParts.length - 2].equals("recipes")) Logger.LOGGER.error("LOADER", "Invalid recipe: " + path);
         String namespace = pathParts[pathParts.length - 3];
-        String structureName = recipeFile.nameWithoutExtension();
+        String recipeName = recipeFile.nameWithoutExtension();
 
 
         ItemStack[] ingredients = new ItemStack[rp.ingredients.length];
@@ -49,9 +49,39 @@ public class RecipeLoader {
 
             RecipeStack ingredient = rp.ingredients[i];
 
-            Item item = ItemRegister.getItemByID(TinyIdentifier.fromString(ingredient.item));
-            if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
-            
+
+TinyIdentifier ingredientID = TinyIdentifier.fromString(ingredient.item);
+
+System.out.println("NAMESPACE: "
+    + ItemRegister.CLAY.getItemID().getNamespace()
+    + " / "
+    + ingredientID.getNamespace());
+
+System.out.println("TYPE: "
+    + ItemRegister.CLAY.getItemID().getType()
+    + " / "
+    + ingredientID.getType());
+
+System.out.println("ID: "
+    + ItemRegister.CLAY.getItemID().getID()
+    + " / "
+    + ingredientID.getID());
+
+System.out.println("NAMESPACE EQ: "
+    + ItemRegister.CLAY.getItemID().getNamespace()
+        .equals(ingredientID.getNamespace()));
+
+System.out.println("TYPE EQ: "
+    + ItemRegister.CLAY.getItemID().getType()
+        .equals(ingredientID.getType()));
+
+System.out.println("ID EQ: "
+    + ItemRegister.CLAY.getItemID().getID()
+        .equals(ingredientID.getID()));
+
+Item item = ItemRegister.getItemByID(ingredientID);
+if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
+
             byte count = (byte) ingredient.amount;
 
             ingredients[i] = new ItemStack(item, count);
@@ -69,7 +99,10 @@ public class RecipeLoader {
         output = new ItemStack(item, count);
 
 
-        return new Recipe(new TinyIdentifier(namespace, IdentifierType.RECIPE, structureName), ingredients, output);
+        TinyIdentifier identifier = new TinyIdentifier(namespace, IdentifierType.RECIPE, recipeName);
+        System.out.println(identifier.toString());
+
+        return new Recipe(identifier, ingredients, output);
 
     }
 

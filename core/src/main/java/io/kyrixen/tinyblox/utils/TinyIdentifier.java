@@ -52,13 +52,13 @@ public final class TinyIdentifier {
 
         TinyIdentifier other = (TinyIdentifier) o;
 
-        return this.namespace.equals(other.getNamespace()) && this.type.equals(other.getType()) && this.id.equals(other.getID());
+        return this.namespace.equals(other.getNamespace()) && this.type.name().equals(other.getType().name()) && this.id.equals(other.getID());
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(namespace, type, id);
+        return Objects.hash(namespace, type.name(), id);
     }
 
     @Override

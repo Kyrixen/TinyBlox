@@ -35,7 +35,7 @@ public class TextureManager {
             asset.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
             loadedTextures.put(identifier, asset);
 
-            if(identifier.getType() == IdentifierType.TEXTURE || identifier.getType() == IdentifierType.TEXTURE) {
+            if(path.contains("entities") || path.contains("terrain")) {
                 Texture assetOutline = generateDepthOverlay(pixmap);
                 loadedTextureOutlines.put(identifier, assetOutline);
             }
