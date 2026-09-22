@@ -49,38 +49,8 @@ public class RecipeLoader {
 
             RecipeStack ingredient = rp.ingredients[i];
 
-
-TinyIdentifier ingredientID = TinyIdentifier.fromString(ingredient.item);
-
-System.out.println("NAMESPACE: "
-    + ItemRegister.CLAY.getItemID().getNamespace()
-    + " / "
-    + ingredientID.getNamespace());
-
-System.out.println("TYPE: "
-    + ItemRegister.CLAY.getItemID().getType()
-    + " / "
-    + ingredientID.getType());
-
-System.out.println("ID: "
-    + ItemRegister.CLAY.getItemID().getID()
-    + " / "
-    + ingredientID.getID());
-
-System.out.println("NAMESPACE EQ: "
-    + ItemRegister.CLAY.getItemID().getNamespace()
-        .equals(ingredientID.getNamespace()));
-
-System.out.println("TYPE EQ: "
-    + ItemRegister.CLAY.getItemID().getType()
-        .equals(ingredientID.getType()));
-
-System.out.println("ID EQ: "
-    + ItemRegister.CLAY.getItemID().getID()
-        .equals(ingredientID.getID()));
-
-Item item = ItemRegister.getItemByID(ingredientID);
-if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
+            Item item = ItemRegister.getItemByID(TinyIdentifier.fromString(ingredient.item));
+            if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
 
             byte count = (byte) ingredient.amount;
 
@@ -98,11 +68,7 @@ if(item == null) throw new RuntimeException("Unknown item: " + ingredient.item);
 
         output = new ItemStack(item, count);
 
-
-        TinyIdentifier identifier = new TinyIdentifier(namespace, IdentifierType.RECIPE, recipeName);
-        System.out.println(identifier.toString());
-
-        return new Recipe(identifier, ingredients, output);
+        return new Recipe(new TinyIdentifier(namespace, IdentifierType.RECIPE, recipeName), ingredients, output);
 
     }
 

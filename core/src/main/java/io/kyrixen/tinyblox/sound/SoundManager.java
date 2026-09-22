@@ -21,7 +21,7 @@ public class SoundManager {
 
     // Load missing sound sound
     public SoundManager() {
-        this.load(MISSING_SOUND, "misc/missing_sound.wav");
+        this.load(MISSING_SOUND, "misc/missing_sound.ogg");
     }
 
     // Load sound
@@ -61,32 +61,32 @@ public class SoundManager {
     // Load UI sounds
     public void loadUI() {
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hollow"), "ui/hollow.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "slider"), "ui/slider.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click"), "ui/click.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options"), "ui/options.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "key_type"), "ui/typeKey.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hollow"), "ui/hollow.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "slider"), "ui/slider.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click"), "ui/click.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options"), "ui/options.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "key_type"), "ui/typeKey.ogg");
     
     }
 
     // Load HUD sounds
     public void loadHUD() {
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "walk"), "hud/walk.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "place"), "hud/place.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "destroy"), "hud/destroy.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "walk"), "hud/walk.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "place"), "hud/place.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "destroy"), "hud/destroy.ogg");
 
     }
 
     // Load SFX sounds
     public void loadSFX() {
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "explosion"), "sfx/explosion.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "bomber_detonate"), "sfx/bomberDetonate.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_player"), "sfx/hitPlayer.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_enemy"), "sfx/hitEnemy.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pickup_item"), "sfx/pickupItem.wav");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "powerup"), "sfx/powerup.wav");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "explosion"), "sfx/explosion.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "bomber_detonate"), "sfx/bomberDetonate.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_player"), "sfx/hitPlayer.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "hit_enemy"), "sfx/hitEnemy.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pickup_item"), "sfx/pickupItem.ogg");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "powerup"), "sfx/powerup.ogg");
 
     }
 
