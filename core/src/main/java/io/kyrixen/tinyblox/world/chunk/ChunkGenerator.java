@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector4;
 
 import fastnoiselite.FastNoiseLite;
 import io.kyrixen.tinyblox.Constants;
@@ -92,7 +93,7 @@ public class ChunkGenerator {
         int caveChambersMaxCount = random.seedInt(0, maxChambers);
 
 
-        List<Vector3> chambers = new ArrayList<>();
+        List<Vector4> chambers = new ArrayList<>();
         for(int chamber = 0; chamber < caveChambersMaxCount; chamber++) {
 
             byte choosenRadius = random.seedByte((byte) 3, (byte) 4);
@@ -103,8 +104,8 @@ public class ChunkGenerator {
             if(choosenStack == null) continue;
             if(choosenStack.getTopTerrain() == null) continue;
 
-            byte minLayer = (byte) (Constants.MIN_TERRAIN_HEIGHT + choosenRadius + 1);
-            byte maxLayer = (byte) (choosenStack.getTopTerrain().level() - choosenRadius - 2);
+            byte minLayer = (byte) (Constants.MIN_TERRAIN_HEIGHT + choosenRadius * 0.75f + 1);
+            byte maxLayer = (byte) (choosenStack.getTopTerrain().level() - choosenRadius * 0.75f - 2);
             if(maxLayer < minLayer) continue;
 
             byte choosenCenterLayer = random.seedByte(minLayer, maxLayer);
@@ -113,7 +114,7 @@ public class ChunkGenerator {
                 for(int ty = -choosenRadius; ty <= choosenRadius; ty++) {
                     for(int tz = -choosenRadius; tz <= choosenRadius; tz++) {
 
-                        float dist = Vector3.len(tx, ty, tz * 2);
+                        float dist = Vector3.len(tx, ty, tz / 0.75f);
                         if(dist > choosenRadius) continue;
 
                         byte targetX = (byte) (choosenCenterX + tx);
@@ -136,7 +137,7 @@ public class ChunkGenerator {
                 }
             }
         
-            chambers.add(new Vector3(choosenCenterX, choosenCenterY, choosenCenterLayer));
+            chambers.add(new Vector4(choosenCenterX, choosenCenterY, choosenCenterLayer, choosenRadius));
 
         }
 
@@ -145,16 +146,16 @@ public class ChunkGenerator {
 
         if(chambers.isEmpty()) return;
 
-        Vector3 bestChamber = chambers.get(0);
+        Vector4 bestChamber = chambers.get(0);
         byte bestDepth = Byte.MAX_VALUE;
-        for(Vector3 chamber : chambers) {
+        for(Vector4 chamber : chambers) {
 
             TileStack chamberStack = chunk.getTileStack((byte) chamber.x, (byte) chamber.y);
             if(chamberStack == null) continue;
             Tile topTile = chamberStack.getTopTerrain();
             if(topTile == null) continue;
 
-            byte depth = (byte) (topTile.level() - chamber.z);
+            byte depth = (byte) (topTile.level() - chamber.z - chamber.w * 0.75f);
 
             if(bestDepth > depth) { bestDepth = depth; bestChamber = chamber; }
 
@@ -163,7 +164,7 @@ public class ChunkGenerator {
         TileStack tileStack = chunk.getTileStack((byte) bestChamber.x, (byte) bestChamber.y);
         Tile topTile = tileStack.getTopTerrain();
 
-        for(byte layer = (byte) bestChamber.z; layer <= topTile.level(); layer++) {
+        for(byte layer = (byte) ((bestChamber.z - bestChamber.w * 0.75f) + 1); layer <= topTile.level(); layer++) {
             tileStack.set(new Tile(TileRegister.LADDER, layer), layer);
         }
 
