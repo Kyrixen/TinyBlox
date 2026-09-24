@@ -183,6 +183,7 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"brown_button"), "tinyblox/textures/ui/button/brown_button.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button"), "tinyblox/textures/ui/button/gray_button.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button"), "tinyblox/textures/ui/button/red_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"green_button"), "tinyblox/textures/ui/button/green_button.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_toggle_button"), "tinyblox/textures/ui/button/white_toggle_button.png");
         

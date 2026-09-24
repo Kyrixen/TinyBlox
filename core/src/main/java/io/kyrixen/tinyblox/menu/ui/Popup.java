@@ -16,20 +16,17 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 public class Popup {
   
     // Position
-    private int x, y;
-    private int baseX, baseY;
+    protected int x, y;
+    protected int baseX, baseY;
 
     // Size
-    private int w, h;
-    private int baseW, baseH;
-
-    private float offsetX = 0f;
-    private float offsetY = 0f;
+    protected int w, h;
+    protected int baseW, baseH;
 
 
     // Popup vars
     protected final String text;
-    protected final Button button;
+    protected final Button okButton;
     protected boolean show = false;
 
 
@@ -37,7 +34,7 @@ public class Popup {
     protected final SoundManager uiSoundManager;
 
     // Texture
-    private Texture popupTex;
+    protected Texture popupTex;
 
 
     private static final TinyIdentifier POP_UP_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pop_up");
@@ -48,7 +45,7 @@ public class Popup {
         this.uiSoundManager = uiSoundManager;
         this.text = popupInfo;
 
-        this.button = new Button(uiSoundManager);
+        this.okButton = new Button(uiSoundManager);
 
     }
 
@@ -68,14 +65,14 @@ public class Popup {
 
 
         float buttonScale = (w / 200f) * 2f;
-        this.button.init((int) (x + w - 48 * buttonScale) / 2, y + (int) (h * 0.1f), (int) (48 * buttonScale), (int) (16 * buttonScale), "OK", 1.0f);
+        this.okButton.init((int) (x + w - 48 * buttonScale) / 2, y + (int) (h * 0.1f), (int) (48 * buttonScale), (int) (16 * buttonScale), "OK", 1.0f);
 
     }
 
     // Init texture
     public void initTexture(Texture popupTexture, Texture buttonTexture) {
         this.popupTex = popupTexture;
-        this.button.initTexture(buttonTexture);
+        this.okButton.initTexture(buttonTexture);
     }
 
 
@@ -93,7 +90,7 @@ public class Popup {
 
         rendererStack.font.draw(rendererStack.batch, layout, x + (40f * uiScale), y + h - (40f * uiScale));
 
-        button.render(rendererStack);
+        okButton.render(rendererStack);
     
     }
 
@@ -101,8 +98,8 @@ public class Popup {
     
         if(!show) return;
     
-        button.updateState();
-        if(button.pressed()) show = false;
+        okButton.updateState();
+        if(okButton.pressed()) show = false;
     
     }    
     
@@ -112,8 +109,8 @@ public class Popup {
 
         float uiScale = Math.min(width / 800f, height / 600f);
 
-        offsetX = (width - 800f * uiScale) / 2f;
-        offsetY = (height - 600f * uiScale) / 2f;
+        float offsetX = (width - 800f * uiScale) / 2f;
+        float offsetY = (height - 600f * uiScale) / 2f;
 
         x = Math.round(offsetX + baseX * uiScale);
         y = Math.round(offsetY + baseY * uiScale);
@@ -121,7 +118,7 @@ public class Popup {
         w = Math.round(baseW * uiScale);
         h = Math.round(baseH * uiScale);
 
-        button.resize(width, height);
+        okButton.resize(width, height);
     
     }
 

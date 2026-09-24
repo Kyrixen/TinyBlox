@@ -10,9 +10,9 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.selection.Selection;
+import io.kyrixen.tinyblox.menu.selection.uiselectionaddon.PopupSelect;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
-import io.kyrixen.tinyblox.menu.ui.Popup;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
@@ -22,7 +22,7 @@ import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Menu implements Screen {
 
-    private Popup popup;
+    private PopupSelect popup;
 
     public boolean exit = false;
     
@@ -55,7 +55,7 @@ public class Menu implements Screen {
         this.playButton = new Button(uiSoundManager);
         this.settingsButton = new Button(uiSoundManager);
 
-        this.popup = new Popup(uiSoundManager, "JUST TESTING!");
+        this.popup = new PopupSelect(uiSoundManager, "JUST TESTING!");
 
         init();
     
@@ -76,7 +76,7 @@ public class Menu implements Screen {
         settingsButton.initTexture(tex.getTexture(brownButton));
 
         popup.init(0, 0, 320, 240);
-        popup.initTexture(tex.getTexture(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window")), tex.getTexture(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button")));
+        popup.initTexture(tex.getTexture(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window")), tex);
     
         popup.showAndWait();
 
