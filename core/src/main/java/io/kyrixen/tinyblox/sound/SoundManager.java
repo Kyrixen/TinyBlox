@@ -66,7 +66,8 @@ public class SoundManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "click"), "ui/click.ogg");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "options"), "ui/options.ogg");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "key_type"), "ui/typeKey.ogg");
-    
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.SOUND, "pop_up"), "ui/popUp.ogg");
+
     }
 
     // Load HUD sounds
