@@ -14,11 +14,13 @@ import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.creator.Creator;
+import io.kyrixen.tinyblox.menu.selection.uiselectionaddon.PopupSelect;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
 import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.sound.SoundManager;
+import io.kyrixen.tinyblox.tutorial.Tutorial;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.Peripheral;
 import io.kyrixen.tinyblox.utils.TinyIdentifier;
@@ -37,6 +39,10 @@ public class Selection implements Screen {
     private Button exportButton;
     private Button importButton;
 
+    private PopupSelect popupSelect;
+    private boolean popupShowed = false;
+    private boolean worldDeleted = false;
+
     private SoundManager uiSoundManager;
 
     private final RendererStack rendererStack;
@@ -47,7 +53,9 @@ public class Selection implements Screen {
 
     private static final TinyIdentifier grayButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button");
     private static final TinyIdentifier redButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button");
+    private static final TinyIdentifier greenButton = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"green_button");
     private static final TinyIdentifier worldSlot = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "world_slot");
+    private static final TinyIdentifier popupWindow = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window");
 
 
     public Selection(Main main, RendererStack rendererStack, TextureManager tex, UIRenderer uiRenderer) {
@@ -69,6 +77,8 @@ public class Selection implements Screen {
 
         this.exportButton = new Button(uiSoundManager);
         this.importButton = new Button(uiSoundManager);
+
+        this.popupSelect = new PopupSelect(uiSoundManager, "YOU DONT HAVE ANY WORLDS. DO YOU WANT TO START TUTORIAL?");
 
         init();
     
@@ -96,6 +106,8 @@ public class Selection implements Screen {
         importButton.init(20, Constants.WINDOW_HEIGHT - 8 - 16 * 4, 48 * 4, 16 * 4, "IMPORT", 1.5f);
         importButton.initTexture(tex.getTexture(grayButton));
 
+        popupSelect.init(Constants.WINDOW_WIDTH / 2 - (32 * 12) / 2, Constants.WINDOW_HEIGHT - (Constants.WINDOW_HEIGHT / 2 + (24 * 12) / 2), 32 * 12, 24 * 12);
+        popupSelect.initTexture(tex.getTexture(popupWindow), tex.getTexture(greenButton), tex.getTexture(redButton));
 
         List<WorldBlueprint> worlds = new ArrayList<>(WorldListScanner.getWorlds());
         worldList.updateWorldSlots(worlds);
@@ -117,6 +129,14 @@ public class Selection implements Screen {
 
         worldList.update(Peripheral.getMouseX(), Constants.WINDOW_HEIGHT - Peripheral.getMouseY(), Gdx.input.justTouched());
 
+        if(worldList.getWorldCount() == 0 && !popupShowed && !worldDeleted) { popupSelect.showAndWait(); popupShowed = true; }
+
+        popupSelect.updateState();
+        if(popupSelect.isShowing()) return;
+
+        if(popupSelect.getResult()) main.setScreen(new Tutorial(main, rendererStack, tex));
+
+
         loadButton.updateState();
         createButton.updateState();
         deleteButton.updateState();
@@ -126,7 +146,7 @@ public class Selection implements Screen {
 
         if(createButton.pressed()) main.setScreen(new Creator(main, rendererStack, tex, uiRenderer));
         if(loadButton.pressed() && worldList.canLoad()) { Constants.CURRENT_WORLD = worldList.getWorld().worldName; main.setScreen(new Engine(rendererStack, tex)); }
-        if(deleteButton.pressed()) { worldList.deleteWorld(); }
+        if(deleteButton.pressed()) { worldList.deleteWorld();  worldDeleted = true; }
 
         if(exportButton.pressed()) Platform.worldIE.exportWorld(worldList.getWorld().worldName);
         if(importButton.pressed()) Platform.worldIE.importWorld(worldList);
@@ -149,6 +169,8 @@ public class Selection implements Screen {
         
         exportButton.render(rendererStack);
         importButton.render(rendererStack);
+
+        popupSelect.render(rendererStack);
         
         rendererStack.batch.end();
 
@@ -171,6 +193,8 @@ public class Selection implements Screen {
 
         exportButton.resize(width, height);
         importButton.resize(width, height);
+
+        popupSelect.resize(width, height);
 
         rendererStack.resize(width, height);
 

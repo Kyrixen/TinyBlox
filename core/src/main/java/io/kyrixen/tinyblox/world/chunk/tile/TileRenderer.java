@@ -205,6 +205,7 @@ public class TileRenderer {
         float renderW = ((Constants.GRID_SIZE / 4) * 3) * camera.zoom;
         float renderH = (Constants.GRID_SIZE / 2) * camera.zoom;
 
+        rendererStack.font.getData().setScale(0.35f * camera.zoom);
         float maxWidth = Constants.GRID_SIZE * 4 * camera.zoom;
 
         GlyphLayout layout = new GlyphLayout();
@@ -214,6 +215,8 @@ public class TileRenderer {
         float nameY = screenY + renderH + 20f * camera.zoom;
 
         rendererStack.font.draw(rendererStack.batch, name, nameX, nameY, 0, name.length(), maxWidth, Align.center, true);
+
+        rendererStack.font.getData().setScale(1f);
 
     }
     
@@ -226,6 +229,7 @@ public class TileRenderer {
         float renderW = w * camera.zoom;
         float renderH = h * camera.zoom;
 
+        rendererStack.font.getData().setScale(0.35f * camera.zoom);
         float maxWidth = Constants.GRID_SIZE * 4 * camera.zoom;
 
         GlyphLayout layout = new GlyphLayout();
@@ -238,6 +242,8 @@ public class TileRenderer {
 
         rendererStack.font.draw(rendererStack.batch, name, nameX, nameY, 0, name.length(), maxWidth, Align.center, true);
     
+        rendererStack.font.getData().setScale(1f);
+
     }
 
 }

@@ -10,7 +10,6 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.Main;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.selection.Selection;
-import io.kyrixen.tinyblox.menu.selection.uiselectionaddon.PopupSelect;
 import io.kyrixen.tinyblox.menu.settings.Settings;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.UIRenderer;
@@ -21,8 +20,6 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 
 public class Menu implements Screen {
-
-    private PopupSelect popup;
 
     public boolean exit = false;
     
@@ -55,8 +52,6 @@ public class Menu implements Screen {
         this.playButton = new Button(uiSoundManager);
         this.settingsButton = new Button(uiSoundManager);
 
-        this.popup = new PopupSelect(uiSoundManager, "JUST TESTING!");
-
         init();
     
     }
@@ -75,11 +70,6 @@ public class Menu implements Screen {
         settingsButton.init(Constants.GRID_SIZE * 17, 32, 48 * 5, 16 * 5, "SETTINGS", 1.5f);
         settingsButton.initTexture(tex.getTexture(brownButton));
 
-        popup.init(0, 0, 320, 240);
-        popup.initTexture(tex.getTexture(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window")), tex);
-    
-        popup.showAndWait();
-
     }
 
     // Game loop
@@ -94,9 +84,6 @@ public class Menu implements Screen {
     }
 
     private void update(float delta) {
-
-        popup.updateState(delta);
-        if(popup.isShowing()) return;
 
         playButton.updateState();
         settingsButton.updateState();
@@ -115,7 +102,6 @@ public class Menu implements Screen {
         rendererStack.batch.begin();
         playButton.render(rendererStack);
         settingsButton.render(rendererStack);
-        popup.render(rendererStack);
         rendererStack.batch.end();
 
     }
@@ -131,8 +117,6 @@ public class Menu implements Screen {
 
         playButton.resize(width, height);
         settingsButton.resize(width, height);
-
-        popup.resize(width, height);
 
         rendererStack.resize(width, height);
 

@@ -3,23 +3,15 @@ package io.kyrixen.tinyblox.menu.selection.uiselectionaddon;
 import com.badlogic.gdx.graphics.Texture;
 
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.menu.ui.Button;
 import io.kyrixen.tinyblox.menu.ui.Popup;
 import io.kyrixen.tinyblox.sound.SoundManager;
-import io.kyrixen.tinyblox.utils.TinyIdentifier;
-import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 
 public class PopupSelect extends Popup {
 
     // Popup select vars
     protected final Button cancelButton;
     protected boolean result = false;
-
-
-    // Texture constants
-    private static final TinyIdentifier BUTTON_OK_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"green_button");
-    private static final TinyIdentifier BUTTON_CANCEL_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button");
 
 
     public PopupSelect(SoundManager uiSoundManager, String popupInfo) {
@@ -51,10 +43,10 @@ public class PopupSelect extends Popup {
 
     }
 
-    public void initTexture(Texture popupSelectTexture, TextureManager tex) {
+    public void initTexture(Texture popupSelectTexture, Texture okButtonTexture, Texture cancelButtonTexture) {
         this.popupTex = popupSelectTexture;
-        this.okButton.initTexture(tex.getTexture(BUTTON_OK_TEXTURE));
-        this.cancelButton.initTexture(tex.getTexture(BUTTON_CANCEL_TEXTURE));
+        this.okButton.initTexture(okButtonTexture);
+        this.cancelButton.initTexture(cancelButtonTexture);
     }
 
 
@@ -69,11 +61,11 @@ public class PopupSelect extends Popup {
     }
 
     @Override 
-    public void updateState(float deltaTime) {
+    public void updateState() {
 
         if(!show) return;
         
-        super.updateState(deltaTime);
+        super.updateState();
         cancelButton.updateState();
 
         if(okButton.pressed()) result = true;

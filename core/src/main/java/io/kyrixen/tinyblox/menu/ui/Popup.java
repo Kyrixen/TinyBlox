@@ -94,7 +94,7 @@ public class Popup {
     
     }
 
-    public void updateState(float delta) {
+    public void updateState() {
     
         if(!show) return;
     

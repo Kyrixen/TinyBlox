@@ -68,7 +68,7 @@ public class Engine implements Screen {
         controller = new Controller();
         tileRenderer = new TileRenderer(textures);
         craftingRenderer = new CraftingRenderer(textures);
-        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), FrequencyType.NORMAL);
+        terrain = new Terrain(Constants.MAP_WIDTH, Constants.MAP_HEIGHT, tileRenderer, (int) Math.floor(Math.random() * Integer.MAX_VALUE), FrequencyType.NORMAL, false);
         timeCycle = new TimeCycle();
         fpsCounter = new FPSCounter();
         soundManager = new SoundManager();

@@ -14,7 +14,7 @@ import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 public class TutorialTerrain extends Terrain {
  
     public TutorialTerrain(TileRenderer tileRenderer) {
-        super(1, 1, tileRenderer, 0, FrequencyType.FLAT);
+        super(1, 1, tileRenderer, 0, FrequencyType.FLAT, true);
     }
 
 

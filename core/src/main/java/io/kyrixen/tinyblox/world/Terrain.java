@@ -14,7 +14,6 @@ import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
-import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
 import io.kyrixen.tinyblox.saving.world.ChunkLoader;
 import io.kyrixen.tinyblox.saving.world.ChunkSaver;
 import io.kyrixen.tinyblox.saving.world.WorldManager;
@@ -52,11 +51,11 @@ public class Terrain {
 
 
     // Constructs terrain
-    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, FrequencyType frequency) {
+    public Terrain(int w, int h, TileRenderer tileRenderer, int seed, FrequencyType frequency, boolean noLoad) {
 
-        WorldBlueprint wb = WorldManager.loadWorld(Constants.CURRENT_WORLD, seed, frequency);
+        if(!noLoad) WorldManager.loadWorld(Constants.CURRENT_WORLD, seed, frequency);
 
-        this.seed = wb.worldSeed;
+        this.seed = seed;
         this.w = w;
         this.h = h;
 
@@ -67,7 +66,7 @@ public class Terrain {
         // Sets noise generator properties
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         noise.SetSeed(this.seed);
-        noise.SetFrequency(FrequencyType.valueOf(wb.worldFrequency).getFrequency());
+        noise.SetFrequency(frequency.getFrequency());
 
     }
 

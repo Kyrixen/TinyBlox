@@ -92,4 +92,10 @@ public class WorldList {
         return this.worldSlots[selectedSlot].getWorld();
     }
 
+    public int getWorldCount() {
+        int worldCount = 0;
+        for(WorldSlot worldSlot : worldSlots) { if(worldSlot.getWorld() != null) worldCount++; }
+        return worldCount;
+    }
+
 }
