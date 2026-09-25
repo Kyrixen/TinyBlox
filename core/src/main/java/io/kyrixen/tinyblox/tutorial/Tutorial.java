@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.tutorial;
 
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -184,10 +185,11 @@ public class Tutorial implements Screen {
         
         if(!controlsDone && npc.getDialogue().hasEnded() && Peripheral.anyWASDPressed()) {
             controlsDone = true;
-            npc.getDialogue().setLines(new String[]{"NICE!", "THAT WOULD BE FOR THE MOVEMENT!", "NOW TRY TO SPRINT!", "TO SPRINT, HOLD LEFT CTRL WHILE MOVING!", "THEN AGAIN, WHEN YOU GET THE HANG OF IT, TELL ME!", "(LEFT MOUSE BUTTON OR ENTER TO EXIT DIALOG)"});
+            if(Gdx.app.getType() == ApplicationType.WebGL) npc.getDialogue().setLines(new String[]{"NICE!", "THAT WOULD BE FOR THE MOVEMENT!", "NOW TRY TO SPRINT!", "TO SPRINT, HOLD LEFT SHIFT WHILE MOVING!", "THEN AGAIN, WHEN YOU GET THE HANG OF IT, TELL ME!", "(LEFT MOUSE BUTTON OR ENTER TO EXIT DIALOG)"});
+            else npc.getDialogue().setLines(new String[]{"NICE!", "THAT WOULD BE FOR THE MOVEMENT!", "NOW TRY TO SPRINT!", "TO SPRINT, HOLD LEFT CTRL WHILE MOVING!", "THEN AGAIN, WHEN YOU GET THE HANG OF IT, TELL ME!", "(LEFT MOUSE BUTTON OR ENTER TO EXIT DIALOG)"});
         }
 
-        if(controlsDone && !sprintDone && npc.getDialogue().hasEnded() && Peripheral.keyJustPressed(Keys.CONTROL_LEFT)) {
+        if(controlsDone && !sprintDone && npc.getDialogue().hasEnded() && (Peripheral.keyJustPressed(Keys.CONTROL_LEFT) || Peripheral.keyJustPressed(Keys.SHIFT_LEFT))) {
             sprintDone = true;
             npc.getDialogue().setLines(new String[]{"WOAH... WHAT A SPEED!!", "YOURE NATURAL!", "NOW... TRY TO DESTROY A TILE!", "HOLD LEFT MOUSE BUTTON OR H TO DESTROY A TILE!", "TO MOVE CURSOR USE MOUSE OR IJKL!"});
             player.getInventory().nextSlot();
@@ -332,7 +334,7 @@ public class Tutorial implements Screen {
 
         if(fightEnemy && !tutorialEnd && npc.getDialogue().hasEnded() && enemy.isDead()) {
             tutorialEnd = true;
-            npc.getDialogue().setLines(new String[]{"VERY WELL!", "YOU HAVE SUCCESSFULY COMPLETED THIS TUTORIAL!", "THERES MUCH MORE TO TINYBLOX THAT THIS TUTORIAL CANNOT (SOME WORD)!", "NOW... GO! FAREWELL TRAVELER!"});
+            npc.getDialogue().setLines(new String[]{"VERY WELL!", "YOU HAVE SUCCESSFULY COMPLETED THIS TUTORIAL!", "THERES MUCH MORE TO TINYBLOX THAT THIS TUTORIAL CANNOT COVER!", "NOW... GO! FAREWELL TRAVELER!"});
             npc.getDialogue().activate();
         }
 

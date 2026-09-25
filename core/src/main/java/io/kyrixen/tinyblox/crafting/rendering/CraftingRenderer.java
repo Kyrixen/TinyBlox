@@ -37,7 +37,7 @@ public class CraftingRenderer {
 
         Recipe recipe = button.getRecipe();
 
-        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f) * 0.75f;
 
         int padding = Math.round(4 * scaleMult * uiScale);
         int freeSpace = button.getWidth() - Math.round(20 * scaleMult * uiScale) - padding;
@@ -93,7 +93,7 @@ public class CraftingRenderer {
         
         rendererStack.batch.draw(tex.getTexture(container.getTextureID()), container.getX(), container.getY(), container.getWidth(), container.getHeight());
         
-        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f) * 0.75f;
         
         rendererStack.font.getData().setScale(1.5f * uiScale);
         layout.setText(rendererStack.font, "CRAFTING");

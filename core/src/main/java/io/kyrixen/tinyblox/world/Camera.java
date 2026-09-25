@@ -38,8 +38,8 @@ public class Camera {
         float widthScale = width / 800f;
         float heightScale = height / 600f;
 
-        this.zoom = 3f * Math.min(widthScale, heightScale);
-        this.zoom = Math.max(this.zoom, 0.75f);
+        this.zoom = Math.round(3f * Math.min(widthScale, heightScale));
+        this.zoom = Math.max(this.zoom, 1);
     
     }
 

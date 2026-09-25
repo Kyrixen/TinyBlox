@@ -39,7 +39,7 @@ public class RecipeContainer {
     // Reconfigure container size on resize
     public void resize(int width, int height) {
 
-        float uiScale = Math.min(width / 800f, height / 600f);
+        float uiScale = Math.min(width / 800f, height / 600f) * 0.75f;
 
         x = Math.round(baseX * uiScale);
         y = Math.round(baseY * uiScale);

@@ -97,10 +97,8 @@ The focus is on:
 | `Left Shift` | Climb Down |
 | `Left Mouse Button /  H` | Destroy Block / Hit Entity |
 | `Right Mouse Button / U` | Place Block |
-| `Scroll Up / O` | Previous Inventory Slot |
-| `Scroll Down / P` | Next Inventory Slot |
-| `Scroll Up / O` | Previous Crafting Recipe |
-| `Scroll Down / P` | Next Crafting Recipe |
+| `Scroll Up / O` | Previous Inventory Slot / Crafting Recipe |
+| `Scroll Down / P` | Next Inventory Slot / Crafting Recipe |
 
 ---
 
@@ -111,7 +109,7 @@ Download the latest release or play on itch.io.
 - **GitHub Releases:** [Github](https://github.com/Kyrixen/TinyBlox/releases/latest)
 - **itch.io:** [Itch.io](https://kyrixen.itch.io/tinyblox)
 
-> Requires Java 17+.
+> Desktop version requires Java 17+.
 
 ![Thank You](https://raw.githubusercontent.com/Kyrixen/TinyBlox/main/screenshots/thank_you.png)
 

@@ -142,7 +142,7 @@ public class Crafting {
         // Container
         craftingRenderer.renderRecipeContainer(container, rendererStack);
 
-        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f);
+        float uiScale = Math.min(Gdx.graphics.getWidth() / 800f, Gdx.graphics.getHeight() / 600f) * 0.75f;
 
         // Recipe buttons
         for(RecipeButton button : recipeButtons) {

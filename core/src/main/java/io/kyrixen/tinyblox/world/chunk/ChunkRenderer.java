@@ -208,7 +208,7 @@ public class ChunkRenderer {
                 int globalY = getGlobalY(c, ty);
 
                 int levelDiff = Math.abs(tile.level() - player.level());
-                float normalized = Math.min(levelDiff / 7f, 1f);
+                float normalized = Math.min(levelDiff / 6f, 1f);
                 
                 float alpha = normalized * 0.70f;
                 alpha = Math.min(alpha, 0.75f);
