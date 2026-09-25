@@ -68,7 +68,7 @@ The focus is on:
 - [x] Lighting (simple)
 - [x] Cave generation (Prototype)
 - [x] World saving/loading
-- [ ] HUD
+- [x] HUD (Partial)
 - [ ] Biomes
 - [ ] Boss fights
 - [ ] Dungeons
