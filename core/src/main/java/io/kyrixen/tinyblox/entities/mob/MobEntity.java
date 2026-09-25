@@ -47,7 +47,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Sound manager
     protected final SoundManager soundManager;
 
-    // Health bar color
+    // Health bar texture
     protected static final TinyIdentifier HEALTH_BAR_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar");
 
     public MobEntity(float x, float y, SoundManager soundManager) {
@@ -87,7 +87,7 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     // Render mob entity
     public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
         super.render(terrain, player, tileRenderer, rendererStack);
-        if(health < maxHealth) tileRenderer.drawBar(this.x() + Constants.GRID_SIZE / 2, this.y() + this.height() / 6 * 9, HEALTH_BAR_TEXTURE, (int) this.getHealth(), (int) this.getMaxHealth(), rendererStack);
+        if(health < maxHealth) tileRenderer.drawBar(this.x() + Constants.GRID_SIZE / 2, this.y() + this.height() / 6 * 9, HEALTH_BAR_TEXTURE, (int) this.getHealth(), this.getMaxHealth(), rendererStack);
     }
 
 

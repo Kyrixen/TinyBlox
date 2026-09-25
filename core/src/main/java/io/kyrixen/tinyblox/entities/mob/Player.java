@@ -23,6 +23,7 @@ import io.kyrixen.tinyblox.utils.MiscUtils;
 import io.kyrixen.tinyblox.world.Camera;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class Player extends MobEntity {
@@ -36,6 +37,9 @@ public class Player extends MobEntity {
     private final Crafting craftingManager;
 
     private final TinyIdentifier WALK_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "walk");
+
+    // Stamina bar texture
+    protected static final TinyIdentifier STAMINA_BAR_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stamina_bar");
 
 
     public Player(float x, float y, Camera camera, SoundManager soundManager) {
@@ -162,6 +166,15 @@ public class Player extends MobEntity {
 
     public void toggleMenuStat() { this.inMenu = !inMenu; }
 
+
+    @Override 
+    public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
+        super.render(terrain, player, tileRenderer, rendererStack);
+        if(stamina < maxStamina) {
+            if(health < maxHealth) tileRenderer.drawBar(this.x() + Constants.GRID_SIZE / 2, this.y() + this.height() / 6 * 13, STAMINA_BAR_TEXTURE, (int) this.getStamina(), this.getMaxStamina(), rendererStack);
+            else tileRenderer.drawBar(this.x() + Constants.GRID_SIZE / 2, this.y() + this.height() / 6 * 9, STAMINA_BAR_TEXTURE, (int) this.getStamina(), this.getMaxStamina(), rendererStack);
+        }
+    }
 
     public void renderSelector(RendererStack rendererStack) {
         selector.render(rendererStack);

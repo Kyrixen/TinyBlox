@@ -162,6 +162,7 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_axe"), "tinyblox/textures/hud/inventory/items/iron_axe.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar"), "tinyblox/textures/hud/health_bar.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stamina_bar"), "tinyblox/textures/hud/stamina_bar.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"), "tinyblox/textures/hud/inventory/crafting_menu/container.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_arrow"), "tinyblox/textures/hud/inventory/crafting_menu/arrow.png");
