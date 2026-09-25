@@ -122,6 +122,7 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime"), "tinyblox/textures/entities/slime.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "bomber"), "tinyblox/textures/entities/bomber.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "voidling"), "tinyblox/textures/entities/voidling.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "npc"), "tinyblox/textures/entities/npc.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "air"), "tinyblox/textures/terrain/air.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "grass"), "tinyblox/textures/terrain/grass.png");
@@ -159,6 +160,8 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_axe"), "tinyblox/textures/hud/inventory/items/wood_axe.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_axe"), "tinyblox/textures/hud/inventory/items/stone_axe.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_axe"), "tinyblox/textures/hud/inventory/items/iron_axe.png");
+
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar"), "tinyblox/textures/hud/health_bar.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"), "tinyblox/textures/hud/inventory/crafting_menu/container.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_arrow"), "tinyblox/textures/hud/inventory/crafting_menu/arrow.png");

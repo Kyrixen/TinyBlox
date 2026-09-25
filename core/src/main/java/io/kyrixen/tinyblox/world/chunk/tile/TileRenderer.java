@@ -196,6 +196,7 @@ public class TileRenderer {
     }
 
 
+    // Draw nametag above object
     public void drawNameTag(float x, float y, String name, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
@@ -220,6 +221,7 @@ public class TileRenderer {
 
     }
     
+    // Draw nametag above object with custom width and height
     public void drawNameTag(float x, float y, float w, float h, String name, RendererStack rendererStack) {
 
         Camera camera = rendererStack.camera;
@@ -244,6 +246,51 @@ public class TileRenderer {
     
         rendererStack.font.getData().setScale(1f);
 
+    }
+
+
+    // Draw bar
+    public void drawBar(float x, float y, TinyIdentifier barTextureID, int value, int maxValue, RendererStack rendererStack) {
+
+        Camera camera = rendererStack.camera;
+
+        float valuePercent = (float) value / (float) maxValue;
+        float barWidth = 18f * camera.zoom;
+        float barHeight = 6f * camera.zoom;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+
+        if(screenX + barWidth < 0 || screenX - barWidth > Constants.WINDOW_WIDTH || screenY + barHeight < 0 || screenY > Constants.WINDOW_HEIGHT) return;
+
+        rendererStack.batch.draw(tex.getTexture(barTextureID), screenX - barWidth / 2f, screenY, barWidth * valuePercent, barHeight);
+
+        rendererStack.font.getData().setScale(0.25f * camera.zoom);
+        rendererStack.font.draw(rendererStack.batch, Integer.toString(value), screenX - barWidth / 2f, screenY + barHeight, barWidth, Align.center, false);
+        rendererStack.font.getData().setScale(1f);
+    
+    }
+
+    // Draw bar with custom width and height
+    public void drawBar(float x, float y, float w, float h, TinyIdentifier barTextureID, int value, int maxValue, RendererStack rendererStack) {
+
+        Camera camera = rendererStack.camera;
+
+        float valuePercent = (float) value / (float) maxValue;
+        float barWidth = w * camera.zoom;
+        float barHeight = h * camera.zoom;
+
+        float screenX = (x - camera.x) * camera.zoom;
+        float screenY = (y - camera.y) * camera.zoom;
+
+        if(screenX + barWidth < 0 || screenX - barWidth > Constants.WINDOW_WIDTH || screenY + barHeight < 0 || screenY > Constants.WINDOW_HEIGHT) return;
+
+        rendererStack.batch.draw(tex.getTexture(barTextureID), screenX - barWidth / 2f, screenY, barWidth * valuePercent, barHeight);
+
+        rendererStack.font.getData().setScale(0.25f * camera.zoom);
+        rendererStack.font.draw(rendererStack.batch, Integer.toString(value), screenX - barWidth / 2f, screenY + barHeight, barWidth, Align.center, false);
+        rendererStack.font.getData().setScale(1f);
+    
     }
 
 }

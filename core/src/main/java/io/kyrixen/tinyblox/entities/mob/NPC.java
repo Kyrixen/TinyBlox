@@ -51,7 +51,7 @@ public class NPC extends MobEntity {
 
     @Override 
     public void initTexture() {
-        this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "entity");
+        this.texture = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "npc");
     }
 
     // Inits dialogue texture

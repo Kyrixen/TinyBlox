@@ -9,6 +9,7 @@ public class Stats {
 
         float getHealth();
         void setHealth(float health);
+        int getMaxHealth();
         void setMaxHealth(int maxHealth);
         boolean isDead();
 
@@ -30,6 +31,7 @@ public class Stats {
 
         float getStamina();
         void setStamina(float stamina);
+        int getMaxStamina();
         void setMaxStamina(int maxStamina);
         boolean isExhausted();
 

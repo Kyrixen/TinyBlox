@@ -3,6 +3,7 @@ package io.kyrixen.tinyblox.entities.mob;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
+import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.Item;
 import io.kyrixen.tinyblox.inventory.ItemRegister;
@@ -12,6 +13,7 @@ import io.kyrixen.tinyblox.utils.TinyIdentifier;
 import io.kyrixen.tinyblox.utils.TinyIdentifier.IdentifierType;
 import io.kyrixen.tinyblox.world.Terrain;
 import io.kyrixen.tinyblox.world.chunk.tile.Tile;
+import io.kyrixen.tinyblox.world.chunk.tile.TileRenderer;
 import io.kyrixen.tinyblox.world.chunk.tile.TileStack;
 
 public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
@@ -44,6 +46,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     // Sound manager
     protected final SoundManager soundManager;
+
+    // Health bar color
+    protected static final TinyIdentifier HEALTH_BAR_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar");
 
     public MobEntity(float x, float y, SoundManager soundManager) {
         
@@ -78,6 +83,13 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     }
 
+    @Override 
+    // Render mob entity
+    public void render(Terrain terrain, Player player, TileRenderer tileRenderer, RendererStack rendererStack) {
+        super.render(terrain, player, tileRenderer, rendererStack);
+        if(health < maxHealth) tileRenderer.drawBar(this.x() + Constants.GRID_SIZE / 2, this.y() + this.height() / 6 * 9, HEALTH_BAR_TEXTURE, (int) this.getHealth(), (int) this.getMaxHealth(), rendererStack);
+    }
+
 
     // Health interface methods //
 
@@ -86,6 +98,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
     @Override
     public float getHealth() { return health; }
     
+    @Override 
+    public int getMaxHealth() { return maxHealth; }
+
     @Override
     public boolean isDead() { return health <= 0 && !invincible; }
 
@@ -157,6 +172,9 @@ public class MobEntity extends Entity implements Stats.Health, Stats.Stamina  {
 
     @Override
     public float getStamina() { return stamina; }
+
+    @Override 
+    public int getMaxStamina() { return maxStamina; }
 
     @Override
     public boolean isExhausted() { return exhausted; }
