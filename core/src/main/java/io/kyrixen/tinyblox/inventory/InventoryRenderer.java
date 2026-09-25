@@ -42,8 +42,8 @@ public class InventoryRenderer {
         SpriteBatch batch = rendererStack.batch;
 
         renderSlots(tex, batch);
-        renderCounts(rendererStack);
         renderItems(tex, batch);
+        renderCounts(rendererStack);
 
     }
 
@@ -103,7 +103,7 @@ public class InventoryRenderer {
 
     // Reconfigure slider size on resize
     public void resize(int width, int height) {
-        uiScale = Math.min(width / 800f, height / 600f);
+        uiScale = Math.min(width / 800f, height / 600f) * 0.7f;
     }
 
 

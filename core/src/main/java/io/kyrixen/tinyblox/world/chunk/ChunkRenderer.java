@@ -208,14 +208,13 @@ public class ChunkRenderer {
                 int globalY = getGlobalY(c, ty);
 
                 int levelDiff = Math.abs(tile.level() - player.level());
-                float normalized = (float) levelDiff / (Constants.MAX_TERRAIN_HEIGHT - Constants.MIN_TERRAIN_HEIGHT);
+                float normalized = Math.min(levelDiff / 7f, 1f);
                 
-                float alpha = normalized * 0.65f;
-                alpha = Math.min(alpha, 0.55f);
+                float alpha = normalized * 0.70f;
+                alpha = Math.min(alpha, 0.75f);
 
-                if(tile.level() > player.level()) batch.setColor(0.6f, 0.6f, 0.6f, alpha * lightBrightness);
-                else if(tile.level() < player.level()) batch.setColor(0.15f, 0.15f, 0.15f, alpha * lightBrightness);
-                else batch.setColor(1f, 1f, 1f, 0f);
+                if(tile.level() >= player.level()) batch.setColor(0.75f, 0.75f, 0.75f, alpha * lightBrightness);
+                else if(tile.level() < player.level()) batch.setColor(0.05f, 0.05f, 0.05f, alpha * lightBrightness);
                 
                 tileRenderer.drawTilesetOutline(tile.type().getAtlasID(), globalX, globalY, tile.type().getTileX(), tile.type().getTileY(), Constants.GRID_SIZE, FlipType.NONE, rendererStack);
                 
