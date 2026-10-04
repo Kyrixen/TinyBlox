@@ -13,6 +13,7 @@ import io.kyrixen.tinyblox.crafting.rendering.CraftingRenderer;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.FPSCounter;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.saving.entities.PlayerLoader;
@@ -46,6 +47,7 @@ public class Engine implements Screen {
     // Module components
     private Controller controller;
     private final TextureManager textures;
+    private final AnimationManager animations;
     private final RendererStack rendererStack;
     private TileRenderer tileRenderer;
     private CraftingRenderer craftingRenderer;
@@ -59,6 +61,7 @@ public class Engine implements Screen {
     public Engine(RendererStack rendererStack, TextureManager tex) {
         this.textures = tex;
         this.rendererStack = rendererStack;
+        this.animations = new AnimationManager();
     }
 
     @Override
@@ -88,6 +91,9 @@ public class Engine implements Screen {
         textures.loadHUD();
         textures.loadGame();
 
+        // Initialize animations
+        animations.loadAnimations(textures);
+
         // Sound init
         soundManager.loadSFX();
         soundManager.loadHUD();
@@ -115,8 +121,8 @@ public class Engine implements Screen {
         // Spawn cords
         int[] spawn = MiscUtils.spawnNearCenter(terrain);
 
-        player = PlayerLoader.load(rendererStack.camera, soundManager);
-        if(player == null || player.isDead()) { player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager); player.setLevel((byte) spawn[2]); }
+        player = PlayerLoader.load(rendererStack.camera, soundManager, animations);
+        if(player == null || player.isDead()) { player = new Player(spawn[0], spawn[1], rendererStack.camera, soundManager, animations); player.setLevel((byte) spawn[2]); }
         player.initTexture();
 
         lastAutoSave = System.currentTimeMillis();
@@ -218,7 +224,7 @@ public class Engine implements Screen {
 
         shape.begin(ShapeType.Line);
         terrain.drawHeightEdges(player, rendererStack);
-        player.renderSelector(rendererStack);
+        player.renderSelector(rendererStack, terrain);
         shape.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);

@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.entities;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,6 +9,8 @@ import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.collision.EntityCollision;
 import io.kyrixen.tinyblox.entities.mob.MobEntity;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.graphics.animation.Animation;
+import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.inventory.Equipment;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.Item;
@@ -44,6 +47,7 @@ public class Selector extends Entity {
     // Break vars
     private float miningProgress;
     private Tile targetTile;
+    private Animation miningAnimation;
 
 	// Mouse vars
 	private float lastMouseX = 0f;
@@ -56,8 +60,11 @@ public class Selector extends Entity {
     private final TinyIdentifier PLACE_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "place");
     private final TinyIdentifier DESTROY_SOUND = new TinyIdentifier("tinyblox", IdentifierType.SOUND, "destroy");
 
+    // Breaking animation
+    private final TinyIdentifier BREAKING_TILE_ANIM = new TinyIdentifier("tinyblox", IdentifierType.ANIMATION, "breaking_tile");
 
-    public Selector(MobEntity mob, SoundManager sfxManager) {
+
+    public Selector(MobEntity mob, SoundManager sfxManager, AnimationManager animManager) {
 
         super(mob.x(), mob.y(), mob.width(), mob.height());
         this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "selector");
@@ -66,6 +73,7 @@ public class Selector extends Entity {
         this.mob = mob;
         this.mobEntityInventory = mob.getInventory();
         this.sfxManager = sfxManager;
+        this.miningAnimation = animManager.getAnimation(BREAKING_TILE_ANIM);
 
         this.lastPlace = System.currentTimeMillis();
     
@@ -125,10 +133,34 @@ public class Selector extends Entity {
     }
 
 
-    public void render(RendererStack rendererStack) {
+    public void render(RendererStack rendererStack, Terrain terrain) {
     
+        SpriteBatch sb = rendererStack.batch;
         ShapeRenderer sr = rendererStack.shape;
         Camera camera = rendererStack.camera;
+
+        if(miningProgress > 0f) {
+
+            float ambientR = terrain.getAmbientColor().r;
+            float ambientG = terrain.getAmbientColor().g;
+            float ambientB = terrain.getAmbientColor().b;
+            
+            byte heightLevel = terrain.getWorldLevel((int) (x() / width()), (int) (y() / height));
+
+            int layersAbove = Math.max(0, heightLevel - level());
+            float alpha = Math.min(layersAbove / 6f, 1f);
+            alpha = 1f - alpha * 0.70f;
+
+            if(level() >= heightLevel) { ambientR += 0.75f; ambientG += 0.75f; ambientB += 0.75f; }
+            else if(level() < heightLevel) { ambientR -= 0.45f; ambientG -= 0.45f; ambientB -= 0.45f; }
+
+            sb.setColor(ambientR, ambientG, ambientB, alpha);
+            sb.begin();
+            sb.draw(miningAnimation.getCurrentFrame(), (this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
+            sb.end();
+            sb.setColor(1f, 1f, 1f, 1f);
+            
+        }
 
         sr.setColor(Color.WHITE);
         sr.rect((this.x - camera.x) * camera.zoom, (this.y - camera.y) * camera.zoom, this.width * camera.zoom, this.height * camera.zoom);
@@ -214,7 +246,7 @@ public class Selector extends Entity {
     public void checkDestroy(float deltaTime, Terrain terrain) {
 
         MobEntity e = EntityCollision.checkMobEntityCollision(this, terrain.getNearbyEntities((int) x() / Constants.GRID_SIZE, (int) y() / Constants.GRID_SIZE, REACH));
-        if(e != null) { miningProgress = 0f; return; }
+        if(e != null) { miningProgress = 0f; miningAnimation.reset(); return; }
 
         int tileX = (int) this.x / Constants.GRID_SIZE;
         int tileY = (int) this.y / Constants.GRID_SIZE;
@@ -236,38 +268,47 @@ public class Selector extends Entity {
         
         if(current == null || current.type().isEmpty()) {
             current = chunk.getTileStack(localTileX, localTileY).get((byte) (mob.level() - 1)); 
-            if(current == null || current.type().isEmpty()) { miningProgress = 0f; return; }
+            if(current == null || current.type().isEmpty()) { miningProgress = 0f; miningAnimation.reset(); return; }
         }
 
         if(current != targetTile) { 
             miningProgress = 0f;
             targetTile = current; 
+            miningAnimation.reset();
         }
         
+
+        float miningSpeed = 0.5f;
         Item currentItem = mobEntityInventory.currentItem();
         if(currentItem instanceof Equipment) { 
         
             Equipment equipment = (Equipment) currentItem;
             
-            switch (current.type().getPreferedMining()) {
+            switch(current.type().getPreferedMining()) {
                 
                 case NONE:
-                    miningProgress += deltaTime * 1f;    
+                    miningSpeed = 1f;    
                     break;
 
                 case WOOD:
-                    miningProgress += deltaTime * equipment.getWoodMiningSpeed();
+                    miningSpeed = equipment.getWoodMiningSpeed();
                     break;
                 
                 case STONE:
-                    miningProgress += deltaTime * equipment.getStoneMiningSpeed();
+                    miningSpeed = equipment.getStoneMiningSpeed();
                     break;
 
             }
         
-        } else miningProgress += deltaTime * 0.5f;
+        }
+        miningProgress += deltaTime * miningSpeed;
 
-        
+
+        float miningTime = current.type().getMiningTime();
+        miningAnimation.setSpeedMultiplier((miningAnimation.getFramesCount() * miningSpeed) / (miningTime * miningAnimation.getFPS()));
+        miningAnimation.advance(deltaTime);
+
+
         if(miningProgress < current.type().getMiningTime()) return;
 
         if(current.level() <= 0) return;
@@ -286,6 +327,12 @@ public class Selector extends Entity {
         miningProgress = 0f;
         targetTile = null;
 
+    }
+
+    public void resetDestroy() {
+        miningProgress = 0f;
+        targetTile = null;
+        miningAnimation.reset();
     }
     
     // Drop one item from MobEntity inventory

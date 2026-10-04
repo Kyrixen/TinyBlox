@@ -22,6 +22,7 @@ import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.NPC;
 import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
 import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.menu.Menu;
@@ -49,6 +50,7 @@ public class Tutorial implements Screen {
 
     private final RendererStack rendererStack;
     private final TextureManager textureManager;
+    private final AnimationManager animationManager;
 
     private TileRenderer tileRenderer;
     private CraftingRenderer craftingRenderer;
@@ -84,6 +86,7 @@ public class Tutorial implements Screen {
         this.main = main;
         this.rendererStack = rendererStack;
         this.textureManager = textureManager;
+        this.animationManager = new AnimationManager();
     }   
 
     @Override
@@ -114,6 +117,9 @@ public class Tutorial implements Screen {
         textureManager.loadUI();
         textureManager.loadGame();
 
+        // Initialize animations
+        animationManager.loadAnimations(textureManager);
+
         // Sound init
         soundManager.loadSFX();
         soundManager.loadHUD();
@@ -143,7 +149,7 @@ public class Tutorial implements Screen {
         this.npc.initDialogue(textureManager);
         this.npc.getDialogue().setLines(new String[]{"HELLO! (PRESS LEFT MOUSE BUTTON OR ENTER TO CONTINUE)", "IM JERRY! YOUR GUIDE!", "ILL HELP YOU WITH THE CONTROLS AND OTHER COOL STUFF!", "SO FIRST... THE CONTROLS! USE WASD TO MOVE! TRY IT YOURSELF!", "WHEN YOU GET HANG OF IT CLICK ME!", "(LEFT MOUSE BUTTON OR ENTER TO EXIT DIALOG)"});
 
-        this.player = new Player(64, 16, rendererStack.camera, soundManager);
+        this.player = new Player(64, 16, rendererStack.camera, soundManager, animationManager);
         this.player.setLevel((byte) 5);
         this.player.initTexture();
         player.getInventoryRenderer().toggleRendering();
@@ -402,7 +408,7 @@ public class Tutorial implements Screen {
 
         shape.begin(ShapeType.Line);
         tutorialTerrain.drawHeightEdges(player, rendererStack);
-        player.renderSelector(rendererStack);
+        player.renderSelector(rendererStack, tutorialTerrain);
         shape.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);

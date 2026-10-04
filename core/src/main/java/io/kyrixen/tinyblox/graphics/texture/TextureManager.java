@@ -170,7 +170,7 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_idle"), "tinyblox/textures/hud/inventory/crafting_menu/button_idle.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_selected"), "tinyblox/textures/hud/inventory/crafting_menu/button_selected.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"stone_dialog"), "tinyblox/textures/ui/dialog/stone_dialog.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "breaking_tile_anim"), "tinyblox/textures/hud/breaking_tile.png");
 
     }
 
@@ -193,6 +193,8 @@ public class TextureManager {
         
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_slider"), "tinyblox/textures/ui/slider/white_slider.png");
     
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"stone_dialog"), "tinyblox/textures/ui/dialog/stone_dialog.png");
+
     }
 
     // Cleanup resources

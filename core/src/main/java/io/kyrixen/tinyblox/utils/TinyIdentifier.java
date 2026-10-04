@@ -8,6 +8,7 @@ public final class TinyIdentifier {
     public enum IdentifierType {
     
         TEXTURE,
+        ANIMATION,
         ITEM,
         TILE,
         SOUND,

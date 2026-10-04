@@ -38,6 +38,7 @@ public class Controller {
                 else if(Peripheral.keyPressed(Input.Keys.U)) player.getSelector().checkPlace(terrain);
                 if(Peripheral.mousePressed(Input.Buttons.LEFT)) { player.getSelector().checkDestroy(deltaTime, terrain); player.getSelector().checkHit(terrain); }
                 else if(Peripheral.keyPressed(Input.Keys.H)) { player.getSelector().checkDestroy(deltaTime, terrain); player.getSelector().checkHit(terrain); }
+                else player.getSelector().resetDestroy();
                 if(Peripheral.keyJustPressed(Input.Keys.I)) player.getSelector().move(0, 1);
                 if(Peripheral.keyJustPressed(Input.Keys.K)) player.getSelector().move(0, -1);
                 if(Peripheral.keyJustPressed(Input.Keys.J)) player.getSelector().move(-1, 0);

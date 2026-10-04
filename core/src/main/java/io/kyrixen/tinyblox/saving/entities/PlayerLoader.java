@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Json;
 
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.entities.mob.Player;
+import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.platform.Platform;
 import io.kyrixen.tinyblox.saving.InventoryLoader;
 import io.kyrixen.tinyblox.saving.blueprints.entities.PlayerBlueprint;
@@ -19,11 +20,11 @@ public class PlayerLoader {
     
 
     // Converts to Player
-    public static Player convertToPlayer(PlayerBlueprint pb, Camera camera, SoundManager soundManager) {
+    public static Player convertToPlayer(PlayerBlueprint pb, Camera camera, SoundManager soundManager, AnimationManager animationManager) {
 
         if(pb.formatVersion != Constants.SAVE_FORMAT_VERSION) throw new RuntimeException("Invalid save format: " + pb.formatVersion);
 
-        Player player = new Player(pb.currentID, pb.x, pb.y,  camera, soundManager);
+        Player player = new Player(pb.currentID, pb.x, pb.y,  camera, soundManager, animationManager);
         player.setLevel(pb.level);
         
         player.setHealth(pb.health);
@@ -41,7 +42,7 @@ public class PlayerLoader {
     }    
     
     // Load Player
-    public static Player load(Camera camera, SoundManager soundManager) {
+    public static Player load(Camera camera, SoundManager soundManager, AnimationManager animationManager) {
 
         String fileName = getPlayerFolder() + "/player.json";
         Player player = null;
@@ -56,7 +57,7 @@ public class PlayerLoader {
         }
         Logger.LOGGER.debug("LOADER", "Loaded player save");
 
-        return convertToPlayer(pb, camera, soundManager);
+        return convertToPlayer(pb, camera, soundManager, animationManager);
 
     }
 

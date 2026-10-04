@@ -10,6 +10,7 @@ import io.kyrixen.tinyblox.entities.Entity;
 import io.kyrixen.tinyblox.entities.ItemEntity;
 import io.kyrixen.tinyblox.entities.Selector;
 import io.kyrixen.tinyblox.graphics.RendererStack;
+import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.inventory.Inventory;
 import io.kyrixen.tinyblox.inventory.InventoryRenderer;
 import io.kyrixen.tinyblox.inventory.Item;
@@ -42,7 +43,7 @@ public class Player extends MobEntity {
     protected static final TinyIdentifier STAMINA_BAR_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stamina_bar");
 
 
-    public Player(float x, float y, Camera camera, SoundManager soundManager) {
+    public Player(float x, float y, Camera camera, SoundManager soundManager, AnimationManager animManager) {
     
         super(x, y, soundManager);
         this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "bplayer");
@@ -67,14 +68,14 @@ public class Player extends MobEntity {
         this.invincible = false;
         this.tireless = false;
 
-        this.selector = new Selector(this, soundManager);
+        this.selector = new Selector(this, soundManager, animManager);
         this.camera = camera;
 
         this.lastMove = System.currentTimeMillis();
     
     }
     
-    public Player(int id, float x, float y, Camera camera, SoundManager soundManager) {
+    public Player(int id, float x, float y, Camera camera, SoundManager soundManager, AnimationManager animManager) {
     
         super(id, x, y, soundManager);
         this.entityID = new TinyIdentifier("tinyblox", IdentifierType.ENTITY, "player");
@@ -102,7 +103,7 @@ public class Player extends MobEntity {
         this.autoRegenerate = true;
         this.autoRecover = true;
 
-        this.selector = new Selector(this, soundManager);
+        this.selector = new Selector(this, soundManager, animManager);
         this.camera = camera;
 
         this.lastMove = System.currentTimeMillis();
@@ -176,8 +177,8 @@ public class Player extends MobEntity {
         }
     }
 
-    public void renderSelector(RendererStack rendererStack) {
-        selector.render(rendererStack);
+    public void renderSelector(RendererStack rendererStack, Terrain terrain) {
+        selector.render(rendererStack, terrain);
     }
 
     public void renderInvetory(TextureManager tex, RendererStack rendererStack) {
