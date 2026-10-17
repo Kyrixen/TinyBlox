@@ -23,8 +23,10 @@ public class TextureManager {
     private static final TinyIdentifier MISSING_TEXTURE = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "missing_texture");
 
     // Load texture
-    public void load(TinyIdentifier identifier, String path) {
+    public void load(TinyIdentifier identifier, String file) {
     
+        String path = identifier.getNamespace() + "/textures/" + file;
+
         Logger.LOGGER.debug("TEXTURES", "Loading: " + path);
     
         try {
@@ -104,9 +106,9 @@ public class TextureManager {
 
     // Load backgrounds
     public void loadBackgrounds() {
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "selection_background"), "tinyblox/textures/background/selection_background.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "settings_background"), "tinyblox/textures/background/settings_background.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background"), "tinyblox/textures/background/menu_background.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "selection_background"), "background/selection_background.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "settings_background"), "background/settings_background.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background"), "background/menu_background.png");
     }
 
 
@@ -114,86 +116,86 @@ public class TextureManager {
     // Load textures
     public void loadGame() {
     
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "missing_texture"), "tinyblox/textures/misc/missing_texture.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "missing_texture"), "misc/missing_texture.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "entity"), "tinyblox/textures/entities/entity.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "player"), "tinyblox/textures/entities/player.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "enemy"), "tinyblox/textures/entities/enemy.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime"), "tinyblox/textures/entities/slime.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "bomber"), "tinyblox/textures/entities/bomber.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "voidling"), "tinyblox/textures/entities/voidling.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "npc"), "tinyblox/textures/entities/npc.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "entity"), "entities/entity.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "player"), "entities/player.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "enemy"), "entities/enemy.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime"), "entities/slime.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "bomber"), "entities/bomber.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "voidling"), "entities/voidling.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "npc"), "entities/npc.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "air"), "tinyblox/textures/terrain/air.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "grass"), "tinyblox/textures/terrain/grass.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dirt"), "tinyblox/textures/terrain/dirt.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "water"), "tinyblox/textures/terrain/water.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone"), "tinyblox/textures/terrain/stone.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_ore"), "tinyblox/textures/terrain/iron.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "coal_ore"), "tinyblox/textures/terrain/coal.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wood"), "tinyblox/textures/terrain/wood.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "leaves"), "tinyblox/textures/terrain/leaves.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "ladder"), "tinyblox/textures/terrain/ladder.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "caged_lamp"), "tinyblox/textures/terrain/caged_lamp.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime_tile"), "tinyblox/textures/terrain/slime_tile.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "sand"), "tinyblox/textures/terrain/sand.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "glass"), "tinyblox/textures/terrain/glass.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "clay"), "tinyblox/textures/terrain/clay.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "brick"), "tinyblox/textures/terrain/brick.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "air"), "terrain/air.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "grass"), "terrain/grass.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dirt"), "terrain/dirt.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "water"), "terrain/water.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone"), "terrain/stone.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_ore"), "terrain/iron.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "coal_ore"), "terrain/coal.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wood"), "terrain/wood.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "leaves"), "terrain/leaves.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "ladder"), "terrain/ladder.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "caged_lamp"), "terrain/caged_lamp.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "slime_tile"), "terrain/slime_tile.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "sand"), "terrain/sand.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "glass"), "terrain/glass.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "clay"), "terrain/clay.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "brick"), "terrain/brick.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles"), "tinyblox/textures/terrain/terrain.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles"), "terrain/terrain.png");
     
     }
 
     public void loadHUD() {
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "hotbar_slot"), "tinyblox/textures/hud/inventory/hotbar_slot.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "hotbar_slot"), "hud/inventory/hotbar_slot.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_sword"), "tinyblox/textures/hud/inventory/items/wood_sword.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_sword"), "tinyblox/textures/hud/inventory/items/stone_sword.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_sword"), "tinyblox/textures/hud/inventory/items/iron_sword.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_sword"), "hud/inventory/items/wood_sword.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_sword"), "hud/inventory/items/stone_sword.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_sword"), "hud/inventory/items/iron_sword.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_pickaxe"), "tinyblox/textures/hud/inventory/items/wood_pickaxe.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_pickaxe"), "tinyblox/textures/hud/inventory/items/stone_pickaxe.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_pickaxe"), "tinyblox/textures/hud/inventory/items/iron_pickaxe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_pickaxe"), "hud/inventory/items/wood_pickaxe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_pickaxe"), "hud/inventory/items/stone_pickaxe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_pickaxe"), "hud/inventory/items/iron_pickaxe.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_axe"), "tinyblox/textures/hud/inventory/items/wood_axe.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_axe"), "tinyblox/textures/hud/inventory/items/stone_axe.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_axe"), "tinyblox/textures/hud/inventory/items/iron_axe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_axe"), "hud/inventory/items/wood_axe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_axe"), "hud/inventory/items/stone_axe.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_axe"), "hud/inventory/items/iron_axe.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar"), "tinyblox/textures/hud/health_bar.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stamina_bar"), "tinyblox/textures/hud/stamina_bar.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "health_bar"), "hud/health_bar.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stamina_bar"), "hud/stamina_bar.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"), "tinyblox/textures/hud/inventory/crafting_menu/container.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_arrow"), "tinyblox/textures/hud/inventory/crafting_menu/arrow.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_hover"), "tinyblox/textures/hud/inventory/crafting_menu/button_hover.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_idle"), "tinyblox/textures/hud/inventory/crafting_menu/button_idle.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_selected"), "tinyblox/textures/hud/inventory/crafting_menu/button_selected.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_container"), "hud/inventory/crafting_menu/container.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_arrow"), "hud/inventory/crafting_menu/arrow.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_hover"), "hud/inventory/crafting_menu/button_hover.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_idle"), "hud/inventory/crafting_menu/button_idle.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "crafting_menu_button_selected"), "hud/inventory/crafting_menu/button_selected.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "breaking_tile_anim"), "tinyblox/textures/hud/breaking_tile.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "breaking_tile_anim"), "hud/breaking_tile.png");
 
     }
 
     public void loadUI() {
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "world_slot"), "tinyblox/textures/ui/misc/world_slot.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "world_slot"), "ui/misc/world_slot.png");
         
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dialog_corner"), "tinyblox/textures/ui/dialog/dialog_corner.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"dialog_side"), "tinyblox/textures/ui/dialog/dialog_side.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"dialog_center"), "tinyblox/textures/ui/dialog/dialog_center.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "dialog_corner"), "ui/dialog/dialog_corner.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"dialog_side"), "ui/dialog/dialog_side.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"dialog_center"), "ui/dialog/dialog_center.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window"), "tinyblox/textures/ui/dialog/popup_window.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "popup_window"), "ui/dialog/popup_window.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"brown_button"), "tinyblox/textures/ui/button/brown_button.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button"), "tinyblox/textures/ui/button/gray_button.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button"), "tinyblox/textures/ui/button/red_button.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"green_button"), "tinyblox/textures/ui/button/green_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"brown_button"), "ui/button/brown_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"gray_button"), "ui/button/gray_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"red_button"), "ui/button/red_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"green_button"), "ui/button/green_button.png");
 
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_toggle_button"), "tinyblox/textures/ui/button/white_toggle_button.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_toggle_button"), "ui/button/white_toggle_button.png");
         
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_slider"), "tinyblox/textures/ui/slider/white_slider.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"white_slider"), "ui/slider/white_slider.png");
     
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"stone_dialog"), "tinyblox/textures/ui/dialog/stone_dialog.png");
+        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE,"stone_dialog"), "ui/dialog/stone_dialog.png");
 
     }
 

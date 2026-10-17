@@ -24,6 +24,7 @@ import io.kyrixen.tinyblox.entities.mob.Player;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.graphics.animation.AnimationManager;
 import io.kyrixen.tinyblox.graphics.texture.TextureManager;
+import io.kyrixen.tinyblox.hud.HUDRenderer;
 import io.kyrixen.tinyblox.inventory.ItemRegister;
 import io.kyrixen.tinyblox.menu.Menu;
 import io.kyrixen.tinyblox.sound.SoundManager;
@@ -54,6 +55,7 @@ public class Tutorial implements Screen {
 
     private TileRenderer tileRenderer;
     private CraftingRenderer craftingRenderer;
+    private HUDRenderer hudRenderer;
     private SoundManager soundManager;
     private TutorialTerrain tutorialTerrain;
 
@@ -96,6 +98,7 @@ public class Tutorial implements Screen {
 
         this.tileRenderer = new TileRenderer(textureManager);
         this.craftingRenderer = new CraftingRenderer(textureManager);
+        this.hudRenderer = new HUDRenderer(textureManager);
 
         this.tutorialTerrain = new TutorialTerrain(tileRenderer);
 
@@ -358,6 +361,9 @@ public class Tutorial implements Screen {
 
         player.stats(camera);
 
+        // Update HUD
+        hudRenderer.update(player);
+
         if(player.isDead()) {
             Logger.LOGGER.debug("TUTORIAL", "Player is dead! Health: " + player.getHealth() + " | Game Over.");
 
@@ -417,6 +423,7 @@ public class Tutorial implements Screen {
         batch.begin();
         player.renderInvetory(textureManager, rendererStack);
         player.renderCraftingMenu(craftingRenderer, rendererStack);
+        if(terrainArenaPlaced) hudRenderer.render(rendererStack);
         npc.renderDialog(rendererStack);
         batch.end();
 
@@ -436,6 +443,8 @@ public class Tutorial implements Screen {
 
         Constants.WINDOW_HEIGHT = height;
         Constants.WINDOW_WIDTH = width;
+
+        hudRenderer.resize(width, height);
 
         player.getInventoryRenderer().resize(width, height);
         player.getCraftingManager().resize(width, height);
