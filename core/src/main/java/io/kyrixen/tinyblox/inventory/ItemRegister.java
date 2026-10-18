@@ -67,7 +67,7 @@ public class ItemRegister {
         ITEMS.add(GLASS);
         ITEMS.add(CLAY);
         ITEMS.add(BRICK);
-        ITEMS.add(SLIME)
+        ITEMS.add(SLIME);
 
 
         ITEMS.add(WOODEN_SWORD);
