@@ -44,7 +44,7 @@ public class Bomber extends Enemy {
 
         this.activationRange = 2;
 
-        this.setSpeed(Speed.NORMAL);
+        this.setSpeed(Speed.SPEEDY);
 
     }
 
