@@ -32,6 +32,10 @@ public class TileRegister {
     public static final TileType CLAY = new TileType(new TinyIdentifier("tinyblox", IdentifierType.TILE, "clay"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles"), 2, 3).miningTime(0.3f).passable(false).slipperyModifier(1.05f).support(true).terrain(true).itemDropID(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "clay"));
     public static final TileType BRICK = new TileType(new TinyIdentifier("tinyblox", IdentifierType.TILE, "brick"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles"), 3, 3).miningTime(0.9f).passable(false).slipperyModifier(0.95f).support(true).terrain(true).itemDropID(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "brick"));
 
+    // Halloween specials //
+
+    public static final TileType PUMPKIN = new TileType(new TinyIdentifier("tinyblox_halloween", IdentifierType.TILE, "pumpkin_tile"), new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_tiles"), 0, 0).miningTime(0.35f).prefferedMining(PreferedMiningType.WOOD).passable(false).slipperyModifier(1.05f).lightLevel(1.3f).itemDropID(new TinyIdentifier("tinyblox_halloween", IdentifierType.ITEM, "pumpkin"));
+
     
     // Inits internal tiles
     public static void initTiles() {
@@ -55,6 +59,10 @@ public class TileRegister {
         TILES.add(GLASS);
         TILES.add(CLAY);
         TILES.add(BRICK);
+
+        // Halloween
+
+        TILES.add(PUMPKIN);
 
     }
 

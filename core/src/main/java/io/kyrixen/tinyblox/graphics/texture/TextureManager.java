@@ -144,7 +144,13 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "brick"), "terrain/brick.png");
 
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "terrain_tiles"), "terrain/terrain.png");
-    
+
+        // Halloween //
+
+        this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_tiles"), "terrain/pumpkin_tiles.png");
+        this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_tile"), "terrain/pumpkin_tile.png");
+        this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "angry_pumpkin"), "entities/angry_pumpkin.png");
+
     }
 
     public void loadHUD() {

@@ -130,6 +130,8 @@ public class Engine implements Screen {
 
         lastAutoSave = System.currentTimeMillis();
 
+        player.getInventory().add(ItemRegister.PUMPKIN, (byte) 16);
+
     }
 
     // Game loop
@@ -148,6 +150,8 @@ public class Engine implements Screen {
     private void update(float delta) {
 
         Camera camera = rendererStack.camera;
+
+        timeCycle.setDayTime(DayTime.DAWN);
 
         timeCycle.updateDayTime(delta);
         enemySpawner.updateSpawnRate(timeCycle);

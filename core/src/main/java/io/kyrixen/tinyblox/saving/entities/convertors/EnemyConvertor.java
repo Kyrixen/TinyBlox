@@ -1,6 +1,7 @@
 package io.kyrixen.tinyblox.saving.entities.convertors;
 
 import io.kyrixen.tinyblox.Constants;
+import io.kyrixen.tinyblox.entities.mob.AngryPumpkin;
 import io.kyrixen.tinyblox.entities.mob.Bomber;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Slime;
@@ -33,6 +34,10 @@ public class EnemyConvertor {
 
             case "VOIDLING":
                 enemy = new Voidling(enb.currentID, enb.x, enb.y, soundManager);
+                break;
+            
+            case "ANGRYPUMPKIN":
+                enemy = new AngryPumpkin(enb.currentID, enb.x, enb.y, soundManager);
                 break;
     
             default:

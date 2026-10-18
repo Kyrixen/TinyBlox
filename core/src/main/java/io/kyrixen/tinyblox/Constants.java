@@ -46,7 +46,7 @@ public class Constants {
     public static final byte ROOF_REVEAL_RADIUS = 3;
 
     // Versions
-    public static final String VERSION = "dev-3";
+    public static final String VERSION = "halloween-2026";
     public static final int BLUEPRINT_FORMAT_VERSION = 2;
     public static final int SAVE_FORMAT_VERSION = 2;
 

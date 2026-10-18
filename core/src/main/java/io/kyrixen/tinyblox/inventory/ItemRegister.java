@@ -47,6 +47,11 @@ public class ItemRegister {
     public final static Item IRON_AXE = new Equipment(new TinyIdentifier("tinyblox", IdentifierType.ITEM, "iron_axe"), new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_axe"), false, ToolTier.IRON, EquipmentType.AXE);
 
 
+    // Halloween specials //
+
+    public final static Item PUMPKIN = new Item(new TinyIdentifier("tinyblox_halloween", IdentifierType.ITEM, "pumpkin"), new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_tile"), true, (byte) 16, TileRegister.PUMPKIN.getTileID());
+
+
     // Inits internal items
     public static void initItems() {
 
@@ -80,6 +85,10 @@ public class ItemRegister {
         ITEMS.add(WOODEN_AXE);
         ITEMS.add(STONE_AXE);
         ITEMS.add(IRON_AXE);
+
+        // Halloween //
+
+        ITEMS.add(PUMPKIN);
 
     }
 

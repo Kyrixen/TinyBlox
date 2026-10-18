@@ -9,6 +9,7 @@ public class Structure {
     // Rarity enum
     public enum Rarity {
         
+        EVERYWHERE(0.5f),
         COMMON(0.10f),
         UNCOMMON(0.04f),
         RARE(0.01f),

@@ -1,11 +1,9 @@
 package io.kyrixen.tinyblox.world;
 
 import io.kyrixen.tinyblox.Constants;
-import io.kyrixen.tinyblox.entities.mob.Bomber;
+import io.kyrixen.tinyblox.entities.mob.AngryPumpkin;
 import io.kyrixen.tinyblox.entities.mob.Enemy;
 import io.kyrixen.tinyblox.entities.mob.Player;
-import io.kyrixen.tinyblox.entities.mob.Slime;
-import io.kyrixen.tinyblox.entities.mob.Voidling;
 import io.kyrixen.tinyblox.sound.SoundManager;
 import io.kyrixen.tinyblox.utils.Logger;
 import io.kyrixen.tinyblox.utils.RandomUtils;
@@ -53,28 +51,7 @@ public class EnemySpawner {
         int worldX = (pickedChunkX * Constants.CHUNK_SIZE + pickedLocalX) * Constants.GRID_SIZE;
         int worldY = (pickedChunkY * Constants.CHUNK_SIZE + pickedLocalY) * Constants.GRID_SIZE;
 
-        int enemyType = RandomUtils.randomInt(1, 4);
-        Enemy newEnemy = null;
-
-        switch (enemyType) {
-
-            case 1:
-                newEnemy = new Enemy(worldX, worldY, this.soundManager);    
-                break;
-
-            case 2:
-                newEnemy = new Slime(worldX, worldY, this.soundManager);    
-                break;
-            
-            case 3:
-                newEnemy = new Bomber(worldX, worldY, this.soundManager);
-                break;
-
-            case 4:
-                newEnemy = new Voidling(worldX, worldY, this.soundManager);
-                break;
-
-        }
+        Enemy newEnemy = new AngryPumpkin(worldX, worldY, this.soundManager);
 
         newEnemy.initTexture();
 
