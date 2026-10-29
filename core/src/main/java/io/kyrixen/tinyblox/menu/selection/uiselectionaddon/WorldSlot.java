@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
-import io.kyrixen.tinyblox.world.FrequencyType;
 
 // World slot widget
 public class WorldSlot {
@@ -78,9 +77,9 @@ public class WorldSlot {
         batch.setColor(1f, 1f, 1f, 1f);
 
         String worldName = "MAP: " + world.worldName.toUpperCase();
-        String worldSeed = "SEED: " + world.worldSeed;
-        String worldFrequency = "FREQ: " + FrequencyType.valueOf(world.worldFrequency).name().replace("_", " ");
-        String worldVersion = "VER: " + world.formatVersion;
+        String worldSeed = "SEED: SPOOKY";
+        String worldFrequency = "FREQ: HALLOWEENISH";
+        String worldVersion = "VER: HALOWEEN 2026";
 
         float uiScale = Math.min(Constants.WINDOW_WIDTH / 800f, Constants.WINDOW_HEIGHT / 600f);
         font.getData().setScale(0.75f * uiScale);

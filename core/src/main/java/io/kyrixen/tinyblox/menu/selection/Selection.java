@@ -155,7 +155,7 @@ public class Selection implements Screen {
 
     private void draw() {
 
-        ScreenUtils.clear(0.45f, 0.70f, 0.95f, 1f);
+        ScreenUtils.clear(0.04f, 0.04f, 0.20f, 1f);
 
         uiRenderer.showSelectionBackground(rendererStack);
 

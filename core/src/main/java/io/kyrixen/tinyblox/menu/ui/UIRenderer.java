@@ -19,8 +19,8 @@ public class UIRenderer {
 
     // Background textures
     private static final TinyIdentifier menuBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background");
-    private static final TinyIdentifier settingsBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "settings_background");
-    private static final TinyIdentifier selectionBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "selection_background");
+    private static final TinyIdentifier settingsBackgroundImage = new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "settings_background");
+    private static final TinyIdentifier selectionBackgroundImage = new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "selection_background");
 
 
     public UIRenderer(TextureManager tex) {
@@ -63,7 +63,7 @@ public class UIRenderer {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shape.begin(ShapeType.Filled);
         
-        shape.setColor(0f, 0f, 0f, 0.5f);
+        shape.setColor(0f, 0f, 0f, 0.65f);
         shape.rect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         
         shape.end();

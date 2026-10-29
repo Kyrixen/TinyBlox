@@ -1,8 +1,7 @@
 package io.kyrixen.tinyblox.world;
 
 public enum Difficulty {
-
-    EASY(0.5f),
+    
     NORMAL(1f),
     HARD(2f);
 

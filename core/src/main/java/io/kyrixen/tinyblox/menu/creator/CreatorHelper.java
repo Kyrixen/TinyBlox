@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.kyrixen.tinyblox.Constants;
 import io.kyrixen.tinyblox.graphics.RendererStack;
 import io.kyrixen.tinyblox.saving.blueprints.world.WorldBlueprint;
-import io.kyrixen.tinyblox.utils.RandomUtils;
 import io.kyrixen.tinyblox.world.Difficulty;
 import io.kyrixen.tinyblox.world.FrequencyType;
 
@@ -31,9 +30,9 @@ public class CreatorHelper extends InputAdapter {
 
     // World vars
     private String worldName = "";
-    private String seed = String.valueOf(RandomUtils.randomInt(Integer.MAX_VALUE - 1));
-    private FrequencyType frequency = FrequencyType.NORMAL;
-    private Difficulty difficulty = Difficulty.EASY;
+    private String seed = "SPOOKY";
+    private String frequency = "HALLOWEENISH";
+    private Difficulty difficulty = Difficulty.NORMAL;
 
     // Text layout helper
     private GlyphLayout layout = new GlyphLayout();
@@ -53,11 +52,6 @@ public class CreatorHelper extends InputAdapter {
         
 
         // That diabolical calculation did AI
-        if(selected == SelectedPrompt.FREQUENCY && pressed && insideFrequency(mouseX, mouseY)) {
-            FrequencyType[] values = FrequencyType.values();
-            frequency = values[(frequency.ordinal() + 1) % values.length];
-        }
-
         if(selected == SelectedPrompt.DIFFICULTY && pressed && insideDifficulty(mouseX, mouseY)) {
             Difficulty[] values = Difficulty.values();
             difficulty = values[(difficulty.ordinal() + 1) % values.length];
@@ -127,8 +121,8 @@ public class CreatorHelper extends InputAdapter {
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.FREQUENCY) font.setColor(1f, 1f, 0f, 1f);
-        layout.setText(font, frequency.name().replace("_", " "));
-        font.draw(batch, frequency.name().replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(260));
+        layout.setText(font, frequency.replace("_", " "));
+        font.draw(batch, frequency.replace("_", " "), (Constants.WINDOW_WIDTH - layout.width) / 2f, uiScaleY(260));
         font.setColor(1f, 1f, 1f ,1f);
 
         if(selected == SelectedPrompt.DIFFICULTY) font.setColor(1f, 1f, 0f, 1f);
@@ -159,13 +153,12 @@ public class CreatorHelper extends InputAdapter {
 
         worldInfo.formatVersion = Constants.SAVE_FORMAT_VERSION;
 
-        if(worldName.isEmpty()) worldInfo.worldName = "NEW MAP";
+        if(worldName.isEmpty()) worldInfo.worldName = "NEW SPOOKY MAP";
         else worldInfo.worldName = worldName;
 
-        if(seed.isEmpty()) worldInfo.worldSeed = RandomUtils.randomInt(Integer.MAX_VALUE - 1);
-        else worldInfo.worldSeed = Integer.parseInt(seed);
+        worldInfo.worldSeed = 311026;
 
-        worldInfo.worldFrequency = frequency.name();
+        worldInfo.worldFrequency = String.valueOf(FrequencyType.MOUNTAINOUS);
         worldInfo.worldDifficulty = difficulty.name();
 
         worldInfo.lastEntityID = 0;
@@ -210,8 +203,6 @@ public class CreatorHelper extends InputAdapter {
 
         if(selected == SelectedPrompt.NAME) {
             if((Character.isLetterOrDigit(character) || character == ' ') && worldName.length() < 20) worldName += Character.toUpperCase(character);
-        } else if(selected == SelectedPrompt.SEED && seed.length() < 9) {
-            if(Character.isDigit(character)) seed += character;
         }
 
 

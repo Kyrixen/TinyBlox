@@ -188,6 +188,7 @@ public class Engine implements Screen {
             player.setY(spawn[1]);
             player.setLevel((byte) spawn[2]);
             player.setHealth(150 / Constants.DIFFICULTY.getDiffMult());
+            player.setStamina(125 / Constants.DIFFICULTY.getDiffMult());
             
         }
 

@@ -18,7 +18,7 @@ public class Constants {
     public static boolean VSYNC = true;
 
     // World stuff
-    public static String CURRENT_WORLD = "NEW MAP";
+    public static String CURRENT_WORLD = "NEW SPOOKY MAP";
 
     public static final int MAP_WIDTH = 256;
     public static final int MAP_HEIGHT = 256;
@@ -33,7 +33,7 @@ public class Constants {
     public static final byte MAX_TERRAIN_HEIGHT = 16;
     public static final byte MIN_TERRAIN_HEIGHT = 6;
 
-    public static final byte LIGHT_RADIUS = 4;
+    public static final byte LIGHT_RADIUS = 2;
 
     public static Difficulty DIFFICULTY = Difficulty.NORMAL;
 
@@ -57,6 +57,6 @@ public class Constants {
     public static final float FULL_TIME_CYCLE = 300f;
 
     // Entity settings
-    public static final byte MAX_ENTITY_CHUNK = 3;
+    public static final byte MAX_ENTITY_CHUNK = 1;
 
 }

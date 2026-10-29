@@ -67,12 +67,9 @@ public class EnemySpawner {
 
 
     public void updateSpawnRate(TimeCycle timeCycle) {
-
-        if(Constants.DIFFICULTY == Difficulty.EASY) { this.setSpawnTimer(99999999f); return; }
-    
-        if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(7f / Constants.DIFFICULTY.getDiffMult());
-        else if(timeCycle.getDayTime() != DayTime.NIGHT && Constants.DIFFICULTY == Difficulty.HARD) this.setSpawnTimer(9f / Constants.DIFFICULTY.getDiffMult());
-        else this.setSpawnTimer(99999999f);
+ 
+        if(timeCycle.getDayTime() == DayTime.NIGHT) this.setSpawnTimer(12f / Constants.DIFFICULTY.getDiffMult());
+        else if(timeCycle.getDayTime() != DayTime.NIGHT && Constants.DIFFICULTY == Difficulty.HARD) this.setSpawnTimer(14f / Constants.DIFFICULTY.getDiffMult());
     
     }
 
