@@ -33,7 +33,7 @@ public class Constants {
     public static final byte MAX_TERRAIN_HEIGHT = 16;
     public static final byte MIN_TERRAIN_HEIGHT = 6;
 
-    public static final byte LIGHT_RADIUS = 2;
+    public static final byte LIGHT_RADIUS = 4;
 
     public static Difficulty DIFFICULTY = Difficulty.NORMAL;
 

@@ -18,7 +18,7 @@ public class UIRenderer {
     private final TextureManager tex;
 
     // Background textures
-    private static final TinyIdentifier menuBackgroundImage = new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background");
+    private static final TinyIdentifier menuBackgroundImage = new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "menu_background");
     private static final TinyIdentifier settingsBackgroundImage = new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "settings_background");
     private static final TinyIdentifier selectionBackgroundImage = new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "selection_background");
 

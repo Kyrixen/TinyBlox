@@ -8,7 +8,7 @@ Development has resumed, and the source code and releases remain available as a 
 
 <div align="center">
 
-![Showcase](https://raw.githubusercontent.com/Kyrixen/TinyBlox/main/assets/tinyblox/textures/background/menu_background.png)
+![Showcase](https://raw.githubusercontent.com/Kyrixen/TinyBlox/halloween-2026/assets/tinyblox_halloween/textures/backgroundmenu_background.png)
 
 </div>
 

@@ -108,7 +108,7 @@ public class TextureManager {
     public void loadBackgrounds() {
         this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "selection_background"), "background/selection_background.png");
         this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "settings_background"), "background/settings_background.png");
-        this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "menu_background"), "background/menu_background.png");
+        this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "menu_background"), "background/menu_background.png");
     }
 
 
