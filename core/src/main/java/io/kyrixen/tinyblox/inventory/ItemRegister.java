@@ -50,6 +50,7 @@ public class ItemRegister {
     // Halloween specials //
 
     public final static Item PUMPKIN = new Item(new TinyIdentifier("tinyblox_halloween", IdentifierType.ITEM, "pumpkin"), new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_tile"), true, (byte) 16, TileRegister.PUMPKIN.getTileID());
+    public final static Item PUMPKIN_SWORD = new Equipment(new TinyIdentifier("tinyblox_halloween", IdentifierType.ITEM, "pumpkin_sword"), new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_sword"), false, ToolTier.PUMPKIN, EquipmentType.WEAPON);
 
 
     // Inits internal items
@@ -89,6 +90,7 @@ public class ItemRegister {
         // Halloween //
 
         ITEMS.add(PUMPKIN);
+        ITEMS.add(PUMPKIN_SWORD);
 
     }
 

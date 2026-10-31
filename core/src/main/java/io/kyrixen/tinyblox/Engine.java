@@ -130,8 +130,6 @@ public class Engine implements Screen {
 
         lastAutoSave = System.currentTimeMillis();
 
-        player.getInventory().add(ItemRegister.PUMPKIN, (byte) 16);
-
     }
 
     // Game loop

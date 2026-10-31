@@ -41,7 +41,9 @@ public class Equipment extends Item {
 
         WOOD(1f),
         STONE(1.5f),
-        IRON(2f);
+        IRON(2f),
+
+        PUMPKIN(3f);
 
         // Tier multiplier
         private final float tierMult;

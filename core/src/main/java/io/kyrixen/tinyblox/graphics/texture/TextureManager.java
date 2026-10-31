@@ -161,6 +161,8 @@ public class TextureManager {
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_sword"), "hud/inventory/items/stone_sword.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_sword"), "hud/inventory/items/iron_sword.png");
 
+        this.load(new TinyIdentifier("tinyblox_halloween", IdentifierType.TEXTURE, "pumpkin_sword"), "hud/inventory/items/pumpkin_sword.png");
+
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "wooden_pickaxe"), "hud/inventory/items/wood_pickaxe.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "stone_pickaxe"), "hud/inventory/items/stone_pickaxe.png");
         this.load(new TinyIdentifier("tinyblox", IdentifierType.TEXTURE, "iron_pickaxe"), "hud/inventory/items/iron_pickaxe.png");
