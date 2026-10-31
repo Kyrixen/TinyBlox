@@ -20,10 +20,10 @@ public class AngryPumpkin extends Enemy {
         super(x, y, soundManager);
         this.entityID = new TinyIdentifier("tinyblox_halloween", IdentifierType.ENTITY, "angry_pumpkin");
 
-        this.attackDamage = 25 * (int) Constants.DIFFICULTY.getDiffMult();
+        this.attackDamage = 20 * (int) Constants.DIFFICULTY.getDiffMult();
 
-        this.maxHealth = (int) (50 / Constants.DIFFICULTY.getDiffMult());
-        this.health = 40 / Constants.DIFFICULTY.getDiffMult();
+        this.maxHealth = (int) (40 / Constants.DIFFICULTY.getDiffMult());
+        this.health = 30 / Constants.DIFFICULTY.getDiffMult();
 
         this.activationRange = 1;
 

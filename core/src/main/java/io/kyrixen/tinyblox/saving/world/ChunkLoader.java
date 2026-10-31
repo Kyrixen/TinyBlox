@@ -74,7 +74,7 @@ public class ChunkLoader {
         ChunkGenerator.generateCave(chunk, 10);
         ChunkGenerator.spawnOre(chunk, TileRegister.COAL, 2);
         ChunkGenerator.spawnOre(chunk, TileRegister.IRON, 1);
-        ChunkGenerator.spawnTree(chunk, 10);
+        ChunkGenerator.spawnTree(chunk, 15);
         ChunkGenerator.spawnStructure(chunk, 10);
 
         chunk.setModified(false);

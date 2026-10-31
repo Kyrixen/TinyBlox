@@ -174,7 +174,7 @@ public class ChunkGenerator {
     public static void spawnTree(Chunk chunk, int maxAttempts) {
 
         byte TREE_RADIUS = 1;
-        byte FREE_SPACE_RADIUS = 1;
+        byte FREE_SPACE_RADIUS = 0;
 
         long treeSeed = RandomUtils.mixSeed(chunk.getChunkSeed(), 454654464352545L);
         RandomUtils random = new RandomUtils(treeSeed);
